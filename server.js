@@ -9,6 +9,8 @@ import environment from './src/configs/enviroment.js'
 import { errorHandlingMiddleware } from './src/middleware/errorHandlingMiddleware.js'
 import ApiError from './src/utils/ApiError.js'
 import cors from 'cors'
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 const PORT = environment.app.port;
 
@@ -25,6 +27,32 @@ app.use(express.json())
 app.use(express.urlencoded({
     extended: true
 }))
+
+
+const options = {
+    definition: {
+      openapi: "3.1.0",
+      info: {
+        title: "LogRocket Express API with Swagger",
+        version: "0.1.0",
+        description:
+          "This is a simple CRUD API application made with Express and documented with Swagger",
+      },
+      servers: [
+        {
+          url: PORT,
+        },
+      ],
+    },
+    apis: ["./routes/*.js"],
+  };
+  
+  const specs = swaggerJsdoc(options);
+  app.use(
+    "/api",
+    swaggerUi.serve,
+    swaggerUi.setup(specs)
+  );
 
 // Routes
 app.use("/api", router)
