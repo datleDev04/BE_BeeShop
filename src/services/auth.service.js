@@ -35,6 +35,8 @@ export class AuthService {
             password: bcrypt.hashSync(password, 10),
         })
 
+        delete newUser.password
+
         return newUser
     }
 }
