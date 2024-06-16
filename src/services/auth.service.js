@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import ApiError from "../utils/ApiError.js";
+import bcrypt from 'bcrypt'
 
 export class AuthService {
     static register = async (req) => {
