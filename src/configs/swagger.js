@@ -12,12 +12,12 @@ const options = {
       },
       servers: [
         {
-          url: 'http://localhost:8080',
+          url: 'http://localhost:8080/api',
           description: 'DEV server',
         },
       ],
     },
-    apis: ["../routes/*.js"],
+    apis: ["src/routes/*.js"],
   };
   
 export const swaggerDocs = swaggerJsdoc(options);

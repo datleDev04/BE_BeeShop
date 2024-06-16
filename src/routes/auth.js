@@ -7,11 +7,37 @@ const authRouter = express.Router()
 
 /**
  * @swagger
- * /auth:
+ * /auth/register:
  *   post:
- *     summary: Retrieve a list of JSONPlaceholder users
- *     description: Retrieve a list of users from JSONPlaceholder. Can be used to populate a list of fake users when prototyping or testing an API.
-*/
+ *     summary: Register a new user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               confirm_password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Registration successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user_name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ */
 authRouter.post('/register', authValidation.registerValidation, AuthController.register)
 
 export default authRouter
