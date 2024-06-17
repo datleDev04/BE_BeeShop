@@ -9,8 +9,6 @@ import environment from './src/configs/enviroment.js'
 import { errorHandlingMiddleware } from './src/middleware/errorHandlingMiddleware.js'
 import ApiError from './src/utils/ApiError.js'
 import cors from 'cors'
-import swaggerUi from 'swagger-ui-express';
-import { swaggerDocs } from './src/configs/swagger.js'
 
 
 const PORT = environment.app.port;
@@ -30,8 +28,6 @@ app.use(express.urlencoded({
 }))
 
 
-// Use swagger 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs,  { explorer: true }));
 
 // Routes
 app.use("/api", router)
