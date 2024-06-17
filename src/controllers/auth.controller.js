@@ -6,7 +6,6 @@ export class AuthController {
     static register = async (req, res, next) => {
         try {
             const newUser = await AuthService.register(req)
-            console.log(Transformer.transformObjectTypeSnakeToCamel(newUser.toObject()))
 
             res.status(StatusCodes.OK).json({
                 message: "Registration successfully",
@@ -16,5 +15,22 @@ export class AuthController {
         } catch (error) {
             next(error)
         }
-    } 
+    }
+    
+    static login = async (req, res, next) => {
+        try {
+            const { user, accessToken, refreshToken } = await AuthService.login( req ) 
+
+            res.status(StatusCodes.OK).json({
+                message: "Login successfully",
+                metaData: {
+                    userData: Transformer.transformObjectTypeSnakeToCamel(user.toObject()),
+                    accessToken: accessToken,
+                    refreshToken: refreshToken
+                }
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
 }
