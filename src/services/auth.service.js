@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import ApiError from "../utils/ApiError.js";
 import bcrypt from 'bcrypt'
 import jwtUtils from "../utils/jwt.js";
+import token from "../models/token.js";
 
 export class AuthService {
     static register = async (req) => {
@@ -65,7 +66,7 @@ export class AuthService {
         // create refresh token
         const refreshToken = jwtUtils.createRefreshToken()
 
-        await Token.create({
+        await token.create({
             user_id: user._id,
             refresh_token: refreshToken,
         });
