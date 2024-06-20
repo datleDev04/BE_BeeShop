@@ -3,12 +3,12 @@ import compression from 'compression'
 import express from 'express'
 import morgan from 'morgan'
 import helmet from 'helmet'
-import router from './src/routes/index.js'
 import connectDatabase from './src/configs/database.js'
 import environment from './src/configs/enviroment.js'
 import { errorHandlingMiddleware } from './src/middleware/errorHandlingMiddleware.js'
 import ApiError from './src/utils/ApiError.js'
 import cors from 'cors'
+import router from './src/routes/index.js'
 
 
 const PORT = environment.app.port;

@@ -1,6 +1,8 @@
 import User from "../models/User.js";
 import ApiError from "../utils/ApiError.js";
 import bcrypt from 'bcrypt'
+import jwtUtils from "../utils/jwt.js";
+import token from "../models/token.js";
 
 export class AuthService {
     static register = async (req) => {
@@ -38,5 +40,42 @@ export class AuthService {
         delete newUser.password
 
         return newUser
+    }
+
+    static login = async (req) => {
+        const { email, password } = req.body
+
+        // find user by email
+        const user = await User.findOne({ email })
+
+        if (!user) {
+            throw new ApiError(StatusCodes.BAD_REQUEST, "Couldn't find User")
+        }
+
+        // compare password
+        const isMatch = await bcrypt.compare(password, user.password)
+        if (!isMatch) {
+            throw new ApiError(401, "Wrong password")
+        }
+
+        // check status of the user
+
+        // create access token
+        const accessToken = jwtUtils.createAccessToken(user._id)
+
+        // create refresh token
+        const refreshToken = jwtUtils.createRefreshToken()
+
+        await token.create({
+            user_id: user._id,
+            refresh_token: refreshToken,
+        });
+
+
+        return {
+            user,
+            accessToken,
+            refreshToken
+        }
     }
 }
