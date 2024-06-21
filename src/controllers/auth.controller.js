@@ -33,4 +33,16 @@ export class AuthController {
             next(error);
         }
     }
+
+    static logout = async (req, res, next) => {
+        try {
+            await AuthService.logout(req)
+
+            res.status(StatusCodes.OK).json({
+                message: "Logout successfully",
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
 }
