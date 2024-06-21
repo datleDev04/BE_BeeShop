@@ -9,4 +9,10 @@ authRouter.post('/register', authValidation.registerValidation, AuthController.r
 authRouter.post("/login", authValidation.loginValidation, AuthController.login)
 authRouter.post("/logout", authMiddleware, AuthController.logout )
 
+authRouter.post("/forgot-password", AuthController.forgotPassword)  
+authRouter.post("/reset-password/:token", AuthController.resetPassword)  
+
+
+authRouter.post("/refresh-token", AuthController.refreshToken)
+
 export default authRouter
