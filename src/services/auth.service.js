@@ -99,4 +99,72 @@ export class AuthService {
             )
         ])
     }
+
+    static refreshToken = async (req) => {
+        const refreshToken = req.body.refreshToken
+
+        if (!refreshToken) throw new ApiError(StatusCodes.BAD_REQUEST, "refresh token is required")
+        
+        // check valid token
+        const decodeToken = jwtUtils.decodeRefreshToken(refreshToken)
+        if (!decodeToken) throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid refresh token")
+
+        const newRefreshToken = jwtUtils.createRefreshToken()
+
+        Token.findOneAndUpdate(
+            { refresh_token: refreshToken },
+            { refresh_token:  newRefreshToken }
+        )
+
+        const tokenInfo = Token.findOne({ refresh_token: newRefreshToken })
+
+        const access_token = jwtUtils.createAccessToken(tokenInfo.user_id)
+
+        return {
+            access_token: access_token,
+            refresh_token: newRefreshToken,
+        }
+    }
+
+
+    static forgotPassword = async (reqBody) => {
+        const { email } = reqBody
+
+        if (!email) throw new ApiError(StatusCodes.BAD_REQUEST, "email is required")
+
+        const user = await User.findOne({ email })
+        if (!user) throw new ApiError(StatusCodes.NOT_FOUND, "User not found")
+
+        user.resetPassword_Token = jwtUtils.createAccessToken(user._id)
+
+        user.save()
+
+        sendEmail(
+            user.email,
+            "Reset Your Instagram Account Password",
+            mailForgotPassword(
+                `${process.env.CLIENT_BASE_URL}/auth/reset-password/${user.resetPassword_Token}`
+            )
+        )
+    }
+
+    static resetPassword = async ( req ) => {
+        const { password, confirm_password } = req.body
+
+        const resetPassword_Token = req.params.token
+
+        const decode = jwtUtils.decodeToken(resetPassword_Token)
+
+        const user = await User.findOne({ _id: decode.user_id })
+        if (!user) throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid or Token expired")
+
+        if (password !== confirm_password) {
+            throw new ApiError(StatusCodes.BAD_REQUEST, "Passwords don't match")
+        }
+
+        user.password = bcrypt.hashSync(password, 10)
+        user.resetPassword_Token = null
+
+        user.save()
+    }
 }

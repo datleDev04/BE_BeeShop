@@ -45,4 +45,41 @@ export class AuthController {
             next(error);
         }
     }
+
+    static forgotPassword = async (req, res, next) => {
+        try {
+            await AuthService.forgotPassword(req.body)
+
+            res.status(StatusCodes.OK).json({
+                message: "send mail forgot password successfully",
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
+    static resetPassword = async (req, res, next) => {
+        try {
+            await AuthService.resetPassword(req)
+
+            res.status(StatusCodes.OK).json({
+                message: "reset password successfully",
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static refreshToken = async (req, res, next) => {
+        try {
+            const {access_token, refresh_token } = await AuthService.refreshToken(req)
+ 
+            res.status(StatusCodes.OK).json({
+                message: "Refresh token successfully",
+                accessToken: access_token,
+                refreshToken: refresh_token
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
 }
