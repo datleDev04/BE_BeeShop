@@ -13,7 +13,7 @@ export const authMiddleware = async (req, res, next) => {
         const blackToken = await Black_tokens.findOne({ accessToken })
         if (blackToken) throw new ApiError(StatusCodes.UNAUTHORIZED, "Token is already expired")
 
-        const { user_id } = jwtUtils.decodeToken(accessToken)
+        const { user_id } = jwtUtils.decodeAccessToken(accessToken)
 
         const user = await User.findById(user_id)
         if (!user) throw new ApiError(StatusCodes.UNAUTHORIZED, "User not found")
