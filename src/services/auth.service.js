@@ -2,7 +2,7 @@ import User from "../models/User.js";
 import ApiError from "../utils/ApiError.js";
 import bcrypt from 'bcrypt'
 import jwtUtils from "../utils/jwt.js";
-import token from "../models/token.js";
+import Token from "../models/token.js";
 
 export class AuthService {
     static register = async (req) => {
@@ -66,7 +66,7 @@ export class AuthService {
         // create refresh token
         const refreshToken = jwtUtils.createRefreshToken()
 
-        await token.create({
+        await Token.create({
             user_id: user._id,
             refresh_token: refreshToken,
         });
@@ -77,5 +77,15 @@ export class AuthService {
             accessToken,
             refreshToken
         }
+    }
+
+
+    static logout = async (req) => {
+        const { refreshToken  } = req.body;
+
+        Promise.all([
+            Black_tokens.create({ refresh_token: refreshToken }),
+            Token.findOneAndDelete({ refresh_token: refreshToken })
+        ])
     }
 }

@@ -22,6 +22,5 @@ const tokenSchema = new mongoose.Schema({
     collection: COLLECTION_NAME,
 })
 
-tokenSchema.index({createdAt: 1}, {expireAfterSeconds: 7*24*60*60});
 
 export default mongoose.model(DOCUMENT_NAME, tokenSchema)
