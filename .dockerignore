@@ -1,0 +1,40 @@
+# Ignore các file temporary
+.temp
+.tmp
+
+# Ignore các file logs
+*.log
+
+# Ignore các file và thư mục được tạo bởi IDEs và editors
+.idea/
+.vscode/
+
+# Ignore các file và thư mục build, cache
+node_modules/
+build/
+dist/
+*.exe
+*.msi
+*.rar
+*.zip
+*.gz
+*.tar
+
+# Ignore các file và thư mục khi sử dụng Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore các file và thư mục khi sử dụng Java
+target/
+*.class
+
+# Ignore file .git và các file metadata khi sử dụng Git
+.git/
+.gitignore
+.gitattributes
+.DS_Store
+*/.gitkeep
+
+# Ignore các file cấu hình riêng tư
+secrets.env
