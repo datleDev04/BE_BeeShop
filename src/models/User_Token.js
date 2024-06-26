@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
 // schema User variables
-const DOCUMENT_NAME = "Token";
-const COLLECTION_NAME = "Tokens";
+const DOCUMENT_NAME = "User_Token";
+const COLLECTION_NAME = "User_Tokens";
 
-const tokenSchema = new mongoose.Schema({
+const userTokenSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -22,4 +22,4 @@ const tokenSchema = new mongoose.Schema({
     collection: COLLECTION_NAME,
 })
 
-export default mongoose.model(DOCUMENT_NAME, tokenSchema)
+export default mongoose.model(DOCUMENT_NAME, userTokenSchema)

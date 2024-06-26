@@ -2,8 +2,9 @@ import User from "../models/User.js";
 import ApiError from "../utils/ApiError.js";
 import bcrypt from 'bcrypt'
 import jwtUtils from "../utils/jwt.js";
-import Token from "../models/token.js";
 import Black_tokens from "../models/Black_tokens.js";
+// import User_Token from "../models/User_Token.js";
+
 
 export class AuthService {
     static register = async (req) => {
@@ -67,7 +68,7 @@ export class AuthService {
         // create refresh token
         const refreshToken = jwtUtils.createRefreshToken()
 
-        await Token.findOneAndUpdate(
+        await User_Token.findOneAndUpdate(
             { user_id: user._id }, 
             { refresh_token: refreshToken},
             { upsert: true, new: true }
@@ -94,7 +95,7 @@ export class AuthService {
                 access_token: accessToken
             }),
 
-            Token.findOneAndDelete(
+            User_Token.findOneAndDelete(
                 { user_id: _id }
             )
         ])
@@ -111,12 +112,12 @@ export class AuthService {
 
         const newRefreshToken = jwtUtils.createRefreshToken()
 
-        Token.findOneAndUpdate(
+        User_Token.findOneAndUpdate(
             { refresh_token: refreshToken },
             { refresh_token:  newRefreshToken }
         )
 
-        const tokenInfo = Token.findOne({ refresh_token: newRefreshToken })
+        const tokenInfo = User_Token.findOne({ refresh_token: newRefreshToken })
 
         const access_token = jwtUtils.createAccessToken(tokenInfo.user_id)
 
@@ -127,44 +128,44 @@ export class AuthService {
     }
 
 
-    static forgotPassword = async (reqBody) => {
-        const { email } = reqBody
+    // static forgotPassword = async (reqBody) => {
+    //     const { email } = reqBody
 
-        if (!email) throw new ApiError(StatusCodes.BAD_REQUEST, "email is required")
+    //     if (!email) throw new ApiError(StatusCodes.BAD_REQUEST, "email is required")
 
-        const user = await User.findOne({ email })
-        if (!user) throw new ApiError(StatusCodes.NOT_FOUND, "User not found")
+    //     const user = await User.findOne({ email })
+    //     if (!user) throw new ApiError(StatusCodes.NOT_FOUND, "User not found")
 
-        user.resetPassword_Token = jwtUtils.createAccessToken(user._id)
+    //     user.resetPassword_Token = jwtUtils.createAccessToken(user._id)
 
-        user.save()
+    //     user.save()
 
-        sendEmail(
-            user.email,
-            "Reset Your Instagram Account Password",
-            mailForgotPassword(
-                `${process.env.CLIENT_BASE_URL}/auth/reset-password/${user.resetPassword_Token}`
-            )
-        )
-    }
+    //     sendEmail(
+    //         user.email,
+    //         "Reset Your Instagram Account Password",
+    //         mailForgotPassword(
+    //             `${process.env.CLIENT_BASE_URL}/auth/reset-password/${user.resetPassword_Token}`
+    //         )
+    //     )
+    // }
 
-    static resetPassword = async ( req ) => {
-        const { password, confirm_password } = req.body
+    // static resetPassword = async ( req ) => {
+    //     const { password, confirm_password } = req.body
 
-        const resetPassword_Token = req.params.token
+    //     const resetPassword_Token = req.params.token
 
-        const decode = jwtUtils.decodeToken(resetPassword_Token)
+    //     const decode = jwtUtils.decodeToken(resetPassword_Token)
 
-        const user = await User.findOne({ _id: decode.user_id })
-        if (!user) throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid or Token expired")
+    //     const user = await User.findOne({ _id: decode.user_id })
+    //     if (!user) throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid or Token expired")
 
-        if (password !== confirm_password) {
-            throw new ApiError(StatusCodes.BAD_REQUEST, "Passwords don't match")
-        }
+    //     if (password !== confirm_password) {
+    //         throw new ApiError(StatusCodes.BAD_REQUEST, "Passwords don't match")
+    //     }
 
-        user.password = bcrypt.hashSync(password, 10)
-        user.resetPassword_Token = null
+    //     user.password = bcrypt.hashSync(password, 10)
+    //     user.resetPassword_Token = null
 
-        user.save()
-    }
+    //     user.save()
+    // }
 }
