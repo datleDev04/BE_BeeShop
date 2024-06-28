@@ -6,9 +6,10 @@ import Joi from "joi";
 export const roleValidation = async (req, res, next) => {
     const correctCondition = Joi.object({
         name: Joi.string().trim().required(),
-        permissions: Joi.string()
-          .pattern(OBJECT_ID_RULE)
-          .message(OBJECT_ID_RULE_MESSAGE)
+        permissions: Joi.alternatives().try(
+          Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+          Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        )
       });
   
       try {

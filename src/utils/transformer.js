@@ -1,23 +1,25 @@
-export class Transformer {
-    static transformObjectTypeSnakeToCamel(object) {
-      const newObject = {};
-  
-      for (const key in object) {
-        let newKey = key.replace(/([-_][a-z])/gi, ($1) =>
-          $1.toUpperCase()
-        );
-  
-        // Loại bỏ dấu gạch dưới và dấu gạch ngang
-        newKey = newKey.replace(/[-_]/g, '');
-  
-        // Xử lý trường hợp đặc biệt với '_id'
-        if (newKey === 'Id') {
-          newKey = 'id';
-        }
-  
-        newObject[newKey] = object[key];
-      }
-  
-      return newObject;
-    }
+class Transformer {
+  static snakeToCamel(s) {
+      return s.replace(/(_\w)/g, (matches) => matches[1].toUpperCase());
   }
+
+  static transformObjectTypeSnakeToCamel(obj) {
+      if (Array.isArray(obj)) {
+          return obj.map(item => Transformer.transformObjectTypeSnakeToCamel(item));
+      } else if (obj !== null && obj.constructor === Object) {
+          const newObj = {};
+          Object.keys(obj).forEach((key) => {
+              let newKey = Transformer.snakeToCamel(key);
+              // Special case for _id to id transformation
+              if (key === '_id') {
+                  newKey = 'id';
+              }
+              newObj[newKey] = Transformer.transformObjectTypeSnakeToCamel(obj[key]);
+          });
+          return newObj;
+      }
+      return obj;
+  }
+}
+
+export { Transformer };

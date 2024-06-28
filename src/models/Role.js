@@ -4,7 +4,7 @@ import mongoose, { Schema } from "mongoose";
 const DOCUMENT_NAME = "Role";
 const COLLECTION_NAME = "Roles";
 
-const tokenSchema = new mongoose.Schema({
+const roleSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -24,4 +24,4 @@ const tokenSchema = new mongoose.Schema({
 })
 
 
-export default mongoose.model(DOCUMENT_NAME, tokenSchema)
+export default mongoose.model(DOCUMENT_NAME, roleSchema)
