@@ -4,7 +4,7 @@ import mongoose, { Schema } from "mongoose";
 const DOCUMENT_NAME = "Permission";
 const COLLECTION_NAME = "Permissions";
 
-const tokenSchema = new mongoose.Schema({
+const permissionSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -17,4 +17,4 @@ const tokenSchema = new mongoose.Schema({
 })
 
 
-export default mongoose.model(DOCUMENT_NAME, tokenSchema)
+export default mongoose.model(DOCUMENT_NAME, permissionSchema)
