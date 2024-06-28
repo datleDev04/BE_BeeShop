@@ -6,10 +6,10 @@ export default class RoleService {
     static createNewRole = async (req) => {
         const { name, permissions } = req.body;
 
-        // check existed role
         const existedRole = await Role.findOne({ name })
+
         if (existedRole) {
-            throw new ApiError(StatusCodes.CONFLICT, getReasonPhrase(StatusCodes.CONFLICT))
+            throw new ApiError(StatusCodes.CONFLICT, "This role is existed")
         }
 
         const newRole = await Role.create({ name, permissions })

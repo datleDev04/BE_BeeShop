@@ -33,11 +33,15 @@ export class PermissionController {
         try {
             const permissions = await PermissionService.getAllPermissions(req)
 
+            const returnData = await permissions.map(permission => {
+                return Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
+            })
+
             res.status(StatusCodes.OK).json({
                 message: "Get All Permission successfully",
                 statusCode: StatusCodes.OK,
                 // cần xem xét thêm vì trả về là 1 mảng
-                metaData: permissions
+                metaData: returnData
             })
         } catch (error) {
             next(error)
