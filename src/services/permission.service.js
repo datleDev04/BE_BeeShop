@@ -1,5 +1,7 @@
+import { StatusCodes, getReasonPhrase } from "http-status-codes";
 import Permisson from "../models/Permisson.js";
 import Role from "../models/Role.js";
+import ApiError from "../utils/ApiError.js";
 
 export default class PermissionService {
     static createNewPermission = async (req) => {
@@ -8,7 +10,7 @@ export default class PermissionService {
         // check existed permissions
         const existedPermission = await Permisson.findOne({ name })
         if (existedPermission) {
-            throw new ApiError(409, "Email already existed")
+            throw new ApiError(StatusCodes.CONFLICT, "Permission already exists")
         }
 
         const newPermission = await Permisson.create({ name })
@@ -16,14 +18,16 @@ export default class PermissionService {
         return newPermission
     }
 
-    static getAllPermissions = async () => {
-        const permissions = await Permisson.find()
+    static getPermission = async (req) => {
+        const permission = await Permisson.findById(req.params.id)
 
-        if (!permissions) {
-            return []
-        }
+        if (!permission) throw new ApiError(StatusCodes.NOT_FOUND, getReasonPhrase(StatusCodes.NOT_FOUND))
 
-        return permissions
+        return permission
+    }
+
+    static getAllPermissions = async (req) => {
+        return await Permisson.find()
     }
 
     static updatePermission = async (req, res) => {
@@ -31,7 +35,7 @@ export default class PermissionService {
         const { id } = req.params
 
         const permission = Permisson.findByIdAndUpdate(
-            { id },
+            { _id: id },
             { name: req.body.name },
             { new: true }
         )
@@ -39,6 +43,8 @@ export default class PermissionService {
         if (!permission) {
             throw new ApiError(404, "Permission not found")
         }
+
+        console.log(permission)
 
         return permission
     }
@@ -57,5 +63,6 @@ export default class PermissionService {
             { $pull: { permissions: id } }
         );
 
+        return permissions
     }
 }

@@ -2,9 +2,9 @@ import { StatusCodes } from "http-status-codes";
 import Role from "../models/Role.js";
 import ApiError from "../utils/ApiError.js";
 
-export default class RoleService {
-    static createNewRole = async (req) => {
-        const { name, permissions } = req.body;
+export default class UserService {
+    static addRoleForUser = async (req) => {
+        const { role } = req.body;
 
         // check existed role
         const existedRole = await Role.findOne({ name })

@@ -12,7 +12,8 @@ const tokenSchema = new mongoose.Schema({
     permissions: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Permission"
+            ref: "Permission",
+            require: true
         }
     ]
 },

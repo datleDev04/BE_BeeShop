@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 // schema User variables
 const DOCUMENT_NAME = "Permission";
-const COLLECTION_NAME = "permissions";
+const COLLECTION_NAME = "Permissions";
 
 const tokenSchema = new mongoose.Schema({
     name: {
