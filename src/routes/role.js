@@ -6,8 +6,8 @@ const roleRouter = express.Router();
 
 roleRouter.get('/', RoleController.getAllRole )
 roleRouter.get('/:id', RoleController.getOneRole )
-roleRouter.post('/create', roleValidation , RoleController.createNewRole )
-roleRouter.patch('/:id/update', roleValidation , RoleController.updateRoleById )
-roleRouter.delete('/:id/delete' , RoleController.deleteRoleById )
+roleRouter.post('/', roleValidation , RoleController.createNewRole )
+roleRouter.patch('/:id', roleValidation , RoleController.updateRoleById )
+roleRouter.delete('/:id' , RoleController.deleteRoleById )
 
 export default roleRouter
