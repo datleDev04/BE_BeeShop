@@ -1,15 +1,16 @@
-import RoleService from "../services/role.service.js"
+import { StatusCodes } from "http-status-codes"
 import UserService from "../services/user.service.js"
+import { Transformer } from "../utils/transformer.js"
 
 export class UserController {
-    static addRoleForUser = async (req, res, next) => {
+    static updateUser = async (req, res, next) => {
         try {
-            await UserService.addRoleForUser(req)
+            const updatedUser = await UserService.updateUser(req)
 
             res.status(StatusCodes.OK).json({
-                message: "Add Role For User successfully",
+                message: "Updated User successfully",
                 statusCode: StatusCodes.OK,
-                metaData: []
+                metaData: Transformer.transformObjectTypeSnakeToCamel(updatedUser.toObject())
             })
         } catch (error) {
             next(error)

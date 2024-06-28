@@ -1,20 +1,21 @@
 import { StatusCodes } from "http-status-codes";
 import Role from "../models/Role.js";
 import ApiError from "../utils/ApiError.js";
+import User from "../models/User.js";
 
 export default class UserService {
-    static addRoleForUser = async (req) => {
-        const { role } = req.body;
+    static updateUser = async (req) => {
+        const { roles } = req.body;
 
-        // check existed role
-        const existedRole = await Role.findOne({ name })
-        if (existedRole) {
-            throw new ApiError(StatusCodes.CONFLICT, getReasonPhrase(StatusCodes.CONFLICT))
-        }
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.id,
+            { roles: roles },
+            { new: true },
+        )
 
-        const newRole = await Role.create({ name, permissions })
+        if (!updatedUser) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Server does not response")
 
-        return newRole
+        return updatedUser
     }
 
 }

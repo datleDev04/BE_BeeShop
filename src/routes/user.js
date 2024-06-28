@@ -1,8 +1,11 @@
 import express from "express";
+import { UserController } from "../controllers/user.controller.js";
 
-const roleRouter = express.Router();
+const userRouter = express.Router();
 
-roleRouter.post('/add', roleValidation , RoleController.createNewRole )
-// roleRouter.post('add', )
 
-export default roleRouter
+
+// only admin role can access
+userRouter.patch('/:id' , UserController.updateUser)
+
+export default userRouter
