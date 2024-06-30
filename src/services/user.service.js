@@ -11,7 +11,7 @@ export default class UserService {
             req.params.id,
             { roles: roles },
             { new: true },
-        )
+        ).populate("roles").exec();
 
         if (!updatedUser) throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Server does not response")
 
