@@ -1,17 +1,19 @@
 import { StatusCodes } from "http-status-codes"
 import PermissionService from "../services/permission.service.js"
 import { Transformer } from "../utils/transformer.js"
+import { SuccessResponse } from "../utils/response.js"
 
 export class PermissionController {
     static createNewPermission = async (req, res, next) => {
         try {
             const newPermission = await PermissionService.createNewPermission(req)
 
-            res.status(StatusCodes.CREATED).json({
-                message: "Create New Permission successfully",
-                statusCode: StatusCodes.CREATED,
-                metaData: Transformer.transformObjectTypeSnakeToCamel(newPermission.toObject())
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.CREATED,
+                "Create New Permission successfully",
+                Transformer.transformObjectTypeSnakeToCamel(newPermission.toObject())
+            )
         } catch (error) {
             next(error)
         }
@@ -20,11 +22,12 @@ export class PermissionController {
         try {
             const permission = await PermissionService.getPermission(req)
 
-            res.status(StatusCodes.OK).json({
-                message: "Get Permission successfully",
-                statusCode: StatusCodes.OK,
-                metaData: Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Get Permission successfully",
+                Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
+            )
         } catch (error) {
             next(error)
         }
@@ -33,16 +36,16 @@ export class PermissionController {
         try {
             const permissions = await PermissionService.getAllPermissions(req)
 
-            const returnData = await permissions.map(permission => {
+            const returnData = permissions.map(permission => {
                 return Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
             })
 
-            res.status(StatusCodes.OK).json({
-                message: "Get All Permission successfully",
-                statusCode: StatusCodes.OK,
-                // cần xem xét thêm vì trả về là 1 mảng
-                metaData: returnData
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Get All Permission successfully",
+                returnData
+            )
         } catch (error) {
             next(error)
         }
@@ -52,11 +55,12 @@ export class PermissionController {
         try {
             const permissions = await PermissionService.updatePermission(req)
 
-            res.status(StatusCodes.OK).json({
-                message: "Updated Permission successfully",
-                statusCode: StatusCodes.OK,
-                metaData:  Transformer.transformObjectTypeSnakeToCamel(permissions.toObject())
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Updated Permission successfully",
+                Transformer.transformObjectTypeSnakeToCamel(permissions.toObject())
+            )
         } catch (error) {
             next(error)
         }
@@ -65,11 +69,12 @@ export class PermissionController {
         try {
             const deletedPermission = await PermissionService.deletePermission(req)
 
-            res.status(StatusCodes.OK).json({
-                message: "Delete Permission successfully",
-                statusCode: StatusCodes.OK,
-                metaData: Transformer.transformObjectTypeSnakeToCamel(deletedPermission.toObject())
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Delete Permission successfully",
+                Transformer.transformObjectTypeSnakeToCamel(deletedPermission.toObject())
+            )            
         } catch (error) {
             next(error)
         }
