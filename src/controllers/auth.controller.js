@@ -1,106 +1,76 @@
-import { StatusCodes } from "http-status-codes"
-import { AuthService } from "../services/auth.service.js"
-import { Transformer } from "../utils/transformer.js"
-import { SuccessResponse } from "../utils/response.js"
+import { StatusCodes } from 'http-status-codes';
+import { AuthService } from '../services/auth.service.js';
+import { Transformer } from '../utils/transformer.js';
+import { SuccessResponse } from '../utils/response.js';
 
 export class AuthController {
-    static register = async (req, res, next) => {
-        try {
-            const newUser = await AuthService.register(req)
+  static register = async (req, res, next) => {
+    try {
+      const newUser = await AuthService.register(req);
 
-            SuccessResponse(
-                res,
-                StatusCodes.OK,
-                "Registration successfully",
-                Transformer.transformObjectTypeSnakeToCamel(newUser.toObject())
-            )
-        } catch (error) {
-            next(error)
-        }
+      SuccessResponse(res, StatusCodes.OK, 'Registration successfully', Transformer.transformObjectTypeSnakeToCamel(newUser.toObject()));
+    } catch (error) {
+      next(error);
     }
-    
-    static login = async (req, res, next) => {
-        try {
-            const { user, accessToken, refreshToken } = await AuthService.login( req ) 
+  };
 
-            const metaData = {
-                userData: Transformer.transformObjectTypeSnakeToCamel(user.toObject()),
-                accessToken: accessToken,
-                refreshToken: refreshToken
-            }
+  static login = async (req, res, next) => {
+    try {
+      const { user, accessToken, refreshToken } = await AuthService.login(req);
 
-            SuccessResponse(
-                res,
-                StatusCodes.OK,
-                "Login successfully",
-                metaData
-            )
-        } catch (error) {
-            next(error);
-        }
+      const metaData = {
+        userData: Transformer.transformObjectTypeSnakeToCamel(user.toObject()),
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      };
+
+      SuccessResponse(res, StatusCodes.OK, 'Login successfully', metaData);
+    } catch (error) {
+      next(error);
     }
+  };
 
-    static logout = async (req, res, next) => {
-        try {
-            await AuthService.logout(req)
+  static logout = async (req, res, next) => {
+    try {
+      await AuthService.logout(req);
 
-            SuccessResponse(
-                res,
-                StatusCodes.OK,
-                "Logout successfully",
-                []
-            )
-        } catch (error) {
-            next(error);
-        }
+      SuccessResponse(res, StatusCodes.OK, 'Logout successfully', []);
+    } catch (error) {
+      next(error);
     }
+  };
 
-    static forgotPassword = async (req, res, next) => {
-        try {
-            await AuthService.forgotPassword(req.body)
+  static forgotPassword = async (req, res, next) => {
+    try {
+      await AuthService.forgotPassword(req.body);
 
-            SuccessResponse(
-                res,
-                StatusCodes.OK,
-                "send mail forgot password successfully",
-                []
-            )
-        } catch (error) {
-            next(error);
-        }
+      SuccessResponse(res, StatusCodes.OK, 'send mail forgot password successfully', []);
+    } catch (error) {
+      next(error);
     }
-    static resetPassword = async (req, res, next) => {
-        try {
-            await AuthService.resetPassword(req)
+  };
+  static resetPassword = async (req, res, next) => {
+    try {
+      await AuthService.resetPassword(req);
 
-            SuccessResponse(
-                res,
-                StatusCodes.OK,
-                "reset password successfully",
-                []
-            )
-        } catch (error) {
-            next(error);
-        }
+      SuccessResponse(res, StatusCodes.OK, 'reset password successfully', []);
+    } catch (error) {
+      next(error);
     }
+  };
 
-    static refreshToken = async (req, res, next) => {
-        try {
-            const {access_token, refresh_token } = await AuthService.refreshToken(req)
- 
-            metaData = {
-                accessToken: access_token,
-                refreshToken: refresh_token
-            }
+  static refreshToken = async (req, res, next) => {
+    try {
+      const { access_token, refresh_token } = await AuthService.refreshToken(req);
 
-            SuccessResponse(
-                res,
-                StatusCodes.OK,
-                "Refresh token successfully",
-                metaData
-            )
-        } catch (error) {
-            next(error)
-        }
+      metaData = {
+        accessToken: access_token,
+        refreshToken: refresh_token,
+      };
+
+      SuccessResponse(res, StatusCodes.OK, 'Refresh token successfully', metaData);
+    } catch (error) {
+      next(error);
     }
+  };
 }

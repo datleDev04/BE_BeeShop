@@ -1,8 +1,8 @@
-import Joi from "joi";
+import Joi from 'joi';
 
-import { StatusCodes } from "http-status-codes";
-import { validateBeforeCreateOrUpdate } from "../utils/validators.js";
-import ApiError from "../utils/ApiError.js";
+import { StatusCodes } from 'http-status-codes';
+import { validateBeforeCreateOrUpdate } from '../utils/validators.js';
+import ApiError from '../utils/ApiError.js';
 
 class authValidation {
   static registerValidation = async (req, res, next) => {
@@ -10,16 +10,14 @@ class authValidation {
       user_name: Joi.string().min(3).max(20).trim().required(),
       email: Joi.string().email().trim().required(),
       password: Joi.string().min(6).trim().required(),
-      confirm_password: Joi.string().min(6).valid(Joi.ref("password")).trim().required(),
+      confirm_password: Joi.string().min(6).valid(Joi.ref('password')).trim().required(),
     });
 
     try {
       await validateBeforeCreateOrUpdate(correctCondition, req.body);
       next();
     } catch (error) {
-      next(
-        new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message)
-      );
+      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
     }
   };
 
@@ -33,11 +31,9 @@ class authValidation {
       await validateBeforeCreateOrUpdate(correctCondition, req.body);
       next();
     } catch (error) {
-      next(
-        new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message)
-      );
+      next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
     }
-  }
+  };
 }
 
 export default authValidation;
