@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes"
 import RoleService from "../services/role.service.js"
 import { Transformer } from "../utils/transformer.js"
+import { SuccessResponse } from "../utils/response.js"
 
 export class RoleController {
     static getAllRole = async (req, res, next) => {
@@ -11,11 +12,12 @@ export class RoleController {
                 return Transformer.transformObjectTypeSnakeToCamel(role.toObject())
             })
 
-            res.status(StatusCodes.OK).json({
-                message: "Get All Role successfully",
-                statusCode: StatusCodes.OK,
-                metaData: returnData
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Get All Role successfully",
+                returnData
+            )  
         } catch (error) {
             next(error)
         }
@@ -24,12 +26,13 @@ export class RoleController {
         try {
             const role = await RoleService.getOneRole(req)
 
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Get One Role successfully",
+                Transformer.transformObjectTypeSnakeToCamel(role.toObject())
+            )  
 
-            res.status(StatusCodes.OK).json({
-                message: "Get One Role successfully",
-                statusCode: StatusCodes.OK,
-                metaData: Transformer.transformObjectTypeSnakeToCamel(role.toObject())
-            })
         } catch (error) {
             next(error)
         }
@@ -39,11 +42,12 @@ export class RoleController {
         try {
             const newRole = await RoleService.createNewRole(req)
 
-            res.status(StatusCodes.OK).json({
-                message: "Create New Role successfully",
-                statusCode: StatusCodes.OK,
-                metaData: Transformer.transformObjectTypeSnakeToCamel(newRole.toObject())
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Create New Role successfully",
+                Transformer.transformObjectTypeSnakeToCamel(newRole.toObject())
+            ) 
         } catch (error) {
             next(error)
         }
@@ -53,11 +57,12 @@ export class RoleController {
         try {
             const updatedRole = await RoleService.updateRoleById(req)
 
-            res.status(StatusCodes.OK).json({
-                message: "Updated Role successfully",
-                statusCode: StatusCodes.OK,
-                metaData: Transformer.transformObjectTypeSnakeToCamel(updatedRole.toObject())
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Updated Role successfully",
+                Transformer.transformObjectTypeSnakeToCamel(updatedRole.toObject())
+            ) 
         } catch (error) {
             next(error)
         }
@@ -67,10 +72,12 @@ export class RoleController {
         try {
             await RoleService.deleteRoleById(req)
 
-            res.status(StatusCodes.OK).json({
-                message: "Deleted Role successfully",
-                statusCode: StatusCodes.OK,
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Deleted Role successfully",
+                []
+            ) 
         } catch (error) {
             next(error)
         }

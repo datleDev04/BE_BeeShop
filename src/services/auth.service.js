@@ -3,7 +3,7 @@ import ApiError from "../utils/ApiError.js";
 import bcrypt from 'bcrypt'
 import jwtUtils from "../utils/jwt.js";
 import Black_tokens from "../models/Black_tokens.js";
-// import User_Token from "../models/User_Token.js";
+import User_Token from "../models/User_Token.js";
 
 
 export class AuthService {
