@@ -1,5 +1,5 @@
 export const mailActiveAccount = (verifyLink) => {
-    return `
+  return `
     <body
         marginheight="0"
         topmargin="0"
@@ -131,5 +131,5 @@ export const mailActiveAccount = (verifyLink) => {
             </tr>
         </table>
         <!--/100% body table-->
-    </body>`
-}
+    </body>`;
+};

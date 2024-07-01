@@ -1,40 +1,37 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 // schema User variables
-const DOCUMENT_NAME = "User";
-const COLLECTION_NAME = "Users";
-
-
-
+const DOCUMENT_NAME = 'User';
+const COLLECTION_NAME = 'Users';
 
 const userSchema = new mongoose.Schema(
-    {
-      user_name: {
-        type: String,
-        unique: true,
-        required: true,
-      },
-      email: {
-        type: String,
-        required: true,
-        unique: true,
-      },
-      password: {
-        type: String,
-        required: true,
-      },
-      roles: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Role",
-        }
-      ]
+  {
+    user_name: {
+      type: String,
+      unique: true,
+      required: true,
     },
-    {
-      timestamps: true,
-      versionKey: false,
-      collection: COLLECTION_NAME,
-    }
-  );
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    roles: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Role',
+      },
+    ],
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+    collection: COLLECTION_NAME,
+  }
+);
 
 export default mongoose.model(DOCUMENT_NAME, userSchema);
