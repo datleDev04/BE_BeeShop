@@ -1,17 +1,19 @@
 import { StatusCodes } from "http-status-codes"
 import { AuthService } from "../services/auth.service.js"
 import { Transformer } from "../utils/transformer.js"
+import { SuccessResponse } from "../utils/response.js"
 
 export class AuthController {
     static register = async (req, res, next) => {
         try {
             const newUser = await AuthService.register(req)
 
-            res.status(StatusCodes.OK).json({
-                message: "Registration successfully",
-                statusCode: StatusCodes.OK,
-                metaData: Transformer.transformObjectTypeSnakeToCamel(newUser.toObject())
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Registration successfully",
+                Transformer.transformObjectTypeSnakeToCamel(newUser.toObject())
+            )
         } catch (error) {
             next(error)
         }
@@ -21,14 +23,18 @@ export class AuthController {
         try {
             const { user, accessToken, refreshToken } = await AuthService.login( req ) 
 
-            res.status(StatusCodes.OK).json({
-                message: "Login successfully",
-                metaData: {
-                    userData: Transformer.transformObjectTypeSnakeToCamel(user.toObject()),
-                    accessToken: accessToken,
-                    refreshToken: refreshToken
-                }
-            })
+            const metaData = {
+                userData: Transformer.transformObjectTypeSnakeToCamel(user.toObject()),
+                accessToken: accessToken,
+                refreshToken: refreshToken
+            }
+
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Login successfully",
+                metaData
+            )
         } catch (error) {
             next(error);
         }
@@ -38,9 +44,12 @@ export class AuthController {
         try {
             await AuthService.logout(req)
 
-            res.status(StatusCodes.OK).json({
-                message: "Logout successfully",
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Logout successfully",
+                []
+            )
         } catch (error) {
             next(error);
         }
@@ -50,9 +59,12 @@ export class AuthController {
         try {
             await AuthService.forgotPassword(req.body)
 
-            res.status(StatusCodes.OK).json({
-                message: "send mail forgot password successfully",
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "send mail forgot password successfully",
+                []
+            )
         } catch (error) {
             next(error);
         }
@@ -61,9 +73,12 @@ export class AuthController {
         try {
             await AuthService.resetPassword(req)
 
-            res.status(StatusCodes.OK).json({
-                message: "reset password successfully",
-            })
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "reset password successfully",
+                []
+            )
         } catch (error) {
             next(error);
         }
@@ -73,11 +88,17 @@ export class AuthController {
         try {
             const {access_token, refresh_token } = await AuthService.refreshToken(req)
  
-            res.status(StatusCodes.OK).json({
-                message: "Refresh token successfully",
+            metaData = {
                 accessToken: access_token,
                 refreshToken: refresh_token
-            })
+            }
+
+            SuccessResponse(
+                res,
+                StatusCodes.OK,
+                "Refresh token successfully",
+                metaData
+            )
         } catch (error) {
             next(error)
         }
