@@ -8,7 +8,12 @@ export class BrandController {
     try {
       const newBrand = await BrandService.handleCreateBrand(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Create new brand successfully', Transformer.transformObjectTypeSnakeToCamel(newBrand.toObject()));
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Create new brand successfully',
+        Transformer.transformObjectTypeSnakeToCamel(newBrand.toObject())
+      );
     } catch (error) {
       next(error);
     }
@@ -32,7 +37,12 @@ export class BrandController {
     try {
       const brand = await BrandService.handleGetOneBrand(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Get one brand successfully', Transformer.transformObjectTypeSnakeToCamel(brand.toObject()));
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Get one brand successfully',
+        Transformer.transformObjectTypeSnakeToCamel(brand.toObject())
+      );
     } catch (error) {
       next(error);
     }
@@ -42,7 +52,12 @@ export class BrandController {
     try {
       const updateBrand = await BrandService.handleUpdateBrand(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Update brand successfully', Transformer.transformObjectTypeSnakeToCamel(updateBrand.toObject()));
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Update brand successfully',
+        Transformer.transformObjectTypeSnakeToCamel(updateBrand.toObject())
+      );
     } catch (error) {
       next(error);
     }

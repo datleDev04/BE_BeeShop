@@ -21,7 +21,8 @@ export default class PermissionService {
   static getPermission = async (req) => {
     const permission = await Permisson.findById(req.params.id);
 
-    if (!permission) throw new ApiError(StatusCodes.NOT_FOUND, getReasonPhrase(StatusCodes.NOT_FOUND));
+    if (!permission)
+      throw new ApiError(StatusCodes.NOT_FOUND, getReasonPhrase(StatusCodes.NOT_FOUND));
 
     return permission;
   };
@@ -33,7 +34,11 @@ export default class PermissionService {
   static updatePermission = async (req, res) => {
     const { id } = req.params;
 
-    const permission = Permisson.findByIdAndUpdate({ _id: id }, { name: req.body.name }, { new: true });
+    const permission = Permisson.findByIdAndUpdate(
+      { _id: id },
+      { name: req.body.name },
+      { new: true }
+    );
 
     if (!permission) {
       throw new ApiError(404, 'Permission not found');

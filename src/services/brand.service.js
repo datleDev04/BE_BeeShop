@@ -34,7 +34,11 @@ export default class BrandService {
   static handleUpdateBrand = async (req) => {
     const { name, image, description } = req.body;
 
-    const updateBrand = await Brand.findByIdAndUpdate(req.params.id, { name, image, description }, { new: true, runValidators: true });
+    const updateBrand = await Brand.findByIdAndUpdate(
+      req.params.id,
+      { name, image, description },
+      { new: true, runValidators: true }
+    );
 
     if (!updateBrand) {
       throw new ApiError(StatusCodes.CONFLICT, 'This brand is not available');

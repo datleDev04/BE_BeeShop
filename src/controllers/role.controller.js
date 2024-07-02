@@ -21,7 +21,12 @@ export class RoleController {
     try {
       const role = await RoleService.getOneRole(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Get One Role successfully', Transformer.transformObjectTypeSnakeToCamel(role.toObject()));
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Get One Role successfully',
+        Transformer.transformObjectTypeSnakeToCamel(role.toObject())
+      );
     } catch (error) {
       next(error);
     }
@@ -31,7 +36,12 @@ export class RoleController {
     try {
       const newRole = await RoleService.createNewRole(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Create New Role successfully', Transformer.transformObjectTypeSnakeToCamel(newRole.toObject()));
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Create New Role successfully',
+        Transformer.transformObjectTypeSnakeToCamel(newRole.toObject())
+      );
     } catch (error) {
       next(error);
     }
@@ -41,7 +51,12 @@ export class RoleController {
     try {
       const updatedRole = await RoleService.updateRoleById(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Updated Role successfully', Transformer.transformObjectTypeSnakeToCamel(updatedRole.toObject()));
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Updated Role successfully',
+        Transformer.transformObjectTypeSnakeToCamel(updatedRole.toObject())
+      );
     } catch (error) {
       next(error);
     }
