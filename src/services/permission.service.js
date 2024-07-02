@@ -60,6 +60,6 @@ export default class PermissionService {
 
     await Role.updateMany({ permissions: id }, { $pull: { permissions: id } });
 
-    return permissions;
+    return permission;
   };
 }

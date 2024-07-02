@@ -2,7 +2,7 @@ import User from '../models/User.js';
 import ApiError from '../utils/ApiError.js';
 import bcrypt from 'bcrypt';
 import jwtUtils from '../utils/jwt.js';
-import Black_tokens from '../models/Black_tokens.js';
+import Black_Tokens from '../models/Black_Tokens.js';
 import User_Token from '../models/User_Token.js';
 
 export class AuthService {
@@ -81,7 +81,7 @@ export class AuthService {
     const { _id } = req.user._doc;
 
     await Promise.all([
-      Black_tokens.create({
+      Black_Tokens.create({
         user_id: _id,
         access_token: accessToken,
       }),

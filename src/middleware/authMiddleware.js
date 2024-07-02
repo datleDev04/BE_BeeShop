@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../utils/ApiError.js';
 import jwtUtils from '../utils/jwt.js';
-import Black_tokens from '../models/Black_tokens.js';
 import User from '../models/User.js';
+import Black_Tokens from '../models/Black_Tokens.js';
 
 export const authMiddleware = async (req, res, next) => {
   const accessToken = req.get('Authorization')?.split(' ').at(1);
@@ -10,7 +10,7 @@ export const authMiddleware = async (req, res, next) => {
   try {
     if (!accessToken) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Not authorized');
 
-    const blackToken = await Black_tokens.findOne({ accessToken });
+    const blackToken = await Black_Tokens.findOne({ accessToken });
     if (blackToken) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Token is already expired');
 
     const { user_id } = jwtUtils.decodeAccessToken(accessToken);
