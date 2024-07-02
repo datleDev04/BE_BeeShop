@@ -8,7 +8,12 @@ export class GenderController {
     try {
       const newGender = await GenderService.createNewGender(req);
 
-      SuccessResponse(res, StatusCodes.CREATED, 'Create new gender successfully', Transformer.transformObjectTypeSnakeToCamel(newGender.toObject()));
+      SuccessResponse(
+        res,
+        StatusCodes.CREATED,
+        'Create new gender successfully',
+        Transformer.transformObjectTypeSnakeToCamel(newGender.toObject())
+      );
     } catch (error) {
       next(error);
     }
@@ -17,7 +22,12 @@ export class GenderController {
     try {
       const gender = await GenderService.getOneGender(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Get gender successfully', Transformer.transformObjectTypeSnakeToCamel(gender.toObject()));
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Get gender successfully',
+        Transformer.transformObjectTypeSnakeToCamel(gender.toObject())
+      );
     } catch (error) {
       next(error);
     }
@@ -40,16 +50,26 @@ export class GenderController {
     try {
       const genders = await GenderService.updateGenderById(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Updated Gender successfully', Transformer.transformObjectTypeSnakeToCamel(genders.toObject()));
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Updated Gender successfully',
+        Transformer.transformObjectTypeSnakeToCamel(genders.toObject())
+      );
     } catch (error) {
       next(error);
     }
   };
   static deleteGender = async (req, res, next) => {
     try {
-      await GenderService.deleteGenderById(req);
+      const deletedGender = await GenderService.deleteGenderById(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Delete Gender successfully');
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Delete Gender successfully',
+        Transformer.transformObjectTypeSnakeToCamel(deletedGender.toObject())
+      );
     } catch (error) {
       next(error);
     }
