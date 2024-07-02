@@ -62,7 +62,11 @@ export class AuthService {
     // create refresh token
     const refreshToken = jwtUtils.createRefreshToken();
 
-    await User_Token.findOneAndUpdate({ user_id: user._id }, { refresh_token: refreshToken }, { upsert: true, new: true });
+    await User_Token.findOneAndUpdate(
+      { user_id: user._id },
+      { refresh_token: refreshToken },
+      { upsert: true, new: true }
+    );
 
     return {
       user,
@@ -97,7 +101,10 @@ export class AuthService {
 
     const newRefreshToken = jwtUtils.createRefreshToken();
 
-    User_Token.findOneAndUpdate({ refresh_token: refreshToken }, { refresh_token: newRefreshToken });
+    User_Token.findOneAndUpdate(
+      { refresh_token: refreshToken },
+      { refresh_token: newRefreshToken }
+    );
 
     const tokenInfo = User_Token.findOne({ refresh_token: newRefreshToken });
 
