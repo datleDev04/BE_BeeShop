@@ -8,7 +8,12 @@ export class UserController {
     try {
       const updatedUser = await UserService.updateUser(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Updated User successfully', Transformer.transformObjectTypeSnakeToCamel(updatedUser.toObject()));
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Updated User successfully',
+        Transformer.transformObjectTypeSnakeToCamel(updatedUser.toObject())
+      );
     } catch (error) {
       next(error);
     }
