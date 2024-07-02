@@ -11,6 +11,6 @@ router.use('/auth', authRouter);
 router.use('/users', userRouter);
 router.use('/roles', roleRouter);
 router.use('/permissions', permissionRouter);
-router.use('/brand', brandRouter);
+router.use('/brands', brandRouter);
 
 export default router;
