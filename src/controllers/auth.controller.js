@@ -8,7 +8,12 @@ export class AuthController {
     try {
       const newUser = await AuthService.register(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Registration successfully', Transformer.transformObjectTypeSnakeToCamel(newUser.toObject()));
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Registration successfully',
+        Transformer.transformObjectTypeSnakeToCamel(newUser.toObject())
+      );
     } catch (error) {
       next(error);
     }
