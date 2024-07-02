@@ -5,6 +5,7 @@ import permissionRouter from './permission.js';
 import userRouter from './user.js';
 import brandRouter from './brand.js';
 import tagRouter from './tag.js';
+import labelRouter from './label.js';
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.use('/roles', roleRouter);
 router.use('/permissions', permissionRouter);
 router.use('/brands', brandRouter);
 router.use('/tags', tagRouter);
+router.use('/labels', labelRouter);
 
 export default router;

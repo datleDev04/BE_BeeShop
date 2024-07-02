@@ -73,7 +73,7 @@ export class TagController {
         SuccessResponse(
             res,
             StatusCodes.OK,
-            "Updated tag successfully",
+            "deleted tag successfully",
             {}
         )
     }
