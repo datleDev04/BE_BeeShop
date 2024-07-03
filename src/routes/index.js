@@ -5,9 +5,9 @@ import permissionRouter from './permission.js';
 import userRouter from './user.js';
 import genderRouter from './gender.js';
 import brandRouter from './brand.js';
+import addressRouter from './address.js';
 import tagRouter from './tag.js';
 import labelRouter from './label.js';
-import addressRouter from './address.js';
 
 const router = express.Router();
 
