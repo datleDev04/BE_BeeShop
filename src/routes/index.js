@@ -8,6 +8,7 @@ import brandRouter from './brand.js';
 import addressRouter from './address.js';
 import tagRouter from './tag.js';
 import labelRouter from './label.js';
+import colorRouter from './color.js';
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ router.use('/brands', brandRouter);
 router.use('/address', addressRouter);
 router.use('/tags', tagRouter);
 router.use('/labels', labelRouter);
+router.use('/colors', colorRouter);
 
 export default router;

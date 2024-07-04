@@ -6,9 +6,9 @@ import { objectIdValidation } from '../validations/objectIdValidation.js';
 const tagRouter = express.Router();
 
 tagRouter.get('/', TagController.getAllTags);
-tagRouter.get('/:id',objectIdValidation, TagController.getOneTag);
+tagRouter.get('/:id', objectIdValidation, TagController.getOneTag);
 tagRouter.post('/', tagValidation, TagController.createTag);
-tagRouter.patch('/:id',objectIdValidation, tagValidation, TagController.updateTagById);
-tagRouter.delete('/:id',objectIdValidation, TagController.deleteTagById);
+tagRouter.patch('/:id', objectIdValidation, tagValidation, TagController.updateTagById);
+tagRouter.delete('/:id', objectIdValidation, TagController.deleteTagById);
 
 export default tagRouter;

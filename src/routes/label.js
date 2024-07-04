@@ -9,6 +9,6 @@ labelRouter.get('/', LabelController.getAllLabel);
 labelRouter.get('/:id', objectIdValidation, LabelController.getOneLabel);
 labelRouter.post('/', labelValidation, LabelController.createLabel);
 labelRouter.patch('/:id', objectIdValidation, labelValidation, LabelController.updateLabelById);
-labelRouter.delete('/:id',objectIdValidation, LabelController.deleteLabelById);
+labelRouter.delete('/:id', objectIdValidation, LabelController.deleteLabelById);
 
 export default labelRouter;
