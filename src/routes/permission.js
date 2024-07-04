@@ -6,9 +6,14 @@ import { objectIdValidation } from '../validations/objectIdValidation.js';
 const permissionRouter = express.Router();
 
 permissionRouter.get('/', PermissionController.getAllPermissions);
-permissionRouter.get('/:id',objectIdValidation, PermissionController.getPermission);
+permissionRouter.get('/:id', objectIdValidation, PermissionController.getPermission);
 permissionRouter.post('/', permissionValidation, PermissionController.createNewPermission);
-permissionRouter.patch('/:id',objectIdValidation, permissionValidation, PermissionController.updatePermission);
-permissionRouter.delete('/:id',objectIdValidation, PermissionController.deletePermission);
+permissionRouter.patch(
+  '/:id',
+  objectIdValidation,
+  permissionValidation,
+  PermissionController.updatePermission
+);
+permissionRouter.delete('/:id', objectIdValidation, PermissionController.deletePermission);
 
 export default permissionRouter;
