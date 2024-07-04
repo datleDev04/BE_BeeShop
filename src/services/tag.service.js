@@ -23,7 +23,7 @@ export class TagService {
     const updatedTag = await Tags.findByIdAndUpdate(req.params.id, {
       name,
       description,
-    });
+    }, { new: true });
     return updatedTag;
   };
 

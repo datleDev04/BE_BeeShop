@@ -48,11 +48,15 @@ export class AuthService {
       throw new ApiError(StatusCodes.BAD_REQUEST, "Couldn't find User");
     }
 
+
     // compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new ApiError(401, 'Wrong password');
     }
+
+    user.password = undefined;
+
 
     // check status of the user
 

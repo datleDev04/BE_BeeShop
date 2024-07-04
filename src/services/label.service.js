@@ -23,7 +23,10 @@ export class LabelService {
     const updatedLabel = await Labels.findByIdAndUpdate(req.params.id, {
       name,
       description,
-    });
+    }, {
+      new: true
+    }
+    );
     return updatedLabel;
   };
 
