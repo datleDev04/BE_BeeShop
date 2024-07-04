@@ -26,6 +26,12 @@ const userSchema = new mongoose.Schema(
         ref: 'Role',
       },
     ],
+    address_list: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address',
+      },
+    ],
   },
   {
     timestamps: true,
