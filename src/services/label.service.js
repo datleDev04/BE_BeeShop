@@ -1,5 +1,4 @@
-import Labels from "../models/Labels.js";
-
+import Labels from '../models/Labels.js';
 
 export class LabelService {
   static getAllLabel = async (req) => {

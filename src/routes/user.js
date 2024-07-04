@@ -6,6 +6,11 @@ import { objectIdValidation } from '../validations/objectIdValidation.js';
 const userRouter = express.Router();
 
 // only admin role can access
-userRouter.patch('/:id', objectIdValidation, userValidation.updateUserInfo, UserController.updateUser);
+userRouter.patch(
+  '/:id',
+  objectIdValidation,
+  userValidation.updateUserInfo,
+  UserController.updateUser
+);
 
 export default userRouter;

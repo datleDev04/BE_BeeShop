@@ -6,7 +6,7 @@ import { objectIdValidation } from '../validations/objectIdValidation.js';
 const roleRouter = express.Router();
 
 roleRouter.get('/', RoleController.getAllRole);
-roleRouter.get('/:id',objectIdValidation, RoleController.getOneRole);
+roleRouter.get('/:id', objectIdValidation, RoleController.getOneRole);
 roleRouter.post('/', roleValidation, RoleController.createNewRole);
 roleRouter.patch('/:id',objectIdValidation, updateRoleValidation, RoleController.updateRoleById);
 roleRouter.delete('/:id',objectIdValidation, RoleController.deleteRoleById);

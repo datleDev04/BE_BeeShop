@@ -38,4 +38,5 @@ labelRouter.delete(
   LabelController.deleteLabelById
 );
 
+
 export default labelRouter;

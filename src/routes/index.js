@@ -10,6 +10,7 @@ import tagRouter from './tag.js';
 import labelRouter from './label.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
+import colorRouter from './color.js';
 
 const router = express.Router();
 
@@ -22,5 +23,6 @@ router.use('/brands', brandRouter);
 router.use('/address', addressRouter);
 router.use('/tags', tagRouter);
 router.use('/labels', labelRouter);
+router.use('/colors', colorRouter);
 
 export default router;
