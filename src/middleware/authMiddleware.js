@@ -35,11 +35,14 @@ export const authMiddleware = async (req, res, next) => {
       role.permissions.forEach(permission => permissionSet.add(permission.name));
     });
 
+    const userPermissions = Array.from(permissionSet)
+
+
     // return user, accessToken, permissions into request
     req.user = {
       ...user,
       accessToken,
-      permissions: Array.from(permissionSet)
+      permissions: userPermissions
     };
 
     next();

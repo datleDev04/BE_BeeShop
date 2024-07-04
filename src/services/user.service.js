@@ -8,8 +8,13 @@ export default class UserService {
     const { roles } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(req.params.id, { roles: roles }, { new: true })
-      .populate('roles')
+      .populate({
+        path: 'roles',
+        populate: { path: 'permissions' }
+      })
       .exec();
+
+    updatedUser.password = undefined;
 
     if (!updatedUser)
       throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, 'Server does not response');
