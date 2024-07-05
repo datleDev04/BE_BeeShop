@@ -36,14 +36,19 @@ export const authMiddleware = async (req, res, next) => {
     });
 
     const userPermissions = Array.from(permissionSet)
+    const userRoles = Array.from(user.roles.map(role => role.name));
 
 
-    // return user, accessToken, permissions into request
+    // return user, accessToken, permissions, roles into request
     req.user = {
-      ...user,
+      ...user.toObject(),
       accessToken,
-      permissions: userPermissions
+      list_name_permission: userPermissions,
+      list_name_role: userRoles
     };
+
+    console.log(req.user._id)
+    console.log(req.user._id.toString())
 
     next();
   } catch (error) {

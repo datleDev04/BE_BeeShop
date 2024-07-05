@@ -18,4 +18,34 @@ export class UserController {
       next(error);
     }
   };
+
+  static getOneUser = async (req, res, next) => {
+    try {
+      const user = await UserService.getOneUser(req);
+
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Get One User successfully',
+        Transformer.transformObjectTypeSnakeToCamel(user.toObject())
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static getProfileUser = async (req, res, next) => {
+    try {
+      const userProfile = await UserService.getProfileUser(req);
+
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Get Profile User successfully',
+        Transformer.transformObjectTypeSnakeToCamel(userProfile.toObject())
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
 }
