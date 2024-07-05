@@ -7,6 +7,7 @@ import genderRouter from './gender.js';
 import brandRouter from './brand.js';
 import tagRouter from './tag.js';
 import labelRouter from './label.js';
+import voucherTypeRouter from './voucher-type.js';
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.use('/genders', genderRouter);
 router.use('/brands', brandRouter);
 router.use('/tags', tagRouter);
 router.use('/labels', labelRouter);
+router.use('/voucher-types', voucherTypeRouter);
 
 export default router;
