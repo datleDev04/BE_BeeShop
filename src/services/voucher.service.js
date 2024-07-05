@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../utils/ApiError.js';
 import Voucher from '../models/Voucher.js';
-import VoucherType from '../models/Voucher-Type.js';
+import VoucherType from '../models/Voucher_Type.js/index.js';
 
 export default class VoucherService {
   static createVoucher = async (req) => {
