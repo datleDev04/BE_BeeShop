@@ -5,14 +5,20 @@ import User from '../models/User.js';
 
 export default class AddressService {
   static createAddress = async (req) => {
-    const { commune, district, city, user_id, detail_address } = req.body;
+    const { commune, district, city, detail_address } = req.body;
 
-    const user = await User.findById(user_id);
+    const user = await User.findById(req.user._id);
     if (!user) {
       throw new ApiError(StatusCodes.BAD_REQUEST, 'User not found');
     }
 
-    const newAddress = await Address.create({ commune, district, city, user_id, detail_address });
+    const newAddress = await Address.create({
+      commune,
+      district,
+      city,
+      user_id: user._id,
+      detail_address,
+    });
 
     user.address_list.push(newAddress._id);
     await user.save();
@@ -31,16 +37,16 @@ export default class AddressService {
   };
 
   static updateAddress = async (req) => {
-    const { commune, district, city, user_id, detail_address } = req.body;
+    const { commune, district, city, detail_address } = req.body;
 
-    const user = await User.findById(user_id);
+    const user = await User.findById(req.user._id);
     if (!user) {
       throw new ApiError(StatusCodes.BAD_REQUEST, 'User not found');
     }
 
     const updatedAddress = await Address.findByIdAndUpdate(
       req.params.id,
-      { commune, district, city, user_id, detail_address },
+      { commune, district, city, user_id: user._id, detail_address },
       { new: true, runValidators: true }
     );
 
@@ -58,7 +64,7 @@ export default class AddressService {
       throw new ApiError(StatusCodes.NOT_FOUND, 'Address not found');
     }
 
-    const user = await User.findById(address.user_id);
+    const user = await User.findById(req.user._id);
     if (user) {
       user.address_list.pull(address._id);
       await user.save();

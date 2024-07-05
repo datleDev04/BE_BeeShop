@@ -8,33 +8,33 @@ import { CheckPermission } from '../utils/CheckPermission.js';
 const genderRouter = express.Router();
 
 genderRouter.get('/', GenderController.getAllGenders);
-genderRouter.get('/:id',objectIdValidation, GenderController.getGender);
+genderRouter.get('/:id', objectIdValidation, GenderController.getGender);
 
 // create new gender
 genderRouter.post(
   '/',
   authMiddleware,
-  CheckPermission("Create_Gender"),
-  genderValidation, 
+  CheckPermission('Create_Gender'),
+  genderValidation,
   GenderController.createNewGender
 );
 
 // update gender by id
 genderRouter.patch(
   '/:id',
-  authMiddleware, 
-  CheckPermission("Update_Gender"),
-  objectIdValidation, 
-  genderValidation, 
+  authMiddleware,
+  CheckPermission('Update_Gender'),
+  objectIdValidation,
+  genderValidation,
   GenderController.updateGender
 );
 
 // delete gender by id
 genderRouter.delete(
-  '/:id', 
-  authMiddleware, 
-  CheckPermission("Delete_Gender"),
-  objectIdValidation, 
+  '/:id',
+  authMiddleware,
+  CheckPermission('Delete_Gender'),
+  objectIdValidation,
   GenderController.deleteGender
 );
 

@@ -20,12 +20,15 @@ export class LabelService {
 
   static updateLabelById = async (req) => {
     const { name, description } = req.body;
-    const updatedLabel = await Labels.findByIdAndUpdate(req.params.id, {
-      name,
-      description,
-    }, {
-      new: true
-    }
+    const updatedLabel = await Labels.findByIdAndUpdate(
+      req.params.id,
+      {
+        name,
+        description,
+      },
+      {
+        new: true,
+      }
     );
     return updatedLabel;
   };

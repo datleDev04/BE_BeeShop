@@ -16,8 +16,8 @@ const router = express.Router();
 
 router.use('/auth', authRouter);
 router.use('/users', userRouter);
-router.use('/roles', authMiddleware, CheckPermission("CRUD_Role"), roleRouter);
-router.use('/permissions',authMiddleware, CheckPermission("CRUD_Permission"), permissionRouter);
+router.use('/roles', authMiddleware, CheckPermission('CRUD_Role'), roleRouter);
+router.use('/permissions', authMiddleware, CheckPermission('CRUD_Permission'), permissionRouter);
 router.use('/genders', genderRouter);
 router.use('/brands', brandRouter);
 router.use('/address', addressRouter);
