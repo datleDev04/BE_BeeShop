@@ -4,7 +4,7 @@ import Address from '../models/Address.js';
 import User from '../models/User.js';
 
 export default class AddressService {
-  static handleCreateAddress = async (req) => {
+  static createAddress = async (req) => {
     const { commune, district, city, user_id, detail_address } = req.body;
 
     const user = await User.findById(user_id);
@@ -20,17 +20,17 @@ export default class AddressService {
     return Address.findById(newAddress._id).populate('user_id').exec();
   };
 
-  static handleGetAllAddress = async (req) => {
+  static getAllAddress = async (req) => {
     const address = await Address.find().populate('user_id').exec();
     return address;
   };
 
-  static handleGetOneAddress = async (req) => {
+  static getOneAddress = async (req) => {
     const address = await Address.findById(req.params.id).populate('user_id').exec();
     return address;
   };
 
-  static handleUpdateAddress = async (req) => {
+  static updateAddress = async (req) => {
     const { commune, district, city, user_id, detail_address } = req.body;
 
     const user = await User.findById(user_id);
@@ -51,7 +51,7 @@ export default class AddressService {
     return Address.findById(req.params.id).populate('user_id').exec();
   };
 
-  static handleDeleteAddress = async (req) => {
+  static deleteAddress = async (req) => {
     const address = await Address.findById(req.params.id);
 
     if (!address) {
