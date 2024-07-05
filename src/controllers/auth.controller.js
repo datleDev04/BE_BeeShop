@@ -68,12 +68,17 @@ export class AuthController {
     try {
       const { access_token, refresh_token } = await AuthService.refreshToken(req);
 
-      metaData = {
+      const metaData = {
         accessToken: access_token,
         refreshToken: refresh_token,
       };
 
-      SuccessResponse(res, StatusCodes.OK, 'Refresh token successfully', metaData);
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Refresh token successfully',
+        Transformer.transformObjectTypeSnakeToCamel(metaData)
+      );
     } catch (error) {
       next(error);
     }
