@@ -58,7 +58,7 @@ export default class UserService {
      user.password = undefined;
 
      const userProfile =  {
-       ...user,
+       ...user.toObject(),
        list_name_permission: req.user.list_name_permission,
        list_name_role:  req.user.list_name_role
      }

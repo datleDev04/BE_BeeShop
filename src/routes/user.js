@@ -6,6 +6,13 @@ import { authMiddleware } from '../middleware/authMiddleware.js';
 
 const userRouter = express.Router();
 
+// get profle user
+userRouter.get(
+  '/profile',
+  authMiddleware,
+  UserController.getProfileUser
+)
+
 // only admin role can access
 userRouter.patch(
   '/:id',
@@ -22,11 +29,6 @@ userRouter.get(
   UserController.getOneUser
 );
 
-// get profle user
-userRouter.get(
-  '/profile',
-  authMiddleware,
-  UserController.getProfileUser
-)
+
 
 export default userRouter;

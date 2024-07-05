@@ -42,7 +42,7 @@ export class UserController {
         res,
         StatusCodes.OK,
         'Get Profile User successfully',
-        Transformer.transformObjectTypeSnakeToCamel(userProfile.toObject())
+        Transformer.transformObjectTypeSnakeToCamel(userProfile)
       );
     } catch (error) {
       next(error);
