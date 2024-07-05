@@ -1,5 +1,4 @@
-import Labels from "../models/Labels.js";
-
+import Labels from '../models/Labels.js';
 
 export class LabelService {
   static getAllLabel = async (req) => {
@@ -24,7 +23,10 @@ export class LabelService {
     const updatedLabel = await Labels.findByIdAndUpdate(req.params.id, {
       name,
       description,
-    });
+    }, {
+      new: true
+    }
+    );
     return updatedLabel;
   };
 
