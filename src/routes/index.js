@@ -11,18 +11,20 @@ import labelRouter from './label.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 import colorRouter from './color.js';
+import sizeRouter from './size.js';
 
 const router = express.Router();
 
 router.use('/auth', authRouter);
 router.use('/users', userRouter);
-router.use('/roles', authMiddleware, CheckPermission("CRUD_Role"), roleRouter);
-router.use('/permissions',authMiddleware, CheckPermission("CRUD_Permission"), permissionRouter);
+router.use('/roles', authMiddleware, CheckPermission('CRUD_Role'), roleRouter);
+router.use('/permissions', authMiddleware, CheckPermission('CRUD_Permission'), permissionRouter);
 router.use('/genders', genderRouter);
 router.use('/brands', brandRouter);
 router.use('/address', addressRouter);
 router.use('/tags', tagRouter);
 router.use('/labels', labelRouter);
 router.use('/colors', colorRouter);
+router.use('/sizes', sizeRouter);
 
 export default router;

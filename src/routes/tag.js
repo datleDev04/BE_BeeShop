@@ -8,13 +8,13 @@ import { CheckPermission } from '../utils/CheckPermission.js';
 const tagRouter = express.Router();
 
 tagRouter.get('/', TagController.getAllTags);
-tagRouter.get('/:id',objectIdValidation, TagController.getOneTag);
+tagRouter.get('/:id', objectIdValidation, TagController.getOneTag);
 
 // create a new tag
 tagRouter.post(
   '/',
   authMiddleware,
-  CheckPermission("Create_Tag"),
+  CheckPermission('Create_Tag'),
   tagValidation,
   TagController.createTag
 );
@@ -23,9 +23,9 @@ tagRouter.post(
 tagRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission("Update_Tag"),
-  objectIdValidation, 
-  tagValidation, 
+  CheckPermission('Update_Tag'),
+  objectIdValidation,
+  tagValidation,
   TagController.updateTagById
 );
 
@@ -33,7 +33,7 @@ tagRouter.patch(
 tagRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission("Delete_Tag"),
+  CheckPermission('Delete_Tag'),
   objectIdValidation,
   TagController.deleteTagById
 );

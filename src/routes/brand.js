@@ -8,17 +8,10 @@ import { CheckPermission } from '../utils/CheckPermission.js';
 const brandRouter = express.Router();
 
 // get all brand
-brandRouter.get(
-  '/',
-  BrandController.getAllBrand
-);
+brandRouter.get('/', BrandController.getAllBrand);
 
 // get one brand by id
-brandRouter.get(
-  '/:id',
-  objectIdValidation,
-  BrandController.getOneBrand
-);
+brandRouter.get('/:id', objectIdValidation, BrandController.getOneBrand);
 
 // create a new brand
 brandRouter.post(
@@ -33,9 +26,9 @@ brandRouter.post(
 brandRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission("Update_Brand"),
-  objectIdValidation, 
-  brandValidation, 
+  CheckPermission('Update_Brand'),
+  objectIdValidation,
+  brandValidation,
   BrandController.updateBrandById
 );
 
@@ -43,7 +36,7 @@ brandRouter.patch(
 brandRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission("Delete_Brand"),
+  CheckPermission('Delete_Brand'),
   objectIdValidation,
   BrandController.deleteBrandById
 );

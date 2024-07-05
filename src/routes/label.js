@@ -14,29 +14,28 @@ labelRouter.get('/:id', objectIdValidation, LabelController.getOneLabel);
 labelRouter.post(
   '/',
   authMiddleware,
-  CheckPermission("Create_Label"),
-  labelValidation, 
+  CheckPermission('Create_Label'),
+  labelValidation,
   LabelController.createLabel
 );
 
 // update label
 labelRouter.patch(
-  '/:id', 
+  '/:id',
   authMiddleware,
-  CheckPermission("Update_Label"),
-  objectIdValidation, 
-  labelValidation, 
+  CheckPermission('Update_Label'),
+  objectIdValidation,
+  labelValidation,
   LabelController.updateLabelById
 );
 
 // delete label
 labelRouter.delete(
-  '/:id',  
+  '/:id',
   authMiddleware,
-  CheckPermission("Delete_Label"),
+  CheckPermission('Delete_Label'),
   objectIdValidation,
   LabelController.deleteLabelById
 );
-
 
 export default labelRouter;
