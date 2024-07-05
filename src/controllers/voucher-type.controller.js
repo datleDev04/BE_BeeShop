@@ -7,7 +7,7 @@ import VoucherTypeService from '../services/voucher-type.service.js';
 export class VoucherTypeController {
   static getAllVoucherType = async (req, res, next) => {
     try {
-      const voucherTypes = await VoucherTypeService.handleGetAllVoucherType(req);
+      const voucherTypes = await VoucherTypeService.getAllVoucherType(req);
 
       const returnData = voucherTypes.map((voucherType) => {
         return Transformer.transformObjectTypeSnakeToCamel(voucherType.toObject());
@@ -21,7 +21,7 @@ export class VoucherTypeController {
 
   static getOneVoucherType = async (req, res, next) => {
     try {
-      const voucherType = await VoucherTypeService.handleGetOneVoucherType(req);
+      const voucherType = await VoucherTypeService.getOneVoucherType(req);
 
       SuccessResponse(
         res,
@@ -36,7 +36,7 @@ export class VoucherTypeController {
 
   static createNewVoucherType = async (req, res, next) => {
     try {
-      const newVoucherTypes = await VoucherTypeService.handleCreateVoucherType(req);
+      const newVoucherTypes = await VoucherTypeService.createVoucherType(req);
 
       SuccessResponse(
         res,
@@ -51,7 +51,7 @@ export class VoucherTypeController {
 
   static updateVoucherTypeById = async (req, res, next) => {
     try {
-      const updatedVoucherType = await VoucherTypeService.handleUpdateVoucherType(req);
+      const updatedVoucherType = await VoucherTypeService.updateVoucherType(req);
 
       SuccessResponse(
         res,
@@ -66,7 +66,7 @@ export class VoucherTypeController {
 
   static deleteVoucherTypeById = async (req, res, next) => {
     try {
-      await VoucherTypeService.handleDeleteVoucherType(req);
+      await VoucherTypeService.deleteVoucherType(req);
 
       SuccessResponse(res, StatusCodes.OK, 'Deleted voucher type successfully', []);
     } catch (error) {

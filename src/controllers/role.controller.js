@@ -38,7 +38,7 @@ export class RoleController {
 
       SuccessResponse(
         res,
-        StatusCodes.OK,
+        StatusCodes.CREATED,
         'Create New Role successfully',
         Transformer.transformObjectTypeSnakeToCamel(newRole.toObject())
       );

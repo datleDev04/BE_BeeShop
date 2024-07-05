@@ -20,10 +20,14 @@ export class TagService {
 
   static updateTagById = async (req) => {
     const { name, description } = req.body;
-    const updatedTag = await Tags.findByIdAndUpdate(req.params.id, {
-      name,
-      description,
-    });
+    const updatedTag = await Tags.findByIdAndUpdate(
+      req.params.id,
+      {
+        name,
+        description,
+      },
+      { new: true }
+    );
     return updatedTag;
   };
 

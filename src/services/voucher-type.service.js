@@ -1,9 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../utils/ApiError.js';
 import VoucherType from '../models/Voucher-Type.js';
+import Voucher from '../models/Voucher.js';
 
 export default class VoucherTypeService {
-  static handleCreateVoucherType = async (req) => {
+  static createVoucherType = async (req) => {
     const { name } = req.body;
 
     const existedVoucherType = await VoucherType.findOne({ name });
@@ -17,12 +18,12 @@ export default class VoucherTypeService {
     return newVoucherTypes;
   };
 
-  static handleGetAllVoucherType = async (req) => {
+  static getAllVoucherType = async (req) => {
     const voucherTypes = await VoucherType.find();
     return voucherTypes;
   };
 
-  static handleGetOneVoucherType = async (req) => {
+  static getOneVoucherType = async (req) => {
     const voucherType = await VoucherType.findById(req.params.id);
 
     if (!voucherType) {
@@ -33,7 +34,7 @@ export default class VoucherTypeService {
     return voucherType;
   };
 
-  static handleUpdateVoucherType = async (req) => {
+  static updateVoucherType = async (req) => {
     const { name } = req.body;
 
     const updatedVoucherType = await VoucherType.findByIdAndUpdate(
@@ -49,7 +50,7 @@ export default class VoucherTypeService {
     return updatedVoucherType;
   };
 
-  static handleDeleteVoucherType = async (req) => {
+  static deleteVoucherType = async (req) => {
     const voucherType = await VoucherType.findById(req.params.id);
 
     if (!voucherType) {

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
 // schema Voucher-Types variables
-const DOCUMENT_NAME = 'Voucher-Type';
-const COLLECTION_NAME = 'Voucher-Types';
+const DOCUMENT_NAME = 'Voucher_Type';
+const COLLECTION_NAME = 'Voucher_Types';
 
 const voucherTypeSchema = new mongoose.Schema(
   {

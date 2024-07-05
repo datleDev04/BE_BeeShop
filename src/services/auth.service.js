@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import jwtUtils from '../utils/jwt.js';
 import Black_Tokens from '../models/Black_Tokens.js';
 import User_Token from '../models/User_Token.js';
+import { StatusCodes } from 'http-status-codes';
 
 export class AuthService {
   static register = async (req) => {
@@ -51,8 +52,10 @@ export class AuthService {
     // compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw new ApiError(401, 'Wrong password');
+      throw new ApiError(401, 'Email or Password is incorrect');
     }
+
+    user.password = undefined;
 
     // check status of the user
 
@@ -78,7 +81,7 @@ export class AuthService {
   static logout = async (req) => {
     const { accessToken } = req.user;
 
-    const { _id } = req.user._doc;
+    const { _id } = req.user;
 
     await Promise.all([
       Black_Tokens.create({
