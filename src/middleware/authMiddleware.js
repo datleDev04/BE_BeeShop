@@ -12,7 +12,7 @@ export const authMiddleware = async (req, res, next) => {
     if (!accessToken) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Not authorized');
 
     // check if accesstoke is existed in blacklist
-    const blackToken = await Black_Tokens.findOne({ accessToken });
+    const blackToken = await Black_Tokens.findOne({ access_token: accessToken });
     if (blackToken) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Token is already expired');
 
     // decode accessToken to get user_id
@@ -23,7 +23,7 @@ export const authMiddleware = async (req, res, next) => {
       path: 'roles',
       populate: { path: 'permissions' } 
     });
-    if (!user) throw new ApiError(StatusCodes.UNAUTHORIZED, 'User not found');
+    if (!user) throw new ApiError(StatusCodes.UNAUTHORIZED, 'User is unAuthorized');
 
     user.password = undefined;
 

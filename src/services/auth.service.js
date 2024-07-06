@@ -112,8 +112,6 @@ export class AuthService {
       { new: true }
     );
 
-    console.log(tokenInfo.user_id)
-
     const access_token = jwtUtils.createAccessToken(tokenInfo.user_id);
 
     return {
