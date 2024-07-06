@@ -111,6 +111,8 @@ export class AuthService {
       { refresh_token: newRefreshToken },
       { new: true }
     );
+    
+    if (!tokenInfo) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid refresh token')
 
     const access_token = jwtUtils.createAccessToken(tokenInfo.user_id);
 
