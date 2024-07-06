@@ -106,12 +106,13 @@ export class AuthService {
 
     const newRefreshToken = jwtUtils.createRefreshToken();
 
-    User_Token.findOneAndUpdate(
+    const tokenInfo = await User_Token.findOneAndUpdate(
       { refresh_token: refreshToken },
-      { refresh_token: newRefreshToken }
+      { refresh_token: newRefreshToken },
+      { new: true }
     );
 
-    const tokenInfo = User_Token.findOne({ refresh_token: newRefreshToken });
+    console.log(tokenInfo.user_id)
 
     const access_token = jwtUtils.createAccessToken(tokenInfo.user_id);
 
