@@ -6,6 +6,7 @@ import {
 import { VoucherController } from '../controllers/voucher.controller.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
+import { objectIdValidation } from '../validations/objectIdValidation.js';
 
 const voucherRouter = express.Router();
 

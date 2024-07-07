@@ -17,7 +17,4 @@ userRouter.patch(
 // get one user
 userRouter.get('/:id', authMiddleware, objectIdValidation, UserController.getOneUser);
 
-// get profle user
-userRouter.get('/profile', authMiddleware, UserController.getProfileUser);
-
 export default userRouter;
