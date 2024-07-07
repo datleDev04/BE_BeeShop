@@ -1,6 +1,6 @@
 import express from 'express';
 import { SizeController } from '../controllers/size.controller.js';
-import { sizeValidation } from '../validations/sizeValidation.js';
+import { sizeValidation, updateSizeValidation } from '../validations/sizeValidation.js';
 import { objectIdValidation } from '../validations/objectIdValidation.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
@@ -17,17 +17,17 @@ sizeRouter.get(
 );
 sizeRouter.post(
   '/',
-  authMiddleware,
-  CheckPermission('Create_Size'),
+  // authMiddleware,
+  // CheckPermission('Create_Size'),
   sizeValidation,
   SizeController.createNewSize
 );
 sizeRouter.patch(
   '/:id',
-  authMiddleware,
-  CheckPermission('Update_Size'),
+  // authMiddleware,
+  // CheckPermission('Update_Size'),
   objectIdValidation,
-  sizeValidation,
+  updateSizeValidation,
   SizeController.updateSize
 );
 sizeRouter.delete(

@@ -38,21 +38,23 @@ export default class SizeService {
 
   static updateSizeById = async (req) => {
     const { name, gender } = req.body;
+    const updateFields = {};
 
-    const existedGender = await Gender.findById(gender);
-
-    if (!existedGender) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Gender not found');
+    if (name) {
+      updateFields.name = name;
     }
 
-    const updatedSize = await Size.findByIdAndUpdate(
-      req.params.id,
-      {
-        name,
-        gender,
-      },
-      { new: true }
-    );
+    if (gender) {
+      const existedGender = await Gender.findById(gender);
+
+      if (!existedGender) {
+        throw new ApiError(StatusCodes.NOT_FOUND, 'Gender not found');
+      }
+
+      updateFields.gender = gender;
+    }
+
+    const updatedSize = await Size.findByIdAndUpdate(req.params.id, updateFields, { new: true });
 
     if (!updatedSize) {
       throw new ApiError(StatusCodes.CONFLICT, 'This size is not existing');
