@@ -34,18 +34,5 @@ export class UserController {
     }
   };
 
-  static getProfileUser = async (req, res, next) => {
-    try {
-      const userProfile = await UserService.getProfileUser(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get Profile User successfully',
-        Transformer.transformObjectTypeSnakeToCamel(userProfile)
-      );
-    } catch (error) {
-      next(error);
-    }
-  };
 }

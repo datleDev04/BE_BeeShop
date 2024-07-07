@@ -7,8 +7,14 @@ import { authMiddleware } from '../middleware/authMiddleware.js';
 
 const sizeRouter = express.Router();
 
-sizeRouter.get('/', SizeController.getAllSizes);
-sizeRouter.get('/:id', objectIdValidation, SizeController.getSize);
+sizeRouter.get('/', authMiddleware, CheckPermission('Get_All_Size'), SizeController.getAllSizes);
+sizeRouter.get(
+  '/:id',
+  authMiddleware,
+  CheckPermission('Get_One_Size'),
+  objectIdValidation,
+  SizeController.getSize
+);
 sizeRouter.post(
   '/',
   authMiddleware,
