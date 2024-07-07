@@ -1,18 +1,32 @@
 import express from 'express';
-import { voucherValidation, objectIdValidation } from '../validations/voucherValidation.js';
+import {
+  validateVoucherCreation,
+  validateVoucherUpdate,
+} from '../validations/voucherValidation.js';
 import { VoucherController } from '../controllers/voucher.controller.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 
 const voucherRouter = express.Router();
 
-voucherRouter.get('/', VoucherController.getAllVouchers);
+voucherRouter.get(
+  '/',
+  authMiddleware,
+  CheckPermission('Read_All_Voucher'),
+  VoucherController.getAllVouchers
+);
 
-voucherRouter.get('/:id', objectIdValidation, VoucherController.getOneVoucher);
+voucherRouter.get(
+  '/:id',
+  authMiddleware,
+  CheckPermission('Read_One_Voucher'),
+  objectIdValidation,
+  VoucherController.getOneVoucher
+);
 
 voucherRouter.post(
   '/',
-  voucherValidation,
+  validateVoucherCreation,
   authMiddleware,
   CheckPermission('Create_Voucher'),
   VoucherController.createVoucher
@@ -20,7 +34,7 @@ voucherRouter.post(
 
 voucherRouter.patch(
   '/:id',
-  voucherValidation,
+  validateVoucherUpdate,
   authMiddleware,
   CheckPermission('Update_Voucher'),
   objectIdValidation,

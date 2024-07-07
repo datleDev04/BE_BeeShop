@@ -68,12 +68,32 @@ export class AuthController {
     try {
       const { access_token, refresh_token } = await AuthService.refreshToken(req);
 
-      metaData = {
+      const metaData = {
         accessToken: access_token,
         refreshToken: refresh_token,
       };
 
-      SuccessResponse(res, StatusCodes.OK, 'Refresh token successfully', metaData);
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Refresh token successfully',
+        Transformer.transformObjectTypeSnakeToCamel(metaData)
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static getProfileUser = async (req, res, next) => {
+    try {
+      const userProfile = await AuthService.getProfileUser(req);
+
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Get Profile User successfully',
+        Transformer.transformObjectTypeSnakeToCamel(userProfile)
+      );
     } catch (error) {
       next(error);
     }

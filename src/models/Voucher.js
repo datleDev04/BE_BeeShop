@@ -34,12 +34,10 @@ const voucherSchema = new mongoose.Schema(
     minimum_order_price: {
       type: Number,
     },
-    voucher_type: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Voucher_Type',
-      },
-    ],
+    voucher_type: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Voucher_Type',
+    },
     start_date: {
       type: Date,
     },

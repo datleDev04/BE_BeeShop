@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import RoleService from '../services/role.service.js';
 import { Transformer } from '../utils/transformer.js';
 import { SuccessResponse } from '../utils/response.js';
-import VoucherTypeService from '../services/voucher-type.service.js';
+import VoucherTypeService from '../services/voucher_type.service.js';
 
 export class VoucherTypeController {
   static getAllVoucherType = async (req, res, next) => {

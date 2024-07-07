@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../utils/ApiError.js';
 import Voucher from '../models/Voucher.js';
-import VoucherType from '../models/Voucher_Type.js/index.js';
+import VoucherType from '../models/Voucher_Type.js';
 
 export default class VoucherService {
   static createVoucher = async (req) => {
@@ -15,14 +15,13 @@ export default class VoucherService {
       minimum_order_price,
       start_date,
       end_date,
+      voucher_type,
     } = req.body;
 
-    const voucherTypes = await VoucherType.find();
-    if (!voucherTypes.length) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'No voucher types found');
+    const voucherType = await VoucherType.findById(voucher_type);
+    if (!voucherType) {
+      throw new ApiError(StatusCodes.NOT_FOUND, 'Voucher type not found');
     }
-
-    const voucherTypeIds = voucherTypes.map((vt) => vt._id);
 
     const newVoucher = await Voucher.create({
       name,
@@ -32,7 +31,7 @@ export default class VoucherService {
       discount,
       discount_types,
       minimum_order_price,
-      voucher_type: voucherTypeIds,
+      voucher_type,
       start_date,
       end_date,
     });

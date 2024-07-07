@@ -8,7 +8,7 @@ import brandRouter from './brand.js';
 import addressRouter from './address.js';
 import tagRouter from './tag.js';
 import labelRouter from './label.js';
-import voucherTypeRouter from './voucher-type.js';
+import voucherTypeRouter from './voucher_type.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 import colorRouter from './color.js';
