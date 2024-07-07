@@ -86,7 +86,7 @@ export class AuthController {
 
   static getProfileUser = async (req, res, next) => {
     try {
-      const userProfile = await UserService.getProfileUser(req);
+      const userProfile = await AuthService.getProfileUser(req);
 
       SuccessResponse(
         res,
