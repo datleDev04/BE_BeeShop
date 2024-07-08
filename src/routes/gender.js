@@ -10,13 +10,13 @@ const genderRouter = express.Router();
 genderRouter.get(
   '/',
   authMiddleware,
-  CheckPermission('Get_All_Gender'),
+  CheckPermission('Read_Gender'),
   GenderController.getAllGenders
 );
 genderRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission('Get_One_Gender'),
+  CheckPermission('Read_Gender'),
   objectIdValidation,
   GenderController.getGender
 );

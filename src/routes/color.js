@@ -7,16 +7,11 @@ import { CheckPermission } from '../utils/CheckPermission.js';
 
 const colorRouter = express.Router();
 
-colorRouter.get(
-  '/',
-  authMiddleware,
-  CheckPermission('Get_All_Color'),
-  ColorController.getAllColors
-);
+colorRouter.get('/', authMiddleware, CheckPermission('Read_Color'), ColorController.getAllColors);
 colorRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission('Get_One_Color'),
+  CheckPermission('Read_Color'),
   objectIdValidation,
   ColorController.getColor
 );
