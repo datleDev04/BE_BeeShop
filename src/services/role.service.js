@@ -31,10 +31,19 @@ export default class RoleService {
     const { name, permissions, action } = req.body;
     const update = { name };
 
+    const currentRole = await Role.findById(req.params.id).populate('permissions');
+
+    if (!currentRole) {
+      throw new ApiError(StatusCodes.NOT_FOUND, 'Role not found!');
+    }
+
+    const permissionsIds = currentRole.permissions.map((per) => per.id);
+
     if (action === 'delete_permission') {
       update.$pull = { permissions: { $in: permissions } };
     } else if (action === 'add_permission') {
-      update.$push = { permissions: { $each: permissions } };
+      const newPermissions = permissions.filter((p) => !permissionsIds.includes(p));
+      update.$push = { permissions: { $each: newPermissions } };
     }
 
     await Role.findByIdAndUpdate(req.params.id, update);
