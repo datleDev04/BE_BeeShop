@@ -11,7 +11,7 @@ const addressRouter = express.Router();
 addressRouter.get(
   '/',
   authMiddleware,
-  CheckPermission('Get_All_Address'),
+  CheckPermission('Read_Address'),
   AddressController.getAllAddress
 );
 
