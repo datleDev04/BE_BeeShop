@@ -17,15 +17,15 @@ sizeRouter.get(
 );
 sizeRouter.post(
   '/',
-  // authMiddleware,
-  // CheckPermission('Create_Size'),
+  authMiddleware,
+  CheckPermission('Create_Size'),
   sizeValidation,
   SizeController.createNewSize
 );
 sizeRouter.patch(
   '/:id',
-  // authMiddleware,
-  // CheckPermission('Update_Size'),
+  authMiddleware,
+  CheckPermission('Update_Size'),
   objectIdValidation,
   updateSizeValidation,
   SizeController.updateSize
