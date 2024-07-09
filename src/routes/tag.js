@@ -7,17 +7,12 @@ import { CheckPermission } from '../utils/CheckPermission.js';
 
 const tagRouter = express.Router();
 
-tagRouter.get(
-  '/', 
-  authMiddleware,
-  CheckPermission('Read_Tag'),
-  TagController.getAllTags
-);
+tagRouter.get('/', authMiddleware, CheckPermission('Read_Tag'), TagController.getAllTags);
 tagRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission('Read_Tag'), 
-  objectIdValidation, 
+  CheckPermission('Read_Tag'),
+  objectIdValidation,
   TagController.getOneTag
 );
 

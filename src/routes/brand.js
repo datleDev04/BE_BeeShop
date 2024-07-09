@@ -8,10 +8,16 @@ import { CheckPermission } from '../utils/CheckPermission.js';
 const brandRouter = express.Router();
 
 // get all brand
-brandRouter.get('/', BrandController.getAllBrand);
+brandRouter.get('/', authMiddleware, CheckPermission('Read_Brand'), BrandController.getAllBrand);
 
 // get one brand by id
-brandRouter.get('/:id', objectIdValidation, BrandController.getOneBrand);
+brandRouter.get(
+  '/:id',
+  objectIdValidation,
+  authMiddleware,
+  CheckPermission('Read_Brand'),
+  BrandController.getOneBrand
+);
 
 // create a new brand
 brandRouter.post(

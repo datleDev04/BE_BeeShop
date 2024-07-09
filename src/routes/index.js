@@ -10,6 +10,8 @@ import tagRouter from './tag.js';
 import labelRouter from './label.js';
 import colorRouter from './color.js';
 import sizeRouter from './size.js';
+import voucherRouter from './voucher.js';
+import voucherTypeRouter from './voucher_type.js';
 
 const router = express.Router();
 
@@ -22,6 +24,8 @@ router.use('/brands', brandRouter);
 router.use('/address', addressRouter);
 router.use('/tags', tagRouter);
 router.use('/labels', labelRouter);
+router.use('/vouchers', voucherRouter);
+router.use('/voucher-types', voucherTypeRouter);
 router.use('/colors', colorRouter);
 router.use('/sizes', sizeRouter);
 
