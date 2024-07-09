@@ -13,14 +13,14 @@ const voucherRouter = express.Router();
 voucherRouter.get(
   '/',
   authMiddleware,
-  CheckPermission('Read_All_Voucher'),
+  CheckPermission('Read_Voucher'),
   VoucherController.getAllVouchers
 );
 
 voucherRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission('Read_One_Voucher'),
+  CheckPermission('Read_Voucher'),
   objectIdValidation,
   VoucherController.getOneVoucher
 );

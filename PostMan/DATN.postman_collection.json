@@ -1,0 +1,1160 @@
+{
+	"info": {
+		"_postman_id": "ccb04285-8755-47a3-b7b3-69a1af33bff9",
+		"name": "DATN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "31233518"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "get profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTY1NTE5LCJleHAiOjE3MjAxNjY0MTl9.YvDwKKb6JmTrUsaFjWpV6fCDM2K01XTDaylxR0ejL4E"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/users/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "refreshToken",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{baseUrl}}/auth/register"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Permission",
+			"item": [
+				{
+					"name": "get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/permissions"
+					},
+					"response": []
+				},
+				{
+					"name": "get one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/permissions/667e3c3e44639bfa7b714257"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/permissions/667e3c3e44639bfa7b714257/delete"
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTI5OTM5LCJleHAiOjE3MjAxMzA4Mzl9._7t1w7vfQTWV37aCum_VT2h99Uah_Tw6Thw-TDrLH1Q"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"CRUD_Permission\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/permissions"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Read_Address\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/permissions/6686ab5066a018c26e1807f2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"qwqw\",\r\n    \"permissi\" : [\r\n        \"667e3cc7d94d88eb1efaff63\",\r\n        \"667e6acbb6babd80d7a7e3d8\",\r\n        \"667e6ad0b6babd80d7a7e3db\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/roles/create"
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwNDQ3NjA2LCJleHAiOjE3MjA0NDg1MDZ9.Em5_ZaazwKkkWt1AnEFsf_lko4sb837XY1EEuYENK5M"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/roles"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTMwOTU5LCJleHAiOjE3MjAxMzE4NTl9.q45NYabXSkHYhxSUL-X8WQ12HkOB_RXjiGFxkHkGUx8"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"action\": \"add_permission\",\r\n    \"permissions\": [\r\n        \"66871da04aa9f9ef49cdb7a2\",\r\n        \"66871dab4aa9f9ef49cdb7a9\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/roles/6686ab9b66a018c26e1807f5"
+					},
+					"response": []
+				},
+				{
+					"name": "get one",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/roles/6686ab9b66a018c26e1807f5"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/role/667e77af1f34beef72275e9d/delete"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roles\": [\r\n        \"6686ab9b66a018c26e1807f5\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/users/6678fb50a3ba95852451022f"
+					},
+					"response": []
+				},
+				{
+					"name": "getone",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTYyMzU2LCJleHAiOjE3MjAxNjMyNTZ9.eTq1rjA0nC8qL0pI9HO4HhjpekrtCuzOFsw4f0u3_RY"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roles\": [\r\n        \"6686ab9b66a018c26e1807f5\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/users/6678fb50a3ba95852451022f"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gender",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTExNjAwLCJleHAiOjE3MjAxMTI1MDB9.7XpEedW9YULjYKMMjj1coLEqq9Ms9X3WpYk5DXuwUPk"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"khong\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/genders"
+					},
+					"response": []
+				},
+				{
+					"name": "create Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTExNjAwLCJleHAiOjE3MjAxMTI1MDB9.7XpEedW9YULjYKMMjj1coLEqq9Ms9X3WpYk5DXuwUPk"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"sạndasd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/genders/6686d20f6af39038e41ca787"
+					},
+					"response": []
+				},
+				{
+					"name": "create Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ahihiasd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/genders/6686d20f6af39038e41ca787"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tag",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTMwOTU5LCJleHAiOjE3MjAxMzE4NTl9.q45NYabXSkHYhxSUL-X8WQ12HkOB_RXjiGFxkHkGUx8"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"new tag\",\r\n    \"description\": \"this is new tag\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/tags"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTMwOTU5LCJleHAiOjE3MjAxMzE4NTl9.q45NYabXSkHYhxSUL-X8WQ12HkOB_RXjiGFxkHkGUx8"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"lllllllll\",\r\n    \"description\": \"áhdjasjdbjeagsg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/tags/66871f164aa9f9ef49cdb7ee"
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/tags"
+					},
+					"response": []
+				},
+				{
+					"name": "get one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/tags/"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/tags"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "label",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ahihia\",\r\n    \"description\": \"áhdjasjdbjeagsg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/labels"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTMwOTU5LCJleHAiOjE3MjAxMzE4NTl9.q45NYabXSkHYhxSUL-X8WQ12HkOB_RXjiGFxkHkGUx8"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"lllllllllll\",\r\n    \"description\": \"áhdjasjdbjeagsg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/labels/66871fce0465d6d8896b163c"
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/labels"
+					},
+					"response": []
+				},
+				{
+					"name": "get one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/tags/"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/tags"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Brand",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ahihia\",\r\n    \"description\": \"áhdjasjdbjeagsg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/labels"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTEwNjQ3LCJleHAiOjE3MjAxMTE1NDd9.2aR0rk5wtdNlxhKYJn77lJ4WIBAot6SCCg-iiAOdpII"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ahihi\",\r\n    \"image\": \"sadasda\",\r\n    \"description\": \"áhdjasjdbjeagsg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/brands/6686ce453732cce915def174"
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/labels"
+					},
+					"response": []
+				},
+				{
+					"name": "get one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/brands/6686ce453732cce915def174"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/tags"
+					},
+					"response": []
+				}
+			]
+		},
+    {
+			"name": "Address",
+			"item": [
+				{
+					"name": "Create Address",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTk2MDMzLCJleHAiOjE3MjAxOTY5MzN9.ME-SVFxpxF3KbAMfMaJnDPFTwBtW0xBTSGm4jlufnRg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"commune\": \"Vu Thu\",\r\n    \"district\": \"Quynh Phu\",\r\n    \"city\": \"Thai Binh\",\r\n    \"detail_address\": \"Some detail address\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/address",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Address",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTk2MDMzLCJleHAiOjE3MjAxOTY5MzN9.ME-SVFxpxF3KbAMfMaJnDPFTwBtW0xBTSGm4jlufnRg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/address",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Address",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTk2MDMzLCJleHAiOjE3MjAxOTY5MzN9.ME-SVFxpxF3KbAMfMaJnDPFTwBtW0xBTSGm4jlufnRg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/address/66881c27104b1804055555d8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"address",
+								"66881c27104b1804055555d8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Address By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTk2MDMzLCJleHAiOjE3MjAxOTY5MzN9.ME-SVFxpxF3KbAMfMaJnDPFTwBtW0xBTSGm4jlufnRg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"commune\": \"Hello\",\r\n    \"district\": \"Quynh Phu\",\r\n    \"city\": \"Thai Binh\",\r\n    \"user_id\": \"6678fb50a3ba95852451022f\",\r\n    \"detail_address\": \"Some detail address\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/address/66881c27104b1804055555d8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"address",
+								"66881c27104b1804055555d8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Address By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMTk2MDMzLCJleHAiOjE3MjAxOTY5MzN9.ME-SVFxpxF3KbAMfMaJnDPFTwBtW0xBTSGm4jlufnRg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"2222\",\r\n    \"image\": \"11\",\r\n    \"description\": \"444\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/address/66881c27104b1804055555d8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"address",
+								"66881c27104b1804055555d8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+    {
+			"name": "Voucher Types",
+			"item": [
+				{
+					"name": "Create Voucher Type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMzY1NTQzLCJleHAiOjE3MjAzNjY0NDN9.tCgq0yWTRWZ3ZUdorxIqigzYUxYnBiU59SMNjzlItGk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Dash\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/voucher-types",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"voucher-types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Voucher Type",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMzY1NTQzLCJleHAiOjE3MjAzNjY0NDN9.tCgq0yWTRWZ3ZUdorxIqigzYUxYnBiU59SMNjzlItGk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/voucher-types",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"voucher-types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Voucher Type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/voucher-types/66860b306e9627fa2b050afc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"voucher-types",
+								"66860b306e9627fa2b050afc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Voucher Type By Id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"hihi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/voucher-types/66860c4dbdc6851dbc151300",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"voucher-types",
+								"66860c4dbdc6851dbc151300"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Voucher Type By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"2222\",\r\n    \"image\": \"11\",\r\n    \"description\": \"444\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/voucher-types/66860b306e9627fa2b050afc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"voucher-types",
+								"66860b306e9627fa2b050afc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+    {
+			"name": "Vouchers",
+			"item": [
+				{
+					"name": "Create Voucher",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMzY1NTQzLCJleHAiOjE3MjAzNjY0NDN9.tCgq0yWTRWZ3ZUdorxIqigzYUxYnBiU59SMNjzlItGk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Discount Voucher\",\r\n  \"code\": \"234234\",\r\n  \"max_usage\": 100,\r\n  \"duration\": 30,\r\n  \"discount\": 20,\r\n  \"voucher_type\": \"66880289e7a42f0a1f22e644\",\r\n  \"discount_types\": \"percentage\",\r\n  \"minimum_order_price\": 50,\r\n  \"start_date\": \"2024-07-01T00:00:00Z\",\r\n  \"end_date\": \"2024-07-31T23:59:59Z\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/vouchers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"vouchers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Voucher",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMzY3Njg0LCJleHAiOjE3MjAzNjg1ODR9.YCdjOt17jHJvtETpJxracPmBDUey41HndqTBfoUVjIU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/vouchers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"vouchers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Voucher",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3OGZiNTBhM2JhOTU4NTI0NTEwMjJmIiwiaWF0IjoxNzIwMzY3Njg0LCJleHAiOjE3MjAzNjg1ODR9.YCdjOt17jHJvtETpJxracPmBDUey41HndqTBfoUVjIU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/vouchers/668abb3a83bf365a321f7e2e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"vouchers",
+								"668abb3a83bf365a321f7e2e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Voucher By Id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Discount Voucher\",\r\n  \"code\": \"DISCOUNT20241\",\r\n  \"max_usage\": 100,\r\n  \"duration\": 30,\r\n  \"discount\": 20,\r\n  \"discount_types\": \"percentage\",\r\n  \"minimum_order_price\": 50,\r\n  \"start_date\": \"2024-07-01T00:00:00Z\",\r\n  \"end_date\": \"2024-07-31T23:59:59Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/vouchers/668abb3a83bf365a321f7e2e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"vouchers",
+								"668abb3a83bf365a321f7e2e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Voucher By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"2222\",\r\n    \"image\": \"11\",\r\n    \"description\": \"444\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/vouchers/668abb3a83bf365a321f7e2e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"vouchers",
+								"668abb3a83bf365a321f7e2e"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		}
+	]
+}

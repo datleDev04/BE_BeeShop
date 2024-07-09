@@ -10,13 +10,13 @@ const voucherTypeRouter = express.Router();
 voucherTypeRouter.get(
   '/',
   authMiddleware,
-  CheckPermission('Read_All_VoucherType'),
+  CheckPermission('Read_VoucherType'),
   VoucherTypeController.getAllVoucherType
 );
 voucherTypeRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission('Read_One_VoucherType'),
+  CheckPermission('Read_VoucherType'),
   objectIdValidation,
   VoucherTypeController.getOneVoucherType
 );
