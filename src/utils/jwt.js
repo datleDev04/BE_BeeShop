@@ -16,7 +16,7 @@ class jwtUtils {
     const data = Math.random() + new Date().getTime();
 
     return jwt.sign({ data }, REFRESH_SECRET, {
-      expiresIn: '7d',
+      expiresIn: 60 * 60 * 24 * 7,
     });
   };
 
