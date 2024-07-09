@@ -21,34 +21,33 @@ export const authMiddleware = async (req, res, next) => {
     //get user info
     const user = await User.findById(user_id).populate({
       path: 'roles',
-      populate: { path: 'permissions' } 
+      populate: { path: 'permissions' },
     });
     if (!user) throw new ApiError(StatusCodes.UNAUTHORIZED, 'User is unAuthorized');
 
     user.password = undefined;
 
-    //get array of permissions 
+    //get array of permissions
     const permissionSet = new Set();
 
-    user.roles.forEach(role => {
+    user.roles.forEach((role) => {
       // Thêm từng giá trị trong mảng permissions vào Set
-      role.permissions.forEach(permission => permissionSet.add(permission.name));
+      role.permissions.forEach((permission) => permissionSet.add(permission.name));
     });
 
-    const userPermissions = Array.from(permissionSet)
-    const userRoles = Array.from(user.roles.map(role => role.name));
-
+    const userPermissions = Array.from(permissionSet);
+    const userRoles = Array.from(user.roles.map((role) => role.name));
 
     // return user, accessToken, permissions, roles into request
     req.user = {
       ...user.toObject(),
       accessToken,
       list_name_permission: userPermissions,
-      list_name_role: userRoles
+      list_name_role: userRoles,
     };
 
-    console.log(req.user._id)
-    console.log(req.user._id.toString())
+    console.log(req.user._id);
+    console.log(req.user._id.toString());
 
     next();
   } catch (error) {

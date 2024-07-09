@@ -9,6 +9,7 @@ import addressRouter from './address.js';
 import tagRouter from './tag.js';
 import labelRouter from './label.js';
 import colorRouter from './color.js';
+import sizeRouter from './size.js';
 
 const router = express.Router();
 
@@ -22,5 +23,6 @@ router.use('/address', addressRouter);
 router.use('/tags', tagRouter);
 router.use('/labels', labelRouter);
 router.use('/colors', colorRouter);
+router.use('/sizes', sizeRouter);
 
 export default router;

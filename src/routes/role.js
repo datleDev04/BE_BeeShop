@@ -7,39 +7,34 @@ import { CheckPermission } from '../utils/CheckPermission.js';
 
 const roleRouter = express.Router();
 
+roleRouter.get('/', authMiddleware, CheckPermission('Read_Role'), RoleController.getAllRole);
 roleRouter.get(
-  '/',
+  '/:id',
   authMiddleware,
   CheckPermission('Read_Role'),
-  RoleController.getAllRole
-);
-roleRouter.get(
-  '/:id', 
-  authMiddleware,
-  CheckPermission('Read_Role'),
-  objectIdValidation, 
+  objectIdValidation,
   RoleController.getOneRole
 );
 roleRouter.post(
-  '/', 
+  '/',
   authMiddleware,
   CheckPermission('Create_Role'),
-  roleValidation, 
+  roleValidation,
   RoleController.createNewRole
 );
 roleRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission('Update_Role'), 
+  CheckPermission('Update_Role'),
   objectIdValidation,
-  updateRoleValidation, 
+  updateRoleValidation,
   RoleController.updateRoleById
 );
 roleRouter.delete(
-  '/:id',  
+  '/:id',
   authMiddleware,
   CheckPermission('Delete_Role'),
-  objectIdValidation, 
+  objectIdValidation,
   RoleController.deleteRoleById
 );
 

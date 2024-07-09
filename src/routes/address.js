@@ -11,25 +11,15 @@ const addressRouter = express.Router();
 addressRouter.get(
   '/',
   authMiddleware,
-  CheckPermission("Read_Address"),
+  CheckPermission('Read_Address'),
   AddressController.getAllAddress
 );
 
 // get address by id
-addressRouter.get(
-  '/:id',
-  authMiddleware,
-  objectIdValidation,
-  AddressController.getOneAddress
-);
+addressRouter.get('/:id', authMiddleware, objectIdValidation, AddressController.getOneAddress);
 
-// create new address 
-addressRouter.post(
-  '/',
-  authMiddleware,
-  addressValidation,
-  AddressController.createNewAddress
-);
+// create new address
+addressRouter.post('/', authMiddleware, addressValidation, AddressController.createNewAddress);
 
 addressRouter.patch(
   '/:id',
@@ -42,7 +32,7 @@ addressRouter.patch(
 addressRouter.delete(
   '/:id',
   authMiddleware,
-  objectIdValidation, 
+  objectIdValidation,
   AddressController.deleteAddressById
 );
 

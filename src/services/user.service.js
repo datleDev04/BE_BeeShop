@@ -10,7 +10,7 @@ export default class UserService {
     const updatedUser = await User.findByIdAndUpdate(req.params.id, { roles: roles }, { new: true })
       .populate({
         path: 'roles',
-        populate: { path: 'permissions' }
+        populate: { path: 'permissions' },
       })
       .exec();
 
@@ -24,21 +24,19 @@ export default class UserService {
 
   static getOneUser = async (req) => {
     const user = await User.findById(req.params.id)
-     .populate([
-      {
-        path: 'roles',
-        populate: { path: 'permissions' }
-      }, 
-      {
-        path: 'address_list',
-      }
-     ])
-     .exec();
+      .populate([
+        {
+          path: 'roles',
+          populate: { path: 'permissions' },
+        },
+        {
+          path: 'address_list',
+        },
+      ])
+      .exec();
 
-     user.password = undefined;
+    user.password = undefined;
 
-     return user
-  }
-
-
+    return user;
+  };
 }

@@ -49,7 +49,6 @@ export class AuthService {
       throw new ApiError(StatusCodes.BAD_REQUEST, "Couldn't find User");
     }
 
-
     // compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -57,7 +56,6 @@ export class AuthService {
     }
 
     user.password = undefined;
-
 
     // check status of the user
 
@@ -100,31 +98,30 @@ export class AuthService {
       const refreshToken = req.body.refreshToken;
 
       if (!refreshToken) throw new ApiError(StatusCodes.BAD_REQUEST, 'refresh token is required');
-  
+
       // check valid token
       const decodeToken = jwtUtils.decodeRefreshToken(refreshToken);
       if (!decodeToken) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid refresh token');
-  
+
       const newRefreshToken = jwtUtils.createRefreshToken();
-  
+
       const tokenInfo = await User_Token.findOneAndUpdate(
         { refresh_token: refreshToken },
         { refresh_token: newRefreshToken },
         { new: true }
       );
-      
-      if (!tokenInfo) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid refresh token')
-  
+
+      if (!tokenInfo) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid refresh token');
+
       const access_token = jwtUtils.createAccessToken(tokenInfo.user_id);
-  
+
       return {
         access_token: access_token,
         refresh_token: newRefreshToken,
       };
     } catch (error) {
-      throw new ApiError(StatusCodes.UNAUTHORIZED, error.message)
+      throw new ApiError(StatusCodes.UNAUTHORIZED, error.message);
     }
-
   };
 
   // static forgotPassword = async (reqBody) => {
@@ -169,28 +166,26 @@ export class AuthService {
   // }
 
   static getProfileUser = async (req) => {
-
     const user = await User.findOne(req.user._id)
-     .populate([
-      {
-        path: 'roles',
-        populate: { path: 'permissions' }
-      }, 
-      {
-        path: 'address_list',
-      }
-     ])
-     .exec();
+      .populate([
+        {
+          path: 'roles',
+          populate: { path: 'permissions' },
+        },
+        {
+          path: 'address_list',
+        },
+      ])
+      .exec();
 
-     user.password = undefined;
+    user.password = undefined;
 
-     const userProfile =  {
-       ...user.toObject(),
-       list_name_permission: req.user.list_name_permission,
-       list_name_role:  req.user.list_name_role
-     }
+    const userProfile = {
+      ...user.toObject(),
+      list_name_permission: req.user.list_name_permission,
+      list_name_role: req.user.list_name_role,
+    };
 
-     return userProfile
-
-  }
+    return userProfile;
+  };
 }
