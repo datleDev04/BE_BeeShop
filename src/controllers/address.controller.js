@@ -6,7 +6,7 @@ import AddressService from '../services/address.service.js';
 export class AddressController {
   static getAllAddress = async (req, res, next) => {
     try {
-      const address = await AddressService.handleGetAllAddress(req);
+      const address = await AddressService.getAllAddress(req);
 
       const returnData = address.map((addressItem) => {
         return Transformer.transformObjectTypeSnakeToCamel(addressItem.toObject());
@@ -20,7 +20,7 @@ export class AddressController {
 
   static getOneAddress = async (req, res, next) => {
     try {
-      const address = await AddressService.handleGetOneAddress(req);
+      const address = await AddressService.getOneAddress(req);
 
       SuccessResponse(
         res,
@@ -35,7 +35,7 @@ export class AddressController {
 
   static createNewAddress = async (req, res, next) => {
     try {
-      const newAddress = await AddressService.handleCreateAddress(req);
+      const newAddress = await AddressService.createAddress(req);
 
       SuccessResponse(
         res,
@@ -50,7 +50,7 @@ export class AddressController {
 
   static updateAddressById = async (req, res, next) => {
     try {
-      const updatedAddress = await AddressService.handleUpdateAddress(req);
+      const updatedAddress = await AddressService.updateAddress(req);
 
       SuccessResponse(
         res,
@@ -65,7 +65,7 @@ export class AddressController {
 
   static deleteAddressById = async (req, res, next) => {
     try {
-      await AddressService.handleDeleteAddress(req);
+      await AddressService.deleteAddress(req);
 
       SuccessResponse(res, StatusCodes.OK, 'Deleted address successfully', []);
     } catch (error) {

@@ -4,15 +4,21 @@ import Address from '../models/Address.js';
 import User from '../models/User.js';
 
 export default class AddressService {
-  static handleCreateAddress = async (req) => {
-    const { commune, district, city, user_id, detail_address } = req.body;
+  static createAddress = async (req) => {
+    const { commune, district, city, detail_address } = req.body;
 
-    const user = await User.findById(user_id);
+    const user = await User.findById(req.user._id);
     if (!user) {
       throw new ApiError(StatusCodes.BAD_REQUEST, 'User not found');
     }
 
-    const newAddress = await Address.create({ commune, district, city, user_id, detail_address });
+    const newAddress = await Address.create({
+      commune,
+      district,
+      city,
+      user_id: user._id,
+      detail_address,
+    });
 
     user.address_list.push(newAddress._id);
     await user.save();
@@ -20,27 +26,27 @@ export default class AddressService {
     return Address.findById(newAddress._id).populate('user_id').exec();
   };
 
-  static handleGetAllAddress = async (req) => {
+  static getAllAddress = async (req) => {
     const address = await Address.find().populate('user_id').exec();
     return address;
   };
 
-  static handleGetOneAddress = async (req) => {
+  static getOneAddress = async (req) => {
     const address = await Address.findById(req.params.id).populate('user_id').exec();
     return address;
   };
 
-  static handleUpdateAddress = async (req) => {
-    const { commune, district, city, user_id, detail_address } = req.body;
+  static updateAddress = async (req) => {
+    const { commune, district, city, detail_address } = req.body;
 
-    const user = await User.findById(user_id);
+    const user = await User.findById(req.user._id);
     if (!user) {
       throw new ApiError(StatusCodes.BAD_REQUEST, 'User not found');
     }
 
     const updatedAddress = await Address.findByIdAndUpdate(
       req.params.id,
-      { commune, district, city, user_id, detail_address },
+      { commune, district, city, user_id: user._id, detail_address },
       { new: true, runValidators: true }
     );
 
@@ -51,14 +57,14 @@ export default class AddressService {
     return Address.findById(req.params.id).populate('user_id').exec();
   };
 
-  static handleDeleteAddress = async (req) => {
+  static deleteAddress = async (req) => {
     const address = await Address.findById(req.params.id);
 
     if (!address) {
       throw new ApiError(StatusCodes.NOT_FOUND, 'Address not found');
     }
 
-    const user = await User.findById(address.user_id);
+    const user = await User.findById(req.user._id);
     if (user) {
       user.address_list.pull(address._id);
       await user.save();
