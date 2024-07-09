@@ -1,7 +1,7 @@
 import express from 'express';
 import { ColorController } from '../controllers/color.controller.js';
-import { colorValidation } from '../validations/colorValidation.js';
-import { objectIdValidation } from '../validations/objectIdValidation.js';
+import { colorValidation } from '../validations/color.validation.js/index.js';
+import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 

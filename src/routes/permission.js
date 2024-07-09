@@ -1,6 +1,6 @@
 import express from 'express';
 import { PermissionController } from '../controllers/permission.controller.js';
-import { objectIdValidation } from '../validations/objectIdValidation.js';
+import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 import { createPermissionValidation, updatePermissionValidation } from '../validations/permission.validation.js';

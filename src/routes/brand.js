@@ -1,7 +1,7 @@
 import express from 'express';
 import { BrandController } from '../controllers/brand.controller.js';
-import { brandValidation } from '../validations/brandValidation.js';
-import { objectIdValidation } from '../validations/objectIdValidation.js';
+import { brandValidation } from '../validations/brand.validation.js/index.js';
+import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 

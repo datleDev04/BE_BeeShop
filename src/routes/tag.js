@@ -1,7 +1,7 @@
 import express from 'express';
 import { TagController } from '../controllers/tag.controller.js';
 import { tagValidation } from '../validations/tag.validation.js';
-import { objectIdValidation } from '../validations/objectIdValidation.js';
+import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 

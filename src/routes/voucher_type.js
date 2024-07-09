@@ -1,7 +1,7 @@
 import express from 'express';
-import { objectIdValidation } from '../validations/objectIdValidation.js';
+import { objectIdValidation } from '../validations/objectId.validation.js';
 import { VoucherTypeController } from '../controllers/voucher_type.controller.js';
-import { voucherTypeValidation } from '../validations/voucherTypeValidation.js';
+import { voucherTypeValidation } from '../validations/voucher_type.validation.js/index.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 

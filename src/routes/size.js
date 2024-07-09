@@ -1,7 +1,7 @@
 import express from 'express';
 import { SizeController } from '../controllers/size.controller.js';
-import { sizeValidation, updateSizeValidation } from '../validations/sizeValidation.js';
-import { objectIdValidation } from '../validations/objectIdValidation.js';
+import { sizeValidation, updateSizeValidation } from '../validations/size.validation.js/index.js';
+import { objectIdValidation } from '../validations/objectId.validation.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import authValidation from '../validations/authValidation.js';
+import authValidation from '../validations/auth.validation.js/index.js';
 import { AuthController } from '../controllers/auth.controller.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 

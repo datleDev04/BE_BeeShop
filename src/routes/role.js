@@ -1,7 +1,7 @@
 import express from 'express';
-import { roleValidation, updateRoleValidation } from '../validations/roleValidation.js';
+import { roleValidation, updateRoleValidation } from '../validations/role.validation.js/index.js';
 import { RoleController } from '../controllers/role.controller.js';
-import { objectIdValidation } from '../validations/objectIdValidation.js';
+import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 
