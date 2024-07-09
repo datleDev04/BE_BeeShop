@@ -17,11 +17,6 @@ const router = express.Router();
 
 router.use('/auth', authRouter);
 router.use('/users', userRouter);
-<<<<<<< HEAD
-=======
-router.use('/roles', authMiddleware, CheckPermission('CRUD_Role'), roleRouter);
-router.use('/permissions', authMiddleware, CheckPermission('CRUD_Permission'), permissionRouter);
->>>>>>> c94901f49b834d159840137d771f2e5fae0be6c5
 router.use('/roles', roleRouter);
 router.use('/permissions', permissionRouter);
 router.use('/genders', genderRouter);

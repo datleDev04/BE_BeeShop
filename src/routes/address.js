@@ -11,22 +11,11 @@ const addressRouter = express.Router();
 addressRouter.get(
   '/',
   authMiddleware,
-<<<<<<< HEAD
-=======
-  CheckPermission('Get_All_Address'),
->>>>>>> c94901f49b834d159840137d771f2e5fae0be6c5
   CheckPermission('Read_Address'),
   AddressController.getAllAddress
 );
 
 // get address by id
-<<<<<<< HEAD
-=======
-addressRouter.get('/:id', authMiddleware, objectIdValidation, AddressController.getOneAddress);
-
-// create new address
-addressRouter.post('/', authMiddleware, addressValidation, AddressController.createNewAddress);
->>>>>>> c94901f49b834d159840137d771f2e5fae0be6c5
 addressRouter.get(
   '/:id',
   authMiddleware,
