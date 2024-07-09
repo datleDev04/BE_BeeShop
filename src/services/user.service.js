@@ -39,4 +39,37 @@ export default class UserService {
 
     return user;
   };
+<<<<<<< HEAD
+=======
+
+  static getProfileUser = async (req) => {
+    console.log(req);
+
+    const user = await User.findOne(req.user._id)
+      .populate([
+        {
+          path: 'roles',
+          populate: { path: 'permissions' },
+        },
+        {
+          path: 'address_list',
+        },
+      ])
+      .exec();
+
+    user.password = undefined;
+
+    const userProfile = {
+      ...user.toObject(),
+      list_name_permission: req.user.list_name_permission,
+      list_name_role: req.user.list_name_role,
+    };
+
+    return userProfile;
+
+    user.password = undefined;
+
+    return user;
+  };
+>>>>>>> c94901f49b834d159840137d771f2e5fae0be6c5
 }

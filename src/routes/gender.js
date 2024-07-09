@@ -7,6 +7,11 @@ import { CheckPermission } from '../utils/CheckPermission.js';
 
 const genderRouter = express.Router();
 
+<<<<<<< HEAD
+=======
+genderRouter.get('/', GenderController.getAllGenders);
+genderRouter.get('/:id', objectIdValidation, GenderController.getGender);
+>>>>>>> c94901f49b834d159840137d771f2e5fae0be6c5
 genderRouter.get(
   '/',
   authMiddleware,

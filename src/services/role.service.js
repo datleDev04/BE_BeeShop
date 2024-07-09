@@ -31,6 +31,14 @@ export default class RoleService {
     const { name, permissions, action } = req.body;
     const update = { name };
 
+<<<<<<< HEAD
+=======
+    if (action === 'delete_permission') {
+      update.$pull = { permissions: { $in: permissions } };
+    } else if (action === 'add_permission') {
+      update.$push = { permissions: { $each: permissions } };
+      
+>>>>>>> c94901f49b834d159840137d771f2e5fae0be6c5
     const currentRole = await Role.findById(req.params.id).populate('permissions');
 
     if (!currentRole) {
