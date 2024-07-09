@@ -1,6 +1,6 @@
 import express from 'express';
 import { GenderController } from '../controllers/gender.controller.js';
-import { genderValidation } from '../validations/gender.validation.js/index.js';
+import { genderValidation } from '../validations/gender.validation.js';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';

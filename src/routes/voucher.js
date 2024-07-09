@@ -2,7 +2,7 @@ import express from 'express';
 import {
   validateVoucherCreation,
   validateVoucherUpdate,
-} from '../validations/voucher.validation.js/index.js';
+} from '../validations/voucher.validation.js';
 import { VoucherController } from '../controllers/voucher.controller.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';

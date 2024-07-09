@@ -1,5 +1,5 @@
 import express from 'express';
-import { roleValidation, updateRoleValidation } from '../validations/role.validation.js/index.js';
+import { roleValidation, updateRoleValidation } from '../validations/role.validation.js';
 import { RoleController } from '../controllers/role.controller.js';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
