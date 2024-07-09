@@ -44,8 +44,6 @@ export default class PermissionService {
       throw new ApiError(404, 'Permission not found');
     }
 
-    console.log(permission);
-
     return permission;
   };
 
