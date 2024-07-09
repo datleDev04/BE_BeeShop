@@ -36,8 +36,6 @@ export class UserController {
   };
 
   static getProfileUser = async (req) => {
-    console.log(req);
-
     const user = await User.findOne(req.user._id)
       .populate([
         {
