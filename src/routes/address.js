@@ -12,6 +12,7 @@ addressRouter.get(
   '/',
   authMiddleware,
   CheckPermission('Get_All_Address'),
+  CheckPermission('Read_Address'),
   AddressController.getAllAddress
 );
 
@@ -20,10 +21,27 @@ addressRouter.get('/:id', authMiddleware, objectIdValidation, AddressController.
 
 // create new address
 addressRouter.post('/', authMiddleware, addressValidation, AddressController.createNewAddress);
+addressRouter.get(
+  '/:id',
+  authMiddleware,
+  CheckPermission('Read_Address'),
+  objectIdValidation,
+  AddressController.getOneAddress
+);
+
+// create new address
+addressRouter.post(
+  '/',
+  authMiddleware,
+  CheckPermission('Create_Address'),
+  addressValidation,
+  AddressController.createNewAddress
+);
 
 addressRouter.patch(
   '/:id',
   authMiddleware,
+  CheckPermission('Update_Address'),
   objectIdValidation,
   addressValidation,
   AddressController.updateAddressById
@@ -32,6 +50,7 @@ addressRouter.patch(
 addressRouter.delete(
   '/:id',
   authMiddleware,
+  CheckPermission('Delete_Address'),
   objectIdValidation,
   AddressController.deleteAddressById
 );

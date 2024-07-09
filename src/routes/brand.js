@@ -12,6 +12,16 @@ brandRouter.get('/', BrandController.getAllBrand);
 
 // get one brand by id
 brandRouter.get('/:id', objectIdValidation, BrandController.getOneBrand);
+brandRouter.get('/', authMiddleware, CheckPermission('Read_Brand'), BrandController.getAllBrand);
+
+// get one brand by id
+brandRouter.get(
+  '/:id',
+  objectIdValidation,
+  authMiddleware,
+  CheckPermission('Read_Brand'),
+  BrandController.getOneBrand
+);
 
 // create a new brand
 brandRouter.post(

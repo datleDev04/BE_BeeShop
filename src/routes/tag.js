@@ -9,6 +9,14 @@ const tagRouter = express.Router();
 
 tagRouter.get('/', TagController.getAllTags);
 tagRouter.get('/:id', objectIdValidation, TagController.getOneTag);
+tagRouter.get('/', authMiddleware, CheckPermission('Read_Tag'), TagController.getAllTags);
+tagRouter.get(
+  '/:id',
+  authMiddleware,
+  CheckPermission('Read_Tag'),
+  objectIdValidation,
+  TagController.getOneTag
+);
 
 // create a new tag
 tagRouter.post(

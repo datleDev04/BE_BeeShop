@@ -64,5 +64,9 @@ export default class UserService {
     };
 
     return userProfile;
+
+    user.password = undefined;
+
+    return user;
   };
 }

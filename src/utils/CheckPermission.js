@@ -4,6 +4,7 @@ import ApiError from './ApiError.js';
 export function CheckPermission(validPermission) {
   return function (req, res, next) {
     const permissions = req.user.permissions;
+    const permissions = req.user.list_name_permission;
 
     try {
       for (const permission of permissions) {

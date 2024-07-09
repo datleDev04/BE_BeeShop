@@ -9,6 +9,19 @@ const genderRouter = express.Router();
 
 genderRouter.get('/', GenderController.getAllGenders);
 genderRouter.get('/:id', objectIdValidation, GenderController.getGender);
+genderRouter.get(
+  '/',
+  authMiddleware,
+  CheckPermission('Read_Gender'),
+  GenderController.getAllGenders
+);
+genderRouter.get(
+  '/:id',
+  authMiddleware,
+  CheckPermission('Read_Gender'),
+  objectIdValidation,
+  GenderController.getGender
+);
 
 // create new gender
 genderRouter.post(

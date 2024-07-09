@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import UserService from '../services/user.service.js';
 import { Transformer } from '../utils/transformer.js';
 import { SuccessResponse } from '../utils/response.js';
+import User from '../models/User.js';
 
 export class UserController {
   static updateUser = async (req, res, next) => {
@@ -34,18 +35,29 @@ export class UserController {
     }
   };
 
-  static getProfileUser = async (req, res, next) => {
-    try {
-      const userProfile = await UserService.getProfileUser(req);
+  static getProfileUser = async (req) => {
+    console.log(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get Profile User successfully',
-        Transformer.transformObjectTypeSnakeToCamel(userProfile)
-      );
-    } catch (error) {
-      next(error);
-    }
+    const user = await User.findOne(req.user._id)
+      .populate([
+        {
+          path: 'roles',
+          populate: { path: 'permissions' },
+        },
+        {
+          path: 'address_list',
+        },
+      ])
+      .exec();
+
+    user.password = undefined;
+
+    const userProfile = {
+      ...user.toObject(),
+      list_name_permission: req.user.list_name_permission,
+      list_name_role: req.user.list_name_role,
+    };
+
+    return userProfile;
   };
 }
