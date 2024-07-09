@@ -19,7 +19,7 @@ export default class PermissionService {
   };
 
   static getPermission = async (req) => {
-    const permission = await Permisson.findById(req.params.id);
+    const permission = await Permisson.findById(req.params.id).populate("parent_id").exec();
 
     if (!permission)
       throw new ApiError(StatusCodes.NOT_FOUND, getReasonPhrase(StatusCodes.NOT_FOUND));
@@ -28,7 +28,7 @@ export default class PermissionService {
   };
 
   static getAllPermissions = async (req) => {
-    return await Permisson.find();
+    return await Permisson.find().populate("parent_id").exec();
   };
 
   static updatePermission = async (req, res) => {
