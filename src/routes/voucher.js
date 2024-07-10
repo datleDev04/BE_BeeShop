@@ -2,11 +2,11 @@ import express from 'express';
 import {
   validateVoucherCreation,
   validateVoucherUpdate,
-} from '../validations/voucherValidation.js';
+} from '../validations/voucher.validation.js';
 import { VoucherController } from '../controllers/voucher.controller.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
-import { objectIdValidation } from '../validations/objectIdValidation.js';
+import { objectIdValidation } from '../validations/objectId.validation.js';
 
 const voucherRouter = express.Router();
 

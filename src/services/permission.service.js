@@ -5,7 +5,7 @@ import ApiError from '../utils/ApiError.js';
 
 export default class PermissionService {
   static createNewPermission = async (req) => {
-    const { name } = req.body;
+    const { name, parent_id } = req.body;
 
     // check existed permissions
     const existedPermission = await Permisson.findOne({ name });
@@ -13,13 +13,21 @@ export default class PermissionService {
       throw new ApiError(StatusCodes.CONFLICT, 'Permission already exists');
     }
 
-    const newPermission = await Permisson.create({ name });
+    // check existed parent permissions
+    const existedParentPermission = await Permisson.findOne({ _id: parent_id });
+    if (!existedParentPermission) {
+      throw new ApiError(StatusCodes.CONFLICT, 'Parent permission is not exists');
+    }
+
+    const newPermission = await Permisson.create(
+      { name, parent_id: parent_id}
+    );
 
     return newPermission;
   };
 
   static getPermission = async (req) => {
-    const permission = await Permisson.findById(req.params.id);
+    const permission = await Permisson.findById(req.params.id).populate("parent_id").exec();
 
     if (!permission)
       throw new ApiError(StatusCodes.NOT_FOUND, getReasonPhrase(StatusCodes.NOT_FOUND));
@@ -27,8 +35,15 @@ export default class PermissionService {
     return permission;
   };
 
+  static getPermissionByParentId = async (req) => {
+    return await Permisson
+      .find({ parent_id: req.params.id })
+      .populate("parent_id")
+      .exec();
+  };
+
   static getAllPermissions = async (req) => {
-    return await Permisson.find();
+    return await Permisson.find().populate("parent_id").exec();
   };
 
   static updatePermission = async (req, res) => {
@@ -36,9 +51,12 @@ export default class PermissionService {
 
     const permission = Permisson.findByIdAndUpdate(
       { _id: id },
-      { name: req.body.name },
+      { 
+        name: req.body.name,
+        parent_id: req.body.parent_id
+      },
       { new: true }
-    );
+    ).populate("parent_id").exec();
 
     if (!permission) {
       throw new ApiError(404, 'Permission not found');

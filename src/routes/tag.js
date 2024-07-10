@@ -1,17 +1,22 @@
 import express from 'express';
 import { TagController } from '../controllers/tag.controller.js';
 import { tagValidation } from '../validations/tag.validation.js';
-import { objectIdValidation } from '../validations/objectIdValidation.js';
+import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 
 const tagRouter = express.Router();
 
-tagRouter.get('/', authMiddleware, CheckPermission('Read_Tag'), TagController.getAllTags);
+tagRouter.get(
+  '/', 
+  authMiddleware, 
+  CheckPermission(['Read_Tag', 'All_Tag_Permission']),
+  TagController.getAllTags
+);
 tagRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission('Read_Tag'),
+  CheckPermission(['Read_Tag', 'All_Tag_Permission']),
   objectIdValidation,
   TagController.getOneTag
 );
@@ -20,7 +25,7 @@ tagRouter.get(
 tagRouter.post(
   '/',
   authMiddleware,
-  CheckPermission('Create_Tag'),
+  CheckPermission(['Create_Tag', 'All_Tag_Permission']),
   tagValidation,
   TagController.createTag
 );
@@ -29,7 +34,7 @@ tagRouter.post(
 tagRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission('Update_Tag'),
+  CheckPermission(['Update_Tag', 'All_Tag_Permission']),
   objectIdValidation,
   tagValidation,
   TagController.updateTagById
@@ -39,7 +44,7 @@ tagRouter.patch(
 tagRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission('Delete_Tag'),
+  CheckPermission(['Delete_Tag', 'All_Tag_Permission']),
   objectIdValidation,
   TagController.deleteTagById
 );

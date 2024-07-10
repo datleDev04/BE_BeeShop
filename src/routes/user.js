@@ -1,7 +1,7 @@
 import express from 'express';
 import { UserController } from '../controllers/user.controller.js';
-import { userValidation } from '../validations/userValidation.js';
-import { objectIdValidation } from '../validations/objectIdValidation.js';
+import { userValidation } from '../validations/user.validation.js';
+import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 
 const userRouter = express.Router();

@@ -1,9 +1,9 @@
 import express from 'express';
-import { objectIdValidation } from '../validations/objectIdValidation.js';
+import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 import { PaymentTypeController } from '../controllers/payment_type.controller.js';
-import { paymentTypeValidation } from '../validations/paymenTypeValidation.js';
+import { paymentTypeValidation } from '../validations/paymen_type.validation.js';
 
 const paymentTypeRouter = express.Router();
 

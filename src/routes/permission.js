@@ -1,44 +1,51 @@
 import express from 'express';
-import { permissionValidation } from '../validations/roleValidation.js';
 import { PermissionController } from '../controllers/permission.controller.js';
-import { objectIdValidation } from '../validations/objectIdValidation.js';
+import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
+import { createPermissionValidation, updatePermissionValidation } from '../validations/permission.validation.js';
 
 const permissionRouter = express.Router();
 
 permissionRouter.get(
   '/',
   authMiddleware,
-  CheckPermission('Read_Permission'), 
+  CheckPermission(['Read_Permission', 'All_Permission_Permission']), 
   PermissionController.getAllPermissions
 );
 permissionRouter.get(
   '/:id', 
   authMiddleware,
-  CheckPermission('Read_Permission'), 
+  CheckPermission(['Read_Permission', 'All_Permission_Permission']), 
   objectIdValidation, 
   PermissionController.getPermission
 );
+permissionRouter.get(
+  '/parent_id/:id', 
+  authMiddleware,
+  CheckPermission(['Read_Permission', 'All_Permission_Permission']), 
+  objectIdValidation, 
+  PermissionController.getPermissionByParentId
+);
 permissionRouter.post(
   '/', 
-  permissionValidation, 
   authMiddleware,
-  CheckPermission('Create_Permission'), 
+  CheckPermission(['Create_Permission', 'All_Permission_Permission']), 
+  createPermissionValidation, 
   PermissionController.createNewPermission
 );
 permissionRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission('Update_Permission'), 
+  CheckPermission(['Update_Permission', 'All_Permission_Permission']), 
   objectIdValidation,
-  permissionValidation,
+  updatePermissionValidation,
   PermissionController.updatePermission
 );
 permissionRouter.delete(
   '/:id', 
   authMiddleware,
-  CheckPermission('Delete_Permission'), 
+  CheckPermission(['Delete_Permission', 'All_Permission_Permission']), 
   objectIdValidation, 
   PermissionController.deletePermission
 );
