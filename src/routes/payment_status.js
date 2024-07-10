@@ -10,13 +10,13 @@ const paymentStatusRouter = express.Router();
 paymentStatusRouter.get(
   '/',
   authMiddleware,
-  CheckPermission('Read_PaymentStatus'),
+  CheckPermission(['Read_PaymentStatus', 'All_PaymentStatus_Permission']),
   PaymentStatusController.getAllPaymentStatuses
 );
 paymentStatusRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission('Read_PaymentStatus'),
+  CheckPermission(['Read_PaymentStatus', 'All_PaymentStatus_Permission']),
   objectIdValidation,
   PaymentStatusController.getPaymentStatus
 );
@@ -25,7 +25,7 @@ paymentStatusRouter.get(
 paymentStatusRouter.post(
   '/',
   authMiddleware,
-  CheckPermission('Create_PaymentStatus'),
+  CheckPermission(['Create_PaymentStatus', 'All_PaymentStatus_Permission']),
   paymentStatusValidation,
   PaymentStatusController.createNewPaymentStatus
 );
@@ -34,7 +34,7 @@ paymentStatusRouter.post(
 paymentStatusRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission('Update_PaymentStatus'),
+  CheckPermission(['Update_PaymentStatus', 'All_PaymentStatus_Permission']),
   objectIdValidation,
   paymentStatusValidation,
   PaymentStatusController.updatePaymentStatus
@@ -44,7 +44,7 @@ paymentStatusRouter.patch(
 paymentStatusRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission('Delete_PaymentStatus'),
+  CheckPermission(['Delete_PaymentStatus', 'All_PaymentStatus_Permission']),
   objectIdValidation,
   PaymentStatusController.deletePaymentStatus
 );
