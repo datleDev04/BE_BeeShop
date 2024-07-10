@@ -35,6 +35,13 @@ export default class PermissionService {
     return permission;
   };
 
+  static getPermissionByParentId = async (req) => {
+    return await Permisson
+      .find({ parent_id: req.params.id })
+      .populate("parent_id")
+      .exec();
+  };
+
   static getAllPermissions = async (req) => {
     return await Permisson.find().populate("parent_id").exec();
   };
@@ -49,7 +56,7 @@ export default class PermissionService {
         parent_id: req.body.parent_id
       },
       { new: true }
-    );
+    ).populate("parent_id").exec();
 
     if (!permission) {
       throw new ApiError(404, 'Permission not found');

@@ -10,13 +10,13 @@ const genderRouter = express.Router();
 genderRouter.get(
   '/',
   authMiddleware,
-  CheckPermission('Read_Gender'),
+  CheckPermission(['Read_Gender', 'All_Gender_Permission']),
   GenderController.getAllGenders
 );
 genderRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission('Read_Gender'),
+  CheckPermission(['Read_Gender', 'All_Gender_Permission']),
   objectIdValidation,
   GenderController.getGender
 );
@@ -25,7 +25,7 @@ genderRouter.get(
 genderRouter.post(
   '/',
   authMiddleware,
-  CheckPermission('Create_Gender'),
+  CheckPermission(['Create_Gender', 'All_Gender_Permission']),
   genderValidation,
   GenderController.createNewGender
 );
@@ -34,7 +34,7 @@ genderRouter.post(
 genderRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission('Update_Gender'),
+  CheckPermission(['Update_Gender', 'All_Gender_Permission']),
   objectIdValidation,
   genderValidation,
   GenderController.updateGender
@@ -44,7 +44,7 @@ genderRouter.patch(
 genderRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission('Delete_Gender'),
+  CheckPermission(['Delete_Gender', 'All_Gender_Permission']),
   objectIdValidation,
   GenderController.deleteGender
 );

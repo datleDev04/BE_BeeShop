@@ -11,7 +11,7 @@ const addressRouter = express.Router();
 addressRouter.get(
   '/',
   authMiddleware,
-  CheckPermission('Read_Address'),
+  CheckPermission(['Read_Address', 'All_Address_Permission']),
   AddressController.getAllAddress
 );
 
@@ -19,7 +19,7 @@ addressRouter.get(
 addressRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission('Read_Address'),
+  CheckPermission(['Read_Address', 'All_Address_Permission']),
   objectIdValidation,
   AddressController.getOneAddress
 );
@@ -28,7 +28,7 @@ addressRouter.get(
 addressRouter.post(
   '/',
   authMiddleware,
-  CheckPermission('Create_Address'),
+  CheckPermission(['Create_Address', 'All_Address_Permission']),
   addressValidation,
   AddressController.createNewAddress
 );
@@ -36,7 +36,7 @@ addressRouter.post(
 addressRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission('Update_Address'),
+  CheckPermission(['Update_Address', 'All_Address_Permission']),
   objectIdValidation,
   addressValidation,
   AddressController.updateAddressById
@@ -45,7 +45,7 @@ addressRouter.patch(
 addressRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission('Delete_Address'),
+  CheckPermission(['Delete_Address', 'All_Address_Permission']),
   objectIdValidation,
   AddressController.deleteAddressById
 );

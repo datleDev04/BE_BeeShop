@@ -46,9 +46,6 @@ export const authMiddleware = async (req, res, next) => {
       list_name_role: userRoles,
     };
 
-    console.log(req.user._id);
-    console.log(req.user._id.toString());
-
     next();
   } catch (error) {
     next(new ApiError(StatusCodes.UNAUTHORIZED, new Error(error).message));

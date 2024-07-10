@@ -32,6 +32,24 @@ export class PermissionController {
       next(error);
     }
   };
+  static getPermissionByParentId = async (req, res, next) => {
+    try {
+      const permissions = await PermissionService.getPermissionByParentId(req);
+      console.log(permissions)
+
+      const returnData = permissions.map((permission) => {
+        return Transformer.transformObjectTypeSnakeToCamel(permission);
+      });
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Get Permission by parent_id successfully',
+        Transformer.transformObjectTypeSnakeToCamel(returnData)
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
   static getAllPermissions = async (req, res, next) => {
     try {
       const permissions = await PermissionService.getAllPermissions(req);
