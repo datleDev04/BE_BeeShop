@@ -10,13 +10,13 @@ const paymentTypeRouter = express.Router();
 paymentTypeRouter.get(
   '/',
   authMiddleware,
-  CheckPermission('Read_PaymentType'),
+  CheckPermission(['Read_PaymentType', 'All_PaymentType_Permission']),
   PaymentTypeController.getAllPaymentTypes
 );
 paymentTypeRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission('Read_PaymentType'),
+  CheckPermission(['Read_PaymentType', 'All_PaymentType_Permission']),
   objectIdValidation,
   PaymentTypeController.getPaymentType
 );
@@ -25,7 +25,7 @@ paymentTypeRouter.get(
 paymentTypeRouter.post(
   '/',
   authMiddleware,
-  CheckPermission('Create_PaymentType'),
+  CheckPermission(['Create_PaymentType', 'All_PaymentType_Permission']),
   paymentTypeValidation,
   PaymentTypeController.createNewPaymentType
 );
@@ -34,7 +34,7 @@ paymentTypeRouter.post(
 paymentTypeRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission('Update_PaymentType'),
+  CheckPermission(['Update_PaymentType', 'All_PaymentType_Permission']),
   objectIdValidation,
   paymentTypeValidation,
   PaymentTypeController.updatePaymentType
@@ -44,7 +44,7 @@ paymentTypeRouter.patch(
 paymentTypeRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission('Delete_PaymentType'),
+  CheckPermission(['Delete_PaymentType', 'All_PaymentType_Permission']),
   objectIdValidation,
   PaymentTypeController.deletePaymentType
 );
