@@ -11,7 +11,7 @@ const brandRouter = express.Router();
 brandRouter.get(
   '/',
   authMiddleware,
-  CheckPermission(['Read_Brand', 'All_Brand_Permission']),
+  CheckPermission(['Read_Brand']),
   BrandController.getAllBrand
 );
 
@@ -20,7 +20,7 @@ brandRouter.get(
   '/:id',
   objectIdValidation,
   authMiddleware,
-  CheckPermission(['Read_Brand', 'All_Brand_Permission']),
+  CheckPermission(['Read_Brand']),
   BrandController.getOneBrand
 );
 
@@ -28,7 +28,7 @@ brandRouter.get(
 brandRouter.post(
   '/',
   authMiddleware,
-  CheckPermission(['Create_Brand', 'All_Brand_Permission']),
+  CheckPermission(['Create_Brand']),
   createBrandValidation,
   BrandController.createNewBrand
 );
@@ -37,7 +37,7 @@ brandRouter.post(
 brandRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission(['Update_Brand', 'All_Brand_Permission']),
+  CheckPermission(['Update_Brand']),
   objectIdValidation,
   updateBrandValidation,
   BrandController.updateBrandById
@@ -47,7 +47,7 @@ brandRouter.patch(
 brandRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission(['Delete_Brand', 'All_Brand_Permission']),
+  CheckPermission(['Delete_Brand']),
   objectIdValidation,
   BrandController.deleteBrandById
 );
