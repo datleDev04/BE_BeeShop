@@ -20,13 +20,6 @@ permissionRouter.get(
   objectIdValidation, 
   PermissionController.getPermission
 );
-permissionRouter.get(
-  '/parent_id/:id', 
-  authMiddleware,
-  CheckPermission(['Read_Permission']), 
-  objectIdValidation, 
-  PermissionController.getPermissionByParentId
-);
 permissionRouter.post(
   '/', 
   authMiddleware,

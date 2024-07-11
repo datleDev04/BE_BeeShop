@@ -33,9 +33,6 @@ export default class PermissionService {
     return permission;
   };
 
-  static getPermissionByParentId = async (req) => {
-    return await Permission.find({ parent_id: req.params.id }).populate('parent_id').exec();
-  };
 
   static getAllPermissions = async (req) => {
     return await Permission.find().populate('parent_id').exec();

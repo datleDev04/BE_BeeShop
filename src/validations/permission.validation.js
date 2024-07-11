@@ -1,8 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../utils/ApiError.js';
 import {
-  OBJECT_ID_RULE,
-  OBJECT_ID_RULE_MESSAGE,
   validateBeforeCreateOrUpdate,
 } from '../utils/validators.js';
 import Joi from 'joi';
@@ -10,7 +8,8 @@ import Joi from 'joi';
 export const createPermissionValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().trim().required(),
-    parent_id: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).required(),
+    label: Joi.string().trim().required(),
+    module: Joi.string().trim().required(),
   });
 
   try {
@@ -24,7 +23,8 @@ export const createPermissionValidation = async (req, res, next) => {
 export const updatePermissionValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().trim(),
-    parent_id: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+    label: Joi.string().trim(),
+    module: Joi.string().trim(),
   });
 
   try {
