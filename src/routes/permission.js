@@ -14,6 +14,12 @@ permissionRouter.get(
   PermissionController.getAllPermissions
 );
 permissionRouter.get(
+  '/modules',
+  authMiddleware,
+  CheckPermission(['Read_Permission']), 
+  PermissionController.getAllModule
+);
+permissionRouter.get(
   '/:id', 
   authMiddleware,
   CheckPermission(['Read_Permission']), 

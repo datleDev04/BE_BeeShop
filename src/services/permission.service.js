@@ -5,7 +5,7 @@ import ApiError from '../utils/ApiError.js';
 
 export default class PermissionService {
   static createNewPermission = async (req) => {
-    const { name, parent_id } = req.body;
+    const { name, label, module } = req.body;
 
     // check existed permissions
     const existedPermission = await Permission.findOne({ name });
@@ -13,19 +13,13 @@ export default class PermissionService {
       throw new ApiError(StatusCodes.CONFLICT, 'Permission already exists');
     }
 
-    // check existed parent permissions
-    const existedParentPermission = await Permission.findOne({ _id: parent_id });
-    if (!existedParentPermission) {
-      throw new ApiError(StatusCodes.CONFLICT, 'Parent permission is not exists');
-    }
-
-    const newPermission = await Permission.create({ name, parent_id: parent_id });
+    const newPermission = await Permission.create({ name, label, module });
 
     return newPermission;
   };
 
   static getPermission = async (req) => {
-    const permission = await Permission.findById(req.params.id).populate('parent_id').exec();
+    const permission = await Permission.findById(req.params.id);
 
     if (!permission)
       throw new ApiError(StatusCodes.NOT_FOUND, getReasonPhrase(StatusCodes.NOT_FOUND));
@@ -35,7 +29,19 @@ export default class PermissionService {
 
 
   static getAllPermissions = async (req) => {
-    return await Permission.find().populate('parent_id').exec();
+
+    const { module } = req.query;
+    if (module) {
+      return await Permission.find({
+        module: module
+      })
+    }
+    return await Permission.find();
+  };
+
+  static getAllModule = async (req) => {
+    const modules = await Permission.find().distinct('module');
+    return modules;
   };
 
   static updatePermission = async (req, res) => {
@@ -45,12 +51,11 @@ export default class PermissionService {
       { _id: id },
       {
         name: req.body.name,
-        parent_id: req.body.parent_id,
+        module: req.body.module,
+        label: req.body.label,
       },
       { new: true }
     )
-      .populate('parent_id')
-      .exec();
 
     if (!permission) {
       throw new ApiError(404, 'Permission not found');

@@ -45,6 +45,15 @@ export class PermissionController {
       next(error);
     }
   };
+  static getAllModule = async (req, res, next) => {
+    try {
+      const modules = await PermissionService.getAllModule(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Get All Permission successfully', modules);
+    } catch (error) {
+      next(error);
+    }
+  };
 
   static updatePermission = async (req, res, next) => {
     try {
