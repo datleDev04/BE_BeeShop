@@ -10,28 +10,28 @@ const roleRouter = express.Router();
 roleRouter.get(
   '/', 
   authMiddleware, 
-  CheckPermission(['Read_Role', 'All_Role_Permission']),
+  CheckPermission(['Read_Role']),
   RoleController.getAllRole
 );
 
 roleRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission(['Read_Role', 'All_Role_Permission']),
+  CheckPermission(['Read_Role']),
   objectIdValidation,
   RoleController.getOneRole
 );
 roleRouter.post(
   '/',
   authMiddleware,
-  CheckPermission(['Create_Role', 'All_Role_Permission']),
+  CheckPermission(['Create_Role']),
   roleValidation,
   RoleController.createNewRole
 );
 roleRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission(['Update_Role', 'All_Role_Permission']),
+  CheckPermission(['Update_Role']),
   objectIdValidation,
   updateRoleValidation,
   RoleController.updateRoleById
@@ -39,7 +39,7 @@ roleRouter.patch(
 roleRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission(['Delete_Role', 'All_Role_Permission']),
+  CheckPermission(['Delete_Role']),
   objectIdValidation,
   RoleController.deleteRoleById
 );

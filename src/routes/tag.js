@@ -10,13 +10,13 @@ const tagRouter = express.Router();
 tagRouter.get(
   '/', 
   authMiddleware, 
-  CheckPermission(['Read_Tag', 'All_Tag_Permission']),
+  CheckPermission(['Read_Tag']),
   TagController.getAllTags
 );
 tagRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission(['Read_Tag', 'All_Tag_Permission']),
+  CheckPermission(['Read_Tag']),
   objectIdValidation,
   TagController.getOneTag
 );
@@ -25,7 +25,7 @@ tagRouter.get(
 tagRouter.post(
   '/',
   authMiddleware,
-  CheckPermission(['Create_Tag', 'All_Tag_Permission']),
+  CheckPermission(['Create_Tag']),
   tagValidation,
   TagController.createTag
 );
@@ -34,7 +34,7 @@ tagRouter.post(
 tagRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission(['Update_Tag', 'All_Tag_Permission']),
+  CheckPermission(['Update_Tag']),
   objectIdValidation,
   tagValidation,
   TagController.updateTagById
@@ -44,7 +44,7 @@ tagRouter.patch(
 tagRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission(['Delete_Tag', 'All_Tag_Permission']),
+  CheckPermission(['Delete_Tag']),
   objectIdValidation,
   TagController.deleteTagById
 );

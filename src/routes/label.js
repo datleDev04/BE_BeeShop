@@ -10,13 +10,13 @@ const labelRouter = express.Router();
 labelRouter.get(
   '/',
   authMiddleware,
-  CheckPermission(['Read_Label', 'All_Label_Permission']),
+  CheckPermission(['Read_Label']),
   LabelController.getAllLabel
 );
 labelRouter.get(
   '/:id', 
   authMiddleware,
-  CheckPermission(['Read_Label', 'All_Label_Permission']),
+  CheckPermission(['Read_Label']),
   objectIdValidation, 
   LabelController.getOneLabel
 );
@@ -25,7 +25,7 @@ labelRouter.get(
 labelRouter.post(
   '/',
   authMiddleware,
-  CheckPermission(['Create_Label', 'All_Label_Permission']),
+  CheckPermission(['Create_Label']),
   labelValidation,
   LabelController.createLabel
 );
@@ -34,7 +34,7 @@ labelRouter.post(
 labelRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission(['Update_Label', 'All_Label_Permission']),
+  CheckPermission(['Update_Label']),
   objectIdValidation,
   labelValidation,
   LabelController.updateLabelById
@@ -44,7 +44,7 @@ labelRouter.patch(
 labelRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission(['Delete_Label', 'All_Label_Permission']),
+  CheckPermission(['Delete_Label']),
   objectIdValidation,
   LabelController.deleteLabelById
 );

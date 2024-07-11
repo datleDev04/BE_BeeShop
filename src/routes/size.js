@@ -10,27 +10,27 @@ const sizeRouter = express.Router();
 sizeRouter.get(
   '/', 
   authMiddleware, 
-  CheckPermission(['Read_Size', 'All_Size_Permission']), 
+  CheckPermission(['Read_Size']), 
   SizeController.getAllSizes
 );
 sizeRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission(['Read_Size', 'All_Size_Permission']), 
+  CheckPermission(['Read_Size']), 
   objectIdValidation,
   SizeController.getSize
 );
 sizeRouter.post(
   '/',
   authMiddleware,
-  CheckPermission(['Create_Size', 'All_Size_Permission']),
+  CheckPermission(['Create_Size']),
   sizeValidation,
   SizeController.createNewSize
 );
 sizeRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission(['Update_Size', 'All_Size_Permission']),
+  CheckPermission(['Update_Size']),
   objectIdValidation,
   updateSizeValidation,
   SizeController.updateSize
@@ -38,7 +38,7 @@ sizeRouter.patch(
 sizeRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission(['Delete_Size', 'All_Size_Permission']),
+  CheckPermission(['Delete_Size']),
   objectIdValidation,
   SizeController.deleteSize
 );

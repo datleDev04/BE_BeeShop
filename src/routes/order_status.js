@@ -10,13 +10,13 @@ const orderStatusRouter = express.Router();
 orderStatusRouter.get(
   '/',
   authMiddleware,
-  CheckPermission(['Read_OrderStatus', 'All_OrderStatus_Permission']),
+  CheckPermission(['Read_OrderStatus']),
   OrderStatusController.getAllOrderStatus
 );
 orderStatusRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission(['Read_OrderStatus', 'All_OrderStatus_Permission']),
+  CheckPermission(['Read_OrderStatus']),
   objectIdValidation,
   OrderStatusController.getOneOrderStatus
 );
@@ -25,7 +25,7 @@ orderStatusRouter.get(
 orderStatusRouter.post(
   '/',
   authMiddleware,
-  CheckPermission(['Create_OrderStatus', 'All_OrderStatus_Permission']),
+  CheckPermission(['Create_OrderStatus']),
   orderStatusValidation,
   OrderStatusController.createOrderStatus
 );
@@ -34,7 +34,7 @@ orderStatusRouter.post(
 orderStatusRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission(['Update_OrderStatus', 'All_OrderStatus_Permission']),
+  CheckPermission(['Update_OrderStatus']),
   objectIdValidation,
   orderStatusValidation,
   OrderStatusController.updateOrderStatusById
@@ -44,7 +44,7 @@ orderStatusRouter.patch(
 orderStatusRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission(['Delete_OrderStatus', 'All_OrderStatus_Permission']),
+  CheckPermission(['Delete_OrderStatus']),
   objectIdValidation,
   OrderStatusController.deleteOrderStatusById
 );
