@@ -1,6 +1,6 @@
 import express from 'express';
 import { BrandController } from '../controllers/brand.controller.js';
-import { brandValidation } from '../validations/brand.validation.js';
+import { createBrandValidation, updateBrandValidation } from '../validations/brand.validation.js';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
@@ -9,9 +9,9 @@ const brandRouter = express.Router();
 
 // get all brand
 brandRouter.get(
-  '/', 
-  authMiddleware, 
-  CheckPermission(['Read_Brand','All_Brand_Permission']), 
+  '/',
+  authMiddleware,
+  CheckPermission(['Read_Brand', 'All_Brand_Permission']),
   BrandController.getAllBrand
 );
 
@@ -20,7 +20,7 @@ brandRouter.get(
   '/:id',
   objectIdValidation,
   authMiddleware,
-  CheckPermission(['Read_Brand','All_Brand_Permission']),
+  CheckPermission(['Read_Brand', 'All_Brand_Permission']),
   BrandController.getOneBrand
 );
 
@@ -28,8 +28,8 @@ brandRouter.get(
 brandRouter.post(
   '/',
   authMiddleware,
-  CheckPermission(['Create_Brand','All_Brand_Permission']),
-  brandValidation,
+  CheckPermission(['Create_Brand', 'All_Brand_Permission']),
+  createBrandValidation,
   BrandController.createNewBrand
 );
 
@@ -37,9 +37,9 @@ brandRouter.post(
 brandRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission(['Update_Brand','All_Brand_Permission']),
+  CheckPermission(['Update_Brand', 'All_Brand_Permission']),
   objectIdValidation,
-  brandValidation,
+  updateBrandValidation,
   BrandController.updateBrandById
 );
 
@@ -47,7 +47,7 @@ brandRouter.patch(
 brandRouter.delete(
   '/:id',
   authMiddleware,
-  CheckPermission(['Delete_Brand','All_Brand_Permission']),
+  CheckPermission(['Delete_Brand', 'All_Brand_Permission']),
   objectIdValidation,
   BrandController.deleteBrandById
 );

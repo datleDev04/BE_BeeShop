@@ -1,6 +1,9 @@
 import express from 'express';
 import { AddressController } from '../controllers/address.controller.js';
-import { addressValidation } from '../validations/address.validation.js';
+import {
+  addressCreateValidation,
+  addressUpdateValidation,
+} from '../validations/address.validation.js';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
@@ -29,7 +32,7 @@ addressRouter.post(
   '/',
   authMiddleware,
   CheckPermission(['Create_Address', 'All_Address_Permission']),
-  addressValidation,
+  addressCreateValidation,
   AddressController.createNewAddress
 );
 
@@ -38,7 +41,7 @@ addressRouter.patch(
   authMiddleware,
   CheckPermission(['Update_Address', 'All_Address_Permission']),
   objectIdValidation,
-  addressValidation,
+  addressUpdateValidation,
   AddressController.updateAddressById
 );
 
