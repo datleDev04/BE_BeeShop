@@ -10,9 +10,13 @@ const permissionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    parent_id: {
-      type: Schema.Types.ObjectId,
-      ref: 'Permission',
+    label: {
+      type: String,
+      required: true,
+    },
+    module: {
+      type: String,
+      required: true,
     }
   },
   {
