@@ -14,6 +14,7 @@ import voucherRouter from './voucher.js';
 import voucherTypeRouter from './voucher_type.js';
 import paymentStatusRouter from './payment_status.js';
 import paymentTypeRouter from './payment_type.js';
+import orderStatusRouter from './order_status.js';
 
 const router = express.Router();
 
@@ -32,5 +33,6 @@ router.use('/colors', colorRouter);
 router.use('/sizes', sizeRouter);
 router.use('/payment-statuses', paymentStatusRouter);
 router.use('/payment-types', paymentTypeRouter);
+router.use('/order-statuses', orderStatusRouter);
 
 export default router;

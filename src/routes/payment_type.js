@@ -3,7 +3,7 @@ import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 import { PaymentTypeController } from '../controllers/payment_type.controller.js';
-import { paymentTypeValidation } from '../validations/paymen_type.validation.js';
+import { paymentTypeValidation } from '../validations/payment_type.validation.js';
 
 const paymentTypeRouter = express.Router();
 
