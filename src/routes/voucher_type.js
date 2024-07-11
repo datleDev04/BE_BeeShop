@@ -10,13 +10,13 @@ const voucherTypeRouter = express.Router();
 voucherTypeRouter.get(
   '/',
   authMiddleware,
-  CheckPermission('Read_VoucherType'),
+  CheckPermission(['Read_VoucherType', 'All_VoucherType_Permission']),
   VoucherTypeController.getAllVoucherType
 );
 voucherTypeRouter.get(
   '/:id',
   authMiddleware,
-  CheckPermission('Read_VoucherType'),
+  CheckPermission(['Read_VoucherType', 'All_VoucherType_Permission']),
   objectIdValidation,
   VoucherTypeController.getOneVoucherType
 );
@@ -25,13 +25,13 @@ voucherTypeRouter.post(
   '/',
   voucherTypeValidation,
   authMiddleware,
-  CheckPermission('Create_VoucherType'),
+  CheckPermission(['Create_VoucherType', 'All_VoucherType_Permission']),
   VoucherTypeController.createNewVoucherType
 );
 voucherTypeRouter.patch(
   '/:id',
   authMiddleware,
-  CheckPermission('Update_VoucherType'),
+  CheckPermission(['Update_VoucherType', 'All_VoucherType_Permission']),
   objectIdValidation,
   voucherTypeValidation,
   VoucherTypeController.updateVoucherTypeById
@@ -40,7 +40,7 @@ voucherTypeRouter.delete(
   '/:id',
   objectIdValidation,
   authMiddleware,
-  CheckPermission('Delete_VoucherType'),
+  CheckPermission(['Delete_VoucherType', 'All_VoucherType_Permission']),
   VoucherTypeController.deleteVoucherTypeById
 );
 
