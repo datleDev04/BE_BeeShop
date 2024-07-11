@@ -27,7 +27,7 @@ export default class AddressService {
   };
 
   static getAllAddress = async (req) => {
-    const address = await Address.find().populate('user_id').exec();
+    const address = await Address.find().populate('user_id').sort({ createdAt: -1 }).exec();
     return address;
   };
 

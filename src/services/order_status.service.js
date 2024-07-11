@@ -4,7 +4,7 @@ import OrderStatus from '../models/Order_Status.js';
 
 export class OrderStatusService {
   static getAllOrderStatus = async (req) => {
-    return await OrderStatus.find();
+    return await OrderStatus.find().sort({ createdAt: -1 });
   };
 
   static getOneOrderStatus = async (req) => {

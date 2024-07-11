@@ -2,7 +2,7 @@ import Tags from '../models/Tags.js';
 
 export class TagService {
   static getAllTags = async (req) => {
-    return await Tags.find();
+    return await Tags.find().sort({ createdAt: -1 });
   };
 
   static getOneTag = async (req) => {

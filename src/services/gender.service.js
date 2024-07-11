@@ -17,7 +17,7 @@ export default class GenderService {
   };
 
   static getAllGender = async (req) => {
-    const genders = await Gender.find().exec();
+    const genders = await Gender.find().sort({ createdAt: -1 }).exec();
     return genders;
   };
 

@@ -41,7 +41,7 @@ export default class VoucherService {
   };
 
   static getAllVouchers = async () => {
-    return await Voucher.find().populate('voucher_type').exec();
+    return await Voucher.find().populate('voucher_type').sort({ createdAt: -1 }).exec();
   };
 
   static getOneVoucher = async (id) => {

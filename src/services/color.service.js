@@ -17,7 +17,7 @@ export default class ColorService {
   };
 
   static getAllColor = async (req) => {
-    const colors = await Color.find().exec();
+    const colors = await Color.find().sort({ createdAt: -1 }).exec();
     return colors;
   };
 

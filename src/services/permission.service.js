@@ -34,13 +34,13 @@ export default class PermissionService {
     if (module) {
       return await Permission.find({
         module: module
-      })
+      }).sort({ createdAt: -1 })
     }
-    return await Permission.find();
+    return await Permission.find().sort({ createdAt: -1 });
   };
 
   static getAllModule = async (req) => {
-    const modules = await Permission.find().distinct('module');
+    const modules = await Permission.find().sort({ createdAt: -1 }).distinct('module');
     return modules;
   };
 

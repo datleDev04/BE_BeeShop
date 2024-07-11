@@ -2,7 +2,7 @@ import Labels from '../models/Labels.js';
 
 export class LabelService {
   static getAllLabel = async (req) => {
-    return await Labels.find();
+    return await Labels.find().sort({ createdAt: -1 });
   };
 
   static getOneLabel = async (req) => {

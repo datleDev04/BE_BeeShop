@@ -17,7 +17,7 @@ export default class PaymentStatusService {
   };
 
   static getAllPaymentStatus = async (req) => {
-    const paymentStatuses = await PaymentStatus.find().exec();
+    const paymentStatuses = await PaymentStatus.find().sort({ createdAt: -1 }).exec();
     return paymentStatuses;
   };
 

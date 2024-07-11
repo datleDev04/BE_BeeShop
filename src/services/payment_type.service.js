@@ -17,7 +17,7 @@ export default class PaymentTypeService {
   };
 
   static getAllPaymentType = async (req) => {
-    const paymentTypes = await PaymentType.find().exec();
+    const paymentTypes = await PaymentType.find().sort({ createdAt: -1 }).exec();
     return paymentTypes;
   };
 

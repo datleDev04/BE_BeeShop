@@ -4,7 +4,7 @@ import ApiError from '../utils/ApiError.js';
 
 export default class BrandService {
   static handleGetAllBrand = async (req) => {
-    const brands = await Brand.find();
+    const brands = await Brand.find().sort({ createdAt: -1 });
     return brands;
   };
 

@@ -18,7 +18,7 @@ export default class RoleService {
   };
 
   static getAllRole = async (req) => {
-    const roles = await Role.find().populate('permissions').exec();
+    const roles = await Role.find().populate('permissions').sort({ createdAt: -1 }).exec();
     return roles;
   };
 

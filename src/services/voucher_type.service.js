@@ -18,7 +18,7 @@ export default class VoucherTypeService {
   };
 
   static getAllVoucherType = async (req) => {
-    const voucherTypes = await VoucherType.find();
+    const voucherTypes = await VoucherType.find().sort({ createdAt: -1 });
     return voucherTypes;
   };
 

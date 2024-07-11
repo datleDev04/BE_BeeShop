@@ -24,7 +24,7 @@ export default class SizeService {
   };
 
   static getAllSize = async (req) => {
-    const sizes = await Size.find().populate('gender').exec();
+    const sizes = await Size.find().populate('gender').sort({ createdAt: -1 }).exec();
     return sizes;
   };
 
