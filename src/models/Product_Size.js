@@ -8,10 +8,12 @@ const productSizeSchema = new mongoose.Schema(
   {
     size_id: {
       type: mongoose.Schema.Types.ObjectId,
+      required: true,
       ref: 'Color',
     },
     product_id: {
       type: mongoose.Schema.Types.ObjectId,
+      required: true,
       ref: 'Product',
     },
   },

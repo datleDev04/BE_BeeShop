@@ -8,6 +8,7 @@ const commentSchema = new mongoose.Schema(
   {
     content: {
       type: String,
+      required: true,
     },
     image_urls: {
       type: [String],
@@ -18,6 +19,7 @@ const commentSchema = new mongoose.Schema(
     },
     product_id: {
       type: mongoose.Schema.Types.ObjectId,
+      required: true,
       ref: 'Product',
     },
   },

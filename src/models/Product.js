@@ -45,10 +45,12 @@ const productSchema = new mongoose.Schema(
         ref: 'Variant',
       },
     ],
-    label: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Label',
-    },
+    label: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Label',
+      },
+    ],
     isPublic: {
       type: Boolean,
       default: false,
@@ -60,13 +62,13 @@ const productSchema = new mongoose.Schema(
     product_color_id: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ProductColor',
+        ref: 'Product_Color',
       },
     ],
     product_size_id: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ProductSize',
+        ref: 'Product_Size',
       },
     ],
   },
