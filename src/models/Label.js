@@ -1,10 +1,10 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
 // schema User variables
 const DOCUMENT_NAME = 'Label';
 const COLLECTION_NAME = 'Labels';
 
-const LabelSchema = new mongoose.Schema(
+const labelSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -22,4 +22,4 @@ const LabelSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model(DOCUMENT_NAME, LabelSchema);
+export default mongoose.model(DOCUMENT_NAME, labelSchema);

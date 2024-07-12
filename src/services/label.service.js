@@ -1,17 +1,17 @@
-import Labels from '../models/Labels.js';
+import Label from '../models/Label.js';
 
 export class LabelService {
   static getAllLabel = async (req) => {
-    return await Labels.find().sort({ createdAt: -1 });
+    return await Label.find().sort({ createdAt: -1 });
   };
 
   static getOneLabel = async (req) => {
-    return await Labels.findById(req.params.id);
+    return await Label.findById(req.params.id);
   };
 
   static createLabel = async (req) => {
     const { name, description } = req.body;
-    const newLabel = await Labels.create({
+    const newLabel = await Label.create({
       name,
       description,
     });
@@ -20,7 +20,7 @@ export class LabelService {
 
   static updateLabelById = async (req) => {
     const { name, description } = req.body;
-    const updatedLabel = await Labels.findByIdAndUpdate(
+    const updatedLabel = await Label.findByIdAndUpdate(
       req.params.id,
       {
         name,
@@ -34,6 +34,6 @@ export class LabelService {
   };
 
   static deleteLabelBydId = async (req) => {
-    return await Labels.findByIdAndDelete(req.params.id);
+    return await Label.findByIdAndDelete(req.params.id);
   };
 }
