@@ -35,6 +35,18 @@ export class AuthController {
     }
   };
 
+  static loginGoogle = async (req, res, next) => {
+    try {
+      const { accessToken, refreshToken } = await AuthService.loginGoogle(req);
+
+      res.redirect(
+        `${process.env.CLIENT_BASE_URL}/login/success?accessToken=${accessToken}&refreshToken=${refreshToken}`
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
+
   static logout = async (req, res, next) => {
     try {
       await AuthService.logout(req);

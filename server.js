@@ -3,18 +3,21 @@ import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import cors from 'cors';
 import connectDatabase from './src/configs/database.js';
 import environment from './src/configs/enviroment.js';
 import { errorHandlingMiddleware } from './src/middleware/errorHandlingMiddleware.js';
 import ApiError from './src/utils/ApiError.js';
-import cors from 'cors';
 import router from './src/routes/index.js';
+import configurePassport from './src/utils/passport.js';
+import passport from 'passport';
 
 const PORT = environment.app.port;
 
 const app = express();
 
 connectDatabase();
+configurePassport(passport);
 
 // init middleware
 app.use(cors());
