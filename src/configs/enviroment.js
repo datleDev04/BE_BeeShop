@@ -1,4 +1,4 @@
-const dev = {
+const development = {
   app: {
     port: process.env.DEV_APP_PORT || 8080,
   },
@@ -8,7 +8,7 @@ const dev = {
 };
 
 // môi trường product tính sau
-const pro = {
+const production = {
   app: {
     port: process.env.PRO_APP_PORT || 8080,
   },
@@ -17,7 +17,7 @@ const pro = {
   },
 };
 
-const environment = { dev, pro };
-export const env = process.env.NODE_ENV || 'dev';
+const environment = { development, production };
+export const env = process.env.NODE_ENV || 'development';
 
 export default environment[env];

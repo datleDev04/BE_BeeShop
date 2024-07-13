@@ -1,40 +1,36 @@
-# Ignore các file temporary
-.temp
-.tmp
+# Ignore node_modules, sẽ được cài đặt lại bên trong container
+node_modules
 
-# Ignore các file logs
+# Ignore log files
 *.log
 
-# Ignore các file và thư mục được tạo bởi IDEs và editors
-.idea/
-.vscode/
+# Ignore build output
+dist
 
-# Ignore các file và thư mục build, cache
-node_modules/
-build/
-dist/
-*.exe
-*.msi
-*.rar
-*.zip
-*.gz
-*.tar
+# Ignore môi trường config files
+.env
 
-# Ignore các file và thư mục khi sử dụng Python
-__pycache__/
-*.pyc
-*.pyo
+# Ignore Docker files
+Dockerfile
+Dockerfile.dev
+Dockerfile.prod
+docker-compose.yml
 
-# Ignore các file và thư mục khi sử dụng Java
-target/
-*.class
+# Ignore IDE files
+.vscode
+.idea
 
-# Ignore file .git và các file metadata khi sử dụng Git
-.git/
-.gitignore
-.gitattributes
+# Ignore hệ điều hành đặc biệt và các tệp hệ thống khác
 .DS_Store
-*/.gitkeep
+Thumbs.db
 
-# Ignore các file cấu hình riêng tư
-secrets.env
+# Ignore test files và coverage
+coverage
+test
+__tests__
+__mocks__
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.swo

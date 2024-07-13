@@ -1,0 +1,13 @@
+services:
+  app:
+    container_name: bee_mely
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+    command: npm run dev
