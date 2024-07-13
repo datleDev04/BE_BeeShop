@@ -11,6 +11,12 @@ const userSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
+    google_id: {
+      type: String,
+    },
+    avatar_url: {
+      type: String,
+    },
     email: {
       type: String,
       required: true,
@@ -18,7 +24,6 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
     },
     roles: [
       {
