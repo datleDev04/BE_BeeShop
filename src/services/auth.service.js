@@ -2,9 +2,9 @@ import User from '../models/User.js';
 import ApiError from '../utils/ApiError.js';
 import bcrypt from 'bcrypt';
 import jwtUtils from '../utils/jwt.js';
-import Black_Tokens from '../models/Black_Tokens.js';
 import User_Token from '../models/User_Token.js';
 import { StatusCodes } from 'http-status-codes';
+import Black_Tokens from '../models/Black_Tokens.js';
 
 export class AuthService {
   static register = async (req) => {
@@ -49,6 +49,13 @@ export class AuthService {
       throw new ApiError(StatusCodes.BAD_REQUEST, "Couldn't find User");
     }
 
+    if (user.google_id && !user.password) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        'Your account must be signed in with google provider'
+      );
+    }
+
     // compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -76,6 +83,23 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+  };
+
+  static loginGoogle = async (req) => {
+    if (!req.user) {
+      throw new ApiError(401, 'Authentication failed');
+    }
+
+    const accessToken = jwtUtils.createAccessToken(req.user._id);
+
+    const refreshToken = jwtUtils.createRefreshToken();
+
+    await User_Token.findOneAndUpdate(
+      { user_id: req.user._id },
+      { refresh_token: refreshToken },
+      { upsert: true, new: true }
+    );
+    return { accessToken, refreshToken };
   };
 
   static logout = async (req) => {
