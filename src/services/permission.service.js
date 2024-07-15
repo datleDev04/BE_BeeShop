@@ -28,7 +28,6 @@ export default class PermissionService {
     return permission;
   };
 
-
   static getAllPermissions = async (req) => {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['module', 'label']);
@@ -36,7 +35,6 @@ export default class PermissionService {
     const permissions = await Permission.paginate(filter, options);
     return permissions;
   };
-
 
   static getAllModule = async (req) => {
     const modules = await Permission.find().sort({ createdAt: -1 }).distinct('module');
@@ -54,7 +52,7 @@ export default class PermissionService {
         label: req.body.label,
       },
       { new: true }
-    )
+    );
 
     if (!permission) {
       throw new ApiError(404, 'Permission not found');

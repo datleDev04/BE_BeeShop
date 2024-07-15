@@ -7,13 +7,14 @@ export class RoleController {
   static getAllRole = async (req, res, next) => {
     try {
       const roles = await RoleService.getAllRole(req);
-      
+
       const transformedRole = {
         ...roles,
-        docs: roles.docs.map((role) => Transformer.transformObjectTypeSnakeToCamel(role.toObject()))
+        docs: roles.docs.map((role) =>
+          Transformer.transformObjectTypeSnakeToCamel(role.toObject())
+        ),
       };
 
-    
       SuccessResponse(res, StatusCodes.OK, 'Get All Role successfully', transformedRole);
     } catch (error) {
       next(error);

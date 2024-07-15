@@ -8,12 +8,7 @@ import { CheckPermission } from '../utils/CheckPermission.js';
 const brandRouter = express.Router();
 
 // get all brand
-brandRouter.get(
-  '/',
-  authMiddleware,
-  CheckPermission(['Read_Brand']),
-  BrandController.getAllBrand
-);
+brandRouter.get('/', authMiddleware, CheckPermission(['Read_Brand']), BrandController.getAllBrand);
 
 // get one brand by id
 brandRouter.get(

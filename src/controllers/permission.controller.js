@@ -38,10 +38,17 @@ export class PermissionController {
 
       const transformedPermissions = {
         ...permissions,
-        docs: permissions.docs.map((permission) => Transformer.transformObjectTypeSnakeToCamel(permission.toObject()))
+        docs: permissions.docs.map((permission) =>
+          Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
+        ),
       };
 
-      SuccessResponse(res, StatusCodes.OK, 'Get All Permission successfully', transformedPermissions);
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Get All Permission successfully',
+        transformedPermissions
+      );
     } catch (error) {
       next(error);
     }
