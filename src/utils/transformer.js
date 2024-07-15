@@ -20,6 +20,19 @@ class Transformer {
     }
     return obj;
   }
+
+  static removeDeletedField(obj) {
+    if (Array.isArray(obj)) {
+      return obj.map((item) => Transformer.removeDeletedField(item));
+    } else if (obj !== null && obj.constructor === Object) {
+      const { deleted, ...rest } = obj;
+      Object.keys(rest).forEach((key) => {
+        rest[key] = Transformer.removeDeletedField(rest[key]);
+      });
+      return rest;
+    }
+    return obj;
+  }
 }
 
 export { Transformer };

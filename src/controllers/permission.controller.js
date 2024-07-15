@@ -48,7 +48,7 @@ export class PermissionController {
         res,
         StatusCodes.OK,
         'Get All Permission successfully',
-        transformedPermissions,
+        Transformer.removeDeletedField(transformedPermissions),
         other
       );
     } catch (error) {
