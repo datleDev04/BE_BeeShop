@@ -37,9 +37,7 @@ export default class RoleService {
       };
 
     if (_pagination != true) {
-      options = {
-        pagination: false
-      }
+      options.pagination = false
     }
 
     const name = req.body.name;

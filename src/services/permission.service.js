@@ -46,9 +46,7 @@ export default class PermissionService {
     };
 
     if (_pagination != true) {
-      options = {
-        pagination: false
-      }
+      options.pagination = false
     }
 
     const { module, label } = req.body
