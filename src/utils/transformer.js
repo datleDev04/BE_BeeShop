@@ -9,10 +9,6 @@ class Transformer {
     } else if (obj !== null && obj.constructor === Object) {
       const newObj = {};
       Object.keys(obj).forEach((key) => {
-        // Loại bỏ các trường createdAt và updatedAt nếu chúng tồn tại
-        if (key === 'createdAt' || key === 'updatedAt') {
-          return;
-        }
         let newKey = Transformer.snakeToCamel(key);
         // Trường hợp đặc biệt cho _id thành id
         if (key === '_id') {
