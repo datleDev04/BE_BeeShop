@@ -32,7 +32,6 @@ export class AuthService {
       user_name,
       email,
       password: bcrypt.hashSync(password, 10),
-      google_id: ""
     });
 
     delete newUser.password;

@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
     },
     google_id: {
       type: String,
-      default: ""
+      sparse : true
     },
     avatar_url: {
       type: String,
