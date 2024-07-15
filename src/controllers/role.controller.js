@@ -6,14 +6,17 @@ import { SuccessResponse } from '../utils/response.js';
 export class RoleController {
   static getAllRole = async (req, res, next) => {
     try {
-      let roles = await RoleService.getAllRole(req);
+      const roles = await RoleService.getAllRole(req);
 
-      roles.docs.map((role) => {
-        return Transformer.transformObjectTypeSnakeToCamel(role.toObject());
-      });
+      console.log(roles)
+
+      const transformedRole = {
+        ...roles,
+        docs: roles.docs.map((role) => Transformer.transformObjectTypeSnakeToCamel(role.toObject()))
+      };
 
     
-      SuccessResponse(res, StatusCodes.OK, 'Get All Role successfully', roles);
+      SuccessResponse(res, StatusCodes.OK, 'Get All Role successfully', transformedRole);
     } catch (error) {
       next(error);
     }
