@@ -16,6 +16,6 @@ export function CheckPermission(validPermissions) {
       return next();
     }
 
-    next(new ApiError(StatusCodes.UNAUTHORIZED, "You don't have permission to do this action"));
+    next(new ApiError(StatusCodes.FORBIDDEN, "You don't have permission to do this action"));
   };
 }
