@@ -19,6 +19,20 @@ export const createPermissionValidation = async (req, res, next) => {
     next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
   }
 };
+export const searchPermissionValidation = async (req, res, next) => {
+  const correctCondition = Joi.object({
+    label: Joi.string().trim(),
+    module: Joi.string().trim(),
+  });
+
+  try {
+    await validateBeforeCreateOrUpdate(correctCondition, req.body);
+    next();
+  } catch (error) {
+    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
+  }
+};
+
 
 export const updatePermissionValidation = async (req, res, next) => {
   const correctCondition = Joi.object({

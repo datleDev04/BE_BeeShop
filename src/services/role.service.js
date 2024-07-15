@@ -28,8 +28,8 @@ export default class RoleService {
     } = req.query;
 
       let options = {
-        page: _page,
-        limit: _limit,
+        page: parseInt(_page, 10),
+        limit: parseInt(_limit, 10),
         sort: {
           [_sort]: _order === 'desc' ? 1 : -1,
         },

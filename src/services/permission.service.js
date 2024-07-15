@@ -29,15 +29,44 @@ export default class PermissionService {
 
 
   static getAllPermissions = async (req) => {
+    let {
+      _page = 1,
+      _limit = 10,
+      _order = 'asc',
+      _sort = 'createAt',
+      _pagination = true,
+    } = req.query;
 
-    const { module } = req.query;
-    if (module) {
-      return await Permission.find({
-        module: module
-      }).sort({ createdAt: -1 })
+    let options = {
+      page: _page,
+      limit: _limit,
+      sort: {
+        [_sort]: _order === 'desc' ? 1 : -1,
+      },
+    };
+
+    if (_pagination != true) {
+      options = {
+        pagination: false
+      }
     }
-    return await Permission.find().sort({ createdAt: -1 });
+
+    const { module, label } = req.body
+
+    let filter = {}
+
+    if (module) {
+      filter.module =  { $regex: `.*${module}.*`, $options: 'i' };;
+    }
+  
+    if (label) {
+      filter.label = { $regex: `.*${label}.*`, $options: 'i' };
+    }  
+
+    const permissions = await Permission.paginate(filter, options);
+    return permissions;
   };
+
 
   static getAllModule = async (req) => {
     const modules = await Permission.find().sort({ createdAt: -1 }).distinct('module');
