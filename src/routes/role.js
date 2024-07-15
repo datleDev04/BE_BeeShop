@@ -1,5 +1,5 @@
 import express from 'express';
-import { roleValidation, updateRoleValidation } from '../validations/role.validation.js';
+import { roleValidation, searchRoleValidation, updateRoleValidation } from '../validations/role.validation.js';
 import { RoleController } from '../controllers/role.controller.js';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
@@ -11,6 +11,7 @@ roleRouter.get(
   '/', 
   authMiddleware, 
   CheckPermission(['Read_Role']),
+  searchRoleValidation,
   RoleController.getAllRole
 );
 
