@@ -22,7 +22,7 @@ export default class RoleService {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name']);
 
-    const roles = await Role.paginate(filter, options)
+    const roles = await Role.paginate(filter, options);
 
     await Role.populate(roles.docs, { path: 'permissions' });
 

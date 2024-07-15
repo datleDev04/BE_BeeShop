@@ -27,7 +27,7 @@ const roleSchema = new mongoose.Schema(
   }
 );
 
-const plugins = [MongooseDelete, mongoosePaginate]
+const plugins = [MongooseDelete, mongoosePaginate];
 
 plugins.forEach((plugin) => {
   roleSchema.plugin(plugin, {

@@ -19,7 +19,7 @@ const permissionSchema = new mongoose.Schema(
     module: {
       type: String,
       required: true,
-    }
+    },
   },
   {
     timestamps: true,
@@ -28,7 +28,7 @@ const permissionSchema = new mongoose.Schema(
   }
 );
 
-const plugins = [MongooseDelete, mongoosePaginate]
+const plugins = [MongooseDelete, mongoosePaginate];
 
 plugins.forEach((plugin) => {
   permissionSchema.plugin(plugin, {

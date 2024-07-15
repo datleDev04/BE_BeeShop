@@ -36,18 +36,18 @@ export class PermissionController {
     try {
       const permissions = await PermissionService.getAllPermissions(req);
 
-      const transformedPermissions = 
-        permissions.docs.map((permission) => Transformer.transformObjectTypeSnakeToCamel(permission.toObject()))
+      const transformedPermissions = permissions.docs.map((permission) =>
+        Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
+      );
 
-      
       const { docs, ...otherFields } = permissions;
       const other = {
-        ...otherFields
+        ...otherFields,
       };
       SuccessResponse(
-        res, 
-        StatusCodes.OK, 
-        'Get All Permission successfully', 
+        res,
+        StatusCodes.OK,
+        'Get All Permission successfully',
         transformedPermissions,
         other
       );

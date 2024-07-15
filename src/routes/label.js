@@ -7,17 +7,12 @@ import { CheckPermission } from '../utils/CheckPermission.js';
 
 const labelRouter = express.Router();
 
+labelRouter.get('/', authMiddleware, CheckPermission(['Read_Label']), LabelController.getAllLabel);
 labelRouter.get(
-  '/',
+  '/:id',
   authMiddleware,
   CheckPermission(['Read_Label']),
-  LabelController.getAllLabel
-);
-labelRouter.get(
-  '/:id', 
-  authMiddleware,
-  CheckPermission(['Read_Label']),
-  objectIdValidation, 
+  objectIdValidation,
   LabelController.getOneLabel
 );
 

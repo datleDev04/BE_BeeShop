@@ -1,5 +1,9 @@
 import express from 'express';
-import { roleValidation, searchRoleValidation, updateRoleValidation } from '../validations/role.validation.js';
+import {
+  roleValidation,
+  searchRoleValidation,
+  updateRoleValidation,
+} from '../validations/role.validation.js';
 import { RoleController } from '../controllers/role.controller.js';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
@@ -8,8 +12,8 @@ import { CheckPermission } from '../utils/CheckPermission.js';
 const roleRouter = express.Router();
 
 roleRouter.get(
-  '/', 
-  authMiddleware, 
+  '/',
+  authMiddleware,
   CheckPermission(['Read_Role']),
   searchRoleValidation,
   RoleController.getAllRole

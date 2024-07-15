@@ -3,6 +3,6 @@ export const SuccessResponse = (res, statusCode, message, metaData, other) => {
     message: message,
     statusCode: statusCode,
     metaData: metaData,
-    ...other
+    ...other,
   });
 };

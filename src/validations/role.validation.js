@@ -52,4 +52,3 @@ export const updateRoleValidation = async (req, res, next) => {
     next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
   }
 };
-
