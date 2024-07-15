@@ -7,9 +7,7 @@ export class RoleController {
   static getAllRole = async (req, res, next) => {
     try {
       const roles = await RoleService.getAllRole(req);
-
-      console.log(roles)
-
+      
       const transformedRole = {
         ...roles,
         docs: roles.docs.map((role) => Transformer.transformObjectTypeSnakeToCamel(role.toObject()))
