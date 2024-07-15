@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import Role from '../models/Role.js';
 import ApiError from '../utils/ApiError.js';
+import { paginate } from 'mongoose-paginate-v2';
 
 export default class RoleService {
   static createNewRole = async (req) => {
@@ -18,7 +19,37 @@ export default class RoleService {
   };
 
   static getAllRole = async (req) => {
-    const roles = await Role.find().populate('permissions').sort({ createdAt: -1 }).exec();
+    let {
+      _page = 1,
+      _limit = 10,
+      _order = 'asc',
+      _sort = 'createAt',
+      _pagination = true,
+    } = req.query;
+
+      let options = {
+        page: _page,
+        limit: _limit,
+        sort: {
+          [_sort]: _order === 'desc' ? 1 : -1,
+        },
+        populate: 'permissions',
+      };
+
+    if (_pagination != true) {
+      options = {
+        pagination: false
+      }
+    }
+
+    const name = req.body.name;
+    let filter = {};
+    if (name) {
+      filter = { name: { $regex: `.*${name}.*`, $options: 'i' } };
+    }
+
+    const roles = Role.paginate(filter, options)
+
     return roles;
   };
 

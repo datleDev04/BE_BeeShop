@@ -6,7 +6,7 @@ class jwtUtils {
     const { ACCESS_SECRET } = process.env;
 
     return jwt.sign({ user_id }, ACCESS_SECRET, {
-      expiresIn: 60 * 15,
+      expiresIn: 60 * 60,
     });
   };
 
