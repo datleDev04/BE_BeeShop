@@ -18,6 +18,7 @@ const productSchema = new mongoose.Schema(
     },
     description: {
       type: String,
+      required: true,
     },
     regular_price: {
       type: Number,
@@ -29,46 +30,53 @@ const productSchema = new mongoose.Schema(
     images: {
       type: [String],
     },
-    tag_list: [
+    tags: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tag',
+        required: true,
       },
     ],
-    gender_id: {
+    gender: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Gender',
+      required: true,
     },
-    variant_ids: [
+    variants: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Variant',
+        required: true,
       },
     ],
-    label: [
+    labels: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Label',
+        required: true,
       },
     ],
     isPublic: {
       type: Boolean,
       default: false,
     },
-    brand_id: {
+    brand: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Brand',
+      required: true,
     },
-    product_color_id: [
+    product_colors: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product_Color',
+        required: true,
       },
     ],
-    product_size_id: [
+    product_sizes: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product_Size',
+        required: true,
       },
     ],
   },
