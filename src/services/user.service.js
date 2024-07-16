@@ -8,14 +8,25 @@ export default class UserService {
   static updateUser = async (req) => {
     const { user_name, password, avatar_url, email, roles, address_list } = req.body;
 
-    const updateFields = {
+    let updateFields = {
       ...(user_name && { user_name }),
       ...(password && { password: bcrypt.hashSync(password, 10) }),
       ...(avatar_url && { avatar_url }),
       ...(email && { email }),
-      ...(roles && { roles }),
       ...(address_list && { address_list }),
     };
+
+    const userPermissions = req.user.roles.flatMap((role) =>
+      role.permissions.map((permission) => permission.name)
+    );
+
+    if (!userPermissions.includes('Read_User') && req.body.roles) {
+      throw new ApiError(StatusCodes.FORBIDDEN, 'You do not have permission to update roles');
+    }
+
+    if (userPermissions.includes('Read_User')) {
+      updateFields = { ...updateFields, ...(roles && { roles }) };
+    }
 
     const updatedUser = await User.findByIdAndUpdate(req.params.id, updateFields, { new: true })
       .populate([
@@ -53,6 +64,14 @@ export default class UserService {
 
     if (!user) {
       throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+    }
+
+    const userPermissions = req.user.roles.flatMap((role) =>
+      role.permissions.map((permission) => permission.name)
+    );
+
+    if (!userPermissions.includes('Read_User')) {
+      user.roles = undefined;
     }
 
     user.password = undefined;

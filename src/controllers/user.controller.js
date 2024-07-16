@@ -7,6 +7,7 @@ export class UserController {
   static updateUser = async (req, res, next) => {
     try {
       const updatedUser = await UserService.updateUser(req);
+
       SuccessResponse(
         res,
         StatusCodes.OK,
@@ -26,25 +27,6 @@ export class UserController {
         StatusCodes.OK,
         'Get One User successfully',
         Transformer.transformObjectTypeSnakeToCamel(user.toObject())
-      );
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  static getProfileUser = async (req, res, next) => {
-    try {
-      const user = await UserService.getOneUser({ params: { id: req.user._id } });
-      const userProfile = {
-        ...user.toObject(),
-        list_name_permission: req.user.list_name_permission,
-        list_name_role: req.user.list_name_role,
-      };
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get Profile successfully',
-        Transformer.transformObjectTypeSnakeToCamel(userProfile)
       );
     } catch (error) {
       next(error);
