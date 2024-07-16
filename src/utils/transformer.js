@@ -10,13 +10,16 @@ class Transformer {
       const newObj = {};
       Object.keys(obj).forEach((key) => {
         let newKey = Transformer.snakeToCamel(key);
+        if (key === 'createdAt' || key === 'updatedAt') {
+          return;
+        }
         // Trường hợp đặc biệt cho _id thành id
         if (key === '_id') {
           newKey = 'id';
         }
         newObj[newKey] = Transformer.transformObjectTypeSnakeToCamel(obj[key]);
       });
-      return newObj;
+      return Transformer.removeDeletedField(newObj); // Gọi removeDeletedField ở đây
     }
     return obj;
   }

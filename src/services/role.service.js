@@ -37,6 +37,7 @@ export default class RoleService {
   static updateRoleById = async (req) => {
     const { name, permissions, action } = req.body;
     const update = { name };
+    console.log(action)
 
     const currentRole = await Role.findById(req.params.id).populate('permissions');
 
@@ -53,9 +54,8 @@ export default class RoleService {
       update.$push = { permissions: { $each: newPermissions } };
     }
 
-    await Role.findByIdAndUpdate(req.params.id, update);
-
-    return Role.findById(req.params.id).populate('permissions').exec();
+    const updatedRole = await Role.findByIdAndUpdate(req.params.id, update, { new: true }).populate('permissions').exec();
+    return updatedRole
   };
 
   static deleteRoleById = async (req) => {
