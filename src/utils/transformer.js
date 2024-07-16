@@ -19,7 +19,7 @@ class Transformer {
         }
         newObj[newKey] = Transformer.transformObjectTypeSnakeToCamel(obj[key]);
       });
-      return newObj;
+      return Transformer.removeDeletedField(newObj); // Gọi removeDeletedField ở đây
     }
     return obj;
   }
