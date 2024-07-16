@@ -36,18 +36,20 @@ export class PermissionController {
     try {
       const permissions = await PermissionService.getAllPermissions(req);
 
-      const transformedPermissions = {
-        ...permissions,
-        docs: permissions.docs.map((permission) =>
-          Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
-        ),
-      };
+      const transformedPermissions = permissions.docs.map((permission) =>
+        Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
+      );
 
+      const { docs, ...otherFields } = permissions;
+      const other = {
+        ...otherFields,
+      };
       SuccessResponse(
         res,
         StatusCodes.OK,
         'Get All Permission successfully',
-        transformedPermissions
+        Transformer.removeDeletedField(transformedPermissions),
+        other
       );
     } catch (error) {
       next(error);

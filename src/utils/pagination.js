@@ -14,6 +14,13 @@ const getPaginationOptions = (req) => {
       [_sort]: _order === 'desc' ? -1 : 1,
     },
     pagination: _pagination !== 'false',
+    customLabels: {
+      pagingCounter: false,
+      hasPrevPage: false,
+      hasNextPage: false,
+      prevPage: false,
+      nextPage: false,
+    },
   };
 
   return options;
