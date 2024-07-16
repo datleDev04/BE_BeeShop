@@ -53,7 +53,7 @@ export class ProductController {
     try {
       const product = await ProductService.deleteProduct(req);
 
-      SuccessResponse(res, StatusCodes.CREATED, 'Deleted product successfully');
+      SuccessResponse(res, StatusCodes.CREATED, 'Deleted product successfully', product);
     } catch (error) {
       next(error);
     }
