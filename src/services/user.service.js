@@ -3,6 +3,7 @@ import ApiError from '../utils/ApiError.js';
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
+import { Transformer } from '../utils/transformer.js';
 
 export default class UserService {
   static updateUser = async (req) => {
@@ -28,7 +29,7 @@ export default class UserService {
       updateFields = { ...updateFields, ...(roles && { roles }) };
     }
 
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, updateFields, { new: true })
+    const updatedUser = await User.findByIdAndUpdate(req.user._id, updateFields, { new: true })
       .populate([
         {
           path: 'roles',
@@ -50,7 +51,7 @@ export default class UserService {
   };
 
   static getOneUser = async (req) => {
-    const user = await User.findById(req.params.id)
+    const user = await User.findById(req.user._id)
       .populate([
         {
           path: 'roles',
@@ -64,14 +65,6 @@ export default class UserService {
 
     if (!user) {
       throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
-    }
-
-    const userPermissions = req.user.roles.flatMap((role) =>
-      role.permissions.map((permission) => permission.name)
-    );
-
-    if (!userPermissions.includes('Read_User')) {
-      user.roles = undefined;
     }
 
     user.password = undefined;
@@ -95,6 +88,15 @@ export default class UserService {
       },
     ]);
 
-    return users;
+    const metaData = users.docs.map((user) =>
+      Transformer.transformObjectTypeSnakeToCamel(user.toObject())
+    );
+
+    const { docs, ...otherFields } = users;
+
+    return {
+      metaData,
+      ...otherFields,
+    };
   };
 }

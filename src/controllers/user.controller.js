@@ -35,25 +35,9 @@ export class UserController {
 
   static getAllUsers = async (req, res, next) => {
     try {
-      const users = await UserService.getAllUsers(req);
+      const { metaData, ...otherFields } = await UserService.getAllUsers(req);
 
-      const transformedUser = users.docs.map((user) =>
-        Transformer.transformObjectTypeSnakeToCamel(user.toObject())
-      );
-
-      const { docs, ...otherFields } = users;
-
-      const other = {
-        ...otherFields,
-      };
-
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get All Users successfully',
-        Transformer.removeDeletedField(transformedUser),
-        other
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get All Users successfully', metaData, otherFields);
     } catch (error) {
       next(error);
     }

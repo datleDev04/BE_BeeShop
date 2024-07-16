@@ -10,13 +10,20 @@ const userRouter = express.Router();
 userRouter.get('/', authMiddleware, CheckPermission(['Read_User']), UserController.getAllUsers);
 
 // get one user by id (only for authenticated users)
-userRouter.get('/:id', authMiddleware, objectIdValidation, UserController.getOneUser);
+userRouter.get(
+  '/:id',
+  authMiddleware,
+  CheckPermission(['Read_User']),
+  objectIdValidation,
+  UserController.getOneUser
+);
 
 // only admin role can access
 userRouter.patch(
   '/:id',
   authMiddleware,
   objectIdValidation,
+  CheckPermission(['Update_User']),
   userValidation.updateUserInfo,
   UserController.updateUser
 );
