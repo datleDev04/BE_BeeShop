@@ -11,7 +11,7 @@ const getPaginationOptions = (req) => {
     page: parseInt(_page, 10),
     limit: parseInt(_limit, 10),
     sort: {
-      [_sort]: _order === 'desc' ? -1 : 1,
+      [_sort]: _order === 'desc' ? 1 : -1,
     },
     pagination: _pagination !== 'false',
     customLabels: {
