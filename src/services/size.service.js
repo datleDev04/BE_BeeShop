@@ -7,16 +7,19 @@ export default class SizeService {
   static createNewSize = async (req) => {
     const { name, gender } = req.body;
 
-    const existedSize = await Size.findOne({ name });
-
-    if (existedSize) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This size name is existed');
-    }
-
     const existedGender = await Gender.findById(gender);
 
     if (!existedGender) {
       throw new ApiError(StatusCodes.NOT_FOUND, 'Gender not found');
+    }
+
+    const existedName = await Size.findOne({
+      name,
+      gender,
+    });
+
+    if (existedName) {
+      throw new ApiError(StatusCodes.NOT_FOUND, 'Size name is existed!');
     }
 
     await Size.create({ name, gender });

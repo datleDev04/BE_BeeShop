@@ -1,4 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
+import MongooseDelete from 'mongoose-delete';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 // schema User variables
 const DOCUMENT_NAME = 'Role';
@@ -25,4 +27,12 @@ const roleSchema = new mongoose.Schema(
   }
 );
 
+const plugins = [MongooseDelete, mongoosePaginate];
+
+plugins.forEach((plugin) => {
+  roleSchema.plugin(plugin, {
+    deletedAt: true,
+    overrideMethods: true,
+  });
+});
 export default mongoose.model(DOCUMENT_NAME, roleSchema);

@@ -3,7 +3,6 @@ import ApiError from '../utils/ApiError.js';
 import { validateBeforeCreateOrUpdate } from '../utils/validators.js';
 import Joi from 'joi';
 
-
 export const createBrandValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().trim().required().messages({

@@ -2,6 +2,7 @@ import { StatusCodes, getReasonPhrase } from 'http-status-codes';
 import Permission from '../models/Permission.js';
 import Role from '../models/Role.js';
 import ApiError from '../utils/ApiError.js';
+import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 
 export default class PermissionService {
   static createNewPermission = async (req) => {
@@ -27,16 +28,12 @@ export default class PermissionService {
     return permission;
   };
 
-
   static getAllPermissions = async (req) => {
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['module', 'label']);
 
-    const { module } = req.query;
-    if (module) {
-      return await Permission.find({
-        module: module
-      }).sort({ createdAt: -1 })
-    }
-    return await Permission.find().sort({ createdAt: -1 });
+    const permissions = await Permission.paginate(filter, options);
+    return permissions;
   };
 
   static getAllModule = async (req) => {
@@ -55,7 +52,7 @@ export default class PermissionService {
         label: req.body.label,
       },
       { new: true }
-    )
+    );
 
     if (!permission) {
       throw new ApiError(404, 'Permission not found');

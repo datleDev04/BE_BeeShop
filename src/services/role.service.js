@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import Role from '../models/Role.js';
 import ApiError from '../utils/ApiError.js';
+import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 
 export default class RoleService {
   static createNewRole = async (req) => {
@@ -18,7 +19,13 @@ export default class RoleService {
   };
 
   static getAllRole = async (req) => {
-    const roles = await Role.find().populate('permissions').sort({ createdAt: -1 }).exec();
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name']);
+
+    const roles = await Role.paginate(filter, options);
+
+    await Role.populate(roles.docs, { path: 'permissions' });
+
     return roles;
   };
 
@@ -30,6 +37,7 @@ export default class RoleService {
   static updateRoleById = async (req) => {
     const { name, permissions, action } = req.body;
     const update = { name };
+    console.log(action)
 
     const currentRole = await Role.findById(req.params.id).populate('permissions');
 
@@ -46,9 +54,8 @@ export default class RoleService {
       update.$push = { permissions: { $each: newPermissions } };
     }
 
-    await Role.findByIdAndUpdate(req.params.id, update);
-
-    return Role.findById(req.params.id).populate('permissions').exec();
+    const updatedRole = await Role.findByIdAndUpdate(req.params.id, update, { new: true }).populate('permissions').exec();
+    return updatedRole
   };
 
   static deleteRoleById = async (req) => {

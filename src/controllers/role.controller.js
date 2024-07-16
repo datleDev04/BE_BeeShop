@@ -8,11 +8,23 @@ export class RoleController {
     try {
       const roles = await RoleService.getAllRole(req);
 
-      const returnData = roles.map((role) => {
-        return Transformer.transformObjectTypeSnakeToCamel(role.toObject());
-      });
+      const transformedRole = roles.docs.map((role) =>
+        Transformer.transformObjectTypeSnakeToCamel(role.toObject())
+      );
 
-      SuccessResponse(res, StatusCodes.OK, 'Get All Role successfully', returnData);
+      const { docs, ...otherFields } = roles;
+
+      const other = {
+        ...otherFields,
+      };
+
+      SuccessResponse(
+        res, 
+        StatusCodes.OK, 
+        'Get All Role successfully', 
+        Transformer.removeDeletedField(transformedRole),
+        other
+        );
     } catch (error) {
       next(error);
     }
