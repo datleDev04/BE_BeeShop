@@ -237,6 +237,6 @@ export default class ProductService {
 
     await Product_Color.deleteMany({ _id: { $in: deletedProduct.product_colors } });
 
-    return null;
+    return deletedProduct;
   };
 }
