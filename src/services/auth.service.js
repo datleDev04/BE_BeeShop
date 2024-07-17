@@ -202,6 +202,14 @@ export class AuthService {
       ])
       .exec();
 
+    const userPermissions = req.user.roles.flatMap((role) =>
+      role.permissions.map((permission) => permission.name)
+    );
+
+    if (!userPermissions.includes('Read_User')) {
+      user.roles = undefined;
+    }
+
     user.password = undefined;
 
     const userProfile = {

@@ -19,12 +19,12 @@ export class RoleController {
       };
 
       SuccessResponse(
-        res, 
-        StatusCodes.OK, 
-        'Get All Role successfully', 
+        res,
+        StatusCodes.OK,
+        'Get All Role successfully',
         Transformer.removeDeletedField(transformedRole),
         other
-        );
+      );
     } catch (error) {
       next(error);
     }
