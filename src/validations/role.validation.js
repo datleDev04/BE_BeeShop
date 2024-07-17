@@ -38,7 +38,6 @@ export const searchRoleValidation = async (req, res, next) => {
 export const updateRoleValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().trim(),
-    action: Joi.string().trim(),
     permissions: Joi.alternatives().try(
       Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
       Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))

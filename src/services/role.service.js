@@ -35,26 +35,13 @@ export default class RoleService {
   };
 
   static updateRoleById = async (req) => {
-    const { name, permissions, action } = req.body;
-    const update = { name };
-    console.log(action)
+    const { name, permissions } = req.body;
 
-    const currentRole = await Role.findById(req.params.id).populate('permissions');
-
-    if (!currentRole) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Role not found!');
-    }
-
-    const permissionsIds = currentRole.permissions.map((per) => per.id);
-
-    if (action === 'delete_permission') {
-      update.$pull = { permissions: { $in: permissions } };
-    } else if (action === 'add_permission') {
-      const newPermissions = permissions.filter((p) => !permissionsIds.includes(p));
-      update.$push = { permissions: { $each: newPermissions } };
-    }
-
-    const updatedRole = await Role.findByIdAndUpdate(req.params.id, update, { new: true }).populate('permissions').exec();
+    const updatedRole = await Role.findByIdAndUpdate(
+      req.params.id,
+      { name, permissions },
+      { new: true })
+      .populate('permissions').exec();
     return updatedRole
   };
 
