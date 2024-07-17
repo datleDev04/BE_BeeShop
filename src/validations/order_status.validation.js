@@ -13,6 +13,6 @@ export const orderStatusValidation = async (req, res, next) => {
     await validateBeforeCreateOrUpdate(correctCondition, req.body);
     next();
   } catch (error) {
-    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
+    next(error);
   }
 };

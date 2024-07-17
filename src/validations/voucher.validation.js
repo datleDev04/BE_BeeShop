@@ -38,7 +38,7 @@ export const validateVoucherCreation = async (req, res, next) => {
     await validateBeforeCreateOrUpdate(createVoucherSchema, req.body);
     next();
   } catch (error) {
-    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
+    next(error);
   }
 };
 
@@ -47,6 +47,6 @@ export const validateVoucherUpdate = async (req, res, next) => {
     await validateBeforeCreateOrUpdate(updateVoucherSchema, req.body);
     next();
   } catch (error) {
-    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
+    next(error);
   }
 };

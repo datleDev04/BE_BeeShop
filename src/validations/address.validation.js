@@ -23,7 +23,7 @@ export const addressCreateValidation = async (req, res, next) => {
     await validateBeforeCreateOrUpdate(createCondition, req.body);
     next();
   } catch (error) {
-    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
+    next(error);
   }
 };
 
@@ -43,7 +43,7 @@ export const addressUpdateValidation = async (req, res, next) => {
     await validateBeforeCreateOrUpdate(updateCondition, req.body);
     next();
   } catch (error) {
-    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
+    next(error);
   }
 };
 
@@ -56,6 +56,6 @@ export const permissionValidation = async (req, res, next) => {
     await validateBeforeCreateOrUpdate(correctCondition, req.body);
     next();
   } catch (error) {
-    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
+    next(error);
   }
 };

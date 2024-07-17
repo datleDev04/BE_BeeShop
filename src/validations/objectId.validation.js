@@ -16,8 +16,6 @@ export const objectIdValidation = async (req, res, next) => {
     await validateBeforeCreateOrUpdate(correctCondition, req.params);
     next();
   } catch (error) {
-    console.log(error);
-    const errorMessage = error?.details[0]?.message || new Error(error).message;
-    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessage));
+    next(error);
   }
 };
