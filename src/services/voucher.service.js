@@ -18,6 +18,12 @@ export default class VoucherService {
       voucher_type,
     } = req.body;
 
+    const existedVoucher = await Voucher.findOne({ name });
+
+    if (existedVoucher) {
+      throw new ApiError(StatusCodes.CONFLICT, 'This voucher is existed');
+    }
+
     const voucherType = await VoucherType.findById(voucher_type);
     if (!voucherType) {
       throw new ApiError(StatusCodes.NOT_FOUND, 'Voucher type not found');
@@ -65,6 +71,12 @@ export default class VoucherService {
       start_date,
       end_date,
     } = req.body;
+
+    const existedVoucher = await Voucher.findOne({ name });
+
+    if (existedVoucher) {
+      throw new ApiError(StatusCodes.CONFLICT, 'This voucher is existed');
+    }
 
     const updatedVoucher = await Voucher.findByIdAndUpdate(
       req.params.id,
