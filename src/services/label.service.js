@@ -11,6 +11,13 @@ export class LabelService {
 
   static createLabel = async (req) => {
     const { name, description } = req.body;
+
+    // check existed Label name
+    const existedLabelName = await Label.findOne({ name });
+    if (existedLabelName) {
+      throw new ApiError(StatusCodes.CONFLICT, 'Label name already exists');
+    }
+
     const newLabel = await Label.create({
       name,
       description,
@@ -20,6 +27,13 @@ export class LabelService {
 
   static updateLabelById = async (req) => {
     const { name, description } = req.body;
+
+    // check existed Label name
+    const existedLabelName = await Label.findOne({ name });
+    if (existedLabelName) {
+      throw new ApiError(StatusCodes.CONFLICT, 'Label name already exists');
+    }
+
     const updatedLabel = await Label.findByIdAndUpdate(
       req.params.id,
       {
