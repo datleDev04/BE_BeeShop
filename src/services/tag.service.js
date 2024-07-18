@@ -11,6 +11,14 @@ export class TagService {
 
   static createTag = async (req) => {
     const { name, description } = req.body;
+
+    // check existed tag name
+    const existedTagName = await Tags.findOne({ name });
+    if (existedTagName) {
+      throw new ApiError(StatusCodes.CONFLICT, 'Tag name already exists');
+    }
+    
+
     const newTag = await Tags.create({
       name,
       description,
@@ -20,6 +28,13 @@ export class TagService {
 
   static updateTagById = async (req) => {
     const { name, description } = req.body;
+
+    // check existed tag name
+    const existedTagName = await Tags.findOne({ name });
+    if (existedTagName) {
+      throw new ApiError(StatusCodes.CONFLICT, 'Tag name already exists');
+    }
+
     const updatedTag = await Tags.findByIdAndUpdate(
       req.params.id,
       {
