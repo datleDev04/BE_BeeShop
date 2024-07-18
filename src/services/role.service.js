@@ -37,6 +37,12 @@ export default class RoleService {
   static updateRoleById = async (req) => {
     const { name, permissions } = req.body;
 
+    const existedRole = await Role.findOne({ name });
+
+    if (existedRole) {
+      throw new ApiError(StatusCodes.CONFLICT, 'This role is existed');
+    }
+
     const updatedRole = await Role.findByIdAndUpdate(
       req.params.id,
       { name, permissions },

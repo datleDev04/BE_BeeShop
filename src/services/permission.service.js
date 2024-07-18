@@ -14,6 +14,7 @@ export default class PermissionService {
       throw new ApiError(StatusCodes.CONFLICT, 'Permission already exists');
     }
 
+
     const newPermission = await Permission.create({ name, label, module });
 
     return newPermission;
