@@ -41,6 +41,12 @@ export default class SizeService {
     const updateFields = {};
 
     if (name) {
+      const existedSize = await Size.findOne({ name });
+
+      if (existedSize) {
+        throw new ApiError(StatusCodes.CONFLICT, 'This size name is existed');
+      }
+
       updateFields.name = name;
     }
 
