@@ -8,10 +8,16 @@ export default class PermissionService {
   static createNewPermission = async (req) => {
     const { name, label, module } = req.body;
 
-    // check existed permissions
-    const existedPermission = await Permission.findOne({ name });
-    if (existedPermission) {
+    // check existed permissions name
+    const existedPermissionName = await Permission.findOne({ name });
+    if (existedPermissionName) {
       throw new ApiError(StatusCodes.CONFLICT, 'Permission already exists');
+    }
+
+    // check existed permissions label
+    const existedPermissionLabel = await Permission.findOne({ name });
+    if (existedPermissionLabel) {
+      throw new ApiError(StatusCodes.CONFLICT, 'Label already exists');
     }
 
 
@@ -44,6 +50,18 @@ export default class PermissionService {
 
   static updatePermission = async (req, res) => {
     const { id } = req.params;
+
+    // check existed permissions name
+    const existedPermissionName = await Permission.findOne({ name });
+    if (existedPermissionName) {
+      throw new ApiError(StatusCodes.CONFLICT, 'Permission already exists');
+    }
+
+    // check existed permissions label
+    const existedPermissionLabel = await Permission.findOne({ name });
+    if (existedPermissionLabel) {
+      throw new ApiError(StatusCodes.CONFLICT, 'Label already exists');
+    }
 
     const permission = Permission.findByIdAndUpdate(
       { _id: id },
