@@ -36,6 +36,13 @@ export class OrderStatusService {
 
   static updateOrderStatusById = async (req) => {
     const { name, description } = req.body;
+
+    const existingOrderStatus = await OrderStatus.findOne({ name });
+
+    if (existingOrderStatus) {
+      throw new ApiError(StatusCodes.CONFLICT, 'Order Status already exists');
+    }
+
     const updatedOrderStatus = await OrderStatus.findByIdAndUpdate(
       req.params.id,
       {
