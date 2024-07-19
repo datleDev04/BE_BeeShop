@@ -8,12 +8,7 @@ export class GenderController {
     try {
       const newGender = await GenderService.createNewGender(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.CREATED,
-        'Create new gender successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newGender.toObject())
-      );
+      SuccessResponse(res, StatusCodes.CREATED, 'Create new gender successfully', newGender);
     } catch (error) {
       next(error);
     }
@@ -22,12 +17,7 @@ export class GenderController {
     try {
       const gender = await GenderService.getOneGender(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get gender successfully',
-        Transformer.transformObjectTypeSnakeToCamel(gender.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get gender successfully', gender);
     } catch (error) {
       next(error);
     }
@@ -36,11 +26,7 @@ export class GenderController {
     try {
       const genders = await GenderService.getAllGender(req);
 
-      const returnData = genders.map((gender) => {
-        return Transformer.transformObjectTypeSnakeToCamel(gender.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.OK, 'Get All Gender successfully', returnData);
+      SuccessResponse(res, StatusCodes.OK, 'Get All Gender successfully', genders);
     } catch (error) {
       next(error);
     }
@@ -48,28 +34,18 @@ export class GenderController {
 
   static updateGender = async (req, res, next) => {
     try {
-      const genders = await GenderService.updateGenderById(req);
+      const gender = await GenderService.updateGenderById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Updated Gender successfully',
-        Transformer.transformObjectTypeSnakeToCamel(genders.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Updated Gender successfully', gender);
     } catch (error) {
       next(error);
     }
   };
   static deleteGender = async (req, res, next) => {
     try {
-      const deletedGender = await GenderService.deleteGenderById(req);
+      await GenderService.deleteGenderById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Delete Gender successfully',
-        Transformer.transformObjectTypeSnakeToCamel(deletedGender.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Delete Gender successfully', {});
     } catch (error) {
       next(error);
     }

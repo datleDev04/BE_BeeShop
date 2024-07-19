@@ -12,7 +12,7 @@ export class ColorController {
         res,
         StatusCodes.CREATED,
         'Create new color successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newColor.toObject())
+        newColor
       );
     } catch (error) {
       next(error);
@@ -26,7 +26,7 @@ export class ColorController {
         res,
         StatusCodes.OK,
         'Get color successfully',
-        Transformer.transformObjectTypeSnakeToCamel(color.toObject())
+        color
       );
     } catch (error) {
       next(error);
@@ -36,11 +36,7 @@ export class ColorController {
     try {
       const colors = await ColorService.getAllColor(req);
 
-      const returnData = colors.map((color) => {
-        return Transformer.transformObjectTypeSnakeToCamel(color.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.OK, 'Get All Color successfully', returnData);
+      SuccessResponse(res, StatusCodes.OK, 'Get All Color successfully', colors);
     } catch (error) {
       next(error);
     }
@@ -54,7 +50,7 @@ export class ColorController {
         res,
         StatusCodes.OK,
         'Updated Color successfully',
-        Transformer.transformObjectTypeSnakeToCamel(colors.toObject())
+        colors
       );
     } catch (error) {
       next(error);
@@ -62,13 +58,13 @@ export class ColorController {
   };
   static deleteColor = async (req, res, next) => {
     try {
-      const deletedColor = await ColorService.deleteColorById(req);
-
+      
+      await ColorService.deleteColorById(req);
       SuccessResponse(
         res,
         StatusCodes.OK,
         'Delete Color successfully',
-        Transformer.transformObjectTypeSnakeToCamel(deletedColor.toObject())
+        {}
       );
     } catch (error) {
       next(error);

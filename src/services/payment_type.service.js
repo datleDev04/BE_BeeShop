@@ -1,42 +1,39 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../utils/ApiError.js';
 import PaymentType from '../models/Payment_Type.js';
+import { Transformer } from '../utils/transformer.js';
+import { checkRecordByField } from '../utils/CheckRecord.js';
 
 export default class PaymentTypeService {
   static createNewPaymentType = async (req) => {
     const { name } = req.body;
 
-    const existedPaymentType = await PaymentType.findOne({ name });
-
-    if (existedPaymentType) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This payment type is existed');
-    }
+    await checkRecordByField(PaymentType, 'name', name, false);
 
     const newPaymentType = await PaymentType.create({ name });
-    return newPaymentType;
+    return Transformer.transformObjectTypeSnakeToCamel(newPaymentType.toObject());
   };
 
   static getAllPaymentType = async (req) => {
     const paymentTypes = await PaymentType.find().sort({ createdAt: -1 }).exec();
-    return paymentTypes;
+    const returnData = paymentTypes.map((type) => {
+      return Transformer.transformObjectTypeSnakeToCamel(type.toObject());
+    });
+    return returnData;
   };
 
   static getOnePaymentType = async (req) => {
+    await checkRecordByField(PaymentType, '_id', req.params.id, true);
     const paymentType = await PaymentType.findById(req.params.id).exec();
-    if (!paymentType) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Payment type not found');
-    }
-    return paymentType;
+
+    return Transformer.transformObjectTypeSnakeToCamel(paymentType.toObject());
   };
 
   static updatePaymentTypeById = async (req) => {
     const { name } = req.body;
 
-    const existedPaymentType = await PaymentType.findOne({ name });
-
-    if (existedPaymentType) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This payment type is existed');
-    }
+    await checkRecordByField(PaymentType, '_id', req.params.id, true);
+    await checkRecordByField(PaymentType, 'name', name, false, req.params.id);
 
     const updatedPaymentType = await PaymentType.findByIdAndUpdate(
       req.params.id,
@@ -46,19 +43,12 @@ export default class PaymentTypeService {
       { new: true }
     );
 
-    if (!updatedPaymentType) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This payment type is not existing');
-    }
-
-    return updatedPaymentType;
+    return Transformer.transformObjectTypeSnakeToCamel(updatedPaymentType.toObject());
   };
 
   static deletePaymentTypeById = async (req) => {
-    const paymentType = await PaymentType.findByIdAndDelete(req.params.id);
+    await checkRecordByField(PaymentType, '_id', req.params.id, true);
 
-    if (!paymentType) {
-      throw new ApiError(404, 'Payment type not found');
-    }
-    return paymentType;
+    return await PaymentType.findByIdAndDelete(req.params.id);
   };
 }

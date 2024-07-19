@@ -8,12 +8,7 @@ export class SizeController {
     try {
       const newSize = await SizeService.createNewSize(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.CREATED,
-        'Create new size successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newSize.toObject())
-      );
+      SuccessResponse(res, StatusCodes.CREATED, 'Create new size successfully', newSize);
     } catch (error) {
       next(error);
     }
@@ -22,12 +17,7 @@ export class SizeController {
     try {
       const size = await SizeService.getOneSize(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get size successfully',
-        Transformer.transformObjectTypeSnakeToCamel(size.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get size successfully', size);
     } catch (error) {
       next(error);
     }
@@ -36,11 +26,7 @@ export class SizeController {
     try {
       const sizes = await SizeService.getAllSize(req);
 
-      const returnData = sizes.map((size) => {
-        return Transformer.transformObjectTypeSnakeToCamel(size.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.OK, 'Get All Size successfully', returnData);
+      SuccessResponse(res, StatusCodes.OK, 'Get All Size successfully', sizes);
     } catch (error) {
       next(error);
     }
@@ -48,28 +34,18 @@ export class SizeController {
 
   static updateSize = async (req, res, next) => {
     try {
-      const sizes = await SizeService.updateSizeById(req);
+      const size = await SizeService.updateSizeById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Updated Size successfully',
-        Transformer.transformObjectTypeSnakeToCamel(sizes.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Updated Size successfully', size);
     } catch (error) {
       next(error);
     }
   };
   static deleteSize = async (req, res, next) => {
     try {
-      const deletedSize = await SizeService.deleteSizeById(req);
+      await SizeService.deleteSizeById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Delete Size successfully',
-        Transformer.transformObjectTypeSnakeToCamel(deletedSize.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Delete Size successfully', {});
     } catch (error) {
       next(error);
     }

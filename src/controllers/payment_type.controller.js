@@ -12,7 +12,7 @@ export class PaymentTypeController {
         res,
         StatusCodes.CREATED,
         'Create new payment type successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newPaymentType.toObject())
+        newPaymentType
       );
     } catch (error) {
       next(error);
@@ -22,12 +22,7 @@ export class PaymentTypeController {
     try {
       const paymentType = await PaymentTypeService.getOnePaymentType(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get payment type successfully',
-        Transformer.transformObjectTypeSnakeToCamel(paymentType.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get payment type successfully', paymentType);
     } catch (error) {
       next(error);
     }
@@ -36,11 +31,7 @@ export class PaymentTypeController {
     try {
       const paymentTypes = await PaymentTypeService.getAllPaymentType(req);
 
-      const returnData = paymentTypes.map((paymentType) => {
-        return Transformer.transformObjectTypeSnakeToCamel(paymentType.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.OK, 'Get All payment type successfully', returnData);
+      SuccessResponse(res, StatusCodes.OK, 'Get All payment type successfully', paymentTypes);
     } catch (error) {
       next(error);
     }
@@ -48,14 +39,9 @@ export class PaymentTypeController {
 
   static updatePaymentType = async (req, res, next) => {
     try {
-      const paymentTypes = await PaymentTypeService.updatePaymentTypeById(req);
+      const paymentType = await PaymentTypeService.updatePaymentTypeById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Updated payment type successfully',
-        Transformer.transformObjectTypeSnakeToCamel(paymentTypes.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Updated payment type successfully', paymentType);
     } catch (error) {
       next(error);
     }
@@ -64,12 +50,7 @@ export class PaymentTypeController {
     try {
       const deletedPaymentType = await PaymentTypeService.deletePaymentTypeById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Delete payment type successfully',
-        Transformer.transformObjectTypeSnakeToCamel(deletedPaymentType.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Delete payment type successfully', {});
     } catch (error) {
       next(error);
     }

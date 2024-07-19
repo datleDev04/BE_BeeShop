@@ -1,42 +1,37 @@
-import { StatusCodes } from 'http-status-codes';
 import Color from '../models/Color.js';
-import ApiError from '../utils/ApiError.js';
+import { Transformer } from '../utils/transformer.js';
+import { checkRecordByField } from '../utils/CheckRecord.js';
 
 export default class ColorService {
   static createNewColor = async (req) => {
     const { name } = req.body;
 
-    const existedColor = await Color.findOne({ name });
-
-    if (existedColor) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This color is existed');
-    }
+    await checkRecordByField(Color, 'name', name, false);
 
     const newColor = await Color.create({ name });
-    return newColor;
+
+    return Transformer.transformObjectTypeSnakeToCamel(newColor.toObject());
   };
 
   static getAllColor = async (req) => {
     const colors = await Color.find().sort({ createdAt: -1 }).exec();
-    return colors;
+    const returnData = colors.map((color) => {
+      return Transformer.transformObjectTypeSnakeToCamel(color.toObject());
+    });
+    return returnData;
   };
 
   static getOneColor = async (req) => {
-    const color = await Color.findById(req.params.id).exec();
-    if (!color) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Color not found');
-    }
-    return color;
+    await checkRecordByField(Color, '_id', req.params.id, true);
+    const color = await Color.findById(req.params.id);
+    return Transformer.transformObjectTypeSnakeToCamel(color.toObject());
   };
 
   static updateColorById = async (req) => {
     const { name } = req.body;
 
-    const existedColor = await Color.findOne({ name });
-
-    if (existedColor) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This color is existed');
-    }
+    await checkRecordByField(Color, 'name', name, false, req.params.id);
+    await checkRecordByField(Color, '_id', req.params.id, true);
 
     const updatedColor = await Color.findByIdAndUpdate(
       req.params.id,
@@ -46,19 +41,11 @@ export default class ColorService {
       { new: true }
     );
 
-    if (!updatedColor) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This color is not existing');
-    }
-
-    return updatedColor;
+    return Transformer.transformObjectTypeSnakeToCamel(updatedColor.toObject());
   };
 
   static deleteColorById = async (req) => {
-    const color = await Color.findByIdAndDelete(req.params.id);
-
-    if (!color) {
-      throw new ApiError(404, 'Color not found');
-    }
-    return color;
+    await checkRecordByField(Color, '_id', req.params.id, true);
+    return await Color.findByIdAndDelete(req.params.id);
   };
 }
