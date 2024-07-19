@@ -1,4 +1,6 @@
+import { StatusCodes } from 'http-status-codes';
 import Label from '../models/Label.js';
+import ApiError from '../utils/ApiError.js';
 
 export class LabelService {
   static getAllLabel = async (req) => {
@@ -15,7 +17,9 @@ export class LabelService {
     // check existed Label name
     const existedLabelName = await Label.findOne({ name });
     if (existedLabelName) {
-      throw new ApiError(StatusCodes.CONFLICT, 'Label name already exists');
+      throw new ApiError(StatusCodes.CONFLICT, {
+        name: "label name is exists"
+      });
     }
 
     const newLabel = await Label.create({
@@ -31,7 +35,9 @@ export class LabelService {
     // check existed Label name
     const existedLabelName = await Label.findOne({ name });
     if (existedLabelName) {
-      throw new ApiError(StatusCodes.CONFLICT, 'Label name already exists');
+      throw new ApiError(StatusCodes.CONFLICT, {
+        name: "label name is exists"
+      });
     }
 
     const updatedLabel = await Label.findByIdAndUpdate(
@@ -44,7 +50,7 @@ export class LabelService {
         new: true,
       }
     );
-    return updatedLabel;
+      return updatedLabel;
   };
 
   static deleteLabelBydId = async (req) => {

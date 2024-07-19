@@ -2,7 +2,7 @@ import express from 'express';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
-import { orderStatusValidation } from '../validations/order_status.validation.js';
+import { createOrderStatusValidation, updateOrderStatusValidation } from '../validations/order_status.validation.js';
 import { OrderStatusController } from '../controllers/order_status.js';
 
 const orderStatusRouter = express.Router();
@@ -26,7 +26,7 @@ orderStatusRouter.post(
   '/',
   authMiddleware,
   CheckPermission(['Create_OrderStatus']),
-  orderStatusValidation,
+  createOrderStatusValidation,
   OrderStatusController.createOrderStatus
 );
 
@@ -36,7 +36,7 @@ orderStatusRouter.patch(
   authMiddleware,
   CheckPermission(['Update_OrderStatus']),
   objectIdValidation,
-  orderStatusValidation,
+  updateOrderStatusValidation,
   OrderStatusController.updateOrderStatusById
 );
 
