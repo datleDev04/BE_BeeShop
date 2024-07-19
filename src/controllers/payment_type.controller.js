@@ -29,9 +29,9 @@ export class PaymentTypeController {
   };
   static getAllPaymentTypes = async (req, res, next) => {
     try {
-      const paymentTypes = await PaymentTypeService.getAllPaymentType(req);
+      const { metaData, others } = await PaymentTypeService.getAllPaymentType(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Get All payment type successfully', paymentTypes);
+      SuccessResponse(res, StatusCodes.OK, 'Get All payment type successfully', metaData, others);
     } catch (error) {
       next(error);
     }

@@ -8,12 +8,7 @@ export class ColorController {
     try {
       const newColor = await ColorService.createNewColor(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.CREATED,
-        'Create new color successfully',
-        newColor
-      );
+      SuccessResponse(res, StatusCodes.CREATED, 'Create new color successfully', newColor);
     } catch (error) {
       next(error);
     }
@@ -22,21 +17,16 @@ export class ColorController {
     try {
       const color = await ColorService.getOneColor(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get color successfully',
-        color
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get color successfully', color);
     } catch (error) {
       next(error);
     }
   };
   static getAllColors = async (req, res, next) => {
     try {
-      const colors = await ColorService.getAllColor(req);
+      const { metaData, others } = await ColorService.getAllColor(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Get All Color successfully', colors);
+      SuccessResponse(res, StatusCodes.OK, 'Get All Color successfully', metaData, others);
     } catch (error) {
       next(error);
     }
@@ -46,26 +36,15 @@ export class ColorController {
     try {
       const colors = await ColorService.updateColorById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Updated Color successfully',
-        colors
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Updated Color successfully', colors);
     } catch (error) {
       next(error);
     }
   };
   static deleteColor = async (req, res, next) => {
     try {
-      
       await ColorService.deleteColorById(req);
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Delete Color successfully',
-        {}
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Delete Color successfully', {});
     } catch (error) {
       next(error);
     }

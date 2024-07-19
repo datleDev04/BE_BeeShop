@@ -29,9 +29,9 @@ export class PaymentStatusController {
   };
   static getAllPaymentStatuses = async (req, res, next) => {
     try {
-      const paymentStatuses = await PaymentStatusService.getAllPaymentStatus(req);
+      const { metaData, others } = await PaymentStatusService.getAllPaymentStatus(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Get All Payment Status successfully', paymentStatuses);
+      SuccessResponse(res, StatusCodes.OK, 'Get All Payment Status successfully', metaData, others);
     } catch (error) {
       next(error);
     }

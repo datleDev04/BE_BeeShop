@@ -24,9 +24,9 @@ export class GenderController {
   };
   static getAllGenders = async (req, res, next) => {
     try {
-      const genders = await GenderService.getAllGender(req);
+      const { metaData, others } = await GenderService.getAllGender(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Get All Gender successfully', genders);
+      SuccessResponse(res, StatusCodes.OK, 'Get All Gender successfully', metaData, others);
     } catch (error) {
       next(error);
     }

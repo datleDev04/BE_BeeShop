@@ -24,9 +24,9 @@ export class SizeController {
   };
   static getAllSizes = async (req, res, next) => {
     try {
-      const sizes = await SizeService.getAllSize(req);
+      const { metaData, others } = await SizeService.getAllSize(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Get All Size successfully', sizes);
+      SuccessResponse(res, StatusCodes.OK, 'Get All Size successfully', metaData, others);
     } catch (error) {
       next(error);
     }
