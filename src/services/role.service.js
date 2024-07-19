@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import Role from '../models/Role.js';
 import ApiError from '../utils/ApiError.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
+import { Transformer } from '../utils/transformer.js';
 
 export default class RoleService {
   static createNewRole = async (req) => {
@@ -24,9 +25,23 @@ export default class RoleService {
 
     const roles = await Role.paginate(filter, options);
 
-    await Role.populate(roles.docs, { path: 'permissions' });
+    const paginatedRoles = await Role.populate(roles.docs, { path: 'permissions' });
 
-    return roles;
+
+    const transformedRole = paginatedRoles.map((role) =>
+      Transformer.transformObjectTypeSnakeToCamel(role.toObject())
+    );
+
+    const { docs, ...otherFields } = roles;
+
+    const other = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedRole),
+      other,
+    }
   };
 
   static getOneRole = async (req) => {
