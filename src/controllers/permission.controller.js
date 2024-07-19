@@ -12,7 +12,7 @@ export class PermissionController {
         res,
         StatusCodes.CREATED,
         'Create New Permission successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newPermission.toObject())
+        newPermission
       );
     } catch (error) {
       next(error);
@@ -26,7 +26,7 @@ export class PermissionController {
         res,
         StatusCodes.OK,
         'Get Permission successfully',
-        Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
+        permission
       );
     } catch (error) {
       next(error);
@@ -34,22 +34,14 @@ export class PermissionController {
   };
   static getAllPermissions = async (req, res, next) => {
     try {
-      const permissions = await PermissionService.getAllPermissions(req);
+      const { metaData, others } = await PermissionService.getAllPermissions(req);
 
-      const transformedPermissions = permissions.docs.map((permission) =>
-        Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
-      );
-
-      const { docs, ...otherFields } = permissions;
-      const other = {
-        ...otherFields,
-      };
       SuccessResponse(
         res,
         StatusCodes.OK,
         'Get All Permission successfully',
-        Transformer.removeDeletedField(transformedPermissions),
-        other
+        metaData,
+        others
       );
     } catch (error) {
       next(error);
@@ -59,7 +51,7 @@ export class PermissionController {
     try {
       const modules = await PermissionService.getAllModule(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Get All Permission successfully', modules);
+      SuccessResponse(res, StatusCodes.OK, 'Get All Permission Module successfully', modules);
     } catch (error) {
       next(error);
     }
@@ -73,7 +65,7 @@ export class PermissionController {
         res,
         StatusCodes.OK,
         'Updated Permission successfully',
-        Transformer.transformObjectTypeSnakeToCamel(permissions.toObject())
+        permissions
       );
     } catch (error) {
       next(error);
@@ -81,13 +73,13 @@ export class PermissionController {
   };
   static deletePermission = async (req, res, next) => {
     try {
-      const deletedPermission = await PermissionService.deletePermission(req);
+      await PermissionService.deletePermission(req);
 
       SuccessResponse(
         res,
         StatusCodes.OK,
         'Delete Permission successfully',
-        Transformer.transformObjectTypeSnakeToCamel(deletedPermission.toObject())
+        {}
       );
     } catch (error) {
       next(error);
