@@ -32,6 +32,12 @@ export default class PaymentTypeService {
   static updatePaymentTypeById = async (req) => {
     const { name } = req.body;
 
+    const existedPaymentType = await PaymentType.findOne({ name });
+
+    if (existedPaymentType) {
+      throw new ApiError(StatusCodes.CONFLICT, 'This payment type is existed');
+    }
+
     const updatedPaymentType = await PaymentType.findByIdAndUpdate(
       req.params.id,
       {

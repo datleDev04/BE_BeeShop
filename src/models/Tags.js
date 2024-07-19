@@ -1,4 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
+import MongooseDelete from 'mongoose-delete';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 // schema User variables
 const DOCUMENT_NAME = 'Tag';
@@ -11,8 +13,7 @@ const TagSchema = new mongoose.Schema(
       required: true,
     },
     description: {
-      type: String,
-      required: true,
+      type: String
     },
   },
   {
@@ -21,5 +22,14 @@ const TagSchema = new mongoose.Schema(
     collection: COLLECTION_NAME,
   }
 );
+
+const plugins = [MongooseDelete, mongoosePaginate];
+
+plugins.forEach((plugin) => {
+  TagSchema.plugin(plugin, {
+    deletedAt: true,
+    overrideMethods: true,
+  });
+});
 
 export default mongoose.model(DOCUMENT_NAME, TagSchema);

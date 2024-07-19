@@ -6,13 +6,9 @@ import { Transformer } from '../utils/transformer.js';
 export class TagController {
   static getAllTags = async (req, res, next) => {
     try {
-      const tags = await TagService.getAllTags(req);
+      const { metaData, others } = await TagService.getAllTags(req);
 
-      const returnData = tags.map((tag) => {
-        return Transformer.transformObjectTypeSnakeToCamel(tag.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.OK, 'Get all tag successfully', returnData);
+      SuccessResponse(res, StatusCodes.OK, 'Get all tag successfully', metaData, others);
     } catch (error) {
       next(error);
     }
@@ -26,7 +22,7 @@ export class TagController {
         res,
         StatusCodes.OK,
         'Get one tag successfully',
-        Transformer.transformObjectTypeSnakeToCamel(tag.toObject())
+        tag
       );
     } catch (error) {
       next(error);
@@ -40,7 +36,7 @@ export class TagController {
         res,
         StatusCodes.CREATED,
         'Create new tag successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newTag.toObject())
+        newTag
       );
     } catch (error) {
       next(error);
@@ -55,7 +51,7 @@ export class TagController {
         res,
         StatusCodes.OK,
         'Updated tag successfully',
-        Transformer.transformObjectTypeSnakeToCamel(updatedTag.toObject())
+        updatedTag
       );
     } catch (error) {
       next(error);
@@ -63,8 +59,12 @@ export class TagController {
   };
 
   static deleteTagById = async (req, res, next) => {
-    await TagService.deleteTagBydId(req);
+    try {
+      await TagService.deleteTagBydId(req);
 
-    SuccessResponse(res, StatusCodes.OK, 'deleted tag successfully', {});
+      SuccessResponse(res, StatusCodes.OK, 'deleted tag successfully', {});
+    } catch (error) {
+      next(error);
+    }
   };
 }

@@ -32,6 +32,12 @@ export default class GenderService {
   static updateGenderById = async (req) => {
     const { name } = req.body;
 
+    const existedGender = await Gender.findOne({ name });
+
+    if (existedGender) {
+      throw new ApiError(StatusCodes.CONFLICT, 'This gender is existed');
+    }
+
     const updatedGender = await Gender.findByIdAndUpdate(
       req.params.id,
       {

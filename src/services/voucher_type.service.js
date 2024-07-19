@@ -36,6 +36,12 @@ export default class VoucherTypeService {
   static updateVoucherType = async (req) => {
     const { name } = req.body;
 
+    const existedVoucherType = await VoucherType.findOne({ name });
+
+    if (existedVoucherType) {
+      throw new ApiError(StatusCodes.CONFLICT, 'This voucher type is existed');
+    }
+
     const updatedVoucherType = await VoucherType.findByIdAndUpdate(
       req.params.id,
       { name },

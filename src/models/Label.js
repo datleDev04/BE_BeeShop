@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import MongooseDelete from 'mongoose-delete';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 // schema User variables
 const DOCUMENT_NAME = 'Label';
@@ -11,8 +13,7 @@ const labelSchema = new mongoose.Schema(
       required: true,
     },
     description: {
-      type: String,
-      required: true,
+      type: String
     },
   },
   {
@@ -21,5 +22,14 @@ const labelSchema = new mongoose.Schema(
     collection: COLLECTION_NAME,
   }
 );
+
+const plugins = [MongooseDelete, mongoosePaginate];
+
+plugins.forEach((plugin) => {
+  labelSchema.plugin(plugin, {
+    deletedAt: true,
+    overrideMethods: true,
+  });
+});
 
 export default mongoose.model(DOCUMENT_NAME, labelSchema);

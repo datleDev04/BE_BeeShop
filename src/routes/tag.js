@@ -1,6 +1,6 @@
 import express from 'express';
 import { TagController } from '../controllers/tag.controller.js';
-import { tagValidation } from '../validations/tag.validation.js';
+import { createTagValidation, updateTagValidation } from '../validations/tag.validation.js';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
@@ -21,7 +21,7 @@ tagRouter.post(
   '/',
   authMiddleware,
   CheckPermission(['Create_Tag']),
-  tagValidation,
+  createTagValidation,
   TagController.createTag
 );
 
@@ -31,7 +31,7 @@ tagRouter.patch(
   authMiddleware,
   CheckPermission(['Update_Tag']),
   objectIdValidation,
-  tagValidation,
+  updateTagValidation,
   TagController.updateTagById
 );
 

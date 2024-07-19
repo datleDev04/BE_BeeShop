@@ -21,8 +21,7 @@ export const createBrandValidation = async (req, res, next) => {
     await validateBeforeCreateOrUpdate(correctCondition, req.body);
     next();
   } catch (error) {
-    const errorMessage = error?.details[0]?.message || new Error(error).message;
-    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessage));
+    next(error);
   }
 };
 
@@ -43,7 +42,6 @@ export const updateBrandValidation = async (req, res, next) => {
     await validateBeforeCreateOrUpdate(correctCondition, req.body);
     next();
   } catch (error) {
-    const errorMessage = error?.details[0]?.message || new Error(error).message;
-    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessage));
+    next(error);
   }
 };

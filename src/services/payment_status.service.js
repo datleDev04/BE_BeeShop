@@ -32,6 +32,12 @@ export default class PaymentStatusService {
   static updatePaymentStatusById = async (req) => {
     const { name } = req.body;
 
+    const existedPaymentStatus = await PaymentStatus.findOne({ name });
+
+    if (existedPaymentStatus) {
+      throw new ApiError(StatusCodes.CONFLICT, 'This payment status is existed');
+    }
+
     const updatedPaymentStatus = await PaymentStatus.findByIdAndUpdate(
       req.params.id,
       {

@@ -34,6 +34,12 @@ export default class BrandService {
   static handleUpdateBrand = async (req) => {
     const { name, image, description } = req.body;
 
+    const existedBrand = await Brand.findOne({ name });
+
+    if (existedBrand) {
+      throw new ApiError(StatusCodes.CONFLICT, 'This brand is existed');
+    }
+
     const updateBrand = await Brand.findByIdAndUpdate(
       req.params.id,
       { name, image, description },

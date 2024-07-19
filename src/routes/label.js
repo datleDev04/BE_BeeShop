@@ -1,6 +1,6 @@
 import express from 'express';
 import { LabelController } from '../controllers/label.controller.js';
-import { labelValidation } from '../validations/label.validation.js';
+import { createLabelValidation, updateLabelValidation } from '../validations/label.validation.js';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
@@ -21,7 +21,7 @@ labelRouter.post(
   '/',
   authMiddleware,
   CheckPermission(['Create_Label']),
-  labelValidation,
+  createLabelValidation,
   LabelController.createLabel
 );
 
@@ -31,7 +31,7 @@ labelRouter.patch(
   authMiddleware,
   CheckPermission(['Update_Label']),
   objectIdValidation,
-  labelValidation,
+  updateLabelValidation,
   LabelController.updateLabelById
 );
 

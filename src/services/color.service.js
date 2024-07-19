@@ -32,6 +32,12 @@ export default class ColorService {
   static updateColorById = async (req) => {
     const { name } = req.body;
 
+    const existedColor = await Color.findOne({ name });
+
+    if (existedColor) {
+      throw new ApiError(StatusCodes.CONFLICT, 'This color is existed');
+    }
+
     const updatedColor = await Color.findByIdAndUpdate(
       req.params.id,
       {

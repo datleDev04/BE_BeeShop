@@ -14,7 +14,7 @@ export const createPermissionValidation = async (req, res, next) => {
     await validateBeforeCreateOrUpdate(correctCondition, req.body);
     next();
   } catch (error) {
-    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
+    next(error);
   }
 };
 export const searchPermissionValidation = async (req, res, next) => {
@@ -27,7 +27,7 @@ export const searchPermissionValidation = async (req, res, next) => {
     await validateBeforeCreateOrUpdate(correctCondition, req.body);
     next();
   } catch (error) {
-    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
+    next(error);
   }
 };
 
@@ -42,6 +42,6 @@ export const updatePermissionValidation = async (req, res, next) => {
     await validateBeforeCreateOrUpdate(correctCondition, req.body);
     next();
   } catch (error) {
-    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message));
+    next(error);
   }
 };
