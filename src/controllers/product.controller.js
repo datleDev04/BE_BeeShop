@@ -15,9 +15,9 @@ export class ProductController {
   };
   static getAllProduct = async (req, res, next) => {
     try {
-      const products = await ProductService.getAllProduct(req);
+      const { metaData, others } = await ProductService.getAllProduct(req);
 
-      SuccessResponse(res, StatusCodes.CREATED, 'Get all product successfully!', products);
+      SuccessResponse(res, StatusCodes.CREATED, 'Get all product successfully!', metaData, others);
     } catch (error) {
       next(error);
     }

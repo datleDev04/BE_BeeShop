@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-
+import MongooseDelete from 'mongoose-delete';
+import mongoosePaginate from 'mongoose-paginate-v2';
 // schema Product variables
 const DOCUMENT_NAME = 'Product';
 const COLLECTION_NAME = 'Products';
@@ -86,5 +87,14 @@ const productSchema = new mongoose.Schema(
     collection: COLLECTION_NAME,
   }
 );
+
+const plugins = [MongooseDelete, mongoosePaginate];
+
+plugins.forEach((plugin) => {
+  productSchema.plugin(plugin, {
+    deletedAt: true,
+    overrideMethods: true,
+  });
+});
 
 export default mongoose.model(DOCUMENT_NAME, productSchema);

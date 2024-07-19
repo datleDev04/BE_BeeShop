@@ -7,6 +7,7 @@ import { checkRecordByField } from '../utils/CheckRecord.js';
 import { v4 as uuidv4 } from 'uuid';
 import { slugify } from '../utils/Slugify.js';
 import { Transformer } from '../utils/transformer.js';
+import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 
 export default class ProductService {
   static createNewProduct = async (req) => {
@@ -72,10 +73,22 @@ export default class ProductService {
   };
 
   static getAllProduct = async (req) => {
-    const products = await Product.find().populate([
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name']);
+
+    const paginatedProducts = await Product.paginate(filter, options);
+    const populatedProducts = await Product.populate(paginatedProducts.docs, [
       {
         path: 'variants',
-        populate: ['color', ['size']],
+        populate: {
+          path: 'color',
+        },
+      },
+      {
+        path: 'variants',
+        populate: {
+          path: 'size',
+        },
       },
       {
         path: 'tags',
@@ -102,10 +115,20 @@ export default class ProductService {
         },
       },
     ]);
-    const returnData = products.map((product) =>
+    const { docs, ...otherFields } = paginatedProducts;
+
+    const transformedProducts = populatedProducts.map((product) =>
       Transformer.transformObjectTypeSnakeToCamel(product.toObject())
     );
-    return returnData;
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedProducts),
+      others,
+    };
   };
 
   static getOneProduct = async (req) => {
@@ -135,9 +158,6 @@ export default class ProductService {
       },
       {
         path: 'product_sizes',
-        populate: {
-          path: 'size_id',
-        },
       },
     ]);
     return Transformer.transformObjectTypeSnakeToCamel(product.toObject());
@@ -236,9 +256,6 @@ export default class ProductService {
       },
       {
         path: 'product_sizes',
-        populate: {
-          path: 'size_id',
-        },
       },
     ]);
 
