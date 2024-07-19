@@ -1,38 +1,25 @@
-import { StatusCodes, getReasonPhrase } from 'http-status-codes';
 import Permission from '../models/Permission.js';
 import Role from '../models/Role.js';
-import ApiError from '../utils/ApiError.js';
+import { checkRecordByField } from '../utils/CheckRecord.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
+import { Transformer } from '../utils/transformer.js';
 
 export default class PermissionService {
   static createNewPermission = async (req) => {
     const { name, label, module } = req.body;
 
-    // check existed permissions name
-    const existedPermissionName = await Permission.findOne({ name });
-    if (existedPermissionName) {
-      throw new ApiError(StatusCodes.CONFLICT, 'Permission already exists');
-    }
-
-    // check existed permissions label
-    const existedPermissionLabel = await Permission.findOne({ name });
-    if (existedPermissionLabel) {
-      throw new ApiError(StatusCodes.CONFLICT, 'Label already exists');
-    }
-
+    await checkRecordByField(Permission, 'name', name, false)
+    await checkRecordByField(Permission, 'module', module, true)
 
     const newPermission = await Permission.create({ name, label, module });
 
-    return newPermission;
+    return Transformer.transformObjectTypeSnakeToCamel(newPermission.toObject());
   };
 
   static getPermission = async (req) => {
+    await checkRecordByField(Permission, '_id', req.params.id, true)
     const permission = await Permission.findById(req.params.id);
-
-    if (!permission)
-      throw new ApiError(StatusCodes.NOT_FOUND, getReasonPhrase(StatusCodes.NOT_FOUND));
-
-    return permission;
+    return Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
   };
 
   static getAllPermissions = async (req) => {
@@ -40,7 +27,21 @@ export default class PermissionService {
     const filter = getFilterOptions(req, ['module', 'label']);
 
     const permissions = await Permission.paginate(filter, options);
-    return permissions;
+
+    const { docs, ...otherFields } = permissions;
+
+    const transformedPermission = docs.map((permission) =>
+      Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
+    );
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedPermission),
+      others,
+    }
   };
 
   static getAllModule = async (req) => {
@@ -50,47 +51,32 @@ export default class PermissionService {
 
   static updatePermission = async (req, res) => {
     const { id } = req.params;
+    const { name, label, module } = req.body;
 
-    // check existed permissions name
-    const existedPermissionName = await Permission.findOne({ name });
-    if (existedPermissionName) {
-      throw new ApiError(StatusCodes.CONFLICT, 'Permission already exists');
-    }
+    await checkRecordByField(Permission, '_id', id, true)
+    await checkRecordByField(Permission, 'name', name, false, id)
 
-    // check existed permissions label
-    const existedPermissionLabel = await Permission.findOne({ name });
-    if (existedPermissionLabel) {
-      throw new ApiError(StatusCodes.CONFLICT, 'Label already exists');
-    }
+    await checkRecordByField(Permission, 'module', module, true)
 
-    const permission = Permission.findByIdAndUpdate(
+    const permission = await Permission.findByIdAndUpdate(
       { _id: id },
       {
-        name: req.body.name,
-        module: req.body.module,
-        label: req.body.label,
+        name: name,
+        module: module,
+        label: label,
       },
       { new: true }
     );
 
-    if (!permission) {
-      throw new ApiError(404, 'Permission not found');
-    }
-
-    return permission;
+    return Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
   };
 
   static deletePermission = async (req, res) => {
     const { id } = req.params;
+    await checkRecordByField(Permission, '_id', id, true)
 
-    const permission = await Permission.findByIdAndDelete(id);
-
-    if (!permission) {
-      throw new ApiError(404, 'Permission not found');
-    }
+    await Permission.findByIdAndDelete(id);
 
     await Role.updateMany({ permissions: id }, { $pull: { permissions: id } });
-
-    return permission;
   };
 }

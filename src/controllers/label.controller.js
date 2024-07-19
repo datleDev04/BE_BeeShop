@@ -6,13 +6,9 @@ import { LabelService } from '../services/label.service.js';
 export class LabelController {
   static getAllLabel = async (req, res, next) => {
     try {
-      const labels = await LabelService.getAllLabel(req);
+      const { metaData, others } = await LabelService.getAllLabel(req);
 
-      const returnData = labels.map((label) => {
-        return Transformer.transformObjectTypeSnakeToCamel(label.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.OK, 'Get all Label successfully', returnData);
+      SuccessResponse(res, StatusCodes.OK, 'Get all Label successfully', metaData, others);
     } catch (error) {
       next(error);
     }
@@ -26,7 +22,7 @@ export class LabelController {
         res,
         StatusCodes.OK,
         'Get one label successfully',
-        Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+        label
       );
     } catch (error) {
       next(error);
@@ -40,7 +36,7 @@ export class LabelController {
         res,
         StatusCodes.CREATED,
         'Create new label successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newLabel.toObject())
+        newLabel
       );
     } catch (error) {
       next(error);
@@ -55,7 +51,7 @@ export class LabelController {
         res,
         StatusCodes.OK,
         'Updated label successfully',
-        Transformer.transformObjectTypeSnakeToCamel(updatedLabel.toObject())
+        updatedLabel
       );
     } catch (error) {
       next(error);
@@ -63,8 +59,13 @@ export class LabelController {
   };
 
   static deleteLabelById = async (req, res, next) => {
-    await LabelService.deleteLabelBydId(req);
+    try {
+      await LabelService.deleteLabelBydId(req);
 
-    SuccessResponse(res, StatusCodes.OK, 'delete label successfully', {});
+      SuccessResponse(res, StatusCodes.OK, 'delete label successfully', {});
+    } catch (error) {
+      next(error);
+    }
+
   };
 }
