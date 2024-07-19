@@ -3,6 +3,7 @@ import ApiError from '../utils/ApiError.js';
 import PaymentType from '../models/Payment_Type.js';
 import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 
 export default class PaymentTypeService {
   static createNewPaymentType = async (req) => {
@@ -15,11 +16,25 @@ export default class PaymentTypeService {
   };
 
   static getAllPaymentType = async (req) => {
-    const paymentTypes = await PaymentType.find().sort({ createdAt: -1 }).exec();
-    const returnData = paymentTypes.map((type) => {
-      return Transformer.transformObjectTypeSnakeToCamel(type.toObject());
-    });
-    return returnData;
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name']);
+
+    const paginatedPaymentTypes = await PaymentType.paginate(filter, options);
+
+    const { docs, ...otherFields } = paginatedPaymentTypes;
+
+    const transformedPaymentTypes = docs.map((label) =>
+      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    );
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedPaymentTypes),
+      others,
+    };
   };
 
   static getOnePaymentType = async (req) => {
@@ -32,8 +47,8 @@ export default class PaymentTypeService {
   static updatePaymentTypeById = async (req) => {
     const { name } = req.body;
 
-    await checkRecordByField(PaymentType, '_id', req.params.id, true);
     await checkRecordByField(PaymentType, 'name', name, false, req.params.id);
+    await checkRecordByField(PaymentType, '_id', req.params.id, true);
 
     const updatedPaymentType = await PaymentType.findByIdAndUpdate(
       req.params.id,

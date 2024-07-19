@@ -1,6 +1,7 @@
 import Color from '../models/Color.js';
 import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 
 export default class ColorService {
   static createNewColor = async (req) => {
@@ -14,11 +15,25 @@ export default class ColorService {
   };
 
   static getAllColor = async (req) => {
-    const colors = await Color.find().sort({ createdAt: -1 }).exec();
-    const returnData = colors.map((color) => {
-      return Transformer.transformObjectTypeSnakeToCamel(color.toObject());
-    });
-    return returnData;
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name']);
+
+    const paginatedColors = await Color.paginate(filter, options);
+
+    const { docs, ...otherFields } = paginatedColors;
+
+    const transformedColors = docs.map((label) =>
+      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    );
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedColors),
+      others,
+    };
   };
 
   static getOneColor = async (req) => {
@@ -31,6 +46,7 @@ export default class ColorService {
     const { name } = req.body;
 
     await checkRecordByField(Color, 'name', name, false, req.params.id);
+
     await checkRecordByField(Color, '_id', req.params.id, true);
 
     const updatedColor = await Color.findByIdAndUpdate(

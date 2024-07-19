@@ -3,6 +3,7 @@ import Gender from '../models/Gender.js';
 import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
+import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 
 export default class GenderService {
   static createNewGender = async (req) => {
@@ -15,11 +16,25 @@ export default class GenderService {
   };
 
   static getAllGender = async (req) => {
-    const genders = await Gender.find().sort({ createdAt: -1 }).exec();
-    const returnData = genders.map((gender) => {
-      return Transformer.transformObjectTypeSnakeToCamel(gender.toObject());
-    });
-    return returnData;
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name']);
+
+    const paginatedGenders = await Gender.paginate(filter, options);
+
+    const { docs, ...otherFields } = paginatedGenders;
+
+    const transformedGenders = docs.map((label) =>
+      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    );
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedGenders),
+      others,
+    };
   };
 
   static getOneGender = async (req) => {
@@ -31,7 +46,7 @@ export default class GenderService {
   static updateGenderById = async (req) => {
     const { name } = req.body;
 
-    await checkRecordByField(Gender, 'name', name, false);
+    await checkRecordByField(Gender, 'name', name, false, req.params.id);
     await checkRecordByField(Gender, '_id', req.params.id, true);
 
     const updatedGender = await Gender.findByIdAndUpdate(

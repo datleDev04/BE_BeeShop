@@ -4,6 +4,7 @@ import ApiError from '../utils/ApiError.js';
 import Gender from '../models/Gender.js';
 import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 
 export default class SizeService {
   static createNewSize = async (req) => {
@@ -21,11 +22,25 @@ export default class SizeService {
   };
 
   static getAllSize = async (req) => {
-    const sizes = await Size.find().populate('gender').sort({ createdAt: -1 }).exec();
-    const returnData = sizes.map((size) => {
-      return Transformer.transformObjectTypeSnakeToCamel(size.toObject());
-    });
-    return returnData;
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name']);
+
+    const paginatedSizes = await Size.paginate(filter, options);
+
+    const { docs, ...otherFields } = paginatedSizes;
+
+    const transformedSizes = docs.map((label) =>
+      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    );
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedSizes),
+      others,
+    };
   };
 
   static getOneSize = async (req) => {
@@ -42,7 +57,7 @@ export default class SizeService {
     const existingSize = await Size.findOne({ name, gender, _id: { $ne: req.params.id } });
 
     if (existingSize) {
-      throw new ApiError(StatusCodes.CONFLICT, 'Size already exists ');
+      throw new ApiError(StatusCodes.CONFLICT, 'Size already exists');
     }
 
     const updatedSize = await Size.findByIdAndUpdate(
