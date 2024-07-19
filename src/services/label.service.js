@@ -1,4 +1,6 @@
+import { StatusCodes } from 'http-status-codes';
 import Label from '../models/Label.js';
+import ApiError from '../utils/ApiError.js';
 
 export class LabelService {
   static getAllLabel = async (req) => {
@@ -44,7 +46,7 @@ export class LabelService {
         new: true,
       }
     );
-    return updatedLabel;
+      return updatedLabel;
   };
 
   static deleteLabelBydId = async (req) => {
