@@ -50,20 +50,11 @@ export default class ProductService {
       labels,
       brand,
       tags,
-      variants: [],
+      variants,
       gender,
       product_sizes,
       product_colors: productColors.map((color) => color._id),
     });
-
-    const productVariants = await Variant.create(
-      variants.map((variant) => ({
-        ...variant,
-        product_id: newProduct._id,
-      }))
-    );
-
-    newProduct.variants = productVariants.map((variant) => variant._id);
 
     await newProduct.save();
 
@@ -77,18 +68,11 @@ export default class ProductService {
     const filter = getFilterOptions(req, ['name']);
 
     const paginatedProducts = await Product.paginate(filter, options);
+
     const populatedProducts = await Product.populate(paginatedProducts.docs, [
       {
         path: 'variants',
-        populate: {
-          path: 'color',
-        },
-      },
-      {
-        path: 'variants',
-        populate: {
-          path: 'size',
-        },
+        populate: ['color', 'size'],
       },
       {
         path: 'tags',
@@ -110,9 +94,6 @@ export default class ProductService {
       },
       {
         path: 'product_sizes',
-        populate: {
-          path: 'size_id',
-        },
       },
     ]);
     const { docs, ...otherFields } = paginatedProducts;
@@ -136,7 +117,7 @@ export default class ProductService {
     const product = await Product.findById(req.params.id).populate([
       {
         path: 'variants',
-        populate: ['color', ['size']],
+        populate: [{ path: 'color' }, { path: 'size' }, { path: 'product_id', model: 'product' }],
       },
       {
         path: 'tags',
@@ -234,7 +215,7 @@ export default class ProductService {
     const updateProduct = await Product.findById(product._id).populate([
       {
         path: 'variants',
-        populate: ['color', ['size']],
+        populate: ['color', 'size'],
       },
       {
         path: 'tags',

@@ -17,14 +17,18 @@ export const createProductValidation = async (req, res, next) => {
     tags: Joi.alternatives()
       .try(
         Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-        Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        Joi.array()
+          .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+          .min(1)
       )
       .required(),
     gender: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).required(),
     labels: Joi.alternatives()
       .try(
         Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-        Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        Joi.array()
+          .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+          .min(1)
       )
       .required(),
     is_public: Joi.boolean().default(false),
@@ -38,11 +42,14 @@ export const createProductValidation = async (req, res, next) => {
           }),
         })
       )
+      .min(1)
       .required(),
     product_sizes: Joi.alternatives()
       .try(
         Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-        Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        Joi.array()
+          .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+          .min(1)
       )
       .required(),
     variants: Joi.array()
@@ -54,6 +61,7 @@ export const createProductValidation = async (req, res, next) => {
           stock: Joi.number().required(),
         })
       )
+      .min(1)
       .required(),
   });
 
@@ -75,23 +83,25 @@ export const updateProductValidation = async (req, res, next) => {
     images: Joi.array().items(Joi.string()),
     tags: Joi.alternatives().try(
       Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-      Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+      Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE)).min(1)
     ),
     gender: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
     labels: Joi.alternatives().try(
       Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-      Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+      Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE)).min(1)
     ),
     is_public: Joi.boolean().default(false),
     brand: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-    product_colors: Joi.array().items(
-      Joi.object({
-        color_id: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-        image_url: Joi.string().trim().messages({
-          'string.empty': "Product Color image can't be empty",
-        }),
-      })
-    ),
+    product_colors: Joi.array()
+      .items(
+        Joi.object({
+          color_id: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+          image_url: Joi.string().trim().messages({
+            'string.empty': "Product Color image can't be empty",
+          }),
+        })
+      )
+      .min(1),
     product_sizes: Joi.alternatives().try(
       Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
       Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
