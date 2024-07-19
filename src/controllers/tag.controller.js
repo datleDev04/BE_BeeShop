@@ -59,8 +59,12 @@ export class TagController {
   };
 
   static deleteTagById = async (req, res, next) => {
-    await TagService.deleteTagBydId(req);
+    try {
+      await TagService.deleteTagBydId(req);
 
-    SuccessResponse(res, StatusCodes.OK, 'deleted tag successfully', {});
+      SuccessResponse(res, StatusCodes.OK, 'deleted tag successfully', {});
+    } catch (error) {
+      next(error);
+    }
   };
 }

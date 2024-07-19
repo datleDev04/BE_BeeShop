@@ -12,7 +12,7 @@ export class TagService {
 
     const { docs, ...otherFields } = paginatedLabels;
 
-    const transformedLabels = docs.map((label) =>
+    const transformedTags = docs.map((label) =>
       Transformer.transformObjectTypeSnakeToCamel(label.toObject())
     );
 
@@ -21,16 +21,18 @@ export class TagService {
     };
 
     return {
-      metaData: Transformer.removeDeletedField(transformedLabels),
+      metaData: Transformer.removeDeletedField(transformedTags),
       others,
     }
   };
 
   static getOneTag = async (req) => {
     await checkRecordByField(Tags, '_id', req.params.id, true)
-    const Tags = await Tags.findById(req.params.id);
-    return Transformer.transformObjectTypeSnakeToCamel(Tags.toObject())
+    const tag = await Tags.findById(req.params.id);
+    return Transformer.transformObjectTypeSnakeToCamel(tag)
   };
+
+
 
   static createTag = async (req) => {
     const { name, description } = req.body;
@@ -46,12 +48,10 @@ export class TagService {
   static updateTagById = async (req) => {
     const { name, description } = req.body;
 
-    // check existed tag name
-    const existedTagName = await Tags.findOne({ name });
-    if (existedTagName) {
-      throw new ApiError(StatusCodes.CONFLICT, 'Tag name already exists');
-    }
+    await checkRecordByField(Tags, 'name', name, false, req.params.id)
 
+    await checkRecordByField(Tags, '_id', req.params.id, true)
+    
     const updatedTag = await Tags.findByIdAndUpdate(
       req.params.id,
       {
