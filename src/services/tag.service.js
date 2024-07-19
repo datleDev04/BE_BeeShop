@@ -1,4 +1,5 @@
 import Tags from '../models/Tags.js';
+import { checkRecordByField } from '../utils/CheckRecord.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 
@@ -26,18 +27,14 @@ export class TagService {
   };
 
   static getOneTag = async (req) => {
-    return await Tags.findById(req.params.id);
+    await checkRecordByField(Tags, '_id', req.params.id, true)
+    const Tags = await Tags.findById(req.params.id);
+    return Transformer.transformObjectTypeSnakeToCamel(Tags.toObject())
   };
 
   static createTag = async (req) => {
     const { name, description } = req.body;
-
-    // check existed tag name
-    const existedTagName = await Tags.findOne({ name });
-    if (existedTagName) {
-      throw new ApiError(StatusCodes.CONFLICT, 'Tag name already exists');
-    }
-    
+    await checkRecordByField(Tags, 'name', name, false)    
 
     const newTag = await Tags.create({
       name,

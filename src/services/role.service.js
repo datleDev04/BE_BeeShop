@@ -1,7 +1,7 @@
 import Role from '../models/Role.js';
+import { checkRecordByField } from '../utils/CheckRecord.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
-import { checkRecordByField } from '../utils/CheckRecord.js';
 
 export default class RoleService {
   static createNewRole = async (req) => {
