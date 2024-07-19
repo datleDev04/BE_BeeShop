@@ -7,13 +7,9 @@ import VoucherTypeService from '../services/voucher_type.service.js';
 export class VoucherTypeController {
   static getAllVoucherType = async (req, res, next) => {
     try {
-      const voucherTypes = await VoucherTypeService.getAllVoucherType(req);
+      const { metaData, others } = await VoucherTypeService.getAllVoucherType(req);
 
-      const returnData = voucherTypes.map((voucherType) => {
-        return Transformer.transformObjectTypeSnakeToCamel(voucherType.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.OK, 'Get all voucher types successfully', returnData);
+      SuccessResponse(res, StatusCodes.OK, 'Get all voucher type successfully', metaData, others);
     } catch (error) {
       next(error);
     }
@@ -23,12 +19,7 @@ export class VoucherTypeController {
     try {
       const voucherType = await VoucherTypeService.getOneVoucherType(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get one voucher type successfully',
-        Transformer.transformObjectTypeSnakeToCamel(voucherType.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get one voucher type successfully', voucherType);
     } catch (error) {
       next(error);
     }

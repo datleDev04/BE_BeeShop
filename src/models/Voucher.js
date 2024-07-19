@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import MongooseDelete from 'mongoose-delete';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 // schema Voucher variables
 const DOCUMENT_NAME = 'Voucher';
@@ -21,7 +23,6 @@ const voucherSchema = new mongoose.Schema(
     },
     duration: {
       type: Number,
-      required: true,
     },
     discount: {
       type: Number,
@@ -51,5 +52,14 @@ const voucherSchema = new mongoose.Schema(
     collection: COLLECTION_NAME,
   }
 );
+
+const plugins = [MongooseDelete, mongoosePaginate];
+
+plugins.forEach((plugin) => {
+  voucherSchema.plugin(plugin, {
+    deletedAt: true,
+    overrideMethods: true,
+  });
+});
 
 export default mongoose.model(DOCUMENT_NAME, voucherSchema);

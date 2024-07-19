@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import MongooseDelete from 'mongoose-delete';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 // schema Voucher-Types variables
 const DOCUMENT_NAME = 'Voucher_Type';
@@ -17,5 +19,14 @@ const voucherTypeSchema = new mongoose.Schema(
     collection: COLLECTION_NAME,
   }
 );
+
+const plugins = [MongooseDelete, mongoosePaginate];
+
+plugins.forEach((plugin) => {
+  voucherTypeSchema.plugin(plugin, {
+    deletedAt: true,
+    overrideMethods: true,
+  });
+});
 
 export default mongoose.model(DOCUMENT_NAME, voucherTypeSchema);

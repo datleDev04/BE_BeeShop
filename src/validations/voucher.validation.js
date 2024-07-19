@@ -11,7 +11,7 @@ const createVoucherSchema = Joi.object({
   name: Joi.string().required(),
   code: Joi.string().required(),
   max_usage: Joi.number().required(),
-  duration: Joi.number().required(),
+  duration: Joi.number(),
   discount: Joi.number().required(),
   discount_types: Joi.string().valid('percentage', 'fixed').required(),
   minimum_order_price: Joi.number(),

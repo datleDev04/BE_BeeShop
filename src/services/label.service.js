@@ -1,12 +1,10 @@
-import { StatusCodes } from 'http-status-codes';
-import ApiError from '../utils/ApiError.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 import Label from '../models/Label.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 
 export class LabelService {
-  static getAllLabel = async (req) => { 
+  static getAllLabel = async (req) => {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name']);
 
@@ -25,19 +23,19 @@ export class LabelService {
     return {
       metaData: Transformer.removeDeletedField(transformedLabels),
       others,
-    }
+    };
   };
 
   static getOneLabel = async (req) => {
-    await checkRecordByField(Label, '_id', req.params.id, true)
+    await checkRecordByField(Label, '_id', req.params.id, true);
     const label = await Label.findById(req.params.id);
-    return Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    return Transformer.transformObjectTypeSnakeToCamel(label.toObject());
   };
 
   static createLabel = async (req) => {
     const { name, description } = req.body;
 
-    await checkRecordByField(Label, 'name', name, false)
+    await checkRecordByField(Label, 'name', name, false);
 
     const newLabel = await Label.create({
       name,
@@ -49,9 +47,9 @@ export class LabelService {
   static updateLabelById = async (req) => {
     const { name, description } = req.body;
 
-    await checkRecordByField(Label, 'name', name, false, req.params.id)
+    await checkRecordByField(Label, 'name', name, false, req.params.id);
 
-    await checkRecordByField(Label, '_id', req.params.id, true)
+    await checkRecordByField(Label, '_id', req.params.id, true);
 
     const updatedLabel = await Label.findByIdAndUpdate(
       req.params.id,
@@ -63,11 +61,11 @@ export class LabelService {
         new: true,
       }
     );
-      return Transformer.transformObjectTypeSnakeToCamel(updatedLabel.toObject());
+    return Transformer.transformObjectTypeSnakeToCamel(updatedLabel.toObject());
   };
 
   static deleteLabelBydId = async (req) => {
-    await checkRecordByField(Label, '_id', req.params.id, true)
+    await checkRecordByField(Label, '_id', req.params.id, true);
     await Label.findByIdAndDelete(req.params.id);
   };
 }

@@ -5,8 +5,9 @@ import VoucherService from '../services/voucher.service.js';
 export class VoucherController {
   static getAllVouchers = async (req, res, next) => {
     try {
-      const vouchers = await VoucherService.getAllVouchers();
-      SuccessResponse(res, StatusCodes.OK, 'Get all vouchers successfully', vouchers);
+      const { metaData, others } = await VoucherService.getAllVouchers(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Get all vouchers successfully', metaData, others);
     } catch (error) {
       next(error);
     }
@@ -14,7 +15,8 @@ export class VoucherController {
 
   static getOneVoucher = async (req, res, next) => {
     try {
-      const voucher = await VoucherService.getOneVoucher(req.params.id);
+      const voucher = await VoucherService.getOneVoucher(req);
+
       SuccessResponse(res, StatusCodes.OK, 'Get one voucher successfully', voucher);
     } catch (error) {
       next(error);
