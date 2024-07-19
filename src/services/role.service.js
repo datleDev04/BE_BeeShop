@@ -3,20 +3,20 @@ import Role from '../models/Role.js';
 import ApiError from '../utils/ApiError.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
+import { checkRecordByField } from '../utils/CheckExists.js';
 
 export default class RoleService {
   static createNewRole = async (req) => {
     const { name, permissions } = req.body;
 
-    const existedRole = await Role.findOne({ name });
-
-    if (existedRole) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This role is existed');
-    }
+    await checkRecordByField(Role, 'name', name, false)
 
     await Role.create({ name, permissions });
 
-    return Role.findOne({ name }).populate('permissions').exec();
+    const newRole = await Role.findOne({ name }).populate('permissions').exec();
+
+    return Transformer.transformObjectTypeSnakeToCamel(newRole.toObject())
+
   };
 
   static getAllRole = async (req) => {
@@ -45,28 +45,30 @@ export default class RoleService {
   };
 
   static getOneRole = async (req) => {
-    const roles = await Role.findById(req.params.id).populate('permissions').exec();
-    return roles;
+    const role = await Role.findById(req.params.id).populate('permissions').exec();
+    return Transformer.transformObjectTypeSnakeToCamel(role.toObject())
+
   };
 
   static updateRoleById = async (req) => {
     const { name, permissions } = req.body;
+    const id = req.params.id;
 
-    const existedRole = await Role.findOne({ name });
+    await checkRecordByField(Role, 'name', name, false)
 
-    if (existedRole) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This role is existed');
-    }
+    await checkRecordByField(Role, '_id', id, true)
 
     const updatedRole = await Role.findByIdAndUpdate(
-      req.params.id,
+      id,
       { name, permissions },
       { new: true })
       .populate('permissions').exec();
-    return updatedRole
+
+    return Transformer.transformObjectTypeSnakeToCamel(updatedRole.toObject())
   };
 
   static deleteRoleById = async (req) => {
+    await checkRecordByField(Role, '_id', req.params.id, true)
     await Role.findByIdAndDelete(req.params.id);
   };
 }

@@ -27,7 +27,7 @@ export class RoleController {
         res,
         StatusCodes.OK,
         'Get One Role successfully',
-        Transformer.transformObjectTypeSnakeToCamel(role.toObject())
+        role
       );
     } catch (error) {
       next(error);
@@ -42,7 +42,7 @@ export class RoleController {
         res,
         StatusCodes.CREATED,
         'Create New Role successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newRole.toObject())
+        newRole
       );
     } catch (error) {
       next(error);
@@ -57,7 +57,7 @@ export class RoleController {
         res,
         StatusCodes.OK,
         'Updated Role successfully',
-        Transformer.transformObjectTypeSnakeToCamel(updatedRole.toObject())
+        updatedRole
       );
     } catch (error) {
       next(error);
