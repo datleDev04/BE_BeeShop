@@ -22,7 +22,7 @@ export class LabelController {
         res,
         StatusCodes.OK,
         'Get one label successfully',
-        Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+        label
       );
     } catch (error) {
       next(error);
@@ -59,8 +59,13 @@ export class LabelController {
   };
 
   static deleteLabelById = async (req, res, next) => {
-    await LabelService.deleteLabelBydId(req);
+    try {
+      await LabelService.deleteLabelBydId(req);
 
-    SuccessResponse(res, StatusCodes.OK, 'delete label successfully', {});
+      SuccessResponse(res, StatusCodes.OK, 'delete label successfully', {});
+    } catch (error) {
+      next(error);
+    }
+
   };
 }

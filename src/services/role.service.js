@@ -1,7 +1,7 @@
 import Role from '../models/Role.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
-import { checkRecordByField } from '../utils/CheckExists.js';
+import { checkRecordByField } from '../utils/CheckRecord.js';
 
 export default class RoleService {
   static createNewRole = async (req) => {
@@ -43,6 +43,7 @@ export default class RoleService {
   };
 
   static getOneRole = async (req) => {
+    await checkRecordByField(Role, '_id', req.params.id, true)
     const role = await Role.findById(req.params.id).populate('permissions').exec();
     return Transformer.transformObjectTypeSnakeToCamel(role.toObject())
 
@@ -52,7 +53,7 @@ export default class RoleService {
     const { name, permissions } = req.body;
     const id = req.params.id;
 
-    await checkRecordByField(Role, 'name', name, false)
+    await checkRecordByField(Role, 'name', name, false, id)
 
     await checkRecordByField(Role, '_id', id, true)
 

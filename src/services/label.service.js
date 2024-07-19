@@ -3,6 +3,7 @@ import ApiError from '../utils/ApiError.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 import Label from '../models/Label.js';
+import { checkRecordByField } from '../utils/CheckRecord.js';
 
 export class LabelService {
   static getAllLabel = async (req) => { 
@@ -28,19 +29,15 @@ export class LabelService {
   };
 
   static getOneLabel = async (req) => {
-    return await Label.findById(req.params.id);
+    await checkRecordByField(Label, '_id', req.params.id, true)
+    const label = await Label.findById(req.params.id);
+    return Transformer.transformObjectTypeSnakeToCamel(label.toObject())
   };
 
   static createLabel = async (req) => {
     const { name, description } = req.body;
 
-    // check existed Label name
-    const existedLabelName = await Label.findOne({ name });
-    if (existedLabelName) {
-      throw new ApiError(StatusCodes.CONFLICT, {
-        name: "label name is exists"
-      });
-    }
+    await checkRecordByField(Label, 'name', name, false)
 
     const newLabel = await Label.create({
       name,
@@ -52,13 +49,9 @@ export class LabelService {
   static updateLabelById = async (req) => {
     const { name, description } = req.body;
 
-    // check existed Label name
-    const existedLabelName = await Label.findOne({ name });
-    if (existedLabelName) {
-      throw new ApiError(StatusCodes.CONFLICT, {
-        name: "label name is exists"
-      });
-    }
+    await checkRecordByField(Label, 'name', name, false, req.params.id)
+
+    await checkRecordByField(Label, '_id', req.params.id, true)
 
     const updatedLabel = await Label.findByIdAndUpdate(
       req.params.id,
@@ -74,6 +67,7 @@ export class LabelService {
   };
 
   static deleteLabelBydId = async (req) => {
-    return await Label.findByIdAndDelete(req.params.id);
+    await checkRecordByField(Label, '_id', req.params.id, true)
+    await Label.findByIdAndDelete(req.params.id);
   };
 }
