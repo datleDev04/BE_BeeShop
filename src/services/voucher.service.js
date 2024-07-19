@@ -21,23 +21,21 @@ export default class VoucherService {
       voucher_type,
     } = req.body;
 
-    const existedVoucher = await Voucher.findOne({ name, code });
-
-    if (existedVoucher) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This name or code is existed');
-    }
+    await checkRecordByField(Voucher, 'name', name, false, req.params.id);
+    await checkRecordByField(Voucher, 'code', code, false, req.params.id);
 
     const voucherType = await VoucherType.findById(voucher_type);
     if (!voucherType) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Voucher type not found');
+      throw new ApiError(StatusCodes.NOT_FOUND, {
+        voucher_type: 'Voucher type not found',
+      });
     }
 
     if (voucherType.name === 'deadline') {
       if (!start_date || !end_date) {
-        throw new ApiError(
-          StatusCodes.BAD_REQUEST,
-          'Start date and end date are required for deadline voucher type'
-        );
+        throw new ApiError(StatusCodes.BAD_REQUEST, {
+          voucher_type: 'Start date and end date are required for deadline voucher type',
+        });
       }
       const newVoucher = await Voucher.create({
         name,
@@ -54,10 +52,12 @@ export default class VoucherService {
       const populatedVoucher = await Voucher.findById(newVoucher._id)
         .populate('voucher_type')
         .exec();
-      return populatedVoucher;
+      return Transformer.transformObjectTypeSnakeToCamel(populatedVoucher.toObject());
     } else if (voucherType.name === 'period') {
       if (!duration) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, 'Duration is required for period voucher type');
+        throw new ApiError(StatusCodes.BAD_REQUEST, {
+          voucher_type: 'Duration is required for period voucher type',
+        });
       }
       const newVoucher = await Voucher.create({
         name,
@@ -73,9 +73,11 @@ export default class VoucherService {
       const populatedVoucher = await Voucher.findById(newVoucher._id)
         .populate('voucher_type')
         .exec();
-      return populatedVoucher;
+      return Transformer.transformObjectTypeSnakeToCamel(populatedVoucher.toObject());
     } else {
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'Invalid voucher type');
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        voucher_type: 'Invalid voucher type',
+      });
     }
   };
 
@@ -124,18 +126,14 @@ export default class VoucherService {
 
     const voucherId = req.params.id;
 
-    const existedVoucher = await Voucher.findOne({
-      $or: [{ name }, { code }],
-      _id: { $ne: voucherId },
-    });
-
-    if (existedVoucher) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This name or code is existed with another voucher');
-    }
+    await checkRecordByField(Voucher, 'name', name, false, req.params.id);
+    await checkRecordByField(Voucher, 'code', code, false, req.params.id);
 
     const voucherType = await VoucherType.findById(voucher_type);
     if (!voucherType) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Voucher type not found');
+      throw new ApiError(StatusCodes.NOT_FOUND, {
+        voucher_type: 'Voucher type not found',
+      });
     }
 
     let updatedVoucherData = {
@@ -150,10 +148,9 @@ export default class VoucherService {
 
     if (voucherType.name === 'deadline') {
       if (!start_date || !end_date) {
-        throw new ApiError(
-          StatusCodes.BAD_REQUEST,
-          'Start date and end date are required for deadline voucher type'
-        );
+        throw new ApiError(StatusCodes.BAD_REQUEST, {
+          voucher_type: 'Start date and end date are required for deadline voucher type',
+        });
       }
       updatedVoucherData = {
         ...updatedVoucherData,
@@ -163,7 +160,9 @@ export default class VoucherService {
       await Voucher.updateOne({ _id: voucherId }, { $unset: { duration: '' } });
     } else if (voucherType.name === 'period') {
       if (!duration) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, 'Duration is required for period voucher type');
+        throw new ApiError(StatusCodes.BAD_REQUEST, {
+          voucher_type: 'Duration is required for period voucher type',
+        });
       }
       updatedVoucherData = {
         ...updatedVoucherData,
@@ -171,7 +170,9 @@ export default class VoucherService {
       };
       await Voucher.updateOne({ _id: voucherId }, { $unset: { start_date: '', end_date: '' } });
     } else {
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'Invalid voucher type');
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        voucher_type: 'Invalid voucher type',
+      });
     }
 
     const updatedVoucher = await Voucher.findByIdAndUpdate(voucherId, updatedVoucherData, {
@@ -182,21 +183,16 @@ export default class VoucherService {
       .exec();
 
     if (!updatedVoucher) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Voucher not found');
+      throw new ApiError(StatusCodes.NOT_FOUND, {
+        not_available: 'Voucher not found',
+      });
     }
 
-    return updatedVoucher;
+    return Transformer.transformObjectTypeSnakeToCamel(updatedVoucher.toObject());
   };
 
   static deleteVoucher = async (req) => {
-    const voucher = await Voucher.findById(req.params.id);
-
-    if (!voucher) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Voucher not found');
-    }
-
+    await checkRecordByField(Voucher, '_id', req.params.id, true);
     await Voucher.findByIdAndDelete(req.params.id);
-
-    return voucher;
   };
 }

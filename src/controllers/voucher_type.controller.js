@@ -1,6 +1,4 @@
 import { StatusCodes } from 'http-status-codes';
-import RoleService from '../services/role.service.js';
-import { Transformer } from '../utils/transformer.js';
 import { SuccessResponse } from '../utils/response.js';
 import VoucherTypeService from '../services/voucher_type.service.js';
 
@@ -29,12 +27,7 @@ export class VoucherTypeController {
     try {
       const newVoucherTypes = await VoucherTypeService.createVoucherType(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Create new voucher type successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newVoucherTypes.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Create new voucher type successfully', newVoucherTypes);
     } catch (error) {
       next(error);
     }
@@ -44,12 +37,7 @@ export class VoucherTypeController {
     try {
       const updatedVoucherType = await VoucherTypeService.updateVoucherType(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Updated voucher type successfully',
-        Transformer.transformObjectTypeSnakeToCamel(updatedVoucherType.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Updated voucher type successfully', updatedVoucherType);
     } catch (error) {
       next(error);
     }
