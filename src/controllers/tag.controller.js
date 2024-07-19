@@ -22,7 +22,7 @@ export class TagController {
         res,
         StatusCodes.OK,
         'Get one tag successfully',
-        Transformer.transformObjectTypeSnakeToCamel(tag.toObject())
+        tag
       );
     } catch (error) {
       next(error);
@@ -36,7 +36,7 @@ export class TagController {
         res,
         StatusCodes.CREATED,
         'Create new tag successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newTag.toObject())
+        newTag
       );
     } catch (error) {
       next(error);
@@ -51,7 +51,7 @@ export class TagController {
         res,
         StatusCodes.OK,
         'Updated tag successfully',
-        Transformer.transformObjectTypeSnakeToCamel(updatedTag.toObject())
+        updatedTag
       );
     } catch (error) {
       next(error);

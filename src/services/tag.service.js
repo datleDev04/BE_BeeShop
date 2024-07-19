@@ -29,7 +29,7 @@ export class TagService {
   static getOneTag = async (req) => {
     await checkRecordByField(Tags, '_id', req.params.id, true)
     const tag = await Tags.findById(req.params.id);
-    return Transformer.transformObjectTypeSnakeToCamel(tag)
+    return Transformer.transformObjectTypeSnakeToCamel(tag.toObject())
   };
 
 
@@ -42,7 +42,7 @@ export class TagService {
       name,
       description,
     });
-    return newTag;
+    return Transformer.transformObjectTypeSnakeToCamel(newTag.toObject());
   };
 
   static updateTagById = async (req) => {
@@ -60,7 +60,7 @@ export class TagService {
       },
       { new: true }
     );
-    return updatedTag;
+    return Transformer.transformObjectTypeSnakeToCamel(updatedTag.toObject());
   };
 
   static deleteTagBydId = async (req) => {

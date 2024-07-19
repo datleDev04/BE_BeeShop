@@ -43,7 +43,7 @@ export class LabelService {
       name,
       description,
     });
-    return newLabel;
+    return Transformer.transformObjectTypeSnakeToCamel(newLabel.toObject());
   };
 
   static updateLabelById = async (req) => {
@@ -63,7 +63,7 @@ export class LabelService {
         new: true,
       }
     );
-      return updatedLabel;
+      return Transformer.transformObjectTypeSnakeToCamel(updatedLabel.toObject());
   };
 
   static deleteLabelBydId = async (req) => {

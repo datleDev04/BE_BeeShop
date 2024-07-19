@@ -36,7 +36,7 @@ export class LabelController {
         res,
         StatusCodes.CREATED,
         'Create new label successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newLabel.toObject())
+        newLabel
       );
     } catch (error) {
       next(error);
@@ -51,7 +51,7 @@ export class LabelController {
         res,
         StatusCodes.OK,
         'Updated label successfully',
-        Transformer.transformObjectTypeSnakeToCamel(updatedLabel.toObject())
+        updatedLabel
       );
     } catch (error) {
       next(error);
