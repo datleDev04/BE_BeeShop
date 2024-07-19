@@ -18,12 +18,7 @@ export class TagController {
     try {
       const tag = await TagService.getOneTag(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get one tag successfully',
-        tag
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get one tag successfully', tag);
     } catch (error) {
       next(error);
     }
@@ -32,12 +27,7 @@ export class TagController {
   static createTag = async (req, res, next) => {
     try {
       const newTag = await TagService.createTag(req);
-      SuccessResponse(
-        res,
-        StatusCodes.CREATED,
-        'Create new tag successfully',
-        newTag
-      );
+      SuccessResponse(res, StatusCodes.CREATED, 'Create new tag successfully', newTag);
     } catch (error) {
       next(error);
     }
@@ -47,12 +37,7 @@ export class TagController {
     try {
       const updatedTag = await TagService.updateTagById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Updated tag successfully',
-        updatedTag
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Updated tag successfully', updatedTag);
     } catch (error) {
       next(error);
     }

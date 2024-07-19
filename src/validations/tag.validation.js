@@ -6,7 +6,7 @@ import ApiError from '../utils/ApiError.js';
 export const createTagValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().trim().required(),
-    description: Joi.string().allow(""),
+    description: Joi.string().allow(''),
   });
 
   try {
@@ -19,7 +19,7 @@ export const createTagValidation = async (req, res, next) => {
 export const updateTagValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().trim(),
-    description: Joi.string().allow(""),
+    description: Joi.string().allow(''),
   });
 
   try {

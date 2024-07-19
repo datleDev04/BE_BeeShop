@@ -23,20 +23,18 @@ export class TagService {
     return {
       metaData: Transformer.removeDeletedField(transformedTags),
       others,
-    }
+    };
   };
 
   static getOneTag = async (req) => {
-    await checkRecordByField(Tags, '_id', req.params.id, true)
+    await checkRecordByField(Tags, '_id', req.params.id, true);
     const tag = await Tags.findById(req.params.id);
-    return Transformer.transformObjectTypeSnakeToCamel(tag.toObject())
+    return Transformer.transformObjectTypeSnakeToCamel(tag.toObject());
   };
-
-
 
   static createTag = async (req) => {
     const { name, description } = req.body;
-    await checkRecordByField(Tags, 'name', name, false)    
+    await checkRecordByField(Tags, 'name', name, false);
 
     const newTag = await Tags.create({
       name,
@@ -48,10 +46,10 @@ export class TagService {
   static updateTagById = async (req) => {
     const { name, description } = req.body;
 
-    await checkRecordByField(Tags, 'name', name, false, req.params.id)
+    await checkRecordByField(Tags, 'name', name, false, req.params.id);
 
-    await checkRecordByField(Tags, '_id', req.params.id, true)
-    
+    await checkRecordByField(Tags, '_id', req.params.id, true);
+
     const updatedTag = await Tags.findByIdAndUpdate(
       req.params.id,
       {

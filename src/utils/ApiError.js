@@ -13,7 +13,7 @@ class ApiError extends Error {
     return {
       statusCode: this.statusCode,
       errors: this.errors,
-      stack: this.stack
+      stack: this.stack,
     };
   }
 }

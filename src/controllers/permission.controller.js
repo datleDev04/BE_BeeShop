@@ -22,12 +22,7 @@ export class PermissionController {
     try {
       const permission = await PermissionService.getPermission(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get Permission successfully',
-        permission
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get Permission successfully', permission);
     } catch (error) {
       next(error);
     }
@@ -36,13 +31,7 @@ export class PermissionController {
     try {
       const { metaData, others } = await PermissionService.getAllPermissions(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get All Permission successfully',
-        metaData,
-        others
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get All Permission successfully', metaData, others);
     } catch (error) {
       next(error);
     }
@@ -61,12 +50,7 @@ export class PermissionController {
     try {
       const permissions = await PermissionService.updatePermission(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Updated Permission successfully',
-        permissions
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Updated Permission successfully', permissions);
     } catch (error) {
       next(error);
     }
@@ -75,12 +59,7 @@ export class PermissionController {
     try {
       await PermissionService.deletePermission(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Delete Permission successfully',
-        {}
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Delete Permission successfully', {});
     } catch (error) {
       next(error);
     }
