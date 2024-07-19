@@ -1,10 +1,30 @@
 import { StatusCodes } from 'http-status-codes';
-import Label from '../models/Label.js';
 import ApiError from '../utils/ApiError.js';
+import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
+import { Transformer } from '../utils/transformer.js';
+import Label from '../models/Label.js';
 
 export class LabelService {
-  static getAllLabel = async (req) => {
-    return await Label.find().sort({ createdAt: -1 });
+  static getAllLabel = async (req) => { 
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name']);
+
+    const paginatedLabels = await Label.paginate(filter, options);
+
+    const { docs, ...otherFields } = paginatedLabels;
+
+    const transformedLabels = docs.map((label) =>
+      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    );
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedLabels),
+      others,
+    }
   };
 
   static getOneLabel = async (req) => {

@@ -6,13 +6,9 @@ import { LabelService } from '../services/label.service.js';
 export class LabelController {
   static getAllLabel = async (req, res, next) => {
     try {
-      const labels = await LabelService.getAllLabel(req);
+      const { metaData, others } = await LabelService.getAllLabel(req);
 
-      const returnData = labels.map((label) => {
-        return Transformer.transformObjectTypeSnakeToCamel(label.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.OK, 'Get all Label successfully', returnData);
+      SuccessResponse(res, StatusCodes.OK, 'Get all Label successfully', metaData, others);
     } catch (error) {
       next(error);
     }

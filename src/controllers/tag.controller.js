@@ -6,13 +6,9 @@ import { Transformer } from '../utils/transformer.js';
 export class TagController {
   static getAllTags = async (req, res, next) => {
     try {
-      const tags = await TagService.getAllTags(req);
+      const { metaData, others } = await TagService.getAllTags(req);
 
-      const returnData = tags.map((tag) => {
-        return Transformer.transformObjectTypeSnakeToCamel(tag.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.OK, 'Get all tag successfully', returnData);
+      SuccessResponse(res, StatusCodes.OK, 'Get all tag successfully', metaData, others);
     } catch (error) {
       next(error);
     }

@@ -1,8 +1,28 @@
 import Tags from '../models/Tags.js';
+import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
+import { Transformer } from '../utils/transformer.js';
 
 export class TagService {
   static getAllTags = async (req) => {
-    return await Tags.find().sort({ createdAt: -1 });
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name']);
+
+    const paginatedLabels = await Tags.paginate(filter, options);
+
+    const { docs, ...otherFields } = paginatedLabels;
+
+    const transformedLabels = docs.map((label) =>
+      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    );
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedLabels),
+      others,
+    }
   };
 
   static getOneTag = async (req) => {
