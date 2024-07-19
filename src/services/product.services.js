@@ -2,14 +2,16 @@ import { StatusCodes } from 'http-status-codes';
 import Product from '../models/Product.js';
 import ApiError from '../utils/ApiError.js';
 import Product_Color from '../models/Product_Color.js';
-import Product_Size from '../models/Product_Size.js';
 import Variant from '../models/Variant.js';
+import { checkRecordByField } from '../utils/CheckRecord.js';
+import { v4 as uuidv4 } from 'uuid';
+import { slugify } from '../utils/Slugify.js';
+import { Transformer } from '../utils/transformer.js';
 
 export default class ProductService {
   static createNewProduct = async (req) => {
     const {
       name,
-      slug_name,
       description,
       regular_price,
       discount_price,
@@ -18,25 +20,22 @@ export default class ProductService {
       gender,
       variants,
       labels,
-      isPublic,
+      is_public,
       brand,
       product_colors,
       product_sizes,
     } = req.body;
 
     const productColors = await Product_Color.create(product_colors);
-    const productSizes = await Product_Size.create(product_sizes);
 
-    const existingName = await Product.findOne({ name });
+    await checkRecordByField(Product, 'name', name, false);
 
-    if (existingName) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This product name is existed');
-    }
+    let slug_name = slugify(name);
 
     const existingSlug = await Product.findOne({ slug_name });
 
     if (existingSlug) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This product slug is existed');
+      slug_name = `${slug_name}-${uuidv4()}`;
     }
 
     const newProduct = await Product.create({
@@ -46,14 +45,14 @@ export default class ProductService {
       discount_price,
       regular_price,
       images,
-      isPublic,
+      is_public,
       labels,
       brand,
       tags,
       variants: [],
       gender,
+      product_sizes,
       product_colors: productColors.map((color) => color._id),
-      product_sizes: productSizes.map((size) => size._id),
     });
 
     const productVariants = await Variant.create(
@@ -67,7 +66,9 @@ export default class ProductService {
 
     await newProduct.save();
 
-    return await Product.findById(newProduct._id);
+    const returnData = await Product.findById(newProduct._id);
+
+    return Transformer.transformObjectTypeSnakeToCamel(returnData.toObject());
   };
 
   static getAllProduct = async (req) => {
@@ -101,10 +102,14 @@ export default class ProductService {
         },
       },
     ]);
-    return products;
+    const returnData = products.map((product) =>
+      Transformer.transformObjectTypeSnakeToCamel(product.toObject())
+    );
+    return returnData;
   };
 
   static getOneProduct = async (req) => {
+    await checkRecordByField(Product, '_id', req.params.id, true);
     const product = await Product.findById(req.params.id).populate([
       {
         path: 'variants',
@@ -135,13 +140,12 @@ export default class ProductService {
         },
       },
     ]);
-    return product;
+    return Transformer.transformObjectTypeSnakeToCamel(product.toObject());
   };
 
   static updateProduct = async (req) => {
     const {
       name,
-      slug_name,
       description,
       regular_price,
       discount_price,
@@ -150,60 +154,46 @@ export default class ProductService {
       gender,
       variants,
       labels,
-      isPublic,
+      is_public,
       brand,
       product_colors,
       product_sizes,
     } = req.body;
 
     const productId = req.params.id;
+
+    await checkRecordByField(Product, '_id', productId, true);
+    await checkRecordByField(Product, 'name', name, false, productId);
+
+    let slug_name = slugify(name);
+
+    const existingSlug = await Product.findOne({ slug_name });
+
+    if (existingSlug) {
+      slug_name = `${slug_name}-${productId}`;
+    }
+
     const product = await Product.findById(productId);
 
-    if (!product) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found');
-    }
+    /// delete or add new variant
+    await Promise.all(
+      variants.map(async (variant) => {
+        if (variant._id) {
+          await Variant.findByIdAndUpdate(variant._id, variant);
+        } else {
+          const newVariant = await Variant.create({
+            ...variant,
+            product_id: product._id,
+          });
+          product.variants.push(newVariant._id);
+        }
+      })
+    );
 
-    if (name && name !== product.name) {
-      const existingName = await Product.findOne({ name });
-      if (existingName) {
-        throw new ApiError(StatusCodes.CONFLICT, 'This product name already exists');
-      }
-    }
-
-    if (slug_name && slug_name !== product.slug_name) {
-      const existingSlug = await Product.findOne({ slug_name });
-      if (existingSlug) {
-        throw new ApiError(StatusCodes.CONFLICT, 'This product slug already exists');
-      }
-    }
-
-    if (variants) {
-      await Promise.all(
-        variants.map(async (variant) => {
-          if (variant._id) {
-            await Variant.findByIdAndUpdate(variant._id, variant);
-          } else {
-            const newVariant = await Variant.create({
-              ...variant,
-              product_id: product._id,
-            });
-            product.variants.push(newVariant._id);
-          }
-        })
-      );
-    }
-
-    if (product_colors) {
-      await Product_Color.deleteMany({ _id: { $in: product.product_colors } });
-      const productColors = await Product_Color.create(product_colors);
-      product.product_colors = productColors.map((color) => color._id);
-    }
-
-    if (product_sizes) {
-      await Product_Size.deleteMany({ _id: { $in: product.product_sizes } });
-      const productSizes = await Product_Size.create(product_sizes);
-      product.product_sizes = productSizes.map((size) => size._id);
-    }
+    //delete product color of product
+    await Product_Color.deleteMany({ _id: { $in: product.product_colors } });
+    //
+    const productColors = await Product_Color.create(product_colors);
 
     product.name = name || product.name;
     product.slug_name = slug_name || product.slug_name;
@@ -214,29 +204,55 @@ export default class ProductService {
     product.tags = tags || product.tags;
     product.gender = gender || product.gender;
     product.labels = labels || product.labels;
-    product.isPublic = isPublic !== undefined ? isPublic : product.isPublic;
+    product.is_public = is_public !== undefined ? is_public : product.is_public;
     product.brand = brand || product.brand;
+    product.product_sizes = product_sizes || product.product_sizes;
+    product.product_colors = productColors.map((color) => color._id);
 
     await product.save();
 
-    return await Product.findById(product._id);
+    const updateProduct = await Product.findById(product._id).populate([
+      {
+        path: 'variants',
+        populate: ['color', ['size']],
+      },
+      {
+        path: 'tags',
+      },
+      {
+        path: 'gender',
+      },
+      {
+        path: 'labels',
+      },
+      {
+        path: 'brand',
+      },
+      {
+        path: 'product_colors',
+        populate: {
+          path: 'color_id',
+        },
+      },
+      {
+        path: 'product_sizes',
+        populate: {
+          path: 'size_id',
+        },
+      },
+    ]);
+
+    return Transformer.transformObjectTypeSnakeToCamel(updateProduct.toObject());
   };
 
   static deleteProduct = async (req) => {
-    const productId = req.params.id;
+    await checkRecordByField(Product, '_id', req.params.id, true);
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
 
-    const deletedProduct = await Product.findByIdAndDelete(productId);
-
-    if (!deletedProduct) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Product not found');
-    }
-
-    await Variant.deleteMany({ product_id: productId });
-
-    await Product_Size.deleteMany({ _id: { $in: deletedProduct.product_sizes } });
+    await Variant.deleteMany({ product_id: deletedProduct });
 
     await Product_Color.deleteMany({ _id: { $in: deletedProduct.product_colors } });
 
-    return deletedProduct;
+    return null;
   };
 }

@@ -56,7 +56,7 @@ const productSchema = new mongoose.Schema(
         required: true,
       },
     ],
-    isPublic: {
+    is_public: {
       type: Boolean,
       default: false,
     },
@@ -75,7 +75,7 @@ const productSchema = new mongoose.Schema(
     product_sizes: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product_Size',
+        ref: 'Size',
         required: true,
       },
     ],

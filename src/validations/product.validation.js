@@ -10,7 +10,6 @@ import Joi from 'joi';
 export const createProductValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().min(3).max(20).trim().required(),
-    slug_name: Joi.string().pattern(new RegExp('^[a-z0-9_-]+$')).required(),
     description: Joi.string().min(10).required(),
     regular_price: Joi.number().min(0).required(),
     discount_price: Joi.number().optional(),
@@ -28,7 +27,7 @@ export const createProductValidation = async (req, res, next) => {
         Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
       )
       .required(),
-    isPublic: Joi.boolean().default(false),
+    is_public: Joi.boolean().default(false),
     brand: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).required(),
     product_colors: Joi.array()
       .items(
@@ -40,11 +39,10 @@ export const createProductValidation = async (req, res, next) => {
         })
       )
       .required(),
-    product_sizes: Joi.array()
-      .items(
-        Joi.object({
-          size_id: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-        })
+    product_sizes: Joi.alternatives()
+      .try(
+        Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+        Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
       )
       .required(),
     variants: Joi.array()
@@ -71,7 +69,6 @@ export const createProductValidation = async (req, res, next) => {
 export const updateProductValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().min(3).max(20).trim(),
-    slug_name: Joi.string().pattern(new RegExp('^[a-z0-9_-]+$')),
     description: Joi.string().min(10),
     regular_price: Joi.number().min(0),
     discount_price: Joi.number().optional(),
@@ -85,7 +82,7 @@ export const updateProductValidation = async (req, res, next) => {
       Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
       Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
     ),
-    isPublic: Joi.boolean().default(false),
+    is_public: Joi.boolean().default(false),
     brand: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
     product_colors: Joi.array().items(
       Joi.object({
@@ -95,10 +92,9 @@ export const updateProductValidation = async (req, res, next) => {
         }),
       })
     ),
-    product_sizes: Joi.array().items(
-      Joi.object({
-        size_id: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-      })
+    product_sizes: Joi.alternatives().try(
+      Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+      Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
     ),
     variants: Joi.array().items(
       Joi.object({

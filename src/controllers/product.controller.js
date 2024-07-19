@@ -8,12 +8,7 @@ export class ProductController {
     try {
       const newProduct = await ProductService.createNewProduct(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.CREATED,
-        'Create new Product successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newProduct.toObject())
-      );
+      SuccessResponse(res, StatusCodes.CREATED, 'Create new Product successfully', newProduct);
     } catch (error) {
       next(error);
     }
@@ -22,11 +17,7 @@ export class ProductController {
     try {
       const products = await ProductService.getAllProduct(req);
 
-      const returnData = products.map((role) => {
-        return Transformer.transformObjectTypeSnakeToCamel(role.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.CREATED, 'Get all product successfully!', returnData);
+      SuccessResponse(res, StatusCodes.CREATED, 'Get all product successfully!', products);
     } catch (error) {
       next(error);
     }
@@ -51,9 +42,9 @@ export class ProductController {
   };
   static deleteProduct = async (req, res, next) => {
     try {
-      const product = await ProductService.deleteProduct(req);
+      await ProductService.deleteProduct(req);
 
-      SuccessResponse(res, StatusCodes.CREATED, 'Deleted product successfully', product);
+      SuccessResponse(res, StatusCodes.CREATED, 'Deleted product successfully', {});
     } catch (error) {
       next(error);
     }
