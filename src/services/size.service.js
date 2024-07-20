@@ -15,7 +15,9 @@ export default class SizeService {
     const existingSize = await Size.findOne({ name, gender });
 
     if (existingSize) {
-      throw new ApiError(StatusCodes.CONFLICT, 'Size already exists ');
+      throw new ApiError(StatusCodes.CONFLICT, {
+        name: `Record with size name: ${name}, gender: ${gender} already exists`,
+      });
     }
 
     await Size.create({ name, gender });
@@ -60,7 +62,9 @@ export default class SizeService {
     const existingSize = await Size.findOne({ name, gender, _id: { $ne: req.params.id } });
 
     if (existingSize) {
-      throw new ApiError(StatusCodes.CONFLICT, 'Size already exists');
+      throw new ApiError(StatusCodes.CONFLICT, {
+        name: `Record with size name: ${name}, gender ID: ${gender} already exists`,
+      });
     }
 
     const updatedSize = await Size.findByIdAndUpdate(
