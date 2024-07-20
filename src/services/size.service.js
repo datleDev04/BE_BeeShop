@@ -10,6 +10,8 @@ export default class SizeService {
   static createNewSize = async (req) => {
     const { name, gender } = req.body;
 
+    await checkRecordByField(Gender, '_id', gender, true);
+
     const existingSize = await Size.findOne({ name, gender });
 
     if (existingSize) {
@@ -53,6 +55,7 @@ export default class SizeService {
     const { name, gender } = req.body;
 
     await checkRecordByField(Size, '_id', req.params.id, true);
+    await checkRecordByField(Gender, '_id', gender, true);
 
     const existingSize = await Size.findOne({ name, gender, _id: { $ne: req.params.id } });
 
