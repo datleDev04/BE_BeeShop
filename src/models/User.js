@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 import MongooseDelete from 'mongoose-delete';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
@@ -13,13 +13,6 @@ const userSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
-    google_id: {
-      type: String,
-      sparse: true,
-    },
-    avatar_url: {
-      type: String,
-    },
     email: {
       type: String,
       required: true,
@@ -27,7 +20,36 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
+      required: true,
     },
+    phone: {
+      type: String,
+      required: true,
+    },
+    google_id: {
+      type: String,
+      sparse: true,
+    },
+    avatar_url: {
+      type: String,
+    },
+    birth_day: {
+      type: String,
+    },
+    status: {
+      type: String,
+      enum: ['active', 'inactive', 'pending'],
+    },
+    sex: {
+      type: String,
+      enum: ['male', 'female', 'other'],
+    },
+    vouchers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Voucher',
+      },
+    ],
     roles: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -38,6 +60,12 @@ const userSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Address',
+      },
+    ],
+    tag_list: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tag',
       },
     ],
   },
