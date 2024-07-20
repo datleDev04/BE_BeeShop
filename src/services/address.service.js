@@ -2,6 +2,9 @@ import { StatusCodes } from 'http-status-codes';
 import ApiError from '../utils/ApiError.js';
 import Address from '../models/Address.js';
 import User from '../models/User.js';
+import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
+import { Transformer } from '../utils/transformer.js';
+import { checkRecordByField } from '../utils/CheckRecord.js';
 
 export default class AddressService {
   static createAddress = async (req) => {
@@ -16,24 +19,42 @@ export default class AddressService {
       commune,
       district,
       city,
-      user_id: user._id,
+      user_id: user.id,
       detail_address,
     });
 
     user.address_list.push(newAddress._id);
     await user.save();
-
-    return Address.findById(newAddress._id).populate('user_id').exec();
+    const responseData = await Address.findById(newAddress._id).populate('user_id').exec();
+    return Transformer.transformObjectTypeSnakeToCamel(responseData.toObject());
   };
 
   static getAllAddress = async (req) => {
-    const address = await Address.find().populate('user_id').sort({ createdAt: -1 }).exec();
-    return address;
+    const options = getPaginationOptions(req);
+    const filters = getFilterOptions(req, ['city']);
+
+    const paginatedAddress = await Address.paginate(filters, {
+      ...options,
+      populate: [{ path: 'user_id' }],
+    });
+    const { docs, ...otherFields } = paginatedAddress;
+    const transformedAddress = docs.map((label) =>
+      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    );
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedAddress),
+      others,
+    };
   };
 
   static getOneAddress = async (req) => {
     const address = await Address.findById(req.params.id).populate('user_id').exec();
-    return address;
+    return Transformer.transformObjectTypeSnakeToCamel(address.toObject());
   };
 
   static updateAddress = async (req) => {
@@ -53,16 +74,12 @@ export default class AddressService {
     if (!updatedAddress) {
       throw new ApiError(StatusCodes.CONFLICT, 'This address is not available');
     }
-
-    return Address.findById(req.params.id).populate('user_id').exec();
+    const responseData = await Address.findById(req.params.id).populate('user_id').exec();
+    return Transformer.transformObjectTypeSnakeToCamel(responseData.toObject);
   };
 
   static deleteAddress = async (req) => {
-    const address = await Address.findById(req.params.id);
-
-    if (!address) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Address not found');
-    }
+    await checkRecordByField(Address, '_id', req.params.id, true);
 
     const user = await User.findById(req.user._id);
     if (user) {
@@ -71,7 +88,5 @@ export default class AddressService {
     }
 
     await Address.findByIdAndDelete(req.params.id);
-
-    return address;
   };
 }
