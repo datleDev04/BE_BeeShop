@@ -1,19 +1,13 @@
 import { StatusCodes } from 'http-status-codes';
 import BrandService from '../services/brand.service.js';
 import { SuccessResponse } from '../utils/response.js';
-import { Transformer } from '../utils/transformer.js';
 
 export class BrandController {
   static createNewBrand = async (req, res, next) => {
     try {
       const newBrand = await BrandService.handleCreateBrand(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Create new brand successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newBrand.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Create new brand successfully', newBrand);
     } catch (error) {
       next(error);
     }
@@ -21,13 +15,9 @@ export class BrandController {
 
   static getAllBrand = async (req, res, next) => {
     try {
-      const brands = await BrandService.handleGetAllBrand(req);
+      const { metaData, others } = await BrandService.handleGetAllBrand(req);
 
-      const responseData = brands.map((brand) => {
-        return Transformer.transformObjectTypeSnakeToCamel(brand.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.OK, 'Get all brand successfully', responseData);
+      SuccessResponse(res, StatusCodes.OK, 'Get all brand successfully', metaData, others);
     } catch (error) {
       next(error);
     }
@@ -37,12 +27,7 @@ export class BrandController {
     try {
       const brand = await BrandService.handleGetOneBrand(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get one brand successfully',
-        Transformer.transformObjectTypeSnakeToCamel(brand.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get one brand successfully', brand);
     } catch (error) {
       next(error);
     }
@@ -52,12 +37,7 @@ export class BrandController {
     try {
       const updateBrand = await BrandService.handleUpdateBrand(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Update brand successfully',
-        Transformer.transformObjectTypeSnakeToCamel(updateBrand.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Update brand successfully', updateBrand);
     } catch (error) {
       next(error);
     }
