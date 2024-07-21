@@ -120,7 +120,7 @@ export default class UserService {
       updateFields = { ...updateFields, ...(roles && { roles }) };
     }
 
-    const updatedUser = await User.findByIdAndUpdate(req.user._id, updateFields, { new: true })
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, updateFields, { new: true })
       .populate([
         {
           path: 'roles',
@@ -151,7 +151,7 @@ export default class UserService {
 
   static getOneUser = async (req) => {
     await checkRecordByField(User, '_id', req.params.id, true);
-    const user = await User.findById(req.user._id)
+    const user = await User.findById(req.params.id)
       .populate([
         {
           path: 'roles',
