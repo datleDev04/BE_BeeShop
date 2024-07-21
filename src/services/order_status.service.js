@@ -30,9 +30,9 @@ export class OrderStatusService {
 
   static getOneOrderStatus = async (req) => {
     await checkRecordByField(OrderStatus, '_id', req.params.id, true);
-    const orderStatus = OrderStatus.findById(req.params.id);
+    const orderStatus = await OrderStatus.findById(req.params.id);
 
-    return Transformer.transformObjectTypeSnakeToCamel(orderStatus);
+    return Transformer.transformObjectTypeSnakeToCamel(orderStatus.toObject());
   };
 
   static createOrderStatus = async (req) => {
