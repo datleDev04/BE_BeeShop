@@ -5,15 +5,19 @@ import User from '../models/User.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import { CheckPermission } from '../utils/CheckPermission.js';
 
 export default class AddressService {
   static createAddress = async (req) => {
     const { commune, district, city, detail_address } = req.body;
 
+    let populateOptions = '';
+
+    if (!req.user.list_name_permission.includes('Read_Role')) populateOptions = '-password -roles';
+
+    await checkRecordByField(User, '_id', req.user._id, true);
+
     const user = await User.findById(req.user._id);
-    if (!user) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'User not found');
-    }
 
     const newAddress = await Address.create({
       commune,
@@ -25,17 +29,22 @@ export default class AddressService {
 
     user.address_list.push(newAddress._id);
     await user.save();
-    const responseData = await Address.findById(newAddress._id).populate('user_id').exec();
+    const responseData = await Address.findById(newAddress._id)
+      .populate('user_id', populateOptions)
+      .exec();
     return Transformer.transformObjectTypeSnakeToCamel(responseData.toObject());
   };
 
   static getAllAddress = async (req) => {
     const options = getPaginationOptions(req);
     const filters = getFilterOptions(req, ['city']);
+    let selectPopulate = '';
+
+    if (!req.user.list_name_permission.includes('Read_Role')) selectPopulate = '-roles -password';
 
     const paginatedAddress = await Address.paginate(filters, {
       ...options,
-      populate: [{ path: 'user_id' }],
+      populate: [{ path: 'user_id', select: selectPopulate }],
     });
     const { docs, ...otherFields } = paginatedAddress;
     const transformedAddress = docs.map((label) =>
@@ -53,17 +62,23 @@ export default class AddressService {
   };
 
   static getOneAddress = async (req) => {
-    const address = await Address.findById(req.params.id).populate('user_id').exec();
+    let selectPopulate = '';
+
+    if (!req.user.list_name_permission.includes('Read_Role')) selectPopulate = '-roles -password';
+    const address = await Address.findById(req.params.id)
+      .populate('user_id', selectPopulate)
+      .exec();
     return Transformer.transformObjectTypeSnakeToCamel(address.toObject());
   };
 
   static updateAddress = async (req) => {
     const { commune, district, city, detail_address } = req.body;
+    checkRecordByField(User, '_id', req.user._id, true);
 
+    let selectPopulate = '';
+
+    if (!req.user.list_name_permission.includes('Read_Role')) populateOptions = '-password -roles';
     const user = await User.findById(req.user._id);
-    if (!user) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'User not found');
-    }
 
     const updatedAddress = await Address.findByIdAndUpdate(
       req.params.id,
@@ -74,7 +89,10 @@ export default class AddressService {
     if (!updatedAddress) {
       throw new ApiError(StatusCodes.CONFLICT, 'This address is not available');
     }
-    const responseData = await Address.findById(req.params.id).populate('user_id').exec();
+    const responseData = await Address.findById(req.params.id)
+      .populate('user_id', selectPopulate)
+      .exec();
+    console.log(responseData);
     return Transformer.transformObjectTypeSnakeToCamel(responseData.toObject);
   };
 
@@ -83,7 +101,7 @@ export default class AddressService {
 
     const user = await User.findById(req.user._id);
     if (user) {
-      user.address_list.pull(address._id);
+      user.address_list.pull(request.params.id);
       await user.save();
     }
 

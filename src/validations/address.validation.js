@@ -12,7 +12,7 @@ export const addressCreateValidation = async (req, res, next) => {
     commune: Joi.string().trim().required(),
     district: Joi.string().trim().required(),
     city: Joi.string().trim().required(),
-    detail_address: Joi.string().trim(),
+    detail_address: Joi.string().trim().required(),
     user_id: Joi.alternatives().try(
       Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
       Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
@@ -29,10 +29,10 @@ export const addressCreateValidation = async (req, res, next) => {
 
 export const addressUpdateValidation = async (req, res, next) => {
   const updateCondition = Joi.object({
-    commune: Joi.string().trim(),
-    district: Joi.string().trim(),
-    city: Joi.string().trim(),
-    detail_address: Joi.string().trim(),
+    commune: Joi.string().trim().required(),
+    district: Joi.string().trim().required(),
+    city: Joi.string().trim().required(),
+    detail_address: Joi.string().trim().required(),
     user_id: Joi.alternatives().try(
       Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
       Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
