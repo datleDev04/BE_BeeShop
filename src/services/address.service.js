@@ -5,13 +5,12 @@ import User from '../models/User.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
-import { CheckPermission } from '../utils/CheckPermission.js';
 
 export default class AddressService {
   static createAddress = async (req) => {
     const { commune, district, city, detail_address } = req.body;
 
-    let populateOptions = '';
+    let populateOptions = '-password';
 
     if (!req.user.list_name_permission.includes('Read_Role')) populateOptions = '-password -roles';
 
@@ -38,7 +37,7 @@ export default class AddressService {
   static getAllAddress = async (req) => {
     const options = getPaginationOptions(req);
     const filters = getFilterOptions(req, ['city']);
-    let selectPopulate = '';
+    let selectPopulate = '-password';
 
     if (!req.user.list_name_permission.includes('Read_Role')) selectPopulate = '-roles -password';
 
@@ -62,7 +61,7 @@ export default class AddressService {
   };
 
   static getOneAddress = async (req) => {
-    let selectPopulate = '';
+    let selectPopulate = '-password';
 
     if (!req.user.list_name_permission.includes('Read_Role')) selectPopulate = '-roles -password';
     const address = await Address.findById(req.params.id)
@@ -75,7 +74,7 @@ export default class AddressService {
     const { commune, district, city, detail_address } = req.body;
     checkRecordByField(User, '_id', req.user._id, true);
 
-    let selectPopulate = '';
+    let selectPopulate = '-password';
 
     if (!req.user.list_name_permission.includes('Read_Role')) populateOptions = '-password -roles';
     const user = await User.findById(req.user._id);
