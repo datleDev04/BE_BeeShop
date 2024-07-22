@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import UserService from '../services/user.service.js';
 import { Transformer } from '../utils/transformer.js';
 import { SuccessResponse } from '../utils/response.js';
+import ApiError from '../utils/ApiError.js';
 
 export class UserController {
   static updateUser = async (req, res, next) => {

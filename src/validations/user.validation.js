@@ -8,9 +8,10 @@ import Joi from 'joi';
 export class userValidation {
   static updateUserInfo = async (req, res, next) => {
     const correctCondition = Joi.object({
-      user_name: Joi.string().optional().messages({
+      user_name: Joi.string().optional().max(50).messages({
         'string.base': 'User name should be a string',
         'string.empty': 'User name cannot be an empty field',
+        'string.max': 'User name should be at most 50 characters long',
       }),
       password: Joi.string().optional().min(6).trim().messages({
         'string.base': 'Password should be a string',
@@ -72,9 +73,10 @@ export class userValidation {
 
   static createUserInfo = async (req, res, next) => {
     const correctCondition = Joi.object({
-      user_name: Joi.string().required().messages({
+      user_name: Joi.string().required().max(50).messages({
         'string.base': 'User name should be a string',
         'string.empty': 'User name cannot be an empty field',
+        'string.max': 'User name should be at most 50 characters long',
         'any.required': 'User name is required',
       }),
       password: Joi.string().required().min(6).trim().messages({
