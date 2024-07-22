@@ -171,7 +171,7 @@ export default class UserService {
 
     user.password = undefined;
 
-    return user;
+    return Transformer.transformObjectTypeSnakeToCamel(user.toObject());
   };
 
   static getAllUsers = async (req) => {
