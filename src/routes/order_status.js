@@ -2,7 +2,10 @@ import express from 'express';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
-import { createOrderStatusValidation, updateOrderStatusValidation } from '../validations/order_status.validation.js';
+import {
+  createOrderStatusValidation,
+  updateOrderStatusValidation,
+} from '../validations/order_status.validation.js';
 import { OrderStatusController } from '../controllers/order_status.js';
 
 const orderStatusRouter = express.Router();
