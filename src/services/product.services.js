@@ -1,66 +1,45 @@
-import { StatusCodes } from 'http-status-codes';
 import Product from '../models/Product.js';
-import ApiError from '../utils/ApiError.js';
 import Product_Color from '../models/Product_Color.js';
 import Variant from '../models/Variant.js';
-import { checkRecordByField } from '../utils/CheckRecord.js';
-import { v4 as uuidv4 } from 'uuid';
-import { slugify } from '../utils/Slugify.js';
+import { checkRecordByField, checkRecordsByIds } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
+import { generateSlug } from '../utils/GenerateSlug.js';
+import Tags from '../models/Tags.js';
+import Label from '../models/Label.js';
+import Brand from '../models/Brand.js';
+import Gender from '../models/Gender.js';
+import Size from '../models/Size.js';
 
 export default class ProductService {
   static createNewProduct = async (req) => {
-    const {
-      name,
-      description,
-      regular_price,
-      discount_price,
-      images,
-      tags,
-      gender,
-      variants,
-      labels,
-      is_public,
-      brand,
-      product_colors,
-      product_sizes,
-    } = req.body;
-
-    const productColors = await Product_Color.create(product_colors);
+    const { name, variants, product_colors, tags, brand, product_sizes, labels, gender } = req.body;
 
     await checkRecordByField(Product, 'name', name, false);
 
-    let slug_name = slugify(name);
+    await checkRecordsByIds(Tags, tags);
+    await checkRecordsByIds(Label, labels);
+    await checkRecordsByIds(Size, product_sizes);
 
-    const existingSlug = await Product.findOne({ slug_name });
+    await checkRecordByField(Brand, '_id', brand, true);
+    await checkRecordByField(Gender, '_id', gender, true);
 
-    if (existingSlug) {
-      slug_name = `${slug_name}-${uuidv4()}`;
-    }
+    const productColors = await Product_Color.create(product_colors);
+    const productVariants = await Variant.create(variants);
+
+    const productColorIds = productColors.map((color) => color._id);
+    const productVariantIds = productVariants.map((variant) => variant._id);
+
+    const slug = await generateSlug(Product, name);
 
     const newProduct = await Product.create({
-      name,
-      slug_name,
-      description,
-      discount_price,
-      regular_price,
-      images,
-      is_public,
-      labels,
-      brand,
-      tags,
-      variants,
-      gender,
-      product_sizes,
-      product_colors: productColors.map((color) => color._id),
+      ...req.body,
+      slug,
+      product_colors: productColorIds,
+      variants: productVariantIds,
     });
 
-    await newProduct.save();
-
-    const returnData = await Product.findById(newProduct._id);
-
-    return Transformer.transformObjectTypeSnakeToCamel(returnData.toObject());
+    return Transformer.transformObjectTypeSnakeToCamel(newProduct.toObject());
   };
 
   static getAllProduct = async (req) => {
@@ -117,7 +96,7 @@ export default class ProductService {
     const product = await Product.findById(req.params.id).populate([
       {
         path: 'variants',
-        populate: [{ path: 'color' }, { path: 'size' }, { path: 'product_id', model: 'product' }],
+        populate: ['color', 'size'],
       },
       {
         path: 'tags',
@@ -166,13 +145,7 @@ export default class ProductService {
     await checkRecordByField(Product, '_id', productId, true);
     await checkRecordByField(Product, 'name', name, false, productId);
 
-    let slug_name = slugify(name);
-
-    const existingSlug = await Product.findOne({ slug_name });
-
-    if (existingSlug) {
-      slug_name = `${slug_name}-${productId}`;
-    }
+    const slug = await generateSlug(Product, name);
 
     const product = await Product.findById(productId);
 
@@ -197,7 +170,7 @@ export default class ProductService {
     const productColors = await Product_Color.create(product_colors);
 
     product.name = name || product.name;
-    product.slug_name = slug_name || product.slug_name;
+    product.slug = slug || product.slug;
     product.description = description || product.description;
     product.regular_price = regular_price || product.regular_price;
     product.discount_price = discount_price || product.discount_price;
@@ -246,8 +219,9 @@ export default class ProductService {
   static deleteProduct = async (req) => {
     await checkRecordByField(Product, '_id', req.params.id, true);
     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+    console.log(deletedProduct);
 
-    await Variant.deleteMany({ product_id: deletedProduct });
+    await Variant.deleteMany({ _id: { $in: deletedProduct.variants } });
 
     await Product_Color.deleteMany({ _id: { $in: deletedProduct.product_colors } });
 
