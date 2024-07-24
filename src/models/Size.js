@@ -1,5 +1,6 @@
-import mongoose, { Schema } from 'mongoose';
-
+import mongoose from 'mongoose';
+import MongooseDelete from 'mongoose-delete';
+import mongoosePaginate from 'mongoose-paginate-v2';
 // schema User variables
 const DOCUMENT_NAME = 'Size';
 const COLLECTION_NAME = 'Sizes';
@@ -22,5 +23,14 @@ const sizeSchema = new mongoose.Schema(
     collection: COLLECTION_NAME,
   }
 );
+
+const plugins = [MongooseDelete, mongoosePaginate];
+
+plugins.forEach((plugin) => {
+  sizeSchema.plugin(plugin, {
+    deletedAt: true,
+    overrideMethods: true,
+  });
+});
 
 export default mongoose.model(DOCUMENT_NAME, sizeSchema);

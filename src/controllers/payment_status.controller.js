@@ -12,7 +12,7 @@ export class PaymentStatusController {
         res,
         StatusCodes.CREATED,
         'Create new payment status successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newPaymentStatus.toObject())
+        newPaymentStatus
       );
     } catch (error) {
       next(error);
@@ -22,25 +22,16 @@ export class PaymentStatusController {
     try {
       const paymentStatus = await PaymentStatusService.getOnePaymentStatus(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get payment status successfully',
-        Transformer.transformObjectTypeSnakeToCamel(paymentStatus.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get payment status successfully', paymentStatus);
     } catch (error) {
       next(error);
     }
   };
   static getAllPaymentStatuses = async (req, res, next) => {
     try {
-      const paymentStatuss = await PaymentStatusService.getAllPaymentStatus(req);
+      const { metaData, others } = await PaymentStatusService.getAllPaymentStatus(req);
 
-      const returnData = paymentStatuss.map((paymentStatus) => {
-        return Transformer.transformObjectTypeSnakeToCamel(paymentStatus.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.OK, 'Get All Payment Status successfully', returnData);
+      SuccessResponse(res, StatusCodes.OK, 'Get All Payment Status successfully', metaData, others);
     } catch (error) {
       next(error);
     }
@@ -48,28 +39,18 @@ export class PaymentStatusController {
 
   static updatePaymentStatus = async (req, res, next) => {
     try {
-      const paymentStatuss = await PaymentStatusService.updatePaymentStatusById(req);
+      const paymentStatus = await PaymentStatusService.updatePaymentStatusById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Updated Payment status successfully',
-        Transformer.transformObjectTypeSnakeToCamel(paymentStatuss.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Updated Payment status successfully', paymentStatus);
     } catch (error) {
       next(error);
     }
   };
   static deletePaymentStatus = async (req, res, next) => {
     try {
-      const deletedPaymentStatus = await PaymentStatusService.deletePaymentStatusById(req);
+      await PaymentStatusService.deletePaymentStatusById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Delete Payment status successfully',
-        Transformer.transformObjectTypeSnakeToCamel(deletedPaymentStatus.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Delete Payment status successfully', {});
     } catch (error) {
       next(error);
     }

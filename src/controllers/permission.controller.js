@@ -17,7 +17,7 @@ export class PermissionController {
     } catch (error) {
       next(error);
     }
-  };
+  }
   static getPermission = async (req, res, next) => {
     try {
       const permission = await PermissionService.getPermission(req);

@@ -1,6 +1,6 @@
 import express from 'express';
 import { BrandController } from '../controllers/brand.controller.js';
-import { createBrandValidation, updateBrandValidation } from '../validations/brand.validation.js';
+import { brandValidation } from '../validations/brand.validation.js';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
@@ -24,7 +24,7 @@ brandRouter.post(
   '/',
   authMiddleware,
   CheckPermission(['Create_Brand']),
-  createBrandValidation,
+  brandValidation,
   BrandController.createNewBrand
 );
 
@@ -34,7 +34,7 @@ brandRouter.patch(
   authMiddleware,
   CheckPermission(['Update_Brand']),
   objectIdValidation,
-  updateBrandValidation,
+  brandValidation,
   BrandController.updateBrandById
 );
 

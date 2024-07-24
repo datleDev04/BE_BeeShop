@@ -1,42 +1,52 @@
-import { StatusCodes } from 'http-status-codes';
-import ApiError from '../utils/ApiError.js';
 import PaymentStatus from '../models/Payment_Status.js';
+import { checkRecordByField } from '../utils/CheckRecord.js';
+import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
+import { Transformer } from '../utils/transformer.js';
 
 export default class PaymentStatusService {
   static createNewPaymentStatus = async (req) => {
     const { name } = req.body;
 
-    const existedPaymentStatus = await PaymentStatus.findOne({ name });
-
-    if (existedPaymentStatus) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This payment status is existed');
-    }
+    await checkRecordByField(PaymentStatus, 'name', name, false);
 
     const newPaymentStatus = await PaymentStatus.create({ name });
-    return newPaymentStatus;
+    return Transformer.transformObjectTypeSnakeToCamel(newPaymentStatus.toObject());
   };
 
   static getAllPaymentStatus = async (req) => {
-    const paymentStatuses = await PaymentStatus.find().sort({ createdAt: -1 }).exec();
-    return paymentStatuses;
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name']);
+
+    const paginatedPaymentStatus = await PaymentStatus.paginate(filter, options);
+
+    const { docs, ...otherFields } = paginatedPaymentStatus;
+
+    const transformedPaymentStatus = docs.map((label) =>
+      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    );
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedPaymentStatus),
+      others,
+    };
   };
 
   static getOnePaymentStatus = async (req) => {
+    await checkRecordByField(PaymentStatus, '_id', req.params.id, true);
     const paymentStatus = await PaymentStatus.findById(req.params.id).exec();
-    if (!paymentStatus) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Payment status not found');
-    }
-    return paymentStatus;
+
+    return Transformer.transformObjectTypeSnakeToCamel(paymentStatus.toObject());
   };
 
   static updatePaymentStatusById = async (req) => {
     const { name } = req.body;
 
-    const existedPaymentStatus = await PaymentStatus.findOne({ name });
-
-    if (existedPaymentStatus) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This payment status is existed');
-    }
+    await checkRecordByField(PaymentStatus, 'name', name, false, req.params.id);
+    await checkRecordByField(PaymentStatus, '_id', req.params.id, true);
 
     const updatedPaymentStatus = await PaymentStatus.findByIdAndUpdate(
       req.params.id,
@@ -46,19 +56,11 @@ export default class PaymentStatusService {
       { new: true }
     );
 
-    if (!updatedPaymentStatus) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This payment status is not existing');
-    }
-
-    return updatedPaymentStatus;
+    return Transformer.transformObjectTypeSnakeToCamel(updatedPaymentStatus.toObject());
   };
 
   static deletePaymentStatusById = async (req) => {
-    const paymentStatus = await PaymentStatus.findByIdAndDelete(req.params.id);
-
-    if (!paymentStatus) {
-      throw new ApiError(404, 'Payment status not found');
-    }
-    return paymentStatus;
+    await checkRecordByField(PaymentStatus, '_id', req.params.id, true);
+    return await PaymentStatus.findByIdAndDelete(req.params.id);
   };
 }

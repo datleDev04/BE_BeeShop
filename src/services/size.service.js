@@ -2,79 +2,84 @@ import { StatusCodes } from 'http-status-codes';
 import Size from '../models/Size.js';
 import ApiError from '../utils/ApiError.js';
 import Gender from '../models/Gender.js';
+import { Transformer } from '../utils/transformer.js';
+import { checkRecordByField } from '../utils/CheckRecord.js';
+import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 
 export default class SizeService {
   static createNewSize = async (req) => {
     const { name, gender } = req.body;
 
-    const existedSize = await Size.findOne({ name });
+    await checkRecordByField(Gender, '_id', gender, true);
 
-    if (existedSize) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This size name is existed');
-    }
+    const existingSize = await Size.findOne({ name, gender });
 
-    const existedGender = await Gender.findById(gender);
-
-    if (!existedGender) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Gender not found');
+    if (existingSize) {
+      throw new ApiError(StatusCodes.CONFLICT, {
+        name: `Record with size name: ${name}, gender: ${gender} already exists`,
+      });
     }
 
     await Size.create({ name, gender });
-    return Size.findOne({ name }).populate('gender').exec();
+    const newSize = await Size.findOne({ name }).populate('gender').exec();
+    return Transformer.transformObjectTypeSnakeToCamel(newSize.toObject());
   };
 
   static getAllSize = async (req) => {
-    const sizes = await Size.find().populate('gender').sort({ createdAt: -1 }).exec();
-    return sizes;
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name']);
+
+    const paginatedSizes = await Size.paginate(filter, options);
+
+    const { docs, ...otherFields } = paginatedSizes;
+
+    const transformedSizes = docs.map((label) =>
+      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    );
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedSizes),
+      others,
+    };
   };
 
   static getOneSize = async (req) => {
+    await checkRecordByField(Size, '_id', req.params.id, true);
     const size = await Size.findById(req.params.id).populate('gender').exec();
-    if (!size) {
-      throw new ApiError(StatusCodes.NOT_FOUND, 'Size not found');
-    }
-    return size;
+    return Transformer.transformObjectTypeSnakeToCamel(size.toObject());
   };
 
   static updateSizeById = async (req) => {
     const { name, gender } = req.body;
-    const updateFields = {};
 
-    if (name) {
-      const existedSize = await Size.findOne({ name });
+    await checkRecordByField(Size, '_id', req.params.id, true);
+    await checkRecordByField(Gender, '_id', gender, true);
 
-      if (existedSize) {
-        throw new ApiError(StatusCodes.CONFLICT, 'This size name is existed');
-      }
+    const existingSize = await Size.findOne({ name, gender, _id: { $ne: req.params.id } });
 
-      updateFields.name = name;
+    if (existingSize) {
+      throw new ApiError(StatusCodes.CONFLICT, {
+        name: `Record with size name: ${name}, gender ID: ${gender} already exists`,
+      });
     }
 
-    if (gender) {
-      const existedGender = await Gender.findById(gender);
+    const updatedSize = await Size.findByIdAndUpdate(
+      req.params.id,
+      { name, gender },
+      { new: true }
+    );
 
-      if (!existedGender) {
-        throw new ApiError(StatusCodes.NOT_FOUND, 'Gender not found');
-      }
+    const returnData = await Size.findById(updatedSize.id).populate('gender').exec();
 
-      updateFields.gender = gender;
-    }
-
-    const updatedSize = await Size.findByIdAndUpdate(req.params.id, updateFields, { new: true });
-
-    if (!updatedSize) {
-      throw new ApiError(StatusCodes.CONFLICT, 'This size is not existing');
-    }
-
-    return Size.findById(updatedSize.id).populate('gender').exec();
+    return Transformer.transformObjectTypeSnakeToCamel(returnData.toObject());
   };
 
   static deleteSizeById = async (req) => {
-    const size = await Size.findByIdAndDelete(req.params.id);
-
-    if (!size) {
-      throw new ApiError(404, 'Size not found');
-    }
-    return size;
+    await checkRecordByField(Size, '_id', req.params.id, true);
+    return await Size.findByIdAndDelete(req.params.id);
   };
 }

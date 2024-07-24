@@ -1,18 +1,13 @@
 import { StatusCodes } from 'http-status-codes';
-import { Transformer } from '../utils/transformer.js';
 import { SuccessResponse } from '../utils/response.js';
 import AddressService from '../services/address.service.js';
 
 export class AddressController {
   static getAllAddress = async (req, res, next) => {
     try {
-      const address = await AddressService.getAllAddress(req);
+      const { metaData, others } = await AddressService.getAllAddress(req);
 
-      const returnData = address.map((addressItem) => {
-        return Transformer.transformObjectTypeSnakeToCamel(addressItem.toObject());
-      });
-
-      SuccessResponse(res, StatusCodes.OK, 'Get all address successfully', returnData);
+      SuccessResponse(res, StatusCodes.OK, 'Get all address successfully', metaData, others);
     } catch (error) {
       next(error);
     }
@@ -22,12 +17,7 @@ export class AddressController {
     try {
       const address = await AddressService.getOneAddress(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get one address successfully',
-        Transformer.transformObjectTypeSnakeToCamel(address.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get one address successfully', address);
     } catch (error) {
       next(error);
     }
@@ -37,12 +27,7 @@ export class AddressController {
     try {
       const newAddress = await AddressService.createAddress(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Create new address successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newAddress.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Create new address successfully', newAddress);
     } catch (error) {
       next(error);
     }
@@ -52,12 +37,7 @@ export class AddressController {
     try {
       const updatedAddress = await AddressService.updateAddress(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Updated address successfully',
-        Transformer.transformObjectTypeSnakeToCamel(updatedAddress.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Updated address successfully', updatedAddress);
     } catch (error) {
       next(error);
     }
