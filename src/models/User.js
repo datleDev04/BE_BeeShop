@@ -6,13 +6,18 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const DOCUMENT_NAME = 'User';
 const COLLECTION_NAME = 'Users';
 
+const UserStatus = {
+  ACTIVE: 0,
+  INACTIVE: 1,
+};
+
 const userSchema = new mongoose.Schema(
   {
     user_name: {
       type: String,
       unique: true,
+      minlength: 3,
       required: true,
-      maxlength: 50,
     },
     email: {
       type: String,
@@ -22,6 +27,9 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    full_name: {
+      type: String,
     },
     phone: {
       type: String,
@@ -35,15 +43,16 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     birth_day: {
-      type: String,
+      type: Date,
     },
     status: {
-      type: String,
-      enum: ['active', 'inactive', 'pending'],
+      type: Number,
+      enum: [UserStatus.ACTIVE, UserStatus.INACTIVE],
+      default: UserStatus.ACTIVE,
     },
-    sex: {
-      type: String,
-      enum: ['male', 'female', 'other'],
+    gender: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User_Gender',
     },
     vouchers: [
       {
@@ -57,13 +66,13 @@ const userSchema = new mongoose.Schema(
         ref: 'Role',
       },
     ],
-    address_list: [
+    addresses: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Address',
       },
     ],
-    tag_list: [
+    tags: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tag',

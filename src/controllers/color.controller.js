@@ -1,5 +1,4 @@
 import { StatusCodes } from 'http-status-codes';
-import { Transformer } from '../utils/transformer.js';
 import { SuccessResponse } from '../utils/response.js';
 import ColorService from '../services/color.service.js';
 

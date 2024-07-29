@@ -12,15 +12,14 @@ export default class UserService {
       user_name,
       email,
       password,
+      full_name,
       avatar_url,
       phone,
-      birth_day,
       status,
-      sex,
+      gender,
       roles,
-      address_list,
-      vouchers,
-      tag_list,
+      addresses,
+      tags,
     } = req.body;
 
     const userPermissions = req.user.roles.flatMap((role) =>
@@ -40,15 +39,14 @@ export default class UserService {
       user_name,
       email,
       password: bcrypt.hashSync(password, 10),
+      full_name,
       avatar_url,
       phone,
-      birth_day,
       status,
-      sex,
+      gender,
       roles,
-      address_list,
-      vouchers,
-      tag_list,
+      addresses,
+      tags,
     });
 
     const populatedUser = await User.findById(newUser._id)
@@ -58,13 +56,13 @@ export default class UserService {
           populate: { path: 'permissions' },
         },
         {
-          path: 'address_list',
+          path: 'gender',
         },
         {
-          path: 'vouchers',
+          path: 'addresses',
         },
         {
-          path: 'tag_list',
+          path: 'tags',
         },
       ])
       .exec();
@@ -73,38 +71,25 @@ export default class UserService {
 
     return Transformer.transformObjectTypeSnakeToCamel(populatedUser.toObject());
   };
+
   static updateUser = async (req) => {
     const {
       user_name,
+      email,
       password,
       avatar_url,
-      email,
+      full_name,
       phone,
       birth_day,
       status,
-      sex,
+      gender,
       roles,
-      address_list,
-      vouchers,
-      tag_list,
+      addresses,
+      tags,
     } = req.body;
 
     await checkRecordByField(User, 'user_name', user_name, false, req.user._id);
     await checkRecordByField(User, 'email', email, false, req.user._id);
-
-    let updateFields = {
-      ...(user_name && { user_name }),
-      ...(password && { password: bcrypt.hashSync(password, 10) }),
-      ...(avatar_url && { avatar_url }),
-      ...(email && { email }),
-      ...(phone && { phone }),
-      ...(birth_day && { birth_day }),
-      ...(sex && { sex }),
-      ...(status && { status }),
-      ...(address_list && { address_list }),
-      ...(vouchers && { vouchers }),
-      ...(tag_list && { tag_list }),
-    };
 
     const userPermissions = req.user.roles.flatMap((role) =>
       role.permissions.map((permission) => permission.name)
@@ -115,9 +100,38 @@ export default class UserService {
         not_have_access: 'You do not have permission to update roles',
       });
     }
+    const currentUser = await User.findById(req.params.id);
 
-    if (userPermissions.includes('Read_User')) {
-      updateFields = { ...updateFields, ...(roles && { roles }) };
+    if (!currentUser) {
+      throw new ApiError(StatusCodes.NOT_FOUND, {
+        not_found: 'User not found',
+      });
+    }
+
+    const isCustomer = currentUser.roles.some((role) => role.name === 'Customer');
+
+    let updateFields = {
+      ...(user_name && { user_name }),
+      ...(password && { password: bcrypt.hashSync(password, 10) }),
+      ...(avatar_url && { avatar_url }),
+      ...(email && { email }),
+      ...(full_name && { full_name }),
+      ...(phone && { phone }),
+      ...(birth_day && { birth_day }),
+      ...(gender && { gender }),
+      ...(status && { status }),
+      ...(addresses && { addresses }),
+      ...(tags && { tags }),
+    };
+
+    if (isCustomer) {
+      updateFields = {
+        ...(status && { status }),
+      };
+    } else {
+      if (userPermissions.includes('Read_User')) {
+        updateFields = { ...updateFields, ...(roles && { roles }) };
+      }
     }
 
     const updatedUser = await User.findByIdAndUpdate(req.params.id, updateFields, { new: true })
@@ -127,13 +141,13 @@ export default class UserService {
           populate: { path: 'permissions' },
         },
         {
-          path: 'address_list',
+          path: 'addresses',
         },
         {
-          path: 'vouchers',
+          path: 'gender',
         },
         {
-          path: 'tag_list',
+          path: 'tags',
         },
       ])
       .exec();
@@ -161,10 +175,13 @@ export default class UserService {
           path: 'address_list',
         },
         {
+          path: 'gender',
+        },
+        {
           path: 'vouchers',
         },
         {
-          path: 'tag_list',
+          path: 'tags',
         },
       ])
       .exec();
@@ -189,10 +206,13 @@ export default class UserService {
         path: 'address_list',
       },
       {
+        path: 'gender',
+      },
+      {
         path: 'vouchers',
       },
       {
-        path: 'tag_list',
+        path: 'tags',
       },
     ]);
 

@@ -61,7 +61,7 @@ export class TagService {
     return Transformer.transformObjectTypeSnakeToCamel(updatedTag.toObject());
   };
 
-  static deleteTagBydId = async (req) => {
+  static deleteTagById = async (req) => {
     return await Tags.findByIdAndDelete(req.params.id);
   };
 }

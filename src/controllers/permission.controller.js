@@ -1,6 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
 import PermissionService from '../services/permission.service.js';
-import { Transformer } from '../utils/transformer.js';
 import { SuccessResponse } from '../utils/response.js';
 
 export class PermissionController {
@@ -17,7 +16,7 @@ export class PermissionController {
     } catch (error) {
       next(error);
     }
-  }
+  };
   static getPermission = async (req, res, next) => {
     try {
       const permission = await PermissionService.getPermission(req);

@@ -9,7 +9,6 @@ export default class PermissionService {
     const { name, label, module } = req.body;
 
     await checkRecordByField(Permission, 'name', name, false);
-    await checkRecordByField(Permission, 'module', module, true);
 
     const newPermission = await Permission.create({ name, label, module });
 

@@ -1,7 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { TagService } from '../services/tag.service.js';
 import { SuccessResponse } from '../utils/response.js';
-import { Transformer } from '../utils/transformer.js';
 
 export class TagController {
   static getAllTags = async (req, res, next) => {
@@ -45,7 +44,7 @@ export class TagController {
 
   static deleteTagById = async (req, res, next) => {
     try {
-      await TagService.deleteTagBydId(req);
+      await TagService.deleteTagById(req);
 
       SuccessResponse(res, StatusCodes.OK, 'deleted tag successfully', {});
     } catch (error) {

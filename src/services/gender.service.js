@@ -1,6 +1,4 @@
-import { StatusCodes } from 'http-status-codes';
 import Gender from '../models/Gender.js';
-import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';

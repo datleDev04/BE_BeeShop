@@ -1,7 +1,5 @@
 import Joi from 'joi';
 import { validateBeforeCreateOrUpdate } from '../utils/validators.js';
-import { StatusCodes } from 'http-status-codes';
-import ApiError from '../utils/ApiError.js';
 
 export const voucherTypeValidation = async (req, res, next) => {
   const correctCondition = Joi.object({

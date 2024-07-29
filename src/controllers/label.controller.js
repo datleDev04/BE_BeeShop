@@ -1,6 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
 import { SuccessResponse } from '../utils/response.js';
-import { Transformer } from '../utils/transformer.js';
 import { LabelService } from '../services/label.service.js';
 
 export class LabelController {
