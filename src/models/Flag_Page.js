@@ -1,17 +1,12 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+// schema Voucher-Types variables
+const DOCUMENT_NAME = 'Flag_Page';
+const COLLECTION_NAME = 'Flag_Pages';
 
-// schema Color variables
-const DOCUMENT_NAME = 'Color';
-const COLLECTION_NAME = 'Colors';
-
-const colorSchema = new mongoose.Schema(
+const flagPageSchema = new mongoose.Schema(
   {
     name: {
-      type: String,
-      required: true,
-    },
-    value: {
       type: String,
       required: true,
     },
@@ -23,9 +18,9 @@ const colorSchema = new mongoose.Schema(
   }
 );
 
-colorSchema.plugin(mongoosePaginate, {
+flagPageSchema.plugin(mongoosePaginate, {
   deletedAt: true,
   overrideMethods: true,
 });
 
-export default mongoose.model(DOCUMENT_NAME, colorSchema);
+export default mongoose.model(DOCUMENT_NAME, flagPageSchema);
