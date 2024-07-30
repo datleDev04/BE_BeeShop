@@ -17,7 +17,7 @@ export const updateLabelValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().trim(),
     description: Joi.string().allow('').trim(),
-    status: Joi.boolean().required(),
+    status: Joi.number().valid(0, 1).required(),
   });
 
   try {
