@@ -1,6 +1,9 @@
 import express from 'express';
 import { GenderController } from '../controllers/gender.controller.js';
-import { genderValidation } from '../validations/gender.validation.js';
+import {
+  createGenderValidation,
+  updateGenderValidation,
+} from '../validations/gender.validation.js';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
@@ -26,7 +29,7 @@ genderRouter.post(
   '/',
   authMiddleware,
   CheckPermission(['Create_Gender']),
-  genderValidation,
+  createGenderValidation,
   GenderController.createNewGender
 );
 
@@ -36,7 +39,7 @@ genderRouter.patch(
   authMiddleware,
   CheckPermission(['Update_Gender']),
   objectIdValidation,
-  genderValidation,
+  updateGenderValidation,
   GenderController.updateGender
 );
 
