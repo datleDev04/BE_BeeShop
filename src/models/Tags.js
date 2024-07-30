@@ -13,8 +13,8 @@ const TagSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-      required: true,
       unique: true,
+      required: true,
     },
     image: {
       type: String,
