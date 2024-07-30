@@ -1,4 +1,4 @@
-import Flag_Page from '../models/Flag_Page.js';
+import FlagPage from '../models/Flag_Page.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
@@ -7,9 +7,9 @@ export default class FlagPageService {
   static createFlagPage = async (req) => {
     const { name } = req.body;
 
-    await checkRecordByField(Flag_Page, 'name', name, false);
+    await checkRecordByField(FlagPage, 'name', name, false);
 
-    const newFlagPages = await Flag_Page.create({ name });
+    const newFlagPages = await FlagPage.create({ name });
 
     return Transformer.transformObjectTypeSnakeToCamel(newFlagPages.toObject());
   };
@@ -18,7 +18,7 @@ export default class FlagPageService {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name']);
 
-    const paginatedFlags = await Flag_Page.paginate(filter, options);
+    const paginatedFlags = await FlagPage.paginate(filter, options);
 
     const { docs, ...otherFields } = paginatedFlags;
 
@@ -37,19 +37,19 @@ export default class FlagPageService {
   };
 
   static getOneFlagPage = async (req) => {
-    await checkRecordByField(Flag_Page, '_id', req.params.id, true);
-    const flag = await Flag_Page.findById(req.params.id);
+    await checkRecordByField(FlagPage, '_id', req.params.id, true);
+    const flag = await FlagPage.findById(req.params.id);
     return Transformer.transformObjectTypeSnakeToCamel(flag.toObject());
   };
 
   static updateFlagPage = async (req) => {
     const { name } = req.body;
 
-    await checkRecordByField(Flag_Page, 'name', name, false, req.params.id);
+    await checkRecordByField(FlagPage, 'name', name, false, req.params.id);
 
-    await checkRecordByField(Flag_Page, '_id', req.params.id, true);
+    await checkRecordByField(FlagPage, '_id', req.params.id, true);
 
-    const updatedFlag = await Flag_Page.findByIdAndUpdate(
+    const updatedFlag = await FlagPage.findByIdAndUpdate(
       req.params.id,
       {
         name,
@@ -61,7 +61,7 @@ export default class FlagPageService {
   };
 
   static deleteFlagPage = async (req) => {
-    await checkRecordByField(Flag_Page, '_id', req.params.id, true);
-    return await Flag_Page.findByIdAndDelete(req.params.id);
+    await checkRecordByField(FlagPage, '_id', req.params.id, true);
+    return await FlagPage.findByIdAndDelete(req.params.id);
   };
 }

@@ -18,13 +18,9 @@ const flagPageSchema = new mongoose.Schema(
   }
 );
 
-const plugins = [mongoosePaginate];
-
-plugins.forEach((plugin) => {
-  flagPageSchema.plugin(plugin, {
-    deletedAt: true,
-    overrideMethods: true,
-  });
+flagPageSchema.plugin(mongoosePaginate, {
+  deletedAt: true,
+  overrideMethods: true,
 });
 
 export default mongoose.model(DOCUMENT_NAME, flagPageSchema);
