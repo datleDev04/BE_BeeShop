@@ -12,8 +12,16 @@ const labelSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    slug: {
+      type: String,
+      require: true,
+    },
     description: {
-      type: String
+      type: String,
+    },
+    status: {
+      type: Boolean,
+      default: true,
     },
   },
   {
