@@ -26,7 +26,7 @@ export const updateTagValidation = async (req, res, next) => {
     image: Joi.string().trim().required(),
     description: Joi.string().allow(''),
     parent_id: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).allow(null),
-    status: Joi.boolean(),
+    status: Joi.number().valid(0, 1).required(),
   });
 
   try {

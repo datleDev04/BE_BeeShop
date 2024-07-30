@@ -14,6 +14,7 @@ const TagSchema = new mongoose.Schema(
     slug: {
       type: String,
       required: true,
+      unique: true,
     },
     image: {
       type: String,
@@ -27,8 +28,8 @@ const TagSchema = new mongoose.Schema(
       ref: 'Tag',
     },
     status: {
-      type: Boolean,
-      default: true,
+      type: Number,
+      default: 0,
     },
   },
   {
