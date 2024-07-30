@@ -1,6 +1,7 @@
 import Tags from '../models/Tags.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
+import { slugify } from '../utils/slugify.js';
 import { Transformer } from '../utils/transformer.js';
 
 export class TagService {
@@ -35,28 +36,48 @@ export class TagService {
 
 
   static createTag = async (req) => {
-    const { name, description } = req.body;
+    const { name, description, parent_id, image } = req.body;
     await checkRecordByField(Tags, 'name', name, false)    
+
+    if (parent_id) {
+      await checkRecordByField(Tags, '_id', parent_id, true)
+    }
+
+    const slug = slugify(name)
 
     const newTag = await Tags.create({
       name,
+      slug,
+      image,
       description,
+      parent_id,
+      image
     });
     return Transformer.transformObjectTypeSnakeToCamel(newTag.toObject());
   };
 
   static updateTagById = async (req) => {
-    const { name, description } = req.body;
+    const { name, description, parent_id, image, status } = req.body;
 
     await checkRecordByField(Tags, 'name', name, false, req.params.id)
 
     await checkRecordByField(Tags, '_id', req.params.id, true)
+
+    const slug = slugify(name)
+
+    if (parent_id) {
+      await checkRecordByField(Tags, '_id', parent_id, true)
+    }
     
     const updatedTag = await Tags.findByIdAndUpdate(
       req.params.id,
       {
         name,
+        slug,
         description,
+        parent_id,
+        image,
+        status
       },
       { new: true }
     );
