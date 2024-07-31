@@ -1,8 +1,13 @@
 import mongoose from 'mongoose';
-
+import mongoosePaginate from 'mongoose-paginate-v2';
 // schema Product variables
 const DOCUMENT_NAME = 'Product';
 const COLLECTION_NAME = 'Products';
+
+export const PRODUCT_STATUS = {
+  ACTIVE: 0,
+  INACTIVE: 1,
+};
 
 const productSchema = new mongoose.Schema(
   {
@@ -11,13 +16,17 @@ const productSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    slug_name: {
+    slug: {
       type: String,
       required: true,
       unique: true,
     },
     description: {
       type: String,
+    },
+    thumbnail: {
+      type: String,
+      required: true,
     },
     regular_price: {
       type: Number,
@@ -29,48 +38,59 @@ const productSchema = new mongoose.Schema(
     images: {
       type: [String],
     },
-    tag_list: [
+    tags: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tag',
       },
     ],
-    gender_id: {
+    gender: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Gender',
     },
-    variant_ids: [
+    variants: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Variant',
       },
     ],
-    label: [
+    labels: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Label',
       },
     ],
-    isPublic: {
-      type: Boolean,
-      default: false,
-    },
-    brand_id: {
+    brand: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Brand',
     },
-    product_color_id: [
+    product_colors: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product_Color',
       },
     ],
-    product_size_id: [
+    product_sizes: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product_Size',
+        ref: 'Size',
       },
     ],
+    product_type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product_Type',
+      },
+    ],
+    flag: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Flag_Page',
+    },
+    status: {
+      type: Number,
+      enum: [PRODUCT_STATUS.ACTIVE, PRODUCT_STATUS.INACTIVE],
+      default: PRODUCT_STATUS.ACTIVE,
+    },
   },
   {
     timestamps: true,
@@ -78,5 +98,10 @@ const productSchema = new mongoose.Schema(
     collection: COLLECTION_NAME,
   }
 );
+
+productSchema.plugin(mongoosePaginate, {
+  deletedAt: true,
+  overrideMethods: true,
+});
 
 export default mongoose.model(DOCUMENT_NAME, productSchema);

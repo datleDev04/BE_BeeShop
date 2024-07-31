@@ -11,11 +11,6 @@ const variantSchema = new mongoose.Schema(
       ref: 'Color',
       required: true,
     },
-    product_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product',
-      required: true,
-    },
     stock: {
       type: Number,
       required: true,
