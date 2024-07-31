@@ -2,6 +2,7 @@ import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 import Label from '../models/Label.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import { generateSlug } from '../utils/GenerateSlug.js';
 
 export class LabelService {
   static getAllLabel = async (req) => {
@@ -37,25 +38,32 @@ export class LabelService {
 
     await checkRecordByField(Label, 'name', name, false);
 
+    const slug = await generateSlug(Label, name);
+
     const newLabel = await Label.create({
       name,
       description,
+      slug,
     });
     return Transformer.transformObjectTypeSnakeToCamel(newLabel.toObject());
   };
 
   static updateLabelById = async (req) => {
-    const { name, description } = req.body;
+    const { name, description, status } = req.body;
 
     await checkRecordByField(Label, 'name', name, false, req.params.id);
 
     await checkRecordByField(Label, '_id', req.params.id, true);
+
+    const slug = await generateSlug(Label, name);
 
     const updatedLabel = await Label.findByIdAndUpdate(
       req.params.id,
       {
         name,
         description,
+        slug,
+        status,
       },
       {
         new: true,

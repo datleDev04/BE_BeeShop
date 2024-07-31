@@ -1,11 +1,11 @@
 import { validateBeforeCreateOrUpdate } from '../utils/validators.js';
 import Joi from 'joi';
 
-export const createGenderValidation = async (req, res, next) => {
+export const createProductTypeValidation = async (req, res, next) => {
   const createSchema = Joi.object({
     name: Joi.string().trim().required().messages({
-      'string.empty': "Gender name can't be empty",
-      'any.required': 'Gender name is required',
+      'string.empty': "Product type name can't be empty",
+      'any.required': 'Product type name is required',
     }),
   });
 
@@ -17,13 +17,12 @@ export const createGenderValidation = async (req, res, next) => {
   }
 };
 
-export const updateGenderValidation = async (req, res, next) => {
+export const updateProductTypeValidation = async (req, res, next) => {
   const updateSchema = Joi.object({
     name: Joi.string().trim().messages({
-      'string.empty': "Gender name can't be empty",
+      'string.empty': "Product type name can't be empty",
     }),
-  });
-
+  }).min(1);
   try {
     await validateBeforeCreateOrUpdate(updateSchema, req.body);
     next();

@@ -1,6 +1,6 @@
 import express from 'express';
 import { ColorController } from '../controllers/color.controller.js';
-import { colorValidation } from '../validations/color.validation.js';
+import { createColorValidation, updateColorValidation } from '../validations/color.validation.js';
 import { objectIdValidation } from '../validations/objectId.validation.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
@@ -19,7 +19,7 @@ colorRouter.post(
   '/',
   authMiddleware,
   CheckPermission(['Create_Color']),
-  colorValidation,
+  createColorValidation,
   ColorController.createNewColor
 );
 colorRouter.patch(
@@ -27,7 +27,7 @@ colorRouter.patch(
   authMiddleware,
   CheckPermission(['Update_Color']),
   objectIdValidation,
-  colorValidation,
+  updateColorValidation,
   ColorController.updateColor
 );
 colorRouter.delete(

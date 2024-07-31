@@ -13,9 +13,9 @@ const roleRouter = express.Router();
 
 roleRouter.get(
   '/',
-  authMiddleware,
-  CheckPermission(['Read_Role']),
-  searchRoleValidation,
+  // authMiddleware,
+  // CheckPermission(['Read_Role']),
+  // searchRoleValidation,
   RoleController.getAllRole
 );
 

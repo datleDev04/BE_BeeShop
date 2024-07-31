@@ -2,6 +2,7 @@ import Gender from '../models/Gender.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
+import { generateSlug } from '../utils/GenerateSlug.js';
 
 export default class GenderService {
   static createNewGender = async (req) => {
@@ -9,7 +10,9 @@ export default class GenderService {
 
     await checkRecordByField(Gender, 'name', name, false);
 
-    const newGender = await Gender.create({ name });
+    const slug = await generateSlug(Gender, name);
+
+    const newGender = await Gender.create({ name, slug });
     return Transformer.transformObjectTypeSnakeToCamel(newGender.toObject());
   };
 
@@ -47,10 +50,12 @@ export default class GenderService {
     await checkRecordByField(Gender, 'name', name, false, req.params.id);
     await checkRecordByField(Gender, '_id', req.params.id, true);
 
+    const slug = await generateSlug(Gender, name);
     const updatedGender = await Gender.findByIdAndUpdate(
       req.params.id,
       {
         name,
+        slug,
       },
       { new: true }
     );

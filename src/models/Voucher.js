@@ -6,6 +6,11 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const DOCUMENT_NAME = 'Voucher';
 const COLLECTION_NAME = 'Vouchers';
 
+export const VOUCHER_STATUS = {
+  ACTIVE: 0,
+  INACTIVE: 1,
+};
+
 const voucherSchema = new mongoose.Schema(
   {
     name: {
@@ -27,6 +32,11 @@ const voucherSchema = new mongoose.Schema(
     discount: {
       type: Number,
       required: true,
+    },
+    status: {
+      type: Number,
+      enum: [VOUCHER_STATUS.ACTIVE, VOUCHER_STATUS.INACTIVE],
+      default: VOUCHER_STATUS.ACTIVE,
     },
     discount_types: {
       type: String,

@@ -1,19 +1,20 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+// schema Gender variables
+const DOCUMENT_NAME = 'Product_Type';
+const COLLECTION_NAME = 'Product_Types';
 
-// schema Color variables
-const DOCUMENT_NAME = 'Color';
-const COLLECTION_NAME = 'Colors';
-
-const colorSchema = new mongoose.Schema(
+const productTypeSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
+      unique: true,
     },
-    value: {
+    slug: {
       type: String,
       required: true,
+      unique: true,
     },
   },
   {
@@ -23,9 +24,9 @@ const colorSchema = new mongoose.Schema(
   }
 );
 
-colorSchema.plugin(mongoosePaginate, {
+productTypeSchema.plugin(mongoosePaginate, {
   deletedAt: true,
   overrideMethods: true,
 });
 
-export default mongoose.model(DOCUMENT_NAME, colorSchema);
+export default mongoose.model(DOCUMENT_NAME, productTypeSchema);
