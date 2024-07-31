@@ -5,6 +5,11 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const DOCUMENT_NAME = 'Tag';
 const COLLECTION_NAME = 'Tags';
 
+export const TAG_STATUS = {
+  ACTIVE: 0,
+  INACTIVE: 1,
+};
+
 const TagSchema = new mongoose.Schema(
   {
     name: {
@@ -29,7 +34,8 @@ const TagSchema = new mongoose.Schema(
     },
     status: {
       type: Number,
-      default: 0,
+      enum: [TAG_STATUS.ACTIVE, TAG_STATUS.INACTIVE],
+      default: TAG_STATUS.ACTIVE,
     },
   },
   {
