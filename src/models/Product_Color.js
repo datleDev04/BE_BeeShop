@@ -11,11 +11,6 @@ const productColorSchema = new mongoose.Schema(
       required: true,
       ref: 'Color',
     },
-    product_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: 'Product',
-    },
     image_url: {
       type: String,
       required: true,
