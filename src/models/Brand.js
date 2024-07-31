@@ -19,6 +19,11 @@ const brandSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    slug: {
+      type: String,
+      require: true,
+      unique: true,
+    },
   },
   {
     timestamps: true,

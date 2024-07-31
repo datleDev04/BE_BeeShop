@@ -1,7 +1,7 @@
 import Tags from '../models/Tags.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import { generateSlug } from '../utils/GenerateSlug.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
-import { slugify } from '../utils/slugify.js';
 import { Transformer } from '../utils/transformer.js';
 
 export class TagService {
@@ -24,26 +24,24 @@ export class TagService {
     return {
       metaData: Transformer.removeDeletedField(transformedTags),
       others,
-    }
+    };
   };
 
   static getOneTag = async (req) => {
-    await checkRecordByField(Tags, '_id', req.params.id, true)
+    await checkRecordByField(Tags, '_id', req.params.id, true);
     const tag = await Tags.findById(req.params.id);
-    return Transformer.transformObjectTypeSnakeToCamel(tag.toObject())
+    return Transformer.transformObjectTypeSnakeToCamel(tag.toObject());
   };
-
-
 
   static createTag = async (req) => {
     const { name, description, parent_id, image } = req.body;
-    await checkRecordByField(Tags, 'name', name, false)    
+    await checkRecordByField(Tags, 'name', name, false);
 
     if (parent_id) {
-      await checkRecordByField(Tags, '_id', parent_id, true)
+      await checkRecordByField(Tags, '_id', parent_id, true);
     }
 
-    const slug = slugify(name)
+    const slug = await generateSlug(Tags, name);
 
     const newTag = await Tags.create({
       name,
@@ -51,7 +49,7 @@ export class TagService {
       image,
       description,
       parent_id,
-      image
+      image,
     });
     return Transformer.transformObjectTypeSnakeToCamel(newTag.toObject());
   };
@@ -59,16 +57,16 @@ export class TagService {
   static updateTagById = async (req) => {
     const { name, description, parent_id, image, status } = req.body;
 
-    await checkRecordByField(Tags, 'name', name, false, req.params.id)
+    await checkRecordByField(Tags, 'name', name, false, req.params.id);
 
-    await checkRecordByField(Tags, '_id', req.params.id, true)
+    await checkRecordByField(Tags, '_id', req.params.id, true);
 
-    const slug = slugify(name)
+    const slug = await generateSlug(Tags, name);
 
     if (parent_id) {
-      await checkRecordByField(Tags, '_id', parent_id, true)
+      await checkRecordByField(Tags, '_id', parent_id, true);
     }
-    
+
     const updatedTag = await Tags.findByIdAndUpdate(
       req.params.id,
       {
@@ -77,7 +75,7 @@ export class TagService {
         description,
         parent_id,
         image,
-        status
+        status,
       },
       { new: true }
     );
