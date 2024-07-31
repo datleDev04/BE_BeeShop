@@ -1,6 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
 import { SuccessResponse } from '../utils/response.js';
-import { Transformer } from '../utils/transformer.js';
 import { LabelService } from '../services/label.service.js';
 
 export class LabelController {
@@ -18,12 +17,7 @@ export class LabelController {
     try {
       const label = await LabelService.getOneLabel(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get one label successfully',
-        label
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get one label successfully', label);
     } catch (error) {
       next(error);
     }
@@ -32,12 +26,7 @@ export class LabelController {
   static createLabel = async (req, res, next) => {
     try {
       const newLabel = await LabelService.createLabel(req);
-      SuccessResponse(
-        res,
-        StatusCodes.CREATED,
-        'Create new label successfully',
-        newLabel
-      );
+      SuccessResponse(res, StatusCodes.CREATED, 'Create new label successfully', newLabel);
     } catch (error) {
       next(error);
     }
@@ -47,12 +36,7 @@ export class LabelController {
     try {
       const updatedLabel = await LabelService.updateLabelById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Updated label successfully',
-        updatedLabel
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Updated label successfully', updatedLabel);
     } catch (error) {
       next(error);
     }
@@ -66,6 +50,5 @@ export class LabelController {
     } catch (error) {
       next(error);
     }
-
   };
 }

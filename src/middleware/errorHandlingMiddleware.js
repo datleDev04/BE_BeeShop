@@ -29,14 +29,14 @@ export const errorHandlingMiddleware = (err, req, res, next) => {
   if (err.isJoi) {
     responseError.errors = {};
     responseError.statusCode = StatusCodes.UNPROCESSABLE_ENTITY;
-    err.details.forEach(detail => {
+    err.details.forEach((detail) => {
       responseError.errors[detail.path[0]] = detail.message;
     });
   } else if (err.errors && typeof err.errors === 'object') {
     // Nếu là lỗi xác thực từ Mongoose, thêm mảng lỗi chỉ chứa các thông báo lỗi
     responseError.errors = {};
     responseError.statusCode = StatusCodes.UNPROCESSABLE_ENTITY;
-    Object.keys(err.errors).forEach(key => {
+    Object.keys(err.errors).forEach((key) => {
       responseError.errors[key] = err.errors[key].message;
     });
   } else {

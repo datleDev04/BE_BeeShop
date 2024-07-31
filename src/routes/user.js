@@ -6,10 +6,9 @@ import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 
 const userRouter = express.Router();
-// get all users
+
 userRouter.get('/', authMiddleware, CheckPermission(['Read_User']), UserController.getAllUsers);
 
-// get one user by id (only for authenticated users)
 userRouter.get(
   '/:id',
   authMiddleware,
@@ -18,7 +17,14 @@ userRouter.get(
   UserController.getOneUser
 );
 
-// only admin role can access
+userRouter.post(
+  '/',
+  authMiddleware,
+  CheckPermission(['Create_User']),
+  userValidation.createUserInfo,
+  UserController.createUser
+);
+
 userRouter.patch(
   '/:id',
   authMiddleware,
@@ -26,6 +32,14 @@ userRouter.patch(
   CheckPermission(['Update_User']),
   userValidation.updateUserInfo,
   UserController.updateUser
+);
+
+userRouter.delete(
+  '/:id',
+  authMiddleware,
+  objectIdValidation,
+  CheckPermission(['Delete_User']),
+  UserController.deleteOneUser
 );
 
 export default userRouter;

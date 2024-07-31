@@ -1,6 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
 import { SuccessResponse } from '../utils/response.js';
-import { Transformer } from '../utils/transformer.js';
 import { OrderStatusService } from '../services/order_status.service.js';
 
 export class OrderStatusController {

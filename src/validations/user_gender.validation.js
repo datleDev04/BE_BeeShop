@@ -1,10 +1,10 @@
 import Joi from 'joi';
 import { validateBeforeCreateOrUpdate } from '../utils/validators.js';
 
-export const createOrderStatusValidation = async (req, res, next) => {
+export const createUserGenderValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().trim().required(),
-    description: Joi.string().trim().allow(''),
+    description: Joi.string().allow(''),
   });
 
   try {
@@ -14,10 +14,11 @@ export const createOrderStatusValidation = async (req, res, next) => {
     next(error);
   }
 };
-export const updateOrderStatusValidation = async (req, res, next) => {
+
+export const updateUserGenderValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().trim(),
-    description: Joi.string().trim().allow(''),
+    description: Joi.string().allow(''),
   });
 
   try {

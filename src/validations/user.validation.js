@@ -1,5 +1,3 @@
-import { StatusCodes } from 'http-status-codes';
-import ApiError from '../utils/ApiError.js';
 import {
   OBJECT_ID_RULE,
   OBJECT_ID_RULE_MESSAGE,
@@ -10,13 +8,18 @@ import Joi from 'joi';
 export class userValidation {
   static updateUserInfo = async (req, res, next) => {
     const correctCondition = Joi.object({
-      user_name: Joi.string().optional().messages({
+      user_name: Joi.string().optional().min(3).max(50).messages({
         'string.base': 'User name should be a string',
         'string.empty': 'User name cannot be an empty field',
+        'string.min': 'User name must be at least 3 characters long',
+        'string.max': 'User name should be at most 50 characters long',
       }),
-      password: Joi.string().optional(6).trim().messages({
-        'string.base': 'Password should be a string',
-        'string.email': 'Password should be a valid password address',
+      password: Joi.any().forbidden().messages({
+        'any.unknown': 'Password update is not allowed',
+      }),
+      full_name: Joi.string().optional().min(6).trim().messages({
+        'string.base': 'Full name should be a string',
+        'string.min': 'Full name should be at least 6 characters',
       }),
       avatar_url: Joi.string().optional().uri().messages({
         'string.base': 'Avatar URL should be a string',
@@ -26,13 +29,113 @@ export class userValidation {
         'string.base': 'Email should be a string',
         'string.email': 'Email should be a valid email address',
       }),
+      phone: Joi.string()
+        .optional()
+        .pattern(/^\d{10}$/)
+        .messages({
+          'string.base': 'Phone should be a string',
+          'string.pattern.base': 'Phone number must be exactly 10 digits',
+        }),
+      birth_day: Joi.date().optional().messages({
+        'date.base': 'Birth day should be a date',
+      }),
+      status: Joi.number().optional().valid(0, 1).messages({
+        'any.only': 'Status should be one of [0, 1]',
+      }),
+      gender: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).optional(),
       roles: Joi.alternatives()
         .try(
           Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
           Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
         )
         .optional(),
-      address_list: Joi.alternatives()
+      addresses: Joi.alternatives()
+        .try(
+          Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+          Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        )
+        .optional(),
+      vouchers: Joi.alternatives()
+        .try(
+          Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+          Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        )
+        .optional(),
+      tags: Joi.alternatives()
+        .try(
+          Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+          Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        )
+        .optional(),
+    });
+
+    try {
+      await validateBeforeCreateOrUpdate(correctCondition, req.body);
+      next();
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static createUserInfo = async (req, res, next) => {
+    const correctCondition = Joi.object({
+      user_name: Joi.string().required().max(50).messages({
+        'string.base': 'User name should be a string',
+        'string.empty': 'User name cannot be an empty field',
+        'string.max': 'User name should be at most 50 characters long',
+        'any.required': 'User name is required',
+      }),
+      password: Joi.string().required().min(6).trim().messages({
+        'string.base': 'Password should be a string',
+        'string.min': 'Password should be at least 6 characters',
+        'any.required': 'Password is required',
+      }),
+      full_name: Joi.string().optional().min(6).messages({
+        'string.base': 'Full name should be a string',
+        'string.min': 'Full name should be at least 6 characters',
+      }),
+      avatar_url: Joi.string().optional().uri().messages({
+        'string.base': 'Avatar URL should be a string',
+        'string.uri': 'Avatar URL should be a valid URI',
+      }),
+      email: Joi.string().required().email().messages({
+        'string.base': 'Email should be a string',
+        'string.email': 'Email should be a valid email address',
+        'any.required': 'Email is required',
+      }),
+      phone: Joi.string()
+        .optional()
+        .pattern(/^\d{10}$/)
+        .messages({
+          'string.base': 'Phone should be a string',
+          'string.pattern.base': 'Phone number must be exactly 10 digits',
+        }),
+      birth_day: Joi.date().optional().messages({
+        'date.base': 'Birth day should be a date',
+      }),
+      status: Joi.number().optional().valid(0, 1).messages({
+        'any.only': 'Status should be one of [0, 1]',
+      }),
+      gender: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).optional(),
+      roles: Joi.alternatives()
+        .try(
+          Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+          Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        )
+        .optional(),
+      addresses: Joi.alternatives()
+        .try(
+          Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+          Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        )
+        .optional(),
+      vouchers: Joi.alternatives()
+        .try(
+          Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+          Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        )
+        .optional(),
+      tags: Joi.alternatives()
         .try(
           Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
           Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))

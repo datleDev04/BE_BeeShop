@@ -8,8 +8,7 @@ export default class PermissionService {
   static createNewPermission = async (req) => {
     const { name, label, module } = req.body;
 
-    await checkRecordByField(Permission, 'name', name, false)
-    await checkRecordByField(Permission, 'module', module, true)
+    await checkRecordByField(Permission, 'name', name, false);
 
     const newPermission = await Permission.create({ name, label, module });
 
@@ -17,9 +16,9 @@ export default class PermissionService {
   };
 
   static getPermission = async (req) => {
-    await checkRecordByField(Permission, '_id', req.params.id, true)
+    await checkRecordByField(Permission, '_id', req.params.id, true);
     const permission = await Permission.findById(req.params.id);
-    return Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
+    return Transformer.transformObjectTypeSnakeToCamel(permission.toObject());
   };
 
   static getAllPermissions = async (req) => {
@@ -41,7 +40,7 @@ export default class PermissionService {
     return {
       metaData: Transformer.removeDeletedField(transformedPermission),
       others,
-    }
+    };
   };
 
   static getAllModule = async (req) => {
@@ -53,10 +52,10 @@ export default class PermissionService {
     const { id } = req.params;
     const { name, label, module } = req.body;
 
-    await checkRecordByField(Permission, '_id', id, true)
-    await checkRecordByField(Permission, 'name', name, false, id)
+    await checkRecordByField(Permission, '_id', id, true);
+    await checkRecordByField(Permission, 'name', name, false, id);
 
-    await checkRecordByField(Permission, 'module', module, true)
+    await checkRecordByField(Permission, 'module', module, true);
 
     const permission = await Permission.findByIdAndUpdate(
       { _id: id },
@@ -68,12 +67,12 @@ export default class PermissionService {
       { new: true }
     );
 
-    return Transformer.transformObjectTypeSnakeToCamel(permission.toObject())
+    return Transformer.transformObjectTypeSnakeToCamel(permission.toObject());
   };
 
   static deletePermission = async (req, res) => {
     const { id } = req.params;
-    await checkRecordByField(Permission, '_id', id, true)
+    await checkRecordByField(Permission, '_id', id, true);
 
     await Permission.findByIdAndDelete(id);
 

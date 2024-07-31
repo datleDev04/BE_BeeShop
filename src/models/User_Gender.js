@@ -2,15 +2,18 @@ import mongoose from 'mongoose';
 import MongooseDelete from 'mongoose-delete';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
-// schema Voucher-Types variables
-const DOCUMENT_NAME = 'Voucher_Type';
-const COLLECTION_NAME = 'Voucher_Types';
+// schema User_Gender variables
+const DOCUMENT_NAME = 'User_Gender';
+const COLLECTION_NAME = 'User_Genders';
 
-const voucherTypeSchema = new mongoose.Schema(
+const userGenderSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
+    },
+    description: {
+      type: String,
     },
   },
   {
@@ -23,10 +26,10 @@ const voucherTypeSchema = new mongoose.Schema(
 const plugins = [MongooseDelete, mongoosePaginate];
 
 plugins.forEach((plugin) => {
-  voucherTypeSchema.plugin(plugin, {
+  userGenderSchema.plugin(plugin, {
     deletedAt: true,
     overrideMethods: true,
   });
 });
 
-export default mongoose.model(DOCUMENT_NAME, voucherTypeSchema);
+export default mongoose.model(DOCUMENT_NAME, userGenderSchema);

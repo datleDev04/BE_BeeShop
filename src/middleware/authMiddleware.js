@@ -9,15 +9,17 @@ export const authMiddleware = async (req, res, next) => {
 
   try {
     // check if accessToken is existed
-    if (!accessToken) throw new ApiError(StatusCodes.UNAUTHORIZED, {
-      auth : "You are not authorized to access"
-    });
+    if (!accessToken)
+      throw new ApiError(StatusCodes.UNAUTHORIZED, {
+        auth: 'You are not authorized to access',
+      });
 
     // check if accesstoke is existed in blacklist
     const blackToken = await Black_Tokens.findOne({ access_token: accessToken });
-    if (blackToken) throw new ApiError(StatusCodes.UNAUTHORIZED, {
-      auth : "You are not authorized to access"
-    });
+    if (blackToken)
+      throw new ApiError(StatusCodes.UNAUTHORIZED, {
+        auth: 'You are not authorized to access',
+      });
 
     // decode accessToken to get user_id
     const { user_id } = jwtUtils.decodeAccessToken(accessToken);
@@ -27,9 +29,10 @@ export const authMiddleware = async (req, res, next) => {
       path: 'roles',
       populate: { path: 'permissions' },
     });
-    if (!user) throw new ApiError(StatusCodes.UNAUTHORIZED,{
-      auth : "You are not authorized to access"
-    });
+    if (!user)
+      throw new ApiError(StatusCodes.UNAUTHORIZED, {
+        auth: 'You are not authorized to access',
+      });
 
     user.password = undefined;
 
@@ -54,8 +57,10 @@ export const authMiddleware = async (req, res, next) => {
 
     next();
   } catch (error) {
-    next(new ApiError(StatusCodes.UNAUTHORIZED, {
-      auth : "You are not authorized to access"
-    }));
+    next(
+      new ApiError(StatusCodes.UNAUTHORIZED, {
+        auth: 'You are not authorized to access',
+      })
+    );
   }
 };

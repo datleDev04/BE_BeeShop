@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 import MongooseDelete from 'mongoose-delete';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
@@ -6,11 +6,33 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const DOCUMENT_NAME = 'User';
 const COLLECTION_NAME = 'Users';
 
+const UserStatus = {
+  ACTIVE: 0,
+  INACTIVE: 1,
+};
+
 const userSchema = new mongoose.Schema(
   {
     user_name: {
       type: String,
       unique: true,
+      minlength: 3,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    full_name: {
+      type: String,
+    },
+    phone: {
+      type: String,
       required: true,
     },
     google_id: {
@@ -20,24 +42,40 @@ const userSchema = new mongoose.Schema(
     avatar_url: {
       type: String,
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
+    birth_day: {
+      type: Date,
     },
-    password: {
-      type: String,
+    status: {
+      type: Number,
+      enum: [UserStatus.ACTIVE, UserStatus.INACTIVE],
+      default: UserStatus.ACTIVE,
     },
+    gender: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User_Gender',
+    },
+    vouchers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Voucher',
+      },
+    ],
     roles: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Role',
       },
     ],
-    address_list: [
+    addresses: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Address',
+      },
+    ],
+    tags: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tag',
       },
     ],
   },

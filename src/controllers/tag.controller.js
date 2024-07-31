@@ -1,7 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { TagService } from '../services/tag.service.js';
 import { SuccessResponse } from '../utils/response.js';
-import { Transformer } from '../utils/transformer.js';
 
 export class TagController {
   static getAllTags = async (req, res, next) => {
@@ -18,12 +17,7 @@ export class TagController {
     try {
       const tag = await TagService.getOneTag(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get one tag successfully',
-        tag
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get one tag successfully', tag);
     } catch (error) {
       next(error);
     }
@@ -32,12 +26,7 @@ export class TagController {
   static createTag = async (req, res, next) => {
     try {
       const newTag = await TagService.createTag(req);
-      SuccessResponse(
-        res,
-        StatusCodes.CREATED,
-        'Create new tag successfully',
-        newTag
-      );
+      SuccessResponse(res, StatusCodes.CREATED, 'Create new tag successfully', newTag);
     } catch (error) {
       next(error);
     }
@@ -47,12 +36,7 @@ export class TagController {
     try {
       const updatedTag = await TagService.updateTagById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Updated tag successfully',
-        updatedTag
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Updated tag successfully', updatedTag);
     } catch (error) {
       next(error);
     }
@@ -60,7 +44,7 @@ export class TagController {
 
   static deleteTagById = async (req, res, next) => {
     try {
-      await TagService.deleteTagBydId(req);
+      await TagService.deleteTagById(req);
 
       SuccessResponse(res, StatusCodes.OK, 'deleted tag successfully', {});
     } catch (error) {

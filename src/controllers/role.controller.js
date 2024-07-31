@@ -7,13 +7,7 @@ export class RoleController {
     try {
       const { metaData, other } = await RoleService.getAllRole(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get All Role successfully',
-        metaData,
-        other
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get All Role successfully', metaData, other);
     } catch (error) {
       next(error);
     }
@@ -22,12 +16,7 @@ export class RoleController {
     try {
       const role = await RoleService.getOneRole(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Get One Role successfully',
-        role
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Get One Role successfully', role);
     } catch (error) {
       next(error);
     }
@@ -37,12 +26,7 @@ export class RoleController {
     try {
       const newRole = await RoleService.createNewRole(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.CREATED,
-        'Create New Role successfully',
-        newRole
-      );
+      SuccessResponse(res, StatusCodes.CREATED, 'Create New Role successfully', newRole);
     } catch (error) {
       next(error);
     }
@@ -52,12 +36,7 @@ export class RoleController {
     try {
       const updatedRole = await RoleService.updateRoleById(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Updated Role successfully',
-        updatedRole
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Updated Role successfully', updatedRole);
     } catch (error) {
       next(error);
     }
