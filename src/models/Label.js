@@ -27,7 +27,7 @@ const labelSchema = new mongoose.Schema(
     },
     status: {
       type: Number,
-      enum: Object.values(LABEL_STATUS),
+      enum: [LABEL_STATUS.ACTIVE, LABEL_STATUS.INACTIVE],
       default: LABEL_STATUS.ACTIVE,
     },
   },
