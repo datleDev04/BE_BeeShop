@@ -139,7 +139,6 @@ export default class UserService {
     ];
 
     if (isCustomer) {
-      //check fields
       if (Object.keys(updateFields).some((field) => restrictedFields.includes(field))) {
         throw new ApiError(StatusCodes.UNAUTHORIZED, {
           not_have_access: 'You only have permission to update status!',
@@ -148,7 +147,6 @@ export default class UserService {
       updateFields = {
         ...((status || status == 0) && { status }),
       };
-      console.log(updateFields, status);
     } else {
       if (userPermissions.includes('Read_User')) {
         updateFields = { ...updateFields, ...(roles && { roles }) };
