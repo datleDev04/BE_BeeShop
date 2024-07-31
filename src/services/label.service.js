@@ -1,9 +1,8 @@
-import { StatusCodes } from 'http-status-codes';
-import ApiError from '../utils/ApiError.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 import Label from '../models/Label.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import { slugify } from '../utils/slugify.js';
 
 export class LabelService {
   static getAllLabel = async (req) => { 
@@ -39,25 +38,31 @@ export class LabelService {
 
     await checkRecordByField(Label, 'name', name, false)
 
+    const slug = slugify(name)
+
     const newLabel = await Label.create({
       name,
       description,
+      slug
     });
     return Transformer.transformObjectTypeSnakeToCamel(newLabel.toObject());
   };
 
   static updateLabelById = async (req) => {
-    const { name, description } = req.body;
+    const { name, description, status } = req.body;
 
     await checkRecordByField(Label, 'name', name, false, req.params.id)
 
     await checkRecordByField(Label, '_id', req.params.id, true)
+    const slug = slugify(name)
 
     const updatedLabel = await Label.findByIdAndUpdate(
       req.params.id,
       {
         name,
         description,
+        slug,
+        status
       },
       {
         new: true,
