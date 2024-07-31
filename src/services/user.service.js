@@ -87,7 +87,7 @@ export default class UserService {
       addresses,
       tags,
     } = req.body;
-    await checkRecordByField(User, 'user_name', user_name, false, req.user._id);
+    await checkRecordByField(User, 'user_name', user_name, false, req.params.id);
     await checkRecordByField(User, 'email', email, false, req.user._id);
 
     const userPermissions = req.user.roles.flatMap((role) =>
