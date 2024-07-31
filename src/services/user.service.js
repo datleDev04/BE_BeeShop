@@ -87,7 +87,6 @@ export default class UserService {
       addresses,
       tags,
     } = req.body;
-
     await checkRecordByField(User, 'user_name', user_name, false, req.user._id);
     await checkRecordByField(User, 'email', email, false, req.user._id);
 
@@ -100,7 +99,9 @@ export default class UserService {
         not_have_access: 'You do not have permission to update roles',
       });
     }
-    const currentUser = await User.findById(req.params.id);
+    const currentUser = await User.findById(req.params.id).populate({
+      path: 'roles',
+    });
 
     if (!currentUser) {
       throw new ApiError(StatusCodes.NOT_FOUND, {
@@ -125,6 +126,10 @@ export default class UserService {
     };
 
     if (isCustomer) {
+      if (!updateFields.status)
+        throw new ApiError(StatusCodes.FORBIDDEN, {
+          not_have_access: 'You only  have permission to update status!',
+        });
       updateFields = {
         ...(status && { status }),
       };
@@ -172,7 +177,7 @@ export default class UserService {
           populate: { path: 'permissions' },
         },
         {
-          path: 'address_list',
+          path: 'addresses',
         },
         {
           path: 'gender',
@@ -228,5 +233,21 @@ export default class UserService {
       metaData,
       ...otherFields,
     };
+  };
+
+  static deleteUser = async (req) => {
+    await checkRecordByField(User, '_id', req.params.id, true);
+    const userPermissions = req.user.roles.flatMap((role) =>
+      role.permissions.map((permission) => permission.name)
+    );
+
+    if (!userPermissions.includes('Delete_User') && req.body.roles) {
+      throw new ApiError(StatusCodes.FORBIDDEN, {
+        not_have_access: 'You do not have permission to delete user',
+      });
+    }
+    const user = await User.findByIdAndDelete(req.params.id);
+
+    return Transformer.transformObjectTypeSnakeToCamel(user.toObject());
   };
 }

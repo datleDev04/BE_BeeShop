@@ -41,4 +41,13 @@ export class UserController {
       next(error);
     }
   };
+  static deleteOneUser = async (req, res, next) => {
+    try {
+      const user_deleting = await UserService.deleteUser(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Delete One User successfully', user_deleting);
+    } catch (error) {
+      next(error);
+    }
+  };
 }

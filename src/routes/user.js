@@ -34,4 +34,12 @@ userRouter.patch(
   UserController.updateUser
 );
 
+userRouter.delete(
+  '/:id',
+  authMiddleware,
+  objectIdValidation,
+  CheckPermission(['Delete_User']),
+  UserController.deleteOneUser
+);
+
 export default userRouter;
