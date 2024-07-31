@@ -27,7 +27,7 @@ export default class UserService {
     );
 
     if (!userPermissions.includes('Read_User') && roles) {
-      throw new ApiError(StatusCodes.FORBIDDEN, {
+      throw new ApiError(StatusCodes.UNAUTHORIZED, {
         not_have_access: 'You do not have permission to create users with roles',
       });
     }
@@ -95,7 +95,7 @@ export default class UserService {
     );
 
     if (!userPermissions.includes('Read_User') && req.body.roles) {
-      throw new ApiError(StatusCodes.FORBIDDEN, {
+      throw new ApiError(StatusCodes.UNAUTHORIZED, {
         not_have_access: 'You do not have permission to update roles',
       });
     }
@@ -141,13 +141,14 @@ export default class UserService {
     if (isCustomer) {
       //check fields
       if (Object.keys(updateFields).some((field) => restrictedFields.includes(field))) {
-        throw new ApiError(StatusCodes.FORBIDDEN, {
+        throw new ApiError(StatusCodes.UNAUTHORIZED, {
           not_have_access: 'You only have permission to update status!',
         });
       }
       updateFields = {
-        ...(status == 0 && { status }),
+        ...((status || status == 0) && { status }),
       };
+      console.log(updateFields, status);
     } else {
       if (userPermissions.includes('Read_User')) {
         updateFields = { ...updateFields, ...(roles && { roles }) };
@@ -259,7 +260,7 @@ export default class UserService {
 
     const isCustomer = user.roles.some((role) => role.name === 'Customer');
     if (isCustomer)
-      throw new ApiError(StatusCodes.FORBIDDEN, {
+      throw new ApiError(StatusCodes.UNAUTHORIZED, {
         not_have_access: 'You only have permission to delete customer!',
       });
 
