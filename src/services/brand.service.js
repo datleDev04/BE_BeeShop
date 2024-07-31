@@ -4,6 +4,7 @@ import ApiError from '../utils/ApiError.js';
 import { Transformer } from '../utils/transformer.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import { generateSlug } from '../utils/GenerateSlug.js';
 
 export default class BrandService {
   static handleGetAllBrand = async (req) => {
@@ -38,10 +39,13 @@ export default class BrandService {
     const { name, image, description } = req.body;
     await checkRecordByField(Brand, 'name', name, false);
 
+    const slug = await generateSlug(Brand, name);
+
     const newBrand = await Brand.create({
       name,
       image,
       description,
+      slug,
     });
     const data = Transformer.transformObjectTypeSnakeToCamel(newBrand.toObject());
 
@@ -54,9 +58,11 @@ export default class BrandService {
     await checkRecordByField(Brand, '_id', req.params.id, true);
     await checkRecordByField(Brand, 'name', name, false, req.params.id);
 
+    const slug = await generateSlug(Brand, name);
+
     const updateBrand = await Brand.findByIdAndUpdate(
       req.params.id,
-      { name, image, description },
+      { name, image, description, slug },
       { new: true, runValidators: true }
     );
 
