@@ -141,7 +141,6 @@ export default class VoucherService {
       code,
       max_usage,
       discount,
-      status,
       discount_types,
       minimum_order_price,
       voucher_type,
@@ -155,18 +154,6 @@ export default class VoucherService {
       }
       updatedVoucherData = {
         ...updatedVoucherData,
-    const updatedVoucher = await Voucher.findByIdAndUpdate(
-      req.params.id,
-      {
-        name,
-        code,
-        max_usage,
-        duration,
-        discount,
-        status,
-        discount_types,
-        minimum_order_price,
-        voucher_type,
         start_date,
         end_date,
       };

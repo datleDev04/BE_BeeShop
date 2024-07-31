@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import { validateBeforeCreateOrUpdate } from '../utils/validators.js';
 import {
   OBJECT_ID_RULE,
   OBJECT_ID_RULE_MESSAGE,

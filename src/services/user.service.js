@@ -125,13 +125,28 @@ export default class UserService {
       ...(tags && { tags }),
     };
 
+    const restrictedFields = [
+      'user_name',
+      'password',
+      'avatar_url',
+      'email',
+      'full_name',
+      'phone',
+      'birth_day',
+      'gender',
+      'addresses',
+      'tags',
+    ];
+
     if (isCustomer) {
-      if (!updateFields.status)
+      //check fields
+      if (Object.keys(updateFields).some((field) => restrictedFields.includes(field))) {
         throw new ApiError(StatusCodes.FORBIDDEN, {
-          not_have_access: 'You only  have permission to update status!',
+          not_have_access: 'You only have permission to update status!',
         });
+      }
       updateFields = {
-        ...(status && { status }),
+        ...(status == 0 && { status }),
       };
     } else {
       if (userPermissions.includes('Read_User')) {
@@ -246,8 +261,18 @@ export default class UserService {
         not_have_access: 'You do not have permission to delete user',
       });
     }
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await User.findById(req.params.id).populate({
+      path: 'roles',
+    });
 
-    return Transformer.transformObjectTypeSnakeToCamel(user.toObject());
+    const isCustomer = user.roles.some((role) => role.name === 'Customer');
+    if (isCustomer)
+      throw new ApiError(StatusCodes.FORBIDDEN, {
+        not_have_access: 'You only have permission to delete customer!',
+      });
+
+    const res = await User.findByIdAndDelete(req.params.id);
+
+    return Transformer.transformObjectTypeSnakeToCamel(res.toObject());
   };
 }
