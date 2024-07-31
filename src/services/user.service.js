@@ -252,15 +252,7 @@ export default class UserService {
 
   static deleteUser = async (req) => {
     await checkRecordByField(User, '_id', req.params.id, true);
-    const userPermissions = req.user.roles.flatMap((role) =>
-      role.permissions.map((permission) => permission.name)
-    );
 
-    if (!userPermissions.includes('Delete_User') && req.body.roles) {
-      throw new ApiError(StatusCodes.FORBIDDEN, {
-        not_have_access: 'You do not have permission to delete user',
-      });
-    }
     const user = await User.findById(req.params.id).populate({
       path: 'roles',
     });
