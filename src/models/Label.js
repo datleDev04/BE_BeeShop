@@ -6,6 +6,11 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const DOCUMENT_NAME = 'Label';
 const COLLECTION_NAME = 'Labels';
 
+export const LABEL_STATUS = {
+  ACTIVE: 0,
+  INACTIVE: 1,
+};
+
 const labelSchema = new mongoose.Schema(
   {
     name: {
@@ -22,7 +27,8 @@ const labelSchema = new mongoose.Schema(
     },
     status: {
       type: Number,
-      default: 0,
+      enum: Object.values(LABEL_STATUS),
+      default: LABEL_STATUS.ACTIVE,
     },
   },
   {
