@@ -6,6 +6,7 @@ import {
   OBJECT_ID_RULE,
   OBJECT_ID_RULE_MESSAGE,
 } from '../utils/validators.js';
+import { VOUCHER_STATUS } from '../models/Voucher.js';
 
 const createVoucherSchema = Joi.object({
   name: Joi.string().required(),
@@ -26,6 +27,9 @@ const updateVoucherSchema = Joi.object({
   max_usage: Joi.number(),
   duration: Joi.number(),
   discount: Joi.number(),
+  status: Joi.number()
+    .valid(...Object.values(VOUCHER_STATUS))
+    .required(),
   discount_types: Joi.string().valid('percentage', 'fixed'),
   minimum_order_price: Joi.number(),
   voucher_type: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
