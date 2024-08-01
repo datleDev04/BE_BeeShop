@@ -3,7 +3,7 @@ services:
     container_name: bee_mely
     build:
       context: .
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     environment:
       - NODE_ENV=production
     ports:
