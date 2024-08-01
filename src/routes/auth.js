@@ -14,15 +14,15 @@ authRouter.post('/reset-password/:token', AuthController.resetPassword);
 
 authRouter.post('/refresh-token', AuthController.refreshToken);
 
-authRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+authRouter.get('/google/redirect', AuthController.getGoogleRedirectURL);
 
 authRouter.get(
   '/google/callback',
-  passport.authenticate('google', {
-    session: false,
-  }),
+  passport.authenticate('google', { session: false }),
   AuthController.loginGoogle
 );
+
+authRouter.get;
 
 // get profle user
 authRouter.get('/profile', authMiddleware, AuthController.getProfileUser);

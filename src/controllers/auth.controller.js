@@ -2,6 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import { AuthService } from '../services/auth.service.js';
 import { Transformer } from '../utils/transformer.js';
 import { SuccessResponse } from '../utils/response.js';
+import { ServerResponse } from 'http';
+import passport from 'passport';
 
 export class AuthController {
   static register = async (req, res, next) => {
@@ -39,9 +41,24 @@ export class AuthController {
     try {
       const { accessToken, refreshToken } = await AuthService.loginGoogle(req);
 
-      res.redirect(
-        `${process.env.CLIENT_BASE_URL}/login/success?accessToken=${accessToken}&refreshToken=${refreshToken}`
+      SuccessResponse(res, StatusCodes.OK, 'Logout successfully', { accessToken, refreshToken });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static getGoogleRedirectURL = (req, res, next) => {
+    try {
+      const emptyResponse = new ServerResponse(req);
+
+      passport.authenticate('google', { scope: ['email', 'profile'], session: false })(
+        req,
+        emptyResponse
       );
+
+      const url = emptyResponse.getHeader('location');
+
+      return SuccessResponse(res, StatusCodes.OK, 'Success', url);
     } catch (error) {
       next(error);
     }
