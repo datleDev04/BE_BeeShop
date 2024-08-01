@@ -9,15 +9,16 @@ import environment from './src/configs/enviroment.js';
 import { errorHandlingMiddleware } from './src/middleware/errorHandlingMiddleware.js';
 import ApiError from './src/utils/ApiError.js';
 import router from './src/routes/index.js';
-import configurePassport from './src/utils/passport.js';
 import passport from 'passport';
+import User from './src/models/User.js';
+import googlePassport from "./src/passports/passport.google.js"
+import session from "express-session"
 
 const PORT = environment.app.port;
 
 const app = express();
 
 connectDatabase();
-configurePassport(passport);
 
 // init middleware
 app.use(cors());
@@ -30,6 +31,23 @@ app.use(
     extended: true,
   })
 );
+
+app.use(session({secret: "beemely", saveUninitialized: false, resave: false}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user);
+  });
+});
+
+passport.use("google", googlePassport)
+
 // Routes
 app.use('/api', router);
 
