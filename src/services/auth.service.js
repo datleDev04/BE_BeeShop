@@ -197,7 +197,10 @@ export class AuthService {
           populate: { path: 'permissions' },
         },
         {
-          path: 'address_list',
+          path: 'addresses',
+        },
+        {
+          path: 'gender',
         },
       ])
       .exec();
