@@ -11,8 +11,8 @@ import ApiError from './src/utils/ApiError.js';
 import router from './src/routes/index.js';
 import passport from 'passport';
 import User from './src/models/User.js';
-import googlePassport from "./src/passports/passport.google.js"
-import session from "express-session"
+import googlePassport from './src/passports/passport.google.js';
+import session from 'express-session';
 
 const PORT = environment.app.port;
 
@@ -32,21 +32,21 @@ app.use(
   })
 );
 
-app.use(session({secret: "beemely", saveUninitialized: false, resave: false}))
+app.use(session({ secret: 'beemely', saveUninitialized: false, resave: false }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
-passport.deserializeUser(function(id, done) {
+passport.deserializeUser(function (id, done) {
   User.findById(id, function (err, user) {
     done(err, user);
   });
 });
 
-passport.use("google", googlePassport)
+passport.use('google', googlePassport);
 
 // Routes
 app.use('/api', router);
