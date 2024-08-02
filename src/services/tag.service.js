@@ -65,6 +65,15 @@ export class TagService {
       throw new ApiError(400, 'Parent tag cannot be itself');
     }
 
+    const listChildrenTag = await Tags.find({ parent_id: req.params.id });
+    if (listChildrenTag.length > 0) {
+      for (let i = 0; i < listChildrenTag.length; i++) {
+        if (listChildrenTag[i]._id == parent_id) {
+          throw new ApiError(400, 'Parent tag cannot be its children');
+        }
+      }
+    }
+
     const slug = await generateSlug(Tags, name);
 
     if (parent_id) {
