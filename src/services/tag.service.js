@@ -1,4 +1,5 @@
 import Tags from '../models/Tags.js';
+import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { generateSlug } from '../utils/GenerateSlug.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
@@ -96,6 +97,11 @@ export class TagService {
   };
 
   static deleteTagById = async (req) => {
-    return await Tags.findByIdAndDelete(req.params.id);
+    await Tags.updateMany(
+      { parent_id: req.params.id },
+      { $unset: { parent_id: "" } }
+    );
+    await Tags.findByIdAndDelete(req.params.id);
+
   };
 }
