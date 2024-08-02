@@ -16,12 +16,6 @@ export class TagService {
 
     const { docs, ...otherFields } = paginatedLabels;
 
-    for (let i = 0; i < docs.length; i++) {
-      if (docs[i].parent_id && docs[i].parent_id.status === TAG_STATUS.INACTIVE) {
-        docs[i].parent_id = undefined;
-      }
-    }
-
     const transformedTags = docs.map((label) =>
       Transformer.transformObjectTypeSnakeToCamel(label.toObject())
     );
