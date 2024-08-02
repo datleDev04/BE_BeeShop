@@ -33,7 +33,6 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
     },
     google_id: {
       type: String,
