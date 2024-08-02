@@ -61,6 +61,10 @@ export class TagService {
 
     await checkRecordByField(Tags, '_id', req.params.id, true);
 
+    if (parent_id == req.params.id) {
+      throw new ApiError(400, 'Parent tag cannot be itself');
+    }
+
     const slug = await generateSlug(Tags, name);
 
     if (parent_id) {
