@@ -27,7 +27,9 @@ const getPaginationOptions = (req) => {
 };
 
 const getFilterOptions = (req, filterFields = []) => {
-  const filter = {};
+  const { status = 0 } = req.query;
+
+  const filter = { status };
   filterFields.forEach((field) => {
     if (req.query[field]) {
       filter[field] = { $regex: `.*${req.query[field]}.*`, $options: 'i' };

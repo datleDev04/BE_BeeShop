@@ -1,4 +1,4 @@
-import Tags from '../models/Tags.js';
+import Tags, { TAG_STATUS } from '../models/Tags.js';
 import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { generateSlug } from '../utils/GenerateSlug.js';
@@ -10,9 +10,17 @@ export class TagService {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name']);
 
+    options.populate = { path: 'parent_id' };
+
     const paginatedLabels = await Tags.paginate(filter, options);
 
     const { docs, ...otherFields } = paginatedLabels;
+
+    for (let i = 0; i < docs.length; i++) {
+      if (docs[i].parent_id && docs[i].parent_id.status === TAG_STATUS.INACTIVE) {
+        docs[i].parent_id = undefined;
+      }
+    }
 
     const transformedTags = docs.map((label) =>
       Transformer.transformObjectTypeSnakeToCamel(label.toObject())
@@ -30,7 +38,7 @@ export class TagService {
 
   static getOneTag = async (req) => {
     await checkRecordByField(Tags, '_id', req.params.id, true);
-    const tag = await Tags.findById(req.params.id);
+    const tag = await Tags.findById(req.params.id).populate('parent_id');
     return Transformer.transformObjectTypeSnakeToCamel(tag.toObject());
   };
 
