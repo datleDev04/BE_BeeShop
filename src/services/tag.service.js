@@ -57,11 +57,16 @@ export class TagService {
   static updateTagById = async (req) => {
     const { name, description, parent_id, image, status } = req.body;
 
-    await checkRecordByField(Tags, 'name', name, false, req.params.id);
-
     await checkRecordByField(Tags, '_id', req.params.id, true);
 
-    const slug = await generateSlug(Tags, name);
+    const currentTag = await Tags.findById(req.params.id);
+
+    let slug = currentTag.slug;
+
+    if (name && name !== currentTag.name) {
+      await checkRecordByField(Tags, 'name', name, false, req.params.id);
+      slug = await generateSlug(Tags, name);
+    }
 
     if (parent_id) {
       await checkRecordByField(Tags, '_id', parent_id, true);
