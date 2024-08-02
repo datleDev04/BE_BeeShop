@@ -60,8 +60,6 @@ export class TagService {
   static updateTagById = async (req) => {
     const { name, description, parent_id, image, status } = req.body;
 
-    await checkRecordByField(Tags, 'name', name, false, req.params.id);
-
     await checkRecordByField(Tags, '_id', req.params.id, true);
 
     if (parent_id == req.params.id) {

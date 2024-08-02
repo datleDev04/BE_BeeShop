@@ -6,7 +6,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const DOCUMENT_NAME = 'User';
 const COLLECTION_NAME = 'Users';
 
-const UserStatus = {
+export const UserStatus = {
   ACTIVE: 0,
   INACTIVE: 1,
 };
@@ -26,7 +26,6 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
     },
     full_name: {
       type: String,

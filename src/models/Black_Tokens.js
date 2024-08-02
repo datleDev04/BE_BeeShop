@@ -4,6 +4,8 @@ import mongoose, { Schema } from 'mongoose';
 const DOCUMENT_NAME = 'Black_Token';
 const COLLECTION_NAME = 'Black_Tokens';
 
+const test = 'abc';
+
 const tokenSchema = new mongoose.Schema(
   {
     user_id: {
