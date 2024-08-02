@@ -8,7 +8,7 @@ import { Transformer } from '../utils/transformer.js';
 export class TagService {
   static getAllTags = async (req) => {
     const options = getPaginationOptions(req);
-    const filter = getFilterOptions(req, ['name']);
+    const filter = getFilterOptions(req, ['name', 'parent_id', 'status']);
 
     options.populate = { path: 'parent_id' };
 
