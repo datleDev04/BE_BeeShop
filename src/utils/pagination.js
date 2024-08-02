@@ -31,7 +31,11 @@ const getFilterOptions = (req, filterFields = []) => {
   const filter = {  };
   filterFields.forEach((field) => {
     if (req.query[field]) {
-      filter[field] = { $regex: `.*${req.query[field]}.*`, $options: 'i' };
+      if (field === 'name') {
+        filter[field] = { $regex: `.*${req.query[field]}.*`, $options: 'i' };
+      } else {
+        filter[field] = req.query[field];
+      }
     }
   });
 
