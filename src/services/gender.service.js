@@ -47,10 +47,17 @@ export default class GenderService {
   static updateGenderById = async (req) => {
     const { name } = req.body;
 
-    await checkRecordByField(Gender, 'name', name, false, req.params.id);
     await checkRecordByField(Gender, '_id', req.params.id, true);
 
-    const slug = await generateSlug(Gender, name);
+    const currentGender = await Gender.findById(req.params.id);
+
+    let slug = currentGender.slug;
+
+    if (name && name !== currentGender.name) {
+      await checkRecordByField(Gender, 'name', name, false, req.params.id);
+      slug = await generateSlug(Gender, name);
+    }
+
     const updatedGender = await Gender.findByIdAndUpdate(
       req.params.id,
       {
