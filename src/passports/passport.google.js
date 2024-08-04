@@ -14,7 +14,7 @@ export default new GoogleStrategy(
     const user = await User.findOne({ email: profile.email });
     if (!user) {
       const newUser = await User.create({
-        user_name: profile.displayName,
+        full_name: profile.displayName,
         email: profile.email,
         avatar_url: profile.picture,
         status: UserStatus.ACTIVE,

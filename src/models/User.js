@@ -13,9 +13,8 @@ export const UserStatus = {
 
 const userSchema = new mongoose.Schema(
   {
-    user_name: {
+    full_name: {
       type: String,
-      unique: true,
       minlength: 3,
       required: true,
     },
