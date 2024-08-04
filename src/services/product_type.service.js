@@ -48,11 +48,16 @@ export default class ProductTypeService {
   static updateProductType = async (req) => {
     const { name } = req.body;
 
-    await checkRecordByField(ProductType, 'name', name, false, req.params.id);
-
     await checkRecordByField(ProductType, '_id', req.params.id, true);
 
-    const slug = await generateSlug(ProductType, name);
+    const currentType = await ProductType.findById(req.params.id);
+
+    let slug = currentType.slug;
+
+    if (name && name !== currentType.name) {
+      await checkRecordByField(ProductType, 'name', name, false, req.params.id);
+      slug = await generateSlug(ProductType, name);
+    }
 
     const updatedProductType = await ProductType.findByIdAndUpdate(
       req.params.id,

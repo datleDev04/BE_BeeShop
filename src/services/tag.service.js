@@ -1,4 +1,5 @@
-import Tags from '../models/Tags.js';
+import Tags, { TAG_STATUS } from '../models/Tags.js';
+import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { generateSlug } from '../utils/GenerateSlug.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
@@ -7,7 +8,9 @@ import { Transformer } from '../utils/transformer.js';
 export class TagService {
   static getAllTags = async (req) => {
     const options = getPaginationOptions(req);
-    const filter = getFilterOptions(req, ['name']);
+    const filter = getFilterOptions(req, ['name', 'parent_id', 'status']);
+
+    options.populate = { path: 'parent_id' };
 
     const paginatedLabels = await Tags.paginate(filter, options);
 
@@ -29,7 +32,7 @@ export class TagService {
 
   static getOneTag = async (req) => {
     await checkRecordByField(Tags, '_id', req.params.id, true);
-    const tag = await Tags.findById(req.params.id);
+    const tag = await Tags.findById(req.params.id).populate('parent_id');
     return Transformer.transformObjectTypeSnakeToCamel(tag.toObject());
   };
 
@@ -57,9 +60,19 @@ export class TagService {
   static updateTagById = async (req) => {
     const { name, description, parent_id, image, status } = req.body;
 
-    await checkRecordByField(Tags, 'name', name, false, req.params.id);
-
     await checkRecordByField(Tags, '_id', req.params.id, true);
+
+    if (parent_id == req.params.id) {
+      throw new ApiError(400, 'Parent tag cannot be itself');
+    }
+
+    const listChildrenTag = await Tags.find({ parent_id: req.params.id });
+
+    const hasInvalidTag = listChildrenTag.some(tag => tag._id == parent_id);
+    
+    if (hasInvalidTag) {
+      throw new ApiError(400, 'Parent tag cannot be its children');
+    }
 
     const slug = await generateSlug(Tags, name);
 
@@ -83,6 +96,11 @@ export class TagService {
   };
 
   static deleteTagById = async (req) => {
-    return await Tags.findByIdAndDelete(req.params.id);
+    await Tags.updateMany(
+      { parent_id: req.params.id },
+      { $unset: { parent_id: "" } }
+    );
+    await Tags.findByIdAndDelete(req.params.id);
+
   };
 }

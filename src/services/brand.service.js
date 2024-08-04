@@ -56,9 +56,15 @@ export default class BrandService {
     const { name, image, description } = req.body;
 
     await checkRecordByField(Brand, '_id', req.params.id, true);
-    await checkRecordByField(Brand, 'name', name, false, req.params.id);
 
-    const slug = await generateSlug(Brand, name);
+    const currentBrand = await Brand.findById(req.params.id);
+
+    let slug = currentBrand.slug;
+
+    if (name && name !== currentBrand.name) {
+      await checkRecordByField(Brand, 'name', name, false, req.params.id);
+      slug = await generateSlug(Brand, name);
+    }
 
     const updateBrand = await Brand.findByIdAndUpdate(
       req.params.id,
