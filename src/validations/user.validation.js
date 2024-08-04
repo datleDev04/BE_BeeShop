@@ -17,10 +17,6 @@ export class userValidation {
       password: Joi.any().forbidden().messages({
         'any.unknown': 'Password update is not allowed',
       }),
-      full_name: Joi.string().optional().min(6).trim().messages({
-        'string.base': 'Full name should be a string',
-        'string.min': 'Full name should be at least 6 characters',
-      }),
       avatar_url: Joi.string().optional().uri().messages({
         'string.base': 'Avatar URL should be a string',
         'string.uri': 'Avatar URL should be a valid URI',
@@ -89,10 +85,6 @@ export class userValidation {
         'string.base': 'Password should be a string',
         'string.min': 'Password should be at least 6 characters',
         'any.required': 'Password is required',
-      }),
-      full_name: Joi.string().optional().min(6).messages({
-        'string.base': 'Full name should be a string',
-        'string.min': 'Full name should be at least 6 characters',
       }),
       avatar_url: Joi.string().optional().uri().messages({
         'string.base': 'Avatar URL should be a string',
