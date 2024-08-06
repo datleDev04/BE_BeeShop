@@ -1,7 +1,7 @@
 const getPaginationOptions = (req) => {
   let {
     _page = 1,
-    _size = 10,
+    _limit = 10,
     _order = 'asc',
     _sort = 'createdAt',
     _pagination = true,
@@ -9,7 +9,7 @@ const getPaginationOptions = (req) => {
 
   const options = {
     page: parseInt(_page, 10),
-    limit: parseInt(_size, 10),
+    limit: parseInt(_limit, 10),
     sort: {
       [_sort]: _order === 'desc' ? 1 : -1,
     },
@@ -34,6 +34,10 @@ const getFilterOptions = (req, filterFields = []) => {
       const flexibleRegex = createFlexibleRegex(req.query[field]);
 
       filter[field] = { $regex: `.*${flexibleRegex}.*`, $options: 'i' };
+    } else if (req.query[field] === 'null') {
+      filter[field] = null;
+    } else {
+      filter[field] = req.query[field];
     }
   });
 

@@ -8,18 +8,14 @@ import Joi from 'joi';
 export class userValidation {
   static updateUserInfo = async (req, res, next) => {
     const correctCondition = Joi.object({
-      user_name: Joi.string().optional().min(3).max(50).messages({
-        'string.base': 'User name should be a string',
-        'string.empty': 'User name cannot be an empty field',
-        'string.min': 'User name must be at least 3 characters long',
-        'string.max': 'User name should be at most 50 characters long',
+      full_name: Joi.string().optional().min(3).max(50).messages({
+        'string.base': 'Full name should be a string',
+        'string.empty': 'Full name cannot be an empty field',
+        'string.min': 'Full name must be at least 3 characters long',
+        'string.max': 'Full name should be at most 50 characters long',
       }),
       password: Joi.any().forbidden().messages({
         'any.unknown': 'Password update is not allowed',
-      }),
-      full_name: Joi.string().optional().min(6).trim().messages({
-        'string.base': 'Full name should be a string',
-        'string.min': 'Full name should be at least 6 characters',
       }),
       avatar_url: Joi.string().optional().uri().messages({
         'string.base': 'Avatar URL should be a string',
@@ -79,20 +75,16 @@ export class userValidation {
 
   static createUserInfo = async (req, res, next) => {
     const correctCondition = Joi.object({
-      user_name: Joi.string().required().max(50).messages({
-        'string.base': 'User name should be a string',
-        'string.empty': 'User name cannot be an empty field',
-        'string.max': 'User name should be at most 50 characters long',
-        'any.required': 'User name is required',
+      full_name: Joi.string().required().max(50).messages({
+        'string.base': 'Full name should be a string',
+        'string.empty': 'Full name cannot be an empty field',
+        'string.max': 'Full name should be at most 50 characters long',
+        'any.required': 'Full name is required',
       }),
       password: Joi.string().required().min(6).trim().messages({
         'string.base': 'Password should be a string',
         'string.min': 'Password should be at least 6 characters',
         'any.required': 'Password is required',
-      }),
-      full_name: Joi.string().optional().min(6).messages({
-        'string.base': 'Full name should be a string',
-        'string.min': 'Full name should be at least 6 characters',
       }),
       avatar_url: Joi.string().optional().uri().messages({
         'string.base': 'Avatar URL should be a string',

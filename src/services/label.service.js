@@ -51,11 +51,16 @@ export class LabelService {
   static updateLabelById = async (req) => {
     const { name, description, status } = req.body;
 
-    await checkRecordByField(Label, 'name', name, false, req.params.id);
-
     await checkRecordByField(Label, '_id', req.params.id, true);
 
-    const slug = await generateSlug(Label, name);
+    const currentLabel = await Label.findById(req.params.id);
+
+    let slug = currentLabel.slug;
+
+    if (name && name !== currentLabel.name) {
+      await checkRecordByField(Label, 'name', name, false, req.params.id);
+      slug = await generateSlug(Label, name);
+    }
 
     const updatedLabel = await Label.findByIdAndUpdate(
       req.params.id,

@@ -8,18 +8,12 @@ import Black_Tokens from '../models/Black_Tokens.js';
 
 export class AuthService {
   static register = async (req) => {
-    const { user_name, email, password, confirm_password } = req.body;
+    const { full_name, email, password, confirm_password } = req.body;
 
     // check exitsted Email
     const existedEmail = await User.findOne({ email });
     if (existedEmail) {
       throw new ApiError(409, 'Email already existed');
-    }
-
-    // check exitsted user_name
-    const existedUserName = await User.findOne({ user_name });
-    if (existedUserName) {
-      throw new ApiError(409, 'user_name already existed');
     }
 
     // check password and confirm_password
@@ -29,7 +23,7 @@ export class AuthService {
 
     // create a new user
     const newUser = await User.create({
-      user_name,
+      full_name,
       email,
       password: bcrypt.hashSync(password, 10),
     });
@@ -197,7 +191,10 @@ export class AuthService {
           populate: { path: 'permissions' },
         },
         {
-          path: 'address_list',
+          path: 'addresses',
+        },
+        {
+          path: 'gender',
         },
       ])
       .exec();

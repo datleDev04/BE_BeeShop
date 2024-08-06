@@ -9,10 +9,9 @@ import { checkRecordByField } from '../utils/CheckRecord.js';
 export default class UserService {
   static createUser = async (req) => {
     const {
-      user_name,
+      full_name,
       email,
       password,
-      full_name,
       avatar_url,
       phone,
       status,
@@ -32,14 +31,12 @@ export default class UserService {
       });
     }
 
-    await checkRecordByField(User, 'user_name', user_name, false);
     await checkRecordByField(User, 'email', email, false);
 
     const newUser = await User.create({
-      user_name,
+      full_name,
       email,
       password: bcrypt.hashSync(password, 10),
-      full_name,
       avatar_url,
       phone,
       status,
@@ -74,11 +71,10 @@ export default class UserService {
 
   static updateUser = async (req) => {
     const {
-      user_name,
+      full_name,
       email,
       password,
       avatar_url,
-      full_name,
       phone,
       birth_day,
       status,
@@ -87,7 +83,7 @@ export default class UserService {
       addresses,
       tags,
     } = req.body;
-    await checkRecordByField(User, 'user_name', user_name, false, req.params.id);
+
     await checkRecordByField(User, 'email', email, false, req.params.id);
 
     const userPermissions = req.user.roles.flatMap((role) =>
@@ -112,11 +108,10 @@ export default class UserService {
     const isCustomer = currentUser.roles.some((role) => role.name === 'Customer');
 
     let updateFields = {
-      ...(user_name && { user_name }),
+      ...(full_name && { full_name }),
       ...(password && { password: bcrypt.hashSync(password, 10) }),
       ...(avatar_url && { avatar_url }),
       ...(email && { email }),
-      ...(full_name && { full_name }),
       ...(phone && { phone }),
       ...(birth_day && { birth_day }),
       ...(gender && { gender }),
@@ -126,11 +121,10 @@ export default class UserService {
     };
 
     const restrictedFields = [
-      'user_name',
+      'full_name',
       'password',
       'avatar_url',
       'email',
-      'full_name',
       'phone',
       'birth_day',
       'gender',
@@ -212,7 +206,7 @@ export default class UserService {
 
   static getAllUsers = async (req) => {
     const options = getPaginationOptions(req);
-    const filter = getFilterOptions(req, ['user_name', 'email']);
+    const filter = getFilterOptions(req, ['full_name', 'email']);
 
     const users = await User.paginate(filter, options);
 
