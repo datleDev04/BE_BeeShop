@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import MongooseDelete from 'mongoose-delete';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import Role from './Role.js';
 
 // schema User variables
 const DOCUMENT_NAME = 'User';
@@ -80,9 +81,13 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.pre('save', function (next) {
+userSchema.pre('save', async function (next) {
   if (this.roles.length == 0) {
-    this.roles[0] = '66a793dc9b68efd4c2a8e58e';
+    const customerRole = await Role.findOne({ name: 'Customer' });
+    if (customerRole) {
+      const id = customerRole._id;
+      this.roles[0] = id;
+    }
   }
   next();
 });
