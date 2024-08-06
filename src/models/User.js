@@ -5,7 +5,6 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 // schema User variables
 const DOCUMENT_NAME = 'User';
 const COLLECTION_NAME = 'Users';
-
 const UserStatus = {
   ACTIVE: 0,
   INACTIVE: 1,
@@ -85,6 +84,13 @@ const userSchema = new mongoose.Schema(
     collection: COLLECTION_NAME,
   }
 );
+
+userSchema.pre('save', function (next) {
+  if (this.roles.length == 0) {
+    this.roles[0] = '66a793dc9b68efd4c2a8e58e';
+  }
+  next();
+});
 
 const plugins = [MongooseDelete, mongoosePaginate];
 
