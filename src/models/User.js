@@ -5,12 +5,8 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 // schema User variables
 const DOCUMENT_NAME = 'User';
 const COLLECTION_NAME = 'Users';
-<<<<<<< HEAD
-const UserStatus = {
-=======
 
 export const UserStatus = {
->>>>>>> cdc42753e8f20095e2391e14e29e06c5932d2854
   ACTIVE: 0,
   INACTIVE: 1,
 };
