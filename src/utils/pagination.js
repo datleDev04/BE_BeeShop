@@ -30,13 +30,14 @@ const getFilterOptions = (req, filterFields = []) => {
   const filter = {};
 
   filterFields.forEach((field) => {
-    if (req.query[field]) {
-      const flexibleRegex = createFlexibleRegex(req.query[field]);
-      filter[field] = { $regex: `.*${flexibleRegex}.*`, $options: 'i' };
-    } else if (req.query[field] === 'null') {
-      filter[field] = null;
-    } else {
-      filter[field] = req.query[field];
+    const queryValue = req.query[field];
+    if (queryValue) {
+      if (queryValue === 'null') {
+        filter[field] = null;
+      } else {
+        const flexibleRegex = createFlexibleRegex(queryValue);
+        filter[field] = { $regex: `.*${flexibleRegex}.*`, $options: 'i' };
+      }
     }
   });
 
