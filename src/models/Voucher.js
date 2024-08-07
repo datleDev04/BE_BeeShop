@@ -1,15 +1,11 @@
 import mongoose from 'mongoose';
 import MongooseDelete from 'mongoose-delete';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import { STATUS } from '../utils/constants.js';
 
 // schema Voucher variables
 const DOCUMENT_NAME = 'Voucher';
 const COLLECTION_NAME = 'Vouchers';
-
-export const VOUCHER_STATUS = {
-  ACTIVE: 0,
-  INACTIVE: 1,
-};
 
 const voucherSchema = new mongoose.Schema(
   {
@@ -35,8 +31,8 @@ const voucherSchema = new mongoose.Schema(
     },
     status: {
       type: Number,
-      enum: [VOUCHER_STATUS.ACTIVE, VOUCHER_STATUS.INACTIVE],
-      default: VOUCHER_STATUS.ACTIVE,
+      enum: [STATUS.ACTIVE, STATUS.INACTIVE],
+      default: STATUS.ACTIVE,
     },
     discount_types: {
       type: String,

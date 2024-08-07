@@ -1,3 +1,4 @@
+import { STATUS } from '../utils/constants.js';
 import {
   OBJECT_ID_RULE,
   OBJECT_ID_RULE_MESSAGE,
@@ -35,9 +36,7 @@ export class userValidation {
       birth_day: Joi.date().optional().messages({
         'date.base': 'Birth day should be a date',
       }),
-      status: Joi.number().optional().valid(0, 1).messages({
-        'any.only': 'Status should be one of [0, 1]',
-      }),
+      status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE),
       gender: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).optional(),
       roles: Joi.alternatives()
         .try(
@@ -105,9 +104,7 @@ export class userValidation {
       birth_day: Joi.date().optional().messages({
         'date.base': 'Birth day should be a date',
       }),
-      status: Joi.number().optional().valid(0, 1).messages({
-        'any.only': 'Status should be one of [0, 1]',
-      }),
+      status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE),
       gender: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).optional(),
       roles: Joi.alternatives()
         .try(
