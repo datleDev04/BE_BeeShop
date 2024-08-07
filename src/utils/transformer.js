@@ -21,6 +21,7 @@ class Transformer {
       });
       return Transformer.removeDeletedField(newObj); // Gọi removeDeletedField ở đây
     }
+
     return obj;
   }
 
