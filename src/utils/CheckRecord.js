@@ -34,3 +34,16 @@ export const checkRecordByField = async (
     throw error;
   }
 };
+
+export const checkRecordsByIds = async (Model, ids) => {
+  const records = await Model.find({ _id: { $in: ids } }).select('_id');
+  const foundIds = new Set(records.map((record) => record._id.toString()));
+  for (const id of ids) {
+    if (!foundIds.has(id.toString())) {
+      throw new ApiError(
+        StatusCodes.NOT_FOUND,
+        `Record with _id ${id} not found in ${Model.collection.collectionName}`
+      );
+    }
+  }
+};
