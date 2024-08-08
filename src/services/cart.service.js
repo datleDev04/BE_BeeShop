@@ -1,14 +1,17 @@
+import { StatusCodes } from 'http-status-codes';
 import Cart from '../models/Cart.js';
 import CartItem from '../models/Cart_Item.js';
 import Product from '../models/Product.js';
 import User from '../models/User.js';
 import Variant from '../models/Variant.js';
+import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
+import Product_Type from '../models/Product_Type.js';
 
 export default class CartService {
   static getAll = async (req) => {
-    const carts = await Cart.find();
+    const carts = await Cart.find().populate({ path: 'cart_items' });
     const metaData = carts.map((cart) => {
       const cartObj = cart.toObject();
       return Transformer.transformObjectTypeSnakeToCamel(cartObj);
@@ -22,6 +25,7 @@ export default class CartService {
     const { product_id, quantity, variant_id, product_type } = req.body;
     checkRecordByField(Product, '_id', product_id, true);
     checkRecordByField(Variant, '_id', variant_id, true);
+    checkRecordByField(Product_Type, '_id', product_type, true);
 
     const product = await Product.findOne({ _id: product_id });
 
@@ -31,10 +35,12 @@ export default class CartService {
       },
       { path: 'color' },
     ]);
+
     // check if cart item exist
     let cartItem = await CartItem.findOne({
       product_id: product_id,
       variant_id: variant_id,
+      quantity: quantity,
       product_type: product_type,
     });
 
@@ -44,7 +50,7 @@ export default class CartService {
         product_id: product_id,
         product_name: product.name,
         product_image: product.thumbnail,
-        product_type: type_id,
+        product_type: product_type,
         price: variant.price,
         size: variant.size.name,
         color: variant.color.name,
@@ -52,7 +58,6 @@ export default class CartService {
         quantity: quantity,
       });
     }
-
     await cartItem.save();
 
     //check if user cart already exist if not create new one
@@ -62,7 +67,8 @@ export default class CartService {
 
       await userCart.save();
     }
-    // check if cartItem already in userCart
+
+    // check if cartItem with same variant already in userCart
     const existCartItemIndex = userCart.cart_items.findIndex((item) => {
       return (
         item.product_id.toString() == product_id &&
@@ -70,33 +76,48 @@ export default class CartService {
         item.product_type.toString() == product_type
       );
     });
-    // if exist then increase qty
+
+    // if exist then change cart item id
     if (existCartItemIndex !== -1) {
-      const newQty = (userCart.cart_items[existCartItemIndex].quantity += quantity);
-      const cartItemUser = await CartItem.findByIdAndUpdate(
-        {
-          _id: userCart.cart_items[existCartItemIndex].id,
-        },
-        {
-          quantity: newQty,
-        }
-      );
-      // else push to cart item
+      userCart.cart_items[existCartItemIndex] = cartItem;
     } else {
       userCart.cart_items.push(cartItem);
     }
     await userCart.save();
 
+    const response = await Cart.findOne({ user_id: userId }).populate([
+      { path: 'cart_items' },
+      { path: 'user_id' },
+    ]);
+
+    return Transformer.transformObjectTypeSnakeToCamel(response.toObject());
+  };
+
+  static deleteOneItem = async (req) => {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const userCart = await Cart.findOne({ user_id: userId });
+
+    console.log(userCart, id);
+
+    // delete item
+    userCart.cart_items = userCart.cart_items.filter((item) => item._id.toString() == id);
+
+    await userCart.save();
+
     return Transformer.transformObjectTypeSnakeToCamel(userCart.toObject());
   };
 
-  static deleteOne = async (req) => {
-    const { id } = req.query;
+  static deleteAllItem = async (req) => {
+    const userId = req.user._id;
+    const userCart = await Cart.findOne({ user_id: userId }).populate({ path: 'user_id' });
 
-    const res = await Cart.deleteOne({
-      user_id: id,
-    });
+    // delete all items
+    userCart.cart_items = [];
 
-    return Transformer.transformObjectTypeSnakeToCamel(res);
+    await userCart.save();
+
+    return Transformer.transformObjectTypeSnakeToCamel(userCart.toObject());
   };
 }

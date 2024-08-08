@@ -20,12 +20,18 @@ export class CartController {
       next(error);
     }
   };
-  static async deleteOneCartItem() {}
-  static async deleteAllCartItems() {}
-  static deleteOne = async (req, res, next) => {
+  static deleteOneCartItem = async (req, res, next) => {
     try {
-      const cart_delete = await CartService.deleteOne(req);
-      SuccessResponse(res, StatusCodes.OK, 'Delete One Cart successfully', cart_delete);
+      const newUserCart = await CartService.deleteOneItem(req);
+      SuccessResponse(res, StatusCodes.OK, 'Delete Item in cart successfully', newUserCart);
+    } catch (error) {
+      next(error);
+    }
+  };
+  static deleteAllCartItems = async (req, res, next) => {
+    try {
+      const newUserCart = await CartService.deleteAllItem(req);
+      SuccessResponse(res, StatusCodes.OK, 'Delete All Items in cart successfully', newUserCart);
     } catch (error) {
       next(error);
     }

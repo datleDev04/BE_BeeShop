@@ -12,5 +12,6 @@ cartRouter.post('/', authMiddleware, CartController.addItem);
 
 cartRouter.post('/:id', objectIdValidation, CartController.updateCart);
 
-cartRouter.delete('/', authMiddleware, CartController.deleteOne);
+cartRouter.delete('/:id', authMiddleware, CartController.deleteOneCartItem);
+cartRouter.delete('/', authMiddleware, CartController.deleteAllCartItems);
 export default cartRouter;
