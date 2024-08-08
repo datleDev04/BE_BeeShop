@@ -20,9 +20,6 @@ const productSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-    },
-    thumbnail: {
-      type: String,
       required: true,
     },
     regular_price: {
@@ -31,6 +28,10 @@ const productSchema = new mongoose.Schema(
     },
     discount_price: {
       type: Number,
+    },
+    thumbnail: {
+      type: String,
+      required: true,
     },
     images: {
       type: [String],
@@ -44,41 +45,46 @@ const productSchema = new mongoose.Schema(
     gender: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Gender',
+      required: true,
     },
     variants: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Variant',
+        required: true,
       },
     ],
     labels: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Label',
+        required: true,
       },
     ],
     brand: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Brand',
+      required: true,
     },
     product_colors: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product_Color',
+        required: true,
       },
     ],
     product_sizes: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Size',
+        required: true,
       },
     ],
-    product_type: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product_Type',
-      },
-    ],
+    product_type: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product_Type',
+      required: true,
+    },
     flag: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Flag_Page',
