@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { validateBeforeCreateOrUpdate } from '../utils/validators.js';
-import { LABEL_STATUS } from '../models/Label.js';
+import { STATUS } from '../utils/constants.js';
 
 export const createLabelValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
@@ -19,9 +19,7 @@ export const updateLabelValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().trim(),
     description: Joi.string().allow('').trim(),
-    status: Joi.number()
-      .valid(...Object.values(LABEL_STATUS))
-      .required(),
+    status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE),
   });
 
   try {

@@ -1,5 +1,6 @@
-import User, { UserStatus } from '../models/User.js';
+import User from '../models/User.js';
 import PassportGoogleOAuth2 from 'passport-google-oauth2';
+import { STATUS } from '../utils/constants.js';
 
 const GoogleStrategy = PassportGoogleOAuth2.Strategy;
 
@@ -17,7 +18,7 @@ export default new GoogleStrategy(
         full_name: profile.displayName,
         email: profile.email,
         avatar_url: profile.picture,
-        status: UserStatus.ACTIVE,
+        status: STATUS.ACTIVE,
       });
       return done(null, newUser);
     }
