@@ -91,7 +91,6 @@ export default class AddressService {
     const responseData = await Address.findById(req.params.id)
       .populate('user_id', selectPopulate)
       .exec();
-    console.log(responseData);
     return Transformer.transformObjectTypeSnakeToCamel(responseData.toObject);
   };
 

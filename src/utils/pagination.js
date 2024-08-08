@@ -27,21 +27,57 @@ const getPaginationOptions = (req) => {
 };
 
 const getFilterOptions = (req, filterFields = []) => {
+  const filter = {};
 
-  const filter = {  };
   filterFields.forEach((field) => {
-    if (req.query[field]) {
-      if (field === 'name') {
-        filter[field] = { $regex: `.*${req.query[field]}.*`, $options: 'i' };
-      } else if( req.query[field] === 'null' ) {
+    const queryValue = req.query[field];
+    if (queryValue) {
+      if (queryValue === 'null') {
         filter[field] = null;
       } else {
-        filter[field] = req.query[field];
+        const flexibleRegex = createFlexibleRegex(queryValue);
+        filter[field] = { $regex: `.*${flexibleRegex}.*`, $options: 'i' };
       }
     }
   });
 
   return filter;
+};
+
+const createFlexibleRegex = (str) => {
+  const charMap = {
+    a: '[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬ]',
+    b: '[bB]',
+    c: '[cC]',
+    d: '[dDđĐ]',
+    e: '[eEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆ]',
+    f: '[fF]',
+    g: '[gG]',
+    h: '[hH]',
+    i: '[iIìÌỉỈĩĨíÍịỊ]',
+    j: '[jJ]',
+    k: '[kK]',
+    l: '[lL]',
+    m: '[mM]',
+    n: '[nN]',
+    o: '[oOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢ]',
+    p: '[pP]',
+    q: '[qQ]',
+    r: '[rR]',
+    s: '[sS]',
+    t: '[tT]',
+    u: '[uUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰ]',
+    v: '[vV]',
+    w: '[wW]',
+    x: '[xX]',
+    y: '[yYỳỲỷỶỹỸýÝỵỴ]',
+    z: '[zZ]',
+  };
+
+  return str
+    .split('')
+    .map((char) => charMap[char.toLowerCase()] || char)
+    .join('');
 };
 
 export { getPaginationOptions, getFilterOptions };

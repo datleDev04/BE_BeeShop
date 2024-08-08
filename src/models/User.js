@@ -1,15 +1,12 @@
 import mongoose from 'mongoose';
 import MongooseDelete from 'mongoose-delete';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import Role from './Role.js';
+import { STATUS } from '../utils/constants.js';
 
 // schema User variables
 const DOCUMENT_NAME = 'User';
 const COLLECTION_NAME = 'Users';
-
-export const UserStatus = {
-  ACTIVE: 0,
-  INACTIVE: 1,
-};
 
 const userSchema = new mongoose.Schema(
   {
@@ -41,8 +38,8 @@ const userSchema = new mongoose.Schema(
     },
     status: {
       type: Number,
-      enum: [UserStatus.ACTIVE, UserStatus.INACTIVE],
-      default: UserStatus.ACTIVE,
+      enum: [STATUS.ACTIVE, STATUS.INACTIVE],
+      default: STATUS.ACTIVE,
     },
     gender: {
       type: mongoose.Schema.Types.ObjectId,
@@ -79,6 +76,17 @@ const userSchema = new mongoose.Schema(
     collection: COLLECTION_NAME,
   }
 );
+
+userSchema.pre('save', async function (next) {
+  if (this.roles.length == 0) {
+    const customerRole = await Role.findOne({ name: 'Customer' });
+    if (customerRole) {
+      const id = customerRole._id;
+      this.roles[0] = id;
+    }
+  }
+  next();
+});
 
 const plugins = [MongooseDelete, mongoosePaginate];
 

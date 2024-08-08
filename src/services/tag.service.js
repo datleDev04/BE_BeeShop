@@ -1,4 +1,4 @@
-import Tags, { TAG_STATUS } from '../models/Tags.js';
+import Tags from '../models/Tags.js';
 import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { generateSlug } from '../utils/GenerateSlug.js';
@@ -68,8 +68,8 @@ export class TagService {
 
     const listChildrenTag = await Tags.find({ parent_id: req.params.id });
 
-    const hasInvalidTag = listChildrenTag.some(tag => tag._id == parent_id);
-    
+    const hasInvalidTag = listChildrenTag.some((tag) => tag._id == parent_id);
+
     if (hasInvalidTag) {
       throw new ApiError(400, 'Parent tag cannot be its children');
     }
@@ -96,11 +96,7 @@ export class TagService {
   };
 
   static deleteTagById = async (req) => {
-    await Tags.updateMany(
-      { parent_id: req.params.id },
-      { $unset: { parent_id: "" } }
-    );
+    await Tags.updateMany({ parent_id: req.params.id }, { $unset: { parent_id: '' } });
     await Tags.findByIdAndDelete(req.params.id);
-
   };
 }

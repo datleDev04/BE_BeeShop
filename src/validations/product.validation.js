@@ -6,7 +6,7 @@ import {
   validateBeforeCreateOrUpdate,
 } from '../utils/validators.js';
 import Joi from 'joi';
-import { PRODUCT_STATUS } from '../models/Product.js';
+import { STATUS } from '../utils/constants.js';
 
 export const createProductValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
@@ -53,9 +53,7 @@ export const createProductValidation = async (req, res, next) => {
       .required(),
     product_type: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).required(),
     flag: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-    status: Joi.number()
-      .valid(PRODUCT_STATUS.ACTIVE, PRODUCT_STATUS.INACTIVE)
-      .default(PRODUCT_STATUS.ACTIVE),
+    status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE).default(STATUS.ACTIVE),
   });
 
   try {
@@ -109,9 +107,7 @@ export const updateProductValidation = async (req, res, next) => {
       .min(1),
     product_type: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
     flag: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-    status: Joi.number()
-      .valid(PRODUCT_STATUS.ACTIVE, PRODUCT_STATUS.INACTIVE)
-      .default(PRODUCT_STATUS.ACTIVE),
+    status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE).default(STATUS.ACTIVE),
   });
 
   try {

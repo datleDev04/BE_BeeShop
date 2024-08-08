@@ -1,13 +1,10 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import { STATUS } from '../utils/constants.js';
+
 // schema Product variables
 const DOCUMENT_NAME = 'Product';
 const COLLECTION_NAME = 'Products';
-
-export const PRODUCT_STATUS = {
-  INACTIVE: 0,
-  ACTIVE: 1,
-};
 
 const productSchema = new mongoose.Schema(
   {
@@ -94,8 +91,8 @@ const productSchema = new mongoose.Schema(
     },
     status: {
       type: Number,
-      enum: [PRODUCT_STATUS.ACTIVE, PRODUCT_STATUS.INACTIVE],
-      default: PRODUCT_STATUS.ACTIVE,
+      enum: [STATUS.ACTIVE, STATUS.INACTIVE],
+      default: STATUS.ACTIVE,
     },
   },
   {

@@ -1,14 +1,10 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import { STATUS } from '../utils/constants.js';
 
 // schema User variables
 const DOCUMENT_NAME = 'Tag';
 const COLLECTION_NAME = 'Tags';
-
-export const TAG_STATUS = {
-  ACTIVE: 0,
-  INACTIVE: 1,
-};
 
 const TagSchema = new mongoose.Schema(
   {
@@ -34,8 +30,8 @@ const TagSchema = new mongoose.Schema(
     },
     status: {
       type: Number,
-      enum: [TAG_STATUS.ACTIVE, TAG_STATUS.INACTIVE],
-      default: TAG_STATUS.ACTIVE,
+      enum: [STATUS.ACTIVE, STATUS.INACTIVE],
+      default: STATUS.ACTIVE,
     },
   },
   {

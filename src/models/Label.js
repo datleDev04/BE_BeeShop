@@ -1,15 +1,11 @@
 import mongoose from 'mongoose';
 import MongooseDelete from 'mongoose-delete';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import { STATUS } from '../utils/constants.js';
 
 // schema User variables
 const DOCUMENT_NAME = 'Label';
 const COLLECTION_NAME = 'Labels';
-
-export const LABEL_STATUS = {
-  ACTIVE: 0,
-  INACTIVE: 1,
-};
 
 const labelSchema = new mongoose.Schema(
   {
@@ -27,8 +23,8 @@ const labelSchema = new mongoose.Schema(
     },
     status: {
       type: Number,
-      enum: [LABEL_STATUS.ACTIVE, LABEL_STATUS.INACTIVE],
-      default: LABEL_STATUS.ACTIVE,
+      enum: [STATUS.ACTIVE, STATUS.INACTIVE],
+      default: STATUS.ACTIVE,
     },
   },
   {
