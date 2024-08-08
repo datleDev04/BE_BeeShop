@@ -9,6 +9,8 @@ import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
 import Product_Type from '../models/Product_Type.js';
 
+// README: fdafs
+
 export default class CartService {
   static getAll = async (req) => {
     const carts = await Cart.find().populate({ path: 'cart_items' });
@@ -98,8 +100,6 @@ export default class CartService {
     const userId = req.user._id;
 
     const userCart = await Cart.findOne({ user_id: userId });
-
-    console.log(userCart, id);
 
     // delete item
     userCart.cart_items = userCart.cart_items.filter((item) => item._id.toString() == id);
