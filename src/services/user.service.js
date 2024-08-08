@@ -246,16 +246,6 @@ export default class UserService {
   static deleteUser = async (req) => {
     await checkRecordByField(User, '_id', req.params.id, true);
 
-    const user = await User.findById(req.params.id).populate({
-      path: 'roles',
-    });
-
-    const isCustomer = user.roles.some((role) => role.name === 'Customer');
-    if (isCustomer)
-      throw new ApiError(StatusCodes.UNAUTHORIZED, {
-        not_have_access: 'You only have permission to delete customer!',
-      });
-
     const res = await User.findByIdAndDelete(req.params.id);
 
     return Transformer.transformObjectTypeSnakeToCamel(res.toObject());
