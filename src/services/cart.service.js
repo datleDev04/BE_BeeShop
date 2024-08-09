@@ -9,8 +9,6 @@ import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
 import Product_Type from '../models/Product_Type.js';
 
-// README: fdafs
-
 export default class CartService {
   static getAll = async (req) => {
     const carts = await Cart.find().populate({ path: 'cart_items' });
