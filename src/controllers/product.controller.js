@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { SuccessResponse } from '../utils/response.js';
-import ProductService from '../services/product.services.js';
+import ProductService from '../services/product.service.js';
 
 export class ProductController {
   static createNewProduct = async (req, res, next) => {
