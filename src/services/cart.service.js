@@ -18,6 +18,20 @@ export default class CartService {
     });
     return { metaData };
   };
+
+  static getOne = async (req) => {
+    const userId = req.user._id;
+    checkRecordByField(User, '_id', userId, true);
+
+    const cart = await Cart.findOne({ user_id: userId }).populate([
+      {
+        path: 'user_id',
+      },
+      { path: 'cart_items' },
+    ]);
+
+    return Transformer.transformObjectTypeSnakeToCamel(cart.toObject());
+  };
   static addItem = async (req) => {
     const userId = req.user._id;
     checkRecordByField(User, '_id', userId, true);

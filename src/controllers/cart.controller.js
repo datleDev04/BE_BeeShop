@@ -4,13 +4,23 @@ import { SuccessResponse } from '../utils/response.js';
 
 export class CartController {
   static getAllCart = async (req, res, next) => {
-    const { metaData } = await CartService.getAll();
+    try {
+      const { metaData } = await CartService.getAll();
 
-    SuccessResponse(res, StatusCodes.OK, 'Get All Cart successfully', metaData);
+      SuccessResponse(res, StatusCodes.OK, 'Get All Cart successfully', metaData);
+    } catch (error) {
+      next(error);
+    }
   };
-  static async createCart() {}
-  static async getCartByUserId() {}
-  static async updateCart() {}
+  static getOneCart = async (req, res, next) => {
+    try {
+      const cart = await CartService.getOne(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Get User cart successfully', cart);
+    } catch (error) {
+      next(error);
+    }
+  };
   static addItem = async (req, res, next) => {
     try {
       const newCart = await CartService.addItem(req);
