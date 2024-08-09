@@ -11,8 +11,14 @@ import Product_Type from '../models/Product_Type.js';
 
 export default class CartService {
   static getAll = async (req) => {
-    const carts = await Cart.find().populate({ path: 'cart_items' });
+    const carts = await Cart.find().populate([
+      { path: 'cart_items' },
+      {
+        path: 'user_id',
+      },
+    ]);
     const metaData = carts.map((cart) => {
+      cart.user_id.password = undefined;
       const cartObj = cart.toObject();
       return Transformer.transformObjectTypeSnakeToCamel(cartObj);
     });
@@ -30,6 +36,7 @@ export default class CartService {
       { path: 'cart_items' },
     ]);
 
+    cart.user_id.password = undefined;
     return Transformer.transformObjectTypeSnakeToCamel(cart.toObject());
   };
   static addItem = async (req) => {
@@ -104,6 +111,7 @@ export default class CartService {
       { path: 'user_id' },
     ]);
 
+    response.user_id.password = undefined;
     return Transformer.transformObjectTypeSnakeToCamel(response.toObject());
   };
 

@@ -25,7 +25,7 @@ export class CartController {
     try {
       const newCart = await CartService.addItem(req);
 
-      SuccessResponse(res, StatusCodes.OK, 'Add Item to cart successfully', newCart);
+      SuccessResponse(res, StatusCodes.OK, 'Update Item to cart successfully', newCart);
     } catch (error) {
       next(error);
     }
