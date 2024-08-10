@@ -1,6 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
 import Cart from '../models/Cart.js';
-import CartItem from '../models/Cart_Item.js';
 import Product from '../models/Product.js';
 import User from '../models/User.js';
 import Variant from '../models/Variant.js';
@@ -8,11 +7,16 @@ import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
 import Product_Type from '../models/Product_Type.js';
+import CartItemService from './cart_item.service.js';
+import Cart_Item from '../models/Cart_Item.js';
 
 export default class CartService {
-  static getAll = async (req) => {
+  static getAllCarts = async (req) => {
     const carts = await Cart.find().populate([
-      { path: 'cart_items' },
+      {
+        path: 'cart_items',
+        populate: { path: 'cart_item' },
+      },
       {
         path: 'user_id',
       },
@@ -25,7 +29,7 @@ export default class CartService {
     return { metaData };
   };
 
-  static getOne = async (req) => {
+  static getOneCartByUserId = async (req) => {
     const userId = req.user._id;
     checkRecordByField(User, '_id', userId, true);
 
@@ -33,13 +37,18 @@ export default class CartService {
       {
         path: 'user_id',
       },
-      { path: 'cart_items' },
+      {
+        path: 'cart_items',
+        populate: {
+          path: 'cart_item',
+        },
+      },
     ]);
 
     cart.user_id.password = undefined;
     return Transformer.transformObjectTypeSnakeToCamel(cart.toObject());
   };
-  static addItem = async (req) => {
+  static addItemToCart = async (req) => {
     const userId = req.user._id;
     checkRecordByField(User, '_id', userId, true);
 
@@ -48,66 +57,82 @@ export default class CartService {
     checkRecordByField(Variant, '_id', variant_id, true);
     checkRecordByField(Product_Type, '_id', product_type, true);
 
-    const product = await Product.findOne({ _id: product_id });
-
-    const variant = await Variant.findOne({ _id: variant_id }).populate([
-      {
-        path: 'size',
-      },
-      { path: 'color' },
-    ]);
-
     // check if cart item exist
-    let cartItem = await CartItem.findOne({
-      product_id: product_id,
-      variant_id: variant_id,
-      quantity: quantity,
-      product_type: product_type,
-    });
-
+    let cartItem = await CartItemService.findOneCartItemByVariant(req);
     // else  create cart item
     if (!cartItem) {
-      cartItem = await CartItem.create({
-        product_id: product_id,
-        product_name: product.name,
-        product_image: product.thumbnail,
-        product_type: product_type,
-        price: variant.price,
-        size: variant.size.name,
-        color: variant.color.name,
-        variant_id: variant_id,
-        quantity: quantity,
-      });
+      cartItem = await CartItemService.createCartItem(req);
     }
-    await cartItem.save();
 
     //check if user cart already exist if not create new one
-    let userCart = await Cart.findOne({ user_id: userId }).populate({ path: 'cart_items' });
+    let userCart = await Cart.findOne({ user_id: userId }).populate({
+      path: 'cart_items',
+      populate: { path: 'cart_item' },
+    });
     if (!userCart) {
       userCart = await Cart.create({ user_id: userId, cart_items: [] });
 
       await userCart.save();
     }
+    console.log(userCart);
 
     // check if cartItem with same variant already in userCart
     const existCartItemIndex = userCart.cart_items.findIndex((item) => {
       return (
-        item.product_id.toString() == product_id &&
-        item.variant_id.toString() == variant_id &&
-        item.product_type.toString() == product_type
+        item.cart_item.product_id.toString() == cartItem.product_id &&
+        item.cart_item.variant_id.toString() == cartItem.variant_id &&
+        item.cart_item.product_type == cartItem.product_type
       );
     });
 
     // if exist then change cart item id
     if (existCartItemIndex !== -1) {
-      userCart.cart_items[existCartItemIndex] = cartItem;
+      userCart.cart_items[existCartItemIndex].quantity = quantity;
     } else {
-      userCart.cart_items.push(cartItem);
+      const newCartItem = {
+        cart_item: cartItem._id,
+        quantity: quantity,
+      };
+      userCart.cart_items.push(newCartItem);
     }
     await userCart.save();
 
     const response = await Cart.findOne({ user_id: userId }).populate([
-      { path: 'cart_items' },
+      { path: 'cart_items', populate: { path: 'cart_item' } },
+      { path: 'user_id' },
+    ]);
+
+    response.user_id.password = undefined;
+    return Transformer.transformObjectTypeSnakeToCamel(response.toObject());
+  };
+  static updateCartItemQuantity = async (req) => {
+    const { cartItemId } = req.params;
+    const { quantity } = req.body;
+    const userId = req.user._id;
+    checkRecordByField(User, '_id', userId, true);
+    checkRecordByField(Cart_Item, '_id', cartItemId, true);
+
+    // find user cart
+    let userCart = await Cart.findOne({ user_id: userId }).populate({
+      path: 'cart_items',
+      populate: { path: 'cart_item' },
+    });
+
+    // find cart item to update quantity
+    const cartItemIndex = userCart.cart_items.findIndex(
+      (item) => item.cart_item._id.toString() === cartItemId
+    );
+    if (cartItemIndex !== -1) {
+      if (quantity == 0) {
+        userCart.cart_items.splice(cartItemIndex, 1);
+      } else {
+        userCart.cart_items[cartItemIndex].quantity = quantity;
+      }
+    }
+    await userCart.save();
+
+    const response = await Cart.findOne({ user_id: userId }).populate([
+      { path: 'cart_items', populate: { path: 'cart_item' } },
       { path: 'user_id' },
     ]);
 
@@ -115,23 +140,37 @@ export default class CartService {
     return Transformer.transformObjectTypeSnakeToCamel(response.toObject());
   };
 
-  static deleteOneItem = async (req) => {
+  static deleteOneCartItem = async (req) => {
     const { id } = req.params;
     const userId = req.user._id;
+    checkRecordByField(User, '_id', userId, true);
 
-    const userCart = await Cart.findOne({ user_id: userId });
-
+    const userCart = await Cart.findOne({ user_id: userId }).populate([
+      {
+        path: 'user_id',
+      },
+      {
+        path: 'cart_items',
+        populate: {
+          path: 'cart_item',
+        },
+      },
+    ]);
+    if (!userCart) throw new ApiError(StatusCodes.NOT_FOUND, 'User Cart is not found');
     // delete item
-    userCart.cart_items = userCart.cart_items.filter((item) => item._id.toString() == id);
+    userCart.cart_items = userCart.cart_items.filter((item) => {
+      return !(item.cart_item._id.toString() === id);
+    });
 
     await userCart.save();
 
     return Transformer.transformObjectTypeSnakeToCamel(userCart.toObject());
   };
 
-  static deleteAllItem = async (req) => {
+  static deleteAllCartItem = async (req) => {
     const userId = req.user._id;
     const userCart = await Cart.findOne({ user_id: userId }).populate({ path: 'user_id' });
+    if (!userCart) throw new ApiError(StatusCodes.NOT_FOUND, 'User Cart is not found');
 
     // delete all items
     userCart.cart_items = [];

@@ -15,14 +15,10 @@ const cartItemSchema = new mongoose.Schema(
       required: true,
     },
     product_type: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
     },
     price: {
-      type: Number,
-      required: true,
-    },
-    quantity: {
       type: Number,
       required: true,
     },

@@ -6,11 +6,28 @@ import { CheckPermission } from '../utils/CheckPermission.js';
 
 const cartRouter = express.Router();
 
-cartRouter.get('/', authMiddleware, CheckPermission(['Read_Cart']), CartController.getAllCart);
+cartRouter.get('/', authMiddleware, CheckPermission(['Read_Cart']), CartController.getAllCarts);
 
-cartRouter.get('/user', authMiddleware, CheckPermission(['Read_Cart']), CartController.getOneCart);
+cartRouter.get(
+  '/user',
+  authMiddleware,
+  CheckPermission(['Read_Cart']),
+  CartController.getOneCartByUserId
+);
 
-cartRouter.post('/', authMiddleware, CheckPermission(['Update_Cart']), CartController.addItem);
+cartRouter.post(
+  '/',
+  authMiddleware,
+  CheckPermission(['Update_Cart']),
+  CartController.addItemToCart
+);
+
+cartRouter.patch(
+  '/:cartItemId',
+  authMiddleware,
+  CheckPermission(['Update_Cart']),
+  CartController.updateQuantityOneCart
+);
 
 cartRouter.delete(
   '/:id',
@@ -22,8 +39,8 @@ cartRouter.delete(
 
 cartRouter.delete(
   '/',
-  CheckPermission(['Delete_Cart']),
   authMiddleware,
+  CheckPermission(['Delete_Cart']),
   CartController.deleteAllCartItems
 );
 export default cartRouter;

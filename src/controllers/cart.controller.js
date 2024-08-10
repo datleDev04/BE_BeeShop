@@ -3,28 +3,36 @@ import CartService from '../services/cart.service.js';
 import { SuccessResponse } from '../utils/response.js';
 
 export class CartController {
-  static getAllCart = async (req, res, next) => {
+  static getAllCarts = async (req, res, next) => {
     try {
-      const { metaData } = await CartService.getAll();
+      const { metaData } = await CartService.getAllCarts();
 
       SuccessResponse(res, StatusCodes.OK, 'Get All Cart successfully', metaData);
     } catch (error) {
       next(error);
     }
   };
-  static getOneCart = async (req, res, next) => {
+  static getOneCartByUserId = async (req, res, next) => {
     try {
-      const cart = await CartService.getOne(req);
+      const cart = await CartService.getOneCartByUserId(req);
 
       SuccessResponse(res, StatusCodes.OK, 'Get User cart successfully', cart);
     } catch (error) {
       next(error);
     }
   };
-  static addItem = async (req, res, next) => {
+  static addItemToCart = async (req, res, next) => {
     try {
-      const newCart = await CartService.addItem(req);
+      const newCart = await CartService.addItemToCart(req);
 
+      SuccessResponse(res, StatusCodes.OK, 'Update Item to cart successfully', newCart);
+    } catch (error) {
+      next(error);
+    }
+  };
+  static updateQuantityOneCart = async (req, res, next) => {
+    try {
+      const newCart = await CartService.updateCartItemQuantity(req);
       SuccessResponse(res, StatusCodes.OK, 'Update Item to cart successfully', newCart);
     } catch (error) {
       next(error);
@@ -32,7 +40,7 @@ export class CartController {
   };
   static deleteOneCartItem = async (req, res, next) => {
     try {
-      const newUserCart = await CartService.deleteOneItem(req);
+      const newUserCart = await CartService.deleteOneCartItem(req);
       SuccessResponse(res, StatusCodes.OK, 'Delete Item in cart successfully', newUserCart);
     } catch (error) {
       next(error);
@@ -40,7 +48,7 @@ export class CartController {
   };
   static deleteAllCartItems = async (req, res, next) => {
     try {
-      const newUserCart = await CartService.deleteAllItem(req);
+      const newUserCart = await CartService.deleteAllCartItem(req);
       SuccessResponse(res, StatusCodes.OK, 'Delete All Items in cart successfully', newUserCart);
     } catch (error) {
       next(error);
