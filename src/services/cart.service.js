@@ -74,7 +74,6 @@ export default class CartService {
 
       await userCart.save();
     }
-    console.log(userCart);
 
     // check if cartItem with same variant already in userCart
     const existCartItemIndex = userCart.cart_items.findIndex((item) => {
