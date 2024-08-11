@@ -6,7 +6,6 @@ import Variant from '../models/Variant.js';
 import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
-import Product_Type from '../models/Product_Type.js';
 import CartItemService from './cart_item.service.js';
 import Cart_Item from '../models/Cart_Item.js';
 
