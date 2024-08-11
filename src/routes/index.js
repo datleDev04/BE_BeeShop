@@ -18,6 +18,7 @@ import orderStatusRouter from './order_status.js';
 import userGenderRouter from './user_gender.js';
 import productTypeRouter from './product_type.js';
 import flagPageRouter from './flag_page.js';
+import cartRouter from './cart.js';
 import productRouter from './product.js';
 
 const router = express.Router();
@@ -41,6 +42,7 @@ router.use('/order-statuses', orderStatusRouter);
 router.use('/user-genders', userGenderRouter);
 router.use('/product-types', productTypeRouter);
 router.use('/flag-pages', flagPageRouter);
+router.use('/carts', cartRouter);
 router.use('/products', productRouter);
 
 export default router;
