@@ -52,10 +52,9 @@ export default class CartService {
     const userId = req.user._id;
     checkRecordByField(User, '_id', userId, true);
 
-    const { product_id, quantity, variant_id, product_type } = req.body;
+    const { product_id, quantity, variant_id } = req.body;
     checkRecordByField(Product, '_id', product_id, true);
     checkRecordByField(Variant, '_id', variant_id, true);
-    checkRecordByField(Product_Type, '_id', product_type, true);
 
     // check if cart item exist
     let cartItem = await CartItemService.findOneCartItemByVariant(req);
