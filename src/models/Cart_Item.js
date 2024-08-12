@@ -30,12 +30,12 @@ const cartItemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    product_id: {
+    product: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Product',
     },
-    variant_id: {
+    variant: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Variant',

@@ -10,7 +10,7 @@ export default class CartItemService {
     checkRecordByField(Product, '_id', product_id, true);
     checkRecordByField(Variant, '_id', variant_id, true);
 
-    const product = (await Product.findOne({ _id: product_id })).populated({
+    const product = await Product.findOne({ _id: product_id }).populate({
       path: 'product_type',
     });
     const variant = await Variant.findOne({ _id: variant_id }).populate([
@@ -20,25 +20,26 @@ export default class CartItemService {
       { path: 'color' },
     ]);
     const newCartItem = await CartItem.create({
-      product_id: product_id,
+      product: product_id,
       product_name: product.name,
       product_image: product.thumbnail,
       product_type: product.product_type.name,
       price: variant.price,
       size: variant.size.name,
       color: variant.color.name,
-      variant_id: variant_id,
+      variant: variant_id,
     });
     await newCartItem.save();
     return newCartItem;
   };
+
   static findOneCartItemByVariant = async (req) => {
     const { product_id, variant_id, product_type } = req.body;
     const productType = await Product_Type.findOne({ _id: product_type });
 
     const cartItem = await CartItem.findOne({
-      product_id: product_id,
-      variant_id: variant_id,
+      product: product_id,
+      variant: variant_id,
       product_type: productType.name,
     });
 
