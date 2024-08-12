@@ -77,8 +77,8 @@ export default class CartService {
     // check if cartItem with same variant already in userCart
     const existCartItemIndex = userCart.cart_items.findIndex((item) => {
       return (
-        item.cart_item.product_id.toString() == cartItem.product_id &&
-        item.cart_item.variant_id.toString() == cartItem.variant_id &&
+        item.cart_item.product.toString() == cartItem.product &&
+        item.cart_item.variant.toString() == cartItem.variant &&
         item.cart_item.product_type == cartItem.product_type
       );
     });
@@ -132,10 +132,10 @@ export default class CartService {
 
     const response = await Cart.findOne({ user: userId }).populate([
       { path: 'cart_items', populate: { path: 'cart_item' } },
-      { path: 'user_id' },
+      { path: 'user' },
     ]);
 
-    response.user_id.password = undefined;
+    response.user.password = undefined;
     return Transformer.transformObjectTypeSnakeToCamel(response.toObject());
   };
 
@@ -144,9 +144,9 @@ export default class CartService {
     const userId = req.user._id;
     checkRecordByField(User, '_id', userId, true);
 
-    const userCart = await Cart.findOne({ user_id: userId }).populate([
+    const userCart = await Cart.findOne({ user: userId }).populate([
       {
-        path: 'user_id',
+        path: 'user',
       },
       {
         path: 'cart_items',
@@ -168,7 +168,7 @@ export default class CartService {
 
   static deleteAllCartItem = async (req) => {
     const userId = req.user._id;
-    const userCart = await Cart.findOne({ user_id: userId }).populate({ path: 'user_id' });
+    const userCart = await Cart.findOne({ user: userId }).populate({ path: 'user' });
     if (!userCart) throw new ApiError(StatusCodes.NOT_FOUND, 'User Cart is not found');
 
     // delete all items

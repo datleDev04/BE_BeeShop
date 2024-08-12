@@ -19,7 +19,6 @@ export default class CartItemService {
       },
       { path: 'color' },
     ]);
-    console.log(variant);
     const newCartItem = await CartItem.create({
       product: product_id,
       product_name: product.name,
