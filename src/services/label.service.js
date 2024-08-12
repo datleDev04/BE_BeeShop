@@ -7,7 +7,7 @@ import { generateSlug } from '../utils/GenerateSlug.js';
 export class LabelService {
   static getAllLabel = async (req) => {
     const options = getPaginationOptions(req);
-    const filter = getFilterOptions(req, ['name']);
+    const filter = getFilterOptions(req, ['name', 'status']);
 
     const paginatedLabels = await Label.paginate(filter, options);
 
