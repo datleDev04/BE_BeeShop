@@ -1,0 +1,531 @@
+openapi: 3.0.3
+info:
+  title: E-commerce App 1.0
+  description: |-
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:8080/api/
+tags:
+  - name: cart
+    description: Everything about your Carts
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: store
+    description: Access to Petstore orders
+    externalDocs:
+      description: Find out more about our store
+      url: http://swagger.io
+  - name: user
+    description: Operations about user
+paths:
+  /cart:
+    # '400':
+    #   description: Invalid ID supplied
+    # '404':
+    #   description: Pet not found
+    # '422':
+    #   description: Validation exception
+    # security:
+    #   - petstore_auth:
+    #       - write:pets
+    #       - read:pets
+    get:
+      tags:
+        - cart
+      summary: Get All user carts
+      description: Get all cart from all users
+      operationId: getAllUserCarts
+      responses:
+        '200':
+          description: Get All Carts Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Get All Cart successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  metaData:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Cart'
+
+    post:
+      tags:
+        - cart
+      summary: Add a new cart to user cart
+      description: Add a new cart to user cart
+      operationId: addToCart
+      requestBody:
+        description: Add a new cart item in the user cart
+        content:
+          application/json:
+            schema:
+              message:
+                type: string
+                example: Get All Cart successfully
+              statusCode:
+                type: number
+                example: 200
+              $ref: '#/components/schemas/AddToCartRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metaData:
+                    $ref: '#/components/schemas/Cart'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /cart/user:
+    get:
+      tags:
+        - cart
+      summary: Get User Cart
+      description: Get a cart by current user
+      operationId: updatePet
+      responses:
+        '200':
+          description: Get User cart successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Get All Cart successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  metaData:
+                    $ref: '#/components/schemas/Cart'
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 66b741099105a35e557c31f5
+        user:
+          $ref: '#/components/schemas/User'
+        cartItems:
+          type: array
+          $ref: '#/components/schemas/Cart_Item'
+        quantity:
+          type: number
+          example: 12
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 66b613a58466e0c000465a1c
+          pattern: '^[a-fA-F0-9]{24}$'
+        fullName:
+          type: string
+          example: Le Xuan Tho
+        email:
+          type: string
+          example: 'tho@gmail.com'
+        phone:
+          type: string
+          example: '0123123121'
+        avatarUrl:
+          type: string
+          example: 'https://example.com/avatar.jpg'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        status:
+          type: integer
+          description: User Status
+          format: int32
+          example: 1
+        vouchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Voucher'
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+    Gender:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 66a776edaabb94114f7704b3
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: 'Male'
+        description:
+          type: string
+          example: 'Male'
+    Pet:
+      type: object
+      properties:
+        id:
+          type: string
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 66b613a58466e0c000465a1c
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: 'Super Admin'
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 66b613a58466e0c000465a1c
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: 'Update_Role'
+        label:
+          type: string
+          example: 'Update Role'
+        module:
+          type: string
+          example: 'Role'
+    Voucher:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 669a2c38b98bd0f00ff0f2d3
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: 'Discount Voucher 2024'
+        code:
+          type: string
+          example: 'discount2024'
+        maxUsage:
+          type: number
+          example: 100
+        duration:
+          type: number
+          example: 100
+        discount:
+          type: number
+          example: 20
+        discountType:
+          type: string
+          example: 'percentage'
+        minimumOrderPrice:
+          type: number
+          example: 20
+        voucherType:
+          $ref: '#/components/schemas/Voucher_Type'
+    Voucher_Type:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 669a2c38b98bd0f00ff0f2d3
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: 'period'
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 669a2c38b98bd0f00ff0f2d3
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: 'ip15 pro max'
+        slug:
+          type: string
+          example: 'ip15-pro-max'
+        image:
+          type: string
+          example: 'https://res.cloudinary.com/dbju2ugir/image/upload/v1723277219/Beemely/l9h99uda5jdaerizhvrf.png'
+        description:
+          type: string
+          example: '13212213'
+        status:
+          type: number
+          example: 1
+    Cart_Item:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 66ba1e73651bbc597e41042f
+          pattern: '^[a-fA-F0-9]{24}$'
+        productName:
+          type: string
+          example: 'product 6'
+        productImage:
+          type: string
+          example: 'https://res.cloudinary.com/dbju2ugir/image/upload/v1723277219/Beemely/l9h99uda5jdaerizhvrf.png'
+        productType:
+          type: string
+          example: 'Giay Leo Nui'
+        price:
+          type: number
+          example: 123
+        size:
+          type: string
+          example: '37'
+        color:
+          type: string
+          example: 'Navy'
+        product:
+          type: string
+          example: 66b379480911194fead18ebf
+        variant:
+          type: string
+          example: 66b379480911194fead18eb8
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 66b379480911194fead18ebf
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: 'product 6'
+        slug:
+          type: string
+          example: 'product_6'
+        description:
+          type: string
+          example: 'description'
+        regular_price:
+          type: number
+          example: 22
+        discount_price:
+          type: number
+          example: 10
+        thumbnail:
+          type: string
+          example: 'product thumb'
+        images:
+          type: array
+          example:
+            - 'image 01'
+            - 'image 02'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variant'
+        label:
+          items:
+            $ref: '#/components/schemas/Label'
+        brand:
+          $ref: '#/components/schemas/Brand'
+        productColors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product_Color'
+        productSizes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Size'
+        flag_page:
+          $ref: '#/components/schemas/Flag_Page'
+        status:
+          type: number
+          example: 1
+    Product_Type:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 66a8f79b58de8799c0b1a812
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: 'Giay Leo Nui'
+        slug:
+          type: string
+          example: 'giay-leo-nui'
+    Flag_Page:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6682d2dfdb7ce5829febf548
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: 'Home'
+          uniqueItems: true
+    Product_Color:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 66b379480911194fead18eb3
+          pattern: '^[a-fA-F0-9]{24}$'
+        colorId:
+          $ref: '#/components/schemas/Color'
+        imageUrl:
+          type: string
+          example: 'https://res.cloudinary.com/dbju2ugir/image/upload/v1723277219/Beemely/l9h99uda5jdaerizhvrf.png'
+    Brand:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6682d2dfdb7ce5829febf548
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: Adidas
+        image:
+          type: string
+          example: https://res.cloudinary.com/dpc58j5gw/image/upload/v1721275094/Demo-upload/ihlacekb65mpxdafkbo2.jpg
+        description:
+          type: string
+          example: Adidas is awesome
+    Color:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 66a8e9a74df2b4ab82aa8fc0
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: Navy
+        value:
+          type: string
+          example: '#000000'
+    Size:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 669a689b21e87f6419b83345
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: 38
+        gender:
+          $ref: '#/components/schemas/Gender'
+    Label:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 669967cbe82e5465b0528b13
+          pattern: '^[a-fA-F0-9]{24}$'
+        name:
+          type: string
+          example: 'ip15 pro max'
+        slug:
+          type: string
+          example: 'ip15-pro-max'
+        description:
+          type: string
+          example: 'new desc'
+        status:
+          type: number
+          example: 1
+    Variant:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the order
+          example: 66b379480911194fead18eb8
+          pattern: '^[a-fA-F0-9]{24}$'
+        color:
+          $ref: '#/components/schemas/Color'
+        stock:
+          type: number
+          example: 456
+        price:
+          type: number
+          example: 123
+        size:
+          $ref: '#/components/schemas/Size'
+    AddToCartRequest:
+      type: object
+      properties:
+        product_id:
+          type: string
+          example: 66b379480911194fead18ebf
+          description: Unique id for product
+        variant_id:
+          type: string
+          example: 66b379480911194fead18eb8
+          description: Unique id for variant
+        quantity:
+          type: number
+          example: 12
+  securitySchemes:
+    # petstore_auth:
+    #   type: oauth2
+    #   flows:
+    #     implicit:
+    #       authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+    #       scopes:
+    #         write:pets: modify pets in your account
+    #         read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
