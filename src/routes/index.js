@@ -20,6 +20,7 @@ import productTypeRouter from './product_type.js';
 import flagPageRouter from './flag_page.js';
 import cartRouter from './cart.js';
 import productRouter from './product.js';
+import docsRouter from './docs.js';
 
 const router = express.Router();
 
@@ -44,5 +45,6 @@ router.use('/product-types', productTypeRouter);
 router.use('/flag-pages', flagPageRouter);
 router.use('/carts', cartRouter);
 router.use('/products', productRouter);
+router.use('/docs', docsRouter);
 
 export default router;
