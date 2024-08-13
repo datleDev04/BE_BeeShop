@@ -2,8 +2,17 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
 import yaml from 'yaml';
+import path from 'path';
 
-const file = fs.readFileSync('./api_docs.yaml', 'utf8');
+import { fileURLToPath } from 'url';
+
+// Get the directory name of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const filePath = path.resolve(__dirname, '../../api_docs.yaml');
+
+const file = fs.readFileSync(filePath, 'utf8');
 const swaggerDocument = yaml.parse(file);
 
 const docsRouter = express.Router();
