@@ -120,6 +120,7 @@ export default class VoucherService {
       discount_types,
       minimum_order_price,
       voucher_type,
+      status,
       start_date,
       end_date,
     } = req.body;
@@ -142,6 +143,7 @@ export default class VoucherService {
       max_usage,
       discount,
       discount_types,
+      status,
       minimum_order_price,
       voucher_type,
     };
