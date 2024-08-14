@@ -5,6 +5,7 @@ import VoucherType from '../models/Voucher_Type.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import { populate } from 'dotenv';
 
 export default class VoucherService {
   static createVoucher = async (req) => {
@@ -85,7 +86,10 @@ export default class VoucherService {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name', 'status']);
 
-    const paginatedVouchers = await Voucher.paginate(filter, options);
+    const paginatedVouchers = await Voucher.paginate(filter, {
+      ...options,
+      populate: 'voucher_type',
+    });
 
     const { docs, ...otherFields } = paginatedVouchers;
 
