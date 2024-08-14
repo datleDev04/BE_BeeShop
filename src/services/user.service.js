@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import Address from '../models/Address.js';
 
 export default class UserService {
   static createUser = async (req) => {
@@ -17,10 +18,12 @@ export default class UserService {
       status,
       gender,
       roles,
-      addresses,
+      commune,
+      district,
+      city,
+      detail_address,
       tags,
     } = req.body;
-
     const userPermissions = req.user.roles.flatMap((role) =>
       role.permissions.map((permission) => permission.name)
     );
@@ -42,10 +45,29 @@ export default class UserService {
       status,
       gender,
       roles,
-      addresses,
+      addresses: [],
       tags,
     });
 
+    let address = await Address.findOne({
+      commune: commune,
+      district: district,
+      city: city,
+      detail_address: detail_address,
+    });
+    if (!address) {
+      address = await Address.create({
+        commune: commune,
+        district: district,
+        city: city,
+        detail_address: detail_address,
+        user_id: newUser._id,
+      });
+    }
+
+    newUser.addresses.push(address);
+
+    await newUser.save();
     const populatedUser = await User.findById(newUser._id)
       .populate([
         {
@@ -216,7 +238,7 @@ export default class UserService {
         populate: { path: 'permissions' },
       },
       {
-        path: 'address_list',
+        path: 'addresses',
       },
       {
         path: 'gender',
