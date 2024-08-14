@@ -28,7 +28,7 @@ export default class SizeService {
   static getAllSize = async (req) => {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name']);
-
+    options.populate = [{ path: "gender"}]
     const paginatedSizes = await Size.paginate(filter, options);
 
     const { docs, ...otherFields } = paginatedSizes;
