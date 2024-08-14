@@ -83,7 +83,7 @@ export default class VoucherService {
 
   static getAllVouchers = async (req) => {
     const options = getPaginationOptions(req);
-    const filter = getFilterOptions(req, ['name']);
+    const filter = getFilterOptions(req, ['name', 'status']);
 
     const paginatedVouchers = await Voucher.paginate(filter, options);
 
