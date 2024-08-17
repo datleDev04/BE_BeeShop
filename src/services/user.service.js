@@ -137,7 +137,7 @@ export default class UserService {
       ...(phone && { phone }),
       ...(birth_day && { birth_day }),
       ...(gender && { gender }),
-      ...(status && { status }),
+      ...((status || status == 0) && { status }),
       ...(addresses && { addresses }),
       ...(tags && { tags }),
     };
