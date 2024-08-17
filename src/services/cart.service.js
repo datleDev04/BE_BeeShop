@@ -105,11 +105,11 @@ export default class CartService {
   };
 
   static updateCartItemQuantity = async (req) => {
-    const { cartItemId } = req.params;
+    const { id } = req.params;
     const { quantity } = req.body;
     const userId = req.user._id;
     checkRecordByField(User, '_id', userId, true);
-    checkRecordByField(Cart_Item, '_id', cartItemId, true);
+    checkRecordByField(Cart_Item, '_id', id, true);
 
     // find user cart
     let userCart = await Cart.findOne({ user: userId }).populate({
@@ -119,7 +119,7 @@ export default class CartService {
 
     // find cart item to update quantity
     const cartItemIndex = userCart.cart_items.findIndex(
-      (item) => item.cart_item._id.toString() === cartItemId
+      (item) => item.cart_item._id.toString() === id
     );
     if (cartItemIndex !== -1) {
       if (quantity == 0) {

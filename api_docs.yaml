@@ -15,34 +15,104 @@ externalDocs:
 servers:
   - url: http://localhost:8080/api/
 tags:
-  - name: cart
+  - name: Auth
+    description: Everything about your authentications
+  - name: Cart
     description: Everything about your Carts
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
-  - name: store
-    description: Access to Petstore orders
-    externalDocs:
-      description: Find out more about our store
-      url: http://swagger.io
-  - name: user
+  - name: User
     description: Operations about user
 paths:
-  /cart:
-    # '400':
-    #   description: Invalid ID supplied
-    # '404':
-    #   description: Pet not found
-    # '422':
-    #   description: Validation exception
-    # security:
-    #   - petstore_auth:
-    #       - write:pets
-    #       - read:pets
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: User Login
+      description: User login
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: tho@gmail.com
+                password:
+                  type: string
+                  example: 123123
+
+      responses:
+        '200':
+          description: User Login successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Login successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  metaData:
+                    type: object
+                    properties:
+                      userData:
+                        $ref: '#/components/schemas/User'
+                      accessToken:
+                        type: string
+                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjZiNjEzYTU4NDY2ZTBjMDAwNDY1YTFjIiwiaWF0IjoxNzIzNTIzMDMyLCJleHAiOjE3MjM1MjY2MzJ9.82wT7JkXrw_UpPcYxu9s-nysv6cvFtvjTMN0LvO7TxM
+                      refreshToken:
+                        type: string
+                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoxNzIzNTIzMDMyMzcyLjQwNjUsImlhdCI6MTcyMzUyMzAzMiwiZXhwIjoxNzI0MTI3ODMyfQ.i5DZIavVL1bgGnmBOahvBfMpLuhJCYsMj8yffBzFTBE
+        '400':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  errors:
+                    type: string
+                    example: Couldn't find User
+        '401':
+          description: Wrong email or password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  errors:
+                    type: string
+                    example: Email or Password is incorrect
+        '422':
+          description: Bodies is not valid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 422
+                  errors:
+                    type: string
+                    example: Password length must be at least 6 characters long
+  /carts:
     get:
       tags:
-        - cart
+        - Cart
       summary: Get All user carts
+      security:
+        - bearerToken: []
       description: Get all cart from all users
       operationId: getAllUserCarts
       responses:
@@ -63,12 +133,14 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Cart'
-
     post:
       tags:
-        - cart
+        - Cart
       summary: Add a new cart to user cart
       description: Add a new cart to user cart
+      security:
+        - bearerToken: []
+
       operationId: addToCart
       requestBody:
         description: Add a new cart item in the user cart
@@ -97,13 +169,116 @@ paths:
           description: Invalid input
         '422':
           description: Validation exception
-  /cart/user:
+    delete:
+      tags:
+        - Cart
+      summary: Delete All Cart Items
+      description: delete all cart item in this current user
+      security:
+        - bearerToken: []
+      operationId: deleteAllCartItemInCart
+      responses:
+        '200':
+          description: Successfully delete all cart items
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Delete All Items in cart successfully'
+                  statusCode:
+                    type: integer
+                    example: 200
+                  metaData:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: MongoId
+                        example: 66c083d06ca91178c59e64c1
+                      user:
+                        $ref: '#/components/schemas/User'
+                      cartItems:
+                        type: array
+                        example: []
+  /carts/{id}:
+    post:
+      tags:
+        - Cart
+      summary: Delete one Cart
+      description: delete one cart item from user
+      operationId: deleteOneCartFromUser
+      parameters:
+        - name: id
+          in: path
+          description: Cart Item Id to find
+          required: true
+          schema:
+            type: string
+            format: MongoId
+            example: 66ba1b17947e1955a80b95da
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: Delete cart item successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Get All Cart successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  metaData:
+                    $ref: '#/components/schemas/Cart'
+    patch:
+      tags:
+        - Cart
+      summary: Update cart item quantity
+      description: update cart item quantity
+      operationId: updateQuantityCartItem
+      parameters:
+        - name: id
+          in: path
+          description: Cart Item Id in cart user
+          required: true
+          schema:
+            type: string
+            format: MongoId
+            example: 66ba1b17947e1955a80b95da
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: Update Cart Item quantity successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Update Cart Item quantity successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  metaData:
+                    $ref: '#/components/schemas/Cart'
+  /carts/user:
     get:
       tags:
-        - cart
+        - Cart
       summary: Get User Cart
       description: Get a cart by current user
-      operationId: updatePet
+      operationId: getOneCart
+      security:
+        - bearerToken: []
       responses:
         '200':
           description: Get User cart successfully
@@ -507,25 +682,22 @@ components:
       properties:
         product_id:
           type: string
+          format: MongoId
           example: 66b379480911194fead18ebf
           description: Unique id for product
         variant_id:
           type: string
+          format: MongoId
           example: 66b379480911194fead18eb8
           description: Unique id for variant
         quantity:
           type: number
+          format: Number
           example: 12
   securitySchemes:
-    # petstore_auth:
-    #   type: oauth2
-    #   flows:
-    #     implicit:
-    #       authorizationUrl: https://petstore3.swagger.io/oauth/authorize
-    #       scopes:
-    #         write:pets: modify pets in your account
-    #         read:pets: read your pets
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+    bearerToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerToken:: []

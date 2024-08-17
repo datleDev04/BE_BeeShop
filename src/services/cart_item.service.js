@@ -34,13 +34,18 @@ export default class CartItemService {
   };
 
   static findOneCartItemByVariant = async (req) => {
-    const { product_id, variant_id, product_type } = req.body;
-    const productType = await Product_Type.findOne({ _id: product_type });
+    const { product_id, variant_id } = req.body;
+    checkRecordByField(Product, '_id', product_id, true);
+    checkRecordByField(Variant, '_id', variant_id, true);
+
+    const product = await Product.findOne({ _id: product_id }).populate({
+      path: 'product_type',
+    });
 
     const cartItem = await CartItem.findOne({
       product: product_id,
       variant: variant_id,
-      product_type: productType.name,
+      product_type: product.product_type.name,
     });
 
     return cartItem;
