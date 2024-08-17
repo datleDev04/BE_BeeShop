@@ -23,7 +23,7 @@ cartRouter.post(
 );
 
 cartRouter.patch(
-  '/:cartItemId',
+  '/:id',
   authMiddleware,
   CheckPermission(['Update_Cart']),
   CartController.updateQuantityOneCart
