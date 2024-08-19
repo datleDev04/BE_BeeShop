@@ -26,7 +26,7 @@ export const checkRecordByField = async (
     }
 
     if (record === null && wantExists) {
-      throw new ApiError(StatusCodes.NOT_FOUND, {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
         [field]: `Record with ${field}: ${value} not found`,
       });
     }
