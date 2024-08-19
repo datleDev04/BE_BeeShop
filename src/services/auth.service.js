@@ -11,11 +11,7 @@ export class AuthService {
   static register = async (req) => {
     const { full_name, email, password, confirm_password } = req.body;
 
-    // check exitsted Email
-    const existedEmail = await User.findOne({ email });
-    if (existedEmail) {
-      throw new ApiError(409, 'Email already existed');
-    }
+    await checkRecordByField(User,'email',email, false)
 
     // check password and confirm_password
     if (password !== confirm_password) {
