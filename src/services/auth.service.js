@@ -5,6 +5,7 @@ import jwtUtils from '../utils/jwt.js';
 import User_Token from '../models/User_Token.js';
 import { StatusCodes } from 'http-status-codes';
 import Black_Tokens from '../models/Black_Tokens.js';
+import { checkRecordByField } from '../utils/CheckRecord.js';
 
 export class AuthService {
   static register = async (req) => {
@@ -36,12 +37,10 @@ export class AuthService {
   static login = async (req) => {
     const { email, password } = req.body;
 
+    await checkRecordByField(User,'email',email, true)
+
     // find user by email
     const user = await User.findOne({ email });
-
-    if (!user) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, "Couldn't find User");
-    }
 
     if (user.google_id && !user.password) {
       throw new ApiError(
