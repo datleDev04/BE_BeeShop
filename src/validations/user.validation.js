@@ -112,7 +112,7 @@ export class userValidation {
           Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
         )
         .optional(),
-      commune: Joi.string().trim().required(),
+      commune: Joi.string().trim().allow(''),
       district: Joi.string().trim().required(),
       city: Joi.string().trim().required(),
       detail_address: Joi.string().trim().required(),

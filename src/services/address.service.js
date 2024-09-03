@@ -8,7 +8,7 @@ import { checkRecordByField } from '../utils/CheckRecord.js';
 
 export default class AddressService {
   static createAddress = async (req) => {
-    const { commune, district, city, detail_address } = req.body;
+    const { commune = '', district, city, detail_address } = req.body;
 
     let populateOptions = '-password';
 
@@ -17,7 +17,6 @@ export default class AddressService {
     await checkRecordByField(User, '_id', req.user._id, true);
 
     const user = await User.findById(req.user._id);
-
     const newAddress = await Address.create({
       commune,
       district,
@@ -26,7 +25,7 @@ export default class AddressService {
       detail_address,
     });
 
-    user.address_list.push(newAddress._id);
+    user.addresses.push(newAddress._id);
     await user.save();
     const responseData = await Address.findById(newAddress._id)
       .populate('user_id', populateOptions)
@@ -99,7 +98,7 @@ export default class AddressService {
 
     const user = await User.findById(req.user._id);
     if (user) {
-      user.address_list.pull(request.params.id);
+      user.addresses.pull(request.params.id);
       await user.save();
     }
 
