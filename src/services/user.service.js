@@ -156,7 +156,7 @@ export default class UserService {
 
     if (isCustomer) {
       if (Object.keys(updateFields).some((field) => restrictedFields.includes(field))) {
-        throw new ApiError(StatusCodes.UNAUTHORIZED, {
+        throw new ApiError(StatusCodes.FORBIDDEN, {
           not_have_access: 'You only have permission to update status!',
         });
       }
