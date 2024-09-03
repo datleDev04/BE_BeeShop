@@ -15,9 +15,7 @@ export class userValidation {
         'string.min': 'Full name must be at least 3 characters long',
         'string.max': 'Full name should be at most 50 characters long',
       }),
-      password: Joi.any().forbidden().messages({
-        'any.unknown': 'Password update is not allowed',
-      }),
+      password: Joi.any(),
       avatar_url: Joi.string().optional().uri().messages({
         'string.base': 'Avatar URL should be a string',
         'string.uri': 'Avatar URL should be a valid URI',
@@ -39,12 +37,6 @@ export class userValidation {
       status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE),
       gender: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).optional(),
       roles: Joi.alternatives()
-        .try(
-          Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-          Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
-        )
-        .optional(),
-      addresses: Joi.alternatives()
         .try(
           Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
           Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
