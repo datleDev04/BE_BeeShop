@@ -83,7 +83,7 @@ export class userValidation {
         'string.min': 'Password should be at least 6 characters',
         'any.required': 'Password is required',
       }),
-      avatar_url: Joi.string().optional().uri().messages({
+      avatar_url: Joi.string().optional().uri().allow('').messages({
         'string.base': 'Avatar URL should be a string',
         'string.uri': 'Avatar URL should be a valid URI',
       }),
