@@ -7,7 +7,7 @@ import Joi from 'joi';
 
 export const addressCreateValidation = async (req, res, next) => {
   const createCondition = Joi.object({
-    commune: Joi.string().trim().required(),
+    commune: Joi.string().trim().allow(''),
     district: Joi.string().trim().required(),
     city: Joi.string().trim().required(),
     detail_address: Joi.string().trim().required(),

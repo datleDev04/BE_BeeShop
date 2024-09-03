@@ -18,7 +18,7 @@ export default class UserService {
       status,
       gender,
       roles,
-      commune,
+      commune = '',
       district,
       city,
       detail_address,

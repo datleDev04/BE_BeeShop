@@ -10,7 +10,7 @@ const addressSchema = new mongoose.Schema(
   {
     commune: {
       type: String,
-      required: true,
+      default: '',
     },
     district: {
       type: String,
