@@ -102,6 +102,7 @@ export default class UserService {
       status,
       gender,
       roles,
+      addresses,
       tags,
     } = req.body;
 
@@ -137,6 +138,7 @@ export default class UserService {
       ...(birth_day && { birth_day }),
       ...(gender && { gender }),
       ...((status || status == 0) && { status }),
+      ...(addresses && { addresses }),
       ...(tags && { tags }),
     };
 
