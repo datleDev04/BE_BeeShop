@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema(
     },
     avatar_url: {
       type: String,
+      default: '',
     },
     birth_day: {
       type: Date,
