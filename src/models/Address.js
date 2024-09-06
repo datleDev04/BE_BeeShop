@@ -14,11 +14,9 @@ const addressSchema = new mongoose.Schema(
     },
     district: {
       type: String,
-      required: true,
     },
     city: {
       type: String,
-      required: true,
     },
     user_id: {
       type: mongoose.Schema.Types.ObjectId,
