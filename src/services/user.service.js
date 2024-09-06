@@ -19,9 +19,9 @@ export default class UserService {
       gender,
       roles,
       commune = '',
-      district,
-      city,
-      detail_address,
+      district = '',
+      city = '',
+      detail_address = '',
       tags,
     } = req.body;
     const userPermissions = req.user.roles.flatMap((role) =>
@@ -49,23 +49,25 @@ export default class UserService {
       tags,
     });
 
-    let address = await Address.findOne({
-      commune: commune,
-      district: district,
-      city: city,
-      detail_address: detail_address,
-    });
-    if (!address) {
-      address = await Address.create({
+    if (commune || district || city || detail_address) {
+      let address = await Address.findOne({
         commune: commune,
         district: district,
         city: city,
         detail_address: detail_address,
-        user_id: newUser._id,
       });
-    }
 
-    newUser.addresses.push(address);
+      if (!address) {
+        address = await Address.create({
+          commune: commune,
+          district: district,
+          city: city,
+          detail_address: detail_address,
+          user_id: newUser._id,
+        });
+      }
+      newUser.addresses.push(address);
+    }
 
     await newUser.save();
     const populatedUser = await User.findById(newUser._id)

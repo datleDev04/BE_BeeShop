@@ -111,9 +111,9 @@ export class userValidation {
         )
         .optional(),
       commune: Joi.string().trim().allow(''),
-      district: Joi.string().trim().required(),
-      city: Joi.string().trim().required(),
-      detail_address: Joi.string().trim().required(),
+      district: Joi.string().trim().allow(''),
+      city: Joi.string().trim().allow(''),
+      detail_address: Joi.string().trim().allow(''),
       vouchers: Joi.alternatives()
         .try(
           Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
