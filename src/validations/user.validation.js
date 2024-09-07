@@ -110,10 +110,12 @@ export class userValidation {
           Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
         )
         .optional(),
-      commune: Joi.string().trim().allow(''),
-      district: Joi.string().trim().allow(''),
-      city: Joi.string().trim().allow(''),
-      detail_address: Joi.string().trim().allow(''),
+      addresses: Joi.alternatives()
+        .try(
+          Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+          Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        )
+        .optional(),
       vouchers: Joi.alternatives()
         .try(
           Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
