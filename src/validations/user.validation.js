@@ -16,7 +16,7 @@ export class userValidation {
         'string.max': 'Full name should be at most 50 characters long',
       }),
       password: Joi.any(),
-      avatar_url: Joi.string().optional().uri().messages({
+      avatar_url: Joi.string().optional().uri().allow('').messages({
         'string.base': 'Avatar URL should be a string',
         'string.uri': 'Avatar URL should be a valid URI',
       }),
@@ -110,10 +110,12 @@ export class userValidation {
           Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
         )
         .optional(),
-      commune: Joi.string().trim().allow(''),
-      district: Joi.string().trim().allow(''),
-      city: Joi.string().trim().allow(''),
-      detail_address: Joi.string().trim().allow(''),
+      addresses: Joi.alternatives()
+        .try(
+          Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+          Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        )
+        .optional(),
       vouchers: Joi.alternatives()
         .try(
           Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
