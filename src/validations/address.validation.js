@@ -15,6 +15,7 @@ export const addressCreateValidation = async (req, res, next) => {
       Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
       Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
     ),
+    default: Joi.boolean().default(false),
   });
 
   try {
@@ -35,6 +36,7 @@ export const addressUpdateValidation = async (req, res, next) => {
       Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
       Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
     ),
+    default: Joi.boolean(),
   });
 
   try {

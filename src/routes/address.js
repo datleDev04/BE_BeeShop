@@ -9,6 +9,13 @@ import { authMiddleware } from '../middleware/authMiddleware.js';
 import { CheckPermission } from '../utils/CheckPermission.js';
 
 const addressRouter = express.Router();
+// get addresses by user id
+addressRouter.get(
+  '/user/:userId',
+  authMiddleware,
+  CheckPermission(['Read_Address']),
+  AddressController.getAddressesByUserId
+);
 
 // get all address
 addressRouter.get(

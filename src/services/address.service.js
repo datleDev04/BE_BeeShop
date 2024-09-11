@@ -7,30 +7,13 @@ import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 
 export default class AddressService {
-  static createAddress = async (req) => {
-    const { commune = '', district, city, detail_address } = req.body;
+  static getAddressesByUserId = async (req) => {
+    const { userId } = req.params;
+    const addresses = await Address.find({ user_id: userId }).exec();
 
-    let populateOptions = '-password';
-
-    if (!req.user.list_name_permission.includes('Read_Role')) populateOptions = '-password -roles';
-
-    await checkRecordByField(User, '_id', req.user._id, true);
-
-    const user = await User.findById(req.user._id);
-    const newAddress = await Address.create({
-      commune,
-      district,
-      city,
-      user_id: user.id,
-      detail_address,
-    });
-
-    user.addresses.push(newAddress._id);
-    await user.save();
-    const responseData = await Address.findById(newAddress._id)
-      .populate('user_id', populateOptions)
-      .exec();
-    return Transformer.transformObjectTypeSnakeToCamel(responseData.toObject());
+    return addresses.map((address) =>
+      Transformer.transformObjectTypeSnakeToCamel(address.toObject())
+    );
   };
 
   static getAllAddress = async (req) => {
@@ -69,8 +52,40 @@ export default class AddressService {
     return Transformer.transformObjectTypeSnakeToCamel(address.toObject());
   };
 
+  static createAddress = async (req) => {
+    const { commune = '', district, city, detail_address, default: isDefault } = req.body;
+
+    let populateOptions = '-password';
+
+    if (!req.user.list_name_permission.includes('Read_Role')) populateOptions = '-password -roles';
+
+    await checkRecordByField(User, '_id', req.user._id, true);
+
+    const user = await User.findById(req.user._id);
+
+    if (isDefault) {
+      await Address.updateMany({ user_id: user._id, default: true }, { default: false });
+    }
+
+    const newAddress = await Address.create({
+      commune,
+      district,
+      city,
+      user_id: user.id,
+      detail_address,
+      default: isDefault,
+    });
+
+    user.addresses.push(newAddress._id);
+    await user.save();
+    const responseData = await Address.findById(newAddress._id)
+      .populate('user_id', populateOptions)
+      .exec();
+    return Transformer.transformObjectTypeSnakeToCamel(responseData.toObject());
+  };
+
   static updateAddress = async (req) => {
-    const { commune, district, city, detail_address } = req.body;
+    const { commune, district, city, detail_address, default: isDefault } = req.body;
     checkRecordByField(User, '_id', req.user._id, true);
 
     let selectPopulate = '-password';
@@ -78,9 +93,13 @@ export default class AddressService {
     if (!req.user.list_name_permission.includes('Read_Role')) populateOptions = '-password -roles';
     const user = await User.findById(req.user._id);
 
+    if (isDefault) {
+      await Address.updateMany({ user_id: user._id, default: true }, { default: false });
+    }
+
     const updatedAddress = await Address.findByIdAndUpdate(
       req.params.id,
-      { commune, district, city, user_id: user._id, detail_address },
+      { commune, district, city, user_id: user._id, detail_address, default: isDefault },
       { new: true, runValidators: true }
     );
 
@@ -90,7 +109,7 @@ export default class AddressService {
     const responseData = await Address.findById(req.params.id)
       .populate('user_id', selectPopulate)
       .exec();
-    return Transformer.transformObjectTypeSnakeToCamel(responseData.toObject);
+    return Transformer.transformObjectTypeSnakeToCamel(responseData.toObject());
   };
 
   static deleteAddress = async (req) => {

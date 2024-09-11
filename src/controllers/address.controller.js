@@ -3,6 +3,16 @@ import { SuccessResponse } from '../utils/response.js';
 import AddressService from '../services/address.service.js';
 
 export class AddressController {
+  static getAddressesByUserId = async (req, res, next) => {
+    try {
+      const addresses = await AddressService.getAddressesByUserId(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Get addresses by user ID successfully', addresses);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   static getAllAddress = async (req, res, next) => {
     try {
       const { metaData, others } = await AddressService.getAllAddress(req);
