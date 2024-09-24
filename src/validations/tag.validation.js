@@ -24,8 +24,8 @@ export const createTagValidation = async (req, res, next) => {
 
 export const updateTagValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
-    name: Joi.string().trim().required(),
-    image: Joi.string().trim().required(),
+    name: Joi.string().trim(),
+    image: Joi.string().trim(),
     description: Joi.string().allow(''),
     parent_id: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).allow(null),
     status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE),

@@ -21,6 +21,7 @@ import flagPageRouter from './flag_page.js';
 import cartRouter from './cart.js';
 import productRouter from './product.js';
 import docsRouter from './docs_swagger.js';
+import bannerRouter from './banner.js';
 
 const router = express.Router();
 
@@ -45,6 +46,7 @@ router.use('/product-types', productTypeRouter);
 router.use('/flag-pages', flagPageRouter);
 router.use('/carts', cartRouter);
 router.use('/products', productRouter);
+router.use('/banners', bannerRouter);
 router.use('/docs-swagger', docsRouter);
 
 export default router;
