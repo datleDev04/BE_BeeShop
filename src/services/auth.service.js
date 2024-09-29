@@ -6,37 +6,82 @@ import User_Token from '../models/User_Token.js';
 import { StatusCodes } from 'http-status-codes';
 import Black_Tokens from '../models/Black_Tokens.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import { STATUS } from '../utils/constants.js';
+import { generateVerificationToken } from '../utils/GenerateVerificationToken.js';
+import {
+  sendPasswordResetEmail,
+  sendResetSuccessEmail,
+  sendVerificationEmail,
+  sendVerifiedEmail,
+} from '../mail/emails.js';
 
 export class AuthService {
   static register = async (req) => {
-    const { full_name, email, password, confirm_password } = req.body;
+    const { full_name, email, password } = req.body;
 
-    await checkRecordByField(User,'email',email, false)
+    const user = await User.findOne({ email });
 
-    // check password and confirm_password
-    if (password !== confirm_password) {
-      throw new ApiError(400, "Passwords don't match");
+    if (user) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, 'Email has been taken!');
     }
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    const verificationToken = await generateVerificationToken();
 
     // create a new user
     const newUser = await User.create({
       full_name,
       email,
-      password: bcrypt.hashSync(password, 10),
+      password: hashedPassword,
+      verificationToken: verificationToken,
     });
 
-    delete newUser.password;
+    await sendVerificationEmail(email, verificationToken);
 
     return newUser;
+  };
+
+  static verifyEmail = async (req) => {
+    const { code } = req.body;
+
+    const user = await User.findOne({
+      verificationToken: code,
+      verificationTokenExpiresAt: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        'User not found or verification token is invalid'
+      );
+    }
+
+    user.is_verified = true;
+    user.verificationToken = undefined;
+    user.verificationTokenExpiresAt = undefined;
+    await user.save();
+
+    await sendVerifiedEmail(user.email, user.full_name);
+
+    return null;
   };
 
   static login = async (req) => {
     const { email, password } = req.body;
 
-    await checkRecordByField(User,'email',email, true)
-
     // find user by email
     const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, 'Your profile could not found! Register now!');
+    }
+
+    if (user.status === STATUS.INACTIVE) {
+      throw new ApiError(
+        StatusCodes.BAD_REQUEST,
+        'Your account is inactive, please contact support!'
+      );
+    }
 
     if (user.google_id && !user.password) {
       throw new ApiError(
@@ -48,12 +93,10 @@ export class AuthService {
     // compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw new ApiError(401, 'Email or Password is incorrect');
+      throw new ApiError(401, 'Invalid credentials!');
     }
 
     user.password = undefined;
-
-    // check status of the user
 
     // create access token
     const accessToken = jwtUtils.createAccessToken(user._id);
@@ -137,46 +180,47 @@ export class AuthService {
     }
   };
 
-  // static forgotPassword = async (reqBody) => {
-  //     const { email } = reqBody
+  static forgotPassword = async (req) => {
+    const { email } = req.body;
 
-  //     if (!email) throw new ApiError(StatusCodes.BAD_REQUEST, "email is required")
+    if (!email) throw new ApiError(StatusCodes.BAD_REQUEST, 'Email is required');
 
-  //     const user = await User.findOne({ email })
-  //     if (!user) throw new ApiError(StatusCodes.NOT_FOUND, "User not found")
+    const user = await User.findOne({ email });
+    if (!user) throw new ApiError(StatusCodes.NOT_FOUND, 'No user exists for this email');
 
-  //     user.resetPassword_Token = jwtUtils.createAccessToken(user._id)
+    const token = jwtUtils.createAccessToken(user._id);
 
-  //     user.save()
+    user.resetPasswordToken = token;
 
-  //     sendEmail(
-  //         user.email,
-  //         "Reset Your Instagram Account Password",
-  //         mailForgotPassword(
-  //             `${process.env.CLIENT_BASE_URL}/auth/reset-password/${user.resetPassword_Token}`
-  //         )
-  //     )
-  // }
+    await user.save();
 
-  // static resetPassword = async ( req ) => {
-  //     const { password, confirm_password } = req.body
+    await sendPasswordResetEmail(
+      user.email,
+      `${process.env.CLIENT_BASE_URL}/auth/reset-password/${token}`
+    );
+    return null;
+  };
 
-  //     const resetPassword_Token = req.params.token
+  static resetPassword = async (req) => {
+    const { password } = req.body;
 
-  //     const decode = jwtUtils.decodeToken(resetPassword_Token)
+    const resetPassword_Token = req.params.token;
 
-  //     const user = await User.findOne({ _id: decode.user_id })
-  //     if (!user) throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid or Token expired")
+    const decode = jwtUtils.decodeAccessToken(resetPassword_Token);
 
-  //     if (password !== confirm_password) {
-  //         throw new ApiError(StatusCodes.BAD_REQUEST, "Passwords don't match")
-  //     }
+    const user = await User.findOne({ _id: decode.user_id });
 
-  //     user.password = bcrypt.hashSync(password, 10)
-  //     user.resetPassword_Token = null
+    if (!user || user.resetPasswordToken !== resetPassword_Token)
+      throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid or Token expired');
 
-  //     user.save()
-  // }
+    user.password = bcrypt.hashSync(password, 10);
+    user.resetPasswordToken = undefined;
+
+    user.save();
+
+    await sendResetSuccessEmail(user.email);
+    return null;
+  };
 
   static getProfileUser = async (req) => {
     const user = await User.findOne(req.user._id)

@@ -21,6 +21,36 @@ export class AuthController {
     }
   };
 
+  static verifyEmail = async (req, res, next) => {
+    try {
+      await AuthService.verifyEmail(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Email verified successfully!', {});
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static forgotPassword = async (req, res, next) => {
+    try {
+      await AuthService.forgotPassword(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Forgot password link send successfully', {});
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static resetPassword = async (req, res, next) => {
+    try {
+      await AuthService.resetPassword(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Password reset successfully', {});
+    } catch (error) {
+      next(error);
+    }
+  };
+
   static login = async (req, res, next) => {
     try {
       const { user, accessToken, refreshToken } = await AuthService.login(req);
@@ -69,25 +99,6 @@ export class AuthController {
       await AuthService.logout(req);
 
       SuccessResponse(res, StatusCodes.OK, 'Logout successfully', []);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  static forgotPassword = async (req, res, next) => {
-    try {
-      await AuthService.forgotPassword(req.body);
-
-      SuccessResponse(res, StatusCodes.OK, 'send mail forgot password successfully', []);
-    } catch (error) {
-      next(error);
-    }
-  };
-  static resetPassword = async (req, res, next) => {
-    try {
-      await AuthService.resetPassword(req);
-
-      SuccessResponse(res, StatusCodes.OK, 'reset password successfully', []);
     } catch (error) {
       next(error);
     }

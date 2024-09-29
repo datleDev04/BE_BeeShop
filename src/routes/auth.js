@@ -9,6 +9,7 @@ authRouter.post('/register', authValidation.registerValidation, AuthController.r
 authRouter.post('/login', authValidation.loginValidation, AuthController.login);
 authRouter.post('/logout', authMiddleware, AuthController.logout);
 
+authRouter.post('/verify-email', AuthController.verifyEmail);
 authRouter.post('/forgot-password', AuthController.forgotPassword);
 authRouter.post('/reset-password/:token', AuthController.resetPassword);
 
@@ -21,8 +22,6 @@ authRouter.get(
   passport.authenticate('google', { session: false }),
   AuthController.loginGoogle
 );
-
-authRouter.get;
 
 // get profle user
 authRouter.get('/profile', authMiddleware, AuthController.getProfileUser);

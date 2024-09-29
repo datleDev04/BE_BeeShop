@@ -70,6 +70,20 @@ const userSchema = new mongoose.Schema(
         ref: 'Tag',
       },
     ],
+    is_verified: {
+      type: Boolean,
+      default: false,
+    },
+    resetPasswordToken: String,
+    resetPasswordExpiresAt: Date,
+    verificationToken: {
+      type: String,
+      unique: true,
+    },
+    verificationTokenExpiresAt: {
+      type: Date,
+      default: Date.now() + 1 * 60 * 60 * 1000,
+    },
   },
   {
     timestamps: true,
