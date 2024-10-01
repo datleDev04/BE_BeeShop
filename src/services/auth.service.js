@@ -5,7 +5,6 @@ import jwtUtils from '../utils/jwt.js';
 import User_Token from '../models/User_Token.js';
 import { StatusCodes } from 'http-status-codes';
 import Black_Tokens from '../models/Black_Tokens.js';
-import { checkRecordByField } from '../utils/CheckRecord.js';
 import { STATUS } from '../utils/constants.js';
 import { generateVerificationToken } from '../utils/GenerateVerificationToken.js';
 import {
@@ -34,11 +33,37 @@ export class AuthService {
       email,
       password: hashedPassword,
       verificationToken: verificationToken,
+      verificationTokenExpiresAt: Date.now() + 1 * 60 * 60 * 1000,
     });
 
     await sendVerificationEmail(email, verificationToken);
 
     return newUser;
+  };
+
+  static sendVerifyEmail = async (req) => {
+    const { _id } = req.user;
+
+    const user = await User.findById({ _id });
+
+    if (!user) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, 'User not found');
+    }
+
+    if (user.is_verified) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, 'This user has been verified!');
+    }
+
+    const verificationToken = await generateVerificationToken();
+
+    user.verificationToken = verificationToken;
+    user.verificationTokenExpiresAt = Date.now() + 1 * 60 * 60 * 1000;
+
+    await user.save();
+
+    await sendVerificationEmail(user.email, verificationToken);
+
+    return null;
   };
 
   static verifyEmail = async (req) => {

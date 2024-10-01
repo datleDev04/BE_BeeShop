@@ -75,15 +75,11 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     resetPasswordToken: String,
-    resetPasswordExpiresAt: Date,
     verificationToken: {
       type: String,
       unique: true,
     },
-    verificationTokenExpiresAt: {
-      type: Date,
-      default: Date.now() + 1 * 60 * 60 * 1000,
-    },
+    verificationTokenExpiresAt: Date,
   },
   {
     timestamps: true,

@@ -21,6 +21,16 @@ export class AuthController {
     }
   };
 
+  static sendVerifyEmail = async (req, res, next) => {
+    try {
+      await AuthService.sendVerifyEmail(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Verify email has been send successfully!', {});
+    } catch (error) {
+      next(error);
+    }
+  };
+
   static verifyEmail = async (req, res, next) => {
     try {
       await AuthService.verifyEmail(req);
