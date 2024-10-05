@@ -32,7 +32,10 @@ export default class CartService {
     const userId = req.user._id;
     checkRecordByField(User, '_id', userId, true);
 
-    const cart = await Cart.findOne({ user: userId }).populate([
+    const user = await User.findById(userId)
+    console.log(user)
+
+    const cart = await Cart.findOne({ user : userId }).populate([
       {
         path: 'user',
       },
@@ -43,6 +46,10 @@ export default class CartService {
         },
       },
     ]);
+    
+    if(!cart) {
+      return []
+    }
 
     cart.user.password = undefined;
     return Transformer.transformObjectTypeSnakeToCamel(cart.toObject());
