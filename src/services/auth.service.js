@@ -11,11 +11,13 @@ export class AuthService {
   static register = async (req) => {
     const { full_name, email, password, confirm_password } = req.body;
 
-    await checkRecordByField(User,'email',email, false)
+    await checkRecordByField(User, 'email', email, false);
 
     // check password and confirm_password
     if (password !== confirm_password) {
-      throw new ApiError(400, "Passwords don't match");
+      throw new ApiError(400, {
+        auth: "Passwords don't match",
+      });
     }
 
     // create a new user
@@ -33,22 +35,23 @@ export class AuthService {
   static login = async (req) => {
     const { email, password } = req.body;
 
-    await checkRecordByField(User,'email',email, true)
+    await checkRecordByField(User, 'email', email, true);
 
     // find user by email
     const user = await User.findOne({ email });
 
     if (user.google_id && !user.password) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        'Your account must be signed in with google provider'
-      );
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'Your account must be signed in with google provider',
+      });
     }
 
     // compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw new ApiError(401, 'Email or Password is incorrect');
+      throw new ApiError(401, {
+        auth: 'Email or Password is incorrect',
+      });
     }
 
     user.password = undefined;
@@ -76,7 +79,9 @@ export class AuthService {
 
   static loginGoogle = async (req) => {
     if (!req.user) {
-      throw new ApiError(401, 'Authentication failed');
+      throw new ApiError(401, {
+        auth: 'Authentication failed',
+      });
     }
 
     const accessToken = jwtUtils.createAccessToken(req.user._id);
@@ -110,11 +115,17 @@ export class AuthService {
     try {
       const refreshToken = req.body.refreshToken;
 
-      if (!refreshToken) throw new ApiError(StatusCodes.BAD_REQUEST, 'refresh token is required');
+      if (!refreshToken)
+        throw new ApiError(StatusCodes.BAD_REQUEST, {
+          auth: 'refresh token is required',
+        });
 
       // check valid token
       const decodeToken = jwtUtils.decodeRefreshToken(refreshToken);
-      if (!decodeToken) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid refresh token');
+      if (!decodeToken)
+        throw new ApiError(StatusCodes.UNAUTHORIZED, {
+          auth: 'Invalid refresh token',
+        });
 
       const newRefreshToken = jwtUtils.createRefreshToken();
 
@@ -124,7 +135,10 @@ export class AuthService {
         { new: true }
       );
 
-      if (!tokenInfo) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid refresh token');
+      if (!tokenInfo)
+        throw new ApiError(StatusCodes.UNAUTHORIZED, {
+          auth: 'Invalid refresh token',
+        });
 
       const access_token = jwtUtils.createAccessToken(tokenInfo.user_id);
 
