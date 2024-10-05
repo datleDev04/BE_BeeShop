@@ -46,7 +46,7 @@ export default class CartService {
         },
       },
     ]);
-    
+
     if(!cart) {
       return []
     }
@@ -62,6 +62,13 @@ export default class CartService {
     const { product_id, quantity, variant_id } = req.body;
     checkRecordByField(Product, '_id', product_id, true);
     checkRecordByField(Variant, '_id', variant_id, true);
+
+    const variant = await Variant.findById(variant_id)
+    if (quantity > variant.stock) {
+      throw new ApiError(409, {
+        quantity: `Only ${variant.stock} products left`
+      })
+    }
 
     // check if cart item exist
     let cartItem = await CartItemService.findOneCartItemByVariant(req);
@@ -115,14 +122,27 @@ export default class CartService {
     const { id } = req.params;
     const { quantity } = req.body;
     const userId = req.user._id;
-    checkRecordByField(User, '_id', userId, true);
-    checkRecordByField(Cart_Item, '_id', id, true);
+    await checkRecordByField(User, '_id', userId, true);
+    await checkRecordByField(Cart_Item, '_id', id, true);
 
     // find user cart
     let userCart = await Cart.findOne({ user: userId }).populate({
       path: 'cart_items',
-      populate: { path: 'cart_item' },
+      populate: { 
+        path: 'cart_item', 
+        populate: { 
+          path: 'variant', // Populate variant
+          select: 'stock'  // Chỉ lấy trường stock trong variant
+        }
+      }
     });
+    
+    let stock = userCart.cart_items[0].cart_item.variant.stock;
+    if (quantity > stock) {
+      throw new ApiError(409, {
+        quantity: `Only ${stock} products left`
+      })
+    }
 
     // find cart item to update quantity
     const cartItemIndex = userCart.cart_items.findIndex(
@@ -136,6 +156,7 @@ export default class CartService {
       }
     }
     await userCart.save();
+
 
     const response = await Cart.findOne({ user: userId }).populate([
       { path: 'cart_items', populate: { path: 'cart_item' } },
