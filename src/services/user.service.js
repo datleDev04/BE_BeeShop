@@ -72,9 +72,6 @@ export default class UserService {
           populate: { path: 'permissions' },
         },
         {
-          path: 'gender',
-        },
-        {
           path: 'addresses',
         },
         {
@@ -195,9 +192,6 @@ export default class UserService {
           path: 'addresses',
         },
         {
-          path: 'gender',
-        },
-        {
           path: 'tags',
         },
       ])
@@ -227,9 +221,6 @@ export default class UserService {
           path: 'addresses',
         },
         {
-          path: 'gender',
-        },
-        {
           path: 'vouchers',
         },
         {
@@ -256,9 +247,6 @@ export default class UserService {
       },
       {
         path: 'addresses',
-      },
-      {
-        path: 'gender',
       },
       {
         path: 'vouchers',
