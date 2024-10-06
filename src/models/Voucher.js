@@ -7,6 +7,12 @@ import { STATUS } from '../utils/constants.js';
 const DOCUMENT_NAME = 'Voucher';
 const COLLECTION_NAME = 'Vouchers';
 
+export const VOUCHER_TYPES = {
+  PERIOD: 'PERIOD',
+  FREE_SHIPPING: 'FREE_SHIPPING',
+  DEADLINE: "DEADLINE"
+};
+
 const voucherSchema = new mongoose.Schema(
   {
     name: {
@@ -42,8 +48,9 @@ const voucherSchema = new mongoose.Schema(
       type: Number,
     },
     voucher_type: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Voucher_Type',
+      type: String,
+      enum: Object.values(VOUCHER_TYPES),
+      required: true,
     },
     start_date: {
       type: Date,

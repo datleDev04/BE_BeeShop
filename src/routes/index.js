@@ -11,13 +11,12 @@ import labelRouter from './label.js';
 import colorRouter from './color.js';
 import sizeRouter from './size.js';
 import voucherRouter from './voucher.js';
-import voucherTypeRouter from './voucher_type.js';
-import userGenderRouter from './user_gender.js';
 import productTypeRouter from './product_type.js';
 import cartRouter from './cart.js';
 import productRouter from './product.js';
 import docsRouter from './docs_swagger.js';
 import bannerRouter from './banner.js';
+import shippingMethodRouter from './shipping_method.js';
 
 const router = express.Router();
 
@@ -31,14 +30,13 @@ router.use('/address', addressRouter);
 router.use('/tags', tagRouter);
 router.use('/labels', labelRouter);
 router.use('/vouchers', voucherRouter);
-router.use('/voucher-types', voucherTypeRouter);
 router.use('/colors', colorRouter);
 router.use('/sizes', sizeRouter);
-router.use('/user-genders', userGenderRouter);
 router.use('/product-types', productTypeRouter);
 router.use('/carts', cartRouter);
 router.use('/products', productRouter);
 router.use('/banners', bannerRouter);
+router.use('/shipping-methods', shippingMethodRouter);
 router.use('/docs-swagger', docsRouter);
 
 export default router;
