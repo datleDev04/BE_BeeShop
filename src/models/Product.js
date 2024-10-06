@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
-import { STATUS } from '../utils/constants.js';
+import { FLAG_PAGE, STATUS } from '../utils/constants.js';
 
 // schema Product variables
 const DOCUMENT_NAME = 'Product';
@@ -86,8 +86,9 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     flag: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Flag_Page',
+      type: String,
+      enum: Object.values(FLAG_PAGE),
+      default: FLAG_PAGE.ALLPAGE,
     },
     status: {
       type: Number,
