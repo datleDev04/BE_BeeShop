@@ -36,7 +36,7 @@ export class userValidation {
         'date.base': 'Birth day should be a date',
       }),
       status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE),
-      gender:  Joi.string().valid(...USER_GENDER_ENUM),
+      gender:  Joi.string().valid(...Object.values(USER_GENDER_ENUM)),
       roles: Joi.alternatives()
         .try(
           Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
@@ -109,7 +109,7 @@ export class userValidation {
         'date.base': 'Birth day should be a date',
       }),
       status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE),
-      gender:  Joi.string().valid(...USER_GENDER_ENUM),
+      gender:  Joi.string().valid(...Object.values(USER_GENDER_ENUM)),
       roles: Joi.alternatives()
         .try(
           Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),

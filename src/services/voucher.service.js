@@ -1,7 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../utils/ApiError.js';
 import Voucher, { VOUCHER_TYPES } from '../models/Voucher.js';
-import VoucherType from '../models/Voucher_Type.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';

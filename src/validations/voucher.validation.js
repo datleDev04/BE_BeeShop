@@ -13,7 +13,7 @@ const createVoucherSchema = Joi.object({
   discount: Joi.number().required(),
   discount_types: Joi.string().valid('percentage', 'fixed').required(),
   minimum_order_price: Joi.number(),
-  voucher_type: Joi.string().valid(...VOUCHER_TYPES).required(),
+  voucher_type: Joi.string().valid(...Object.values(VOUCHER_TYPES)).required(),
   start_date: Joi.date(),
   end_date: Joi.date(),
 });
@@ -27,7 +27,7 @@ const updateVoucherSchema = Joi.object({
   status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE),
   discount_types: Joi.string().valid('percentage', 'fixed'),
   minimum_order_price: Joi.number(),
-  voucher_type: Joi.string().valid(...VOUCHER_TYPES),
+  voucher_type: Joi.string().valid(...Object.values(VOUCHER_TYPES)),
   start_date: Joi.date(),
   end_date: Joi.date(),
 }).min(1);
