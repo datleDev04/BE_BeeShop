@@ -12,11 +12,21 @@ import Gender from '../models/Gender.js';
 import Size from '../models/Size.js';
 import ProductType from '../models/Product_Type.js';
 
+const populateOptions = [
+  { path: 'variants', populate: ['color', 'size'] },
+  { path: 'tags' },
+  { path: 'gender' },
+  { path: 'labels' },
+  { path: 'brand' },
+  { path: 'product_colors', populate: { path: 'color_id' } },
+  { path: 'product_sizes' },
+];
+
 export default class ProductService {
   static createNewProduct = async (req) => {
     const { name, variants, product_colors } = req.body;
 
-    await this.validateCreateProductData(req.body);
+    await this.validateProductData(req.body);
 
     const slug = await generateSlug(Product, name);
 
@@ -32,7 +42,7 @@ export default class ProductService {
       variants: variantIds,
     });
 
-    return Transformer.transformObjectTypeSnakeToCamel(newProduct.toObject());
+    return this.getPopulatedProduct(newProduct._id);
   };
 
   static updateProduct = async (req) => {
@@ -40,7 +50,7 @@ export default class ProductService {
 
     const productId = req.params.id;
 
-    await this.validateUpdateProductData(req.body, productId);
+    await this.validateProductData(req.body, productId);
 
     const product = await Product.findById(productId);
 
@@ -52,8 +62,8 @@ export default class ProductService {
     }
 
     const [updatedVariantIds, updatedColorIds] = await Promise.all([
-      this.updateVariants(product, variants),
-      this.updateProductColors(product, product_colors),
+      this.updateVariants(product.variants, variants),
+      this.updateProductColors(product.product_colors, product_colors),
     ]);
 
     await Product.findByIdAndUpdate(req.params.id, {
@@ -63,116 +73,35 @@ export default class ProductService {
       product_colors: updatedColorIds,
     });
 
-    const updateProduct = await Product.findById(product._id).populate([
-      {
-        path: 'variants',
-        populate: ['color', 'size'],
-      },
-      {
-        path: 'tags',
-      },
-      {
-        path: 'gender',
-      },
-      {
-        path: 'labels',
-      },
-      {
-        path: 'brand',
-      },
-      {
-        path: 'product_colors',
-        populate: {
-          path: 'color_id',
-        },
-      },
-      {
-        path: 'product_sizes',
-      },
-    ]);
+    const updatedProduct = await this.getPopulatedProduct(productId);
 
-    return Transformer.transformObjectTypeSnakeToCamel(updateProduct.toObject());
+    return updatedProduct;
   };
 
   static getAllProduct = async (req) => {
     const options = getPaginationOptions(req);
-    const filter = getFilterOptions(req, ['name']);
+    const filter = getFilterOptions(req, ['name', 'status']);
 
-    const paginatedProducts = await Product.paginate(filter, options);
+    const { docs, ...otherFields } = await Product.paginate(filter, {
+      ...options,
+      populate: populateOptions,
+    });
 
-    const populatedProducts = await Product.populate(paginatedProducts.docs, [
-      {
-        path: 'variants',
-        populate: ['color', 'size'],
-      },
-      {
-        path: 'tags',
-      },
-      {
-        path: 'gender',
-      },
-      {
-        path: 'labels',
-      },
-      {
-        path: 'brand',
-      },
-      {
-        path: 'product_colors',
-        populate: {
-          path: 'color_id',
-        },
-      },
-      {
-        path: 'product_sizes',
-      },
-    ]);
-    const { docs, ...otherFields } = paginatedProducts;
-
-    const transformedProducts = populatedProducts.map((product) =>
+    const transformedProducts = docs.map((product) =>
       Transformer.transformObjectTypeSnakeToCamel(product.toObject())
     );
 
-    const others = {
-      ...otherFields,
-    };
-
     return {
       metaData: Transformer.removeDeletedField(transformedProducts),
-      others,
+      others: otherFields,
     };
   };
 
   static getOneProduct = async (req) => {
-    await checkRecordByField(Product, '_id', req.params.id, true);
-    const product = await Product.findById(req.params.id).populate([
-      {
-        path: 'variants',
-        populate: ['color', 'size'],
-      },
-      {
-        path: 'tags',
-      },
-      {
-        path: 'gender',
-      },
-      {
-        path: 'labels',
-      },
-      {
-        path: 'brand',
-      },
-      {
-        path: 'product_colors',
-        populate: {
-          path: 'color_id',
-        },
-      },
-      {
-        path: 'product_sizes',
-      },
-    ]);
-    return Transformer.transformObjectTypeSnakeToCamel(product.toObject());
+    const { id } = req.params;
+    await checkRecordByField(Product, '_id', id, true);
+    const product = await this.getPopulatedProduct(id);
+    return product;
   };
 
   static deleteProduct = async (req) => {
@@ -188,57 +117,46 @@ export default class ProductService {
   };
 
   // create product helpers
-  static async validateCreateProductData(body) {
-    await Promise.all([
-      checkRecordByField(Product, 'name', body.name, false),
-      checkRecordsByIds(Tags, body.tags),
-      checkRecordsByIds(Label, body.labels),
-      checkRecordsByIds(Size, body.product_sizes),
-      checkRecordByField(Brand, '_id', body.brand, true),
-      checkRecordByField(Gender, '_id', body.gender, true),
-      checkRecordByField(ProductType, '_id', body.product_type, true),
-    ]);
+  static async validateProductData(data, id = null) {
+    const checks = [
+      checkRecordsByIds(Tags, data.tags),
+      checkRecordsByIds(Label, data.labels),
+      checkRecordsByIds(Size, data.product_sizes),
+      checkRecordByField(Brand, '_id', data.brand, true),
+      checkRecordByField(Gender, '_id', data.gender, true),
+      checkRecordByField(ProductType, '_id', data.product_type, true),
+    ];
+
+    if (id) {
+      checks.push(checkRecordByField(Product, '_id', id, true));
+    } else {
+      checks.push(checkRecordByField(Product, 'name', data.name, false));
+    }
+
+    await Promise.all(checks);
   }
 
   static async createColorsAndVariants(productColors, variants) {
     const [createdProductColors, createdVariants] = await Promise.all([
-      Promise.all(productColors.map((color) => Product_Color.create(color))),
-      Promise.all(variants.map((variant) => Variant.create(variant))),
+      Product_Color.insertMany(productColors),
+      Variant.insertMany(variants),
     ]);
 
-    const productColorIds = createdProductColors.map((color) => color._id);
-    const variantIds = createdVariants.map((variant) => variant._id);
-
-    return [productColorIds, variantIds];
+    return [
+      createdProductColors.map((color) => color._id),
+      createdVariants.map((variant) => variant._id),
+    ];
   }
 
-  //update product helpers
-  static async validateUpdateProductData(body, id) {
-    await Promise.all([
-      checkRecordByField(Product, '_id', id, true),
-      checkRecordsByIds(Tags, body.tags),
-      checkRecordsByIds(Label, body.labels),
-      checkRecordsByIds(Size, body.product_sizes),
-      checkRecordByField(Brand, '_id', body.brand, true),
-      checkRecordByField(Gender, '_id', body.gender, true),
-      checkRecordByField(ProductType, '_id', body.product_type, true),
-    ]);
-  }
-
-  static async updateVariants(product, variants) {
-    const existingVariantIds = product.variants;
-
-    const updatedVariantIds = await Promise.all(
-      variants.map(async (variant) => {
-        if (variant._id) {
-          await Variant.findByIdAndUpdate(variant._id, variant);
-          return variant._id;
-        } else {
-          const newVariant = await Variant.create(variant);
-          return newVariant._id;
-        }
-      })
+  static async updateVariants(existingVariantIds, newVariants) {
+    const updatePromises = newVariants.map((variant) =>
+      variant._id
+        ? Variant.findByIdAndUpdate(variant._id, variant, { new: true })
+        : Variant.create(variant)
     );
+
+    const updatedVariants = await Promise.all(updatePromises);
+    const updatedVariantIds = updatedVariants.map((variant) => variant._id);
 
     const variantsToRemove = existingVariantIds.filter(
       (id) => !updatedVariantIds.includes(id.toString())
@@ -248,10 +166,14 @@ export default class ProductService {
     return updatedVariantIds;
   }
 
-  static async updateProductColors(product, newColors = []) {
-    await Product_Color.deleteMany({ _id: { $in: product.product_colors } });
-    const createdColors = await Product_Color.create(newColors);
-    const colorIds = createdColors.map((color) => color._id);
-    return colorIds;
+  static async updateProductColors(existingColorIds, newColors = []) {
+    await Product_Color.deleteMany({ _id: { $in: existingColorIds } });
+    const createdColors = await Product_Color.insertMany(newColors);
+    return createdColors.map((color) => color._id);
+  }
+
+  static async getPopulatedProduct(id) {
+    const product = await Product.findById(id).populate(populateOptions);
+    return Transformer.transformObjectTypeSnakeToCamel(product.toObject());
   }
 }
