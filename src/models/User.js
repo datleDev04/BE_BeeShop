@@ -8,6 +8,12 @@ import { STATUS } from '../utils/constants.js';
 const DOCUMENT_NAME = 'User';
 const COLLECTION_NAME = 'Users';
 
+export const USER_GENDER_ENUM ={
+  MAN: "Nam",
+  WOMAN: "Nữ",
+  OTHER: "Khác"
+}
+
 const userSchema = new mongoose.Schema(
   {
     full_name: {
@@ -43,8 +49,8 @@ const userSchema = new mongoose.Schema(
       default: STATUS.ACTIVE,
     },
     gender: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User_Gender',
+      type: String,
+      enum: Object.values(USER_GENDER_ENUM),
     },
     vouchers: [
       {
