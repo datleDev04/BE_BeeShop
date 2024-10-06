@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../utils/ApiError.js';
-import Voucher from '../models/Voucher.js';
+import Voucher, { VOUCHER_TYPES } from '../models/Voucher.js';
 import VoucherType from '../models/Voucher_Type.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
@@ -24,14 +24,7 @@ export default class VoucherService {
     await checkRecordByField(Voucher, 'name', name, false, req.params.id);
     await checkRecordByField(Voucher, 'code', code, false, req.params.id);
 
-    const voucherType = await VoucherType.findById(voucher_type);
-    if (!voucherType) {
-      throw new ApiError(StatusCodes.NOT_FOUND, {
-        voucher_type: 'Voucher type not found',
-      });
-    }
-
-    if (voucherType.name === 'deadline') {
+    if (voucher_type === VOUCHER_TYPES.DEADLINE) {
       if (!start_date || !end_date) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
           voucher_type: 'Start date and end date are required for deadline voucher type',
@@ -49,11 +42,9 @@ export default class VoucherService {
         end_date,
       });
 
-      const populatedVoucher = await Voucher.findById(newVoucher._id)
-        .populate('voucher_type')
-        .exec();
+      const populatedVoucher = await Voucher.findById(newVoucher._id).exec();
       return Transformer.transformObjectTypeSnakeToCamel(populatedVoucher.toObject());
-    } else if (voucherType.name === 'period') {
+    } else if (voucher_type === VOUCHER_TYPES.PERIOD) {
       if (!duration) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
           voucher_type: 'Duration is required for period voucher type',
@@ -70,9 +61,8 @@ export default class VoucherService {
         voucher_type,
       });
 
-      const populatedVoucher = await Voucher.findById(newVoucher._id)
-        .populate('voucher_type')
-        .exec();
+      const populatedVoucher = await Voucher.findById(newVoucher._id).exec();
+
       return Transformer.transformObjectTypeSnakeToCamel(populatedVoucher.toObject());
     } else {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
@@ -87,7 +77,6 @@ export default class VoucherService {
 
     const paginatedVouchers = await Voucher.paginate(filter, {
       ...options,
-      populate: 'voucher_type',
     });
 
     const { docs, ...otherFields } = paginatedVouchers;
@@ -108,7 +97,7 @@ export default class VoucherService {
 
   static getOneVoucher = async (req) => {
     await checkRecordByField(Voucher, '_id', req.params.id, true);
-    const voucher = await Voucher.findById(req.params.id).populate('voucher_type').exec();
+    const voucher = await Voucher.findById(req.params.id).exec();
 
     return Transformer.transformObjectTypeSnakeToCamel(voucher.toObject());
   };
@@ -133,13 +122,6 @@ export default class VoucherService {
     await checkRecordByField(Voucher, 'name', name, false, req.params.id);
     await checkRecordByField(Voucher, 'code', code, false, req.params.id);
 
-    const voucherType = await VoucherType.findById(voucher_type);
-    if (!voucherType) {
-      throw new ApiError(StatusCodes.NOT_FOUND, {
-        voucher_type: 'Voucher type not found',
-      });
-    }
-
     let updatedVoucherData = {
       name,
       code,
@@ -151,7 +133,7 @@ export default class VoucherService {
       voucher_type,
     };
 
-    if (voucherType.name === 'deadline') {
+    if (voucherType === VOUCHER_TYPES.DEADLINE) {
       if (!start_date || !end_date) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
           voucher_type: 'Start date and end date are required for deadline voucher type',
@@ -163,7 +145,7 @@ export default class VoucherService {
         end_date,
       };
       await Voucher.updateOne({ _id: voucherId }, { $unset: { duration: '' } });
-    } else if (voucherType.name === 'period') {
+    } else if (voucherType === VOUCHER_TYPES.PERIOD) {
       if (!duration) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
           voucher_type: 'Duration is required for period voucher type',
@@ -183,9 +165,7 @@ export default class VoucherService {
     const updatedVoucher = await Voucher.findByIdAndUpdate(voucherId, updatedVoucherData, {
       new: true,
       runValidators: true,
-    })
-      .populate('voucher_type')
-      .exec();
+    }).exec();
 
     if (!updatedVoucher) {
       throw new ApiError(StatusCodes.NOT_FOUND, {
