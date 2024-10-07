@@ -16,6 +16,10 @@ const cartItemSchema = new mongoose.Schema(
       required: true,
       ref: 'Variant',
     },
+    quantity: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,

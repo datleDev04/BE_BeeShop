@@ -78,7 +78,7 @@ export class AuthController {
     try {
       await AuthService.forgotPassword(req.body);
 
-      SuccessResponse(res, StatusCodes.OK, 'send mail forgot password successfully', []);
+      SuccessResponse(res, StatusCodes.OK, 'Send mail forgot password successfully', []);
     } catch (error) {
       next(error);
     }
