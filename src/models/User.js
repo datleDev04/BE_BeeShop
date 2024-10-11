@@ -8,6 +8,12 @@ import { STATUS } from '../utils/constants.js';
 const DOCUMENT_NAME = 'User';
 const COLLECTION_NAME = 'Users';
 
+export const USER_GENDER_ENUM = {
+  MAN: 'Nam',
+  WOMAN: 'Nữ',
+  OTHER: 'Khác',
+};
+
 const userSchema = new mongoose.Schema(
   {
     full_name: {
@@ -43,8 +49,8 @@ const userSchema = new mongoose.Schema(
       default: STATUS.ACTIVE,
     },
     gender: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User_Gender',
+      type: String,
+      enum: Object.values(USER_GENDER_ENUM),
     },
     vouchers: [
       {
@@ -74,12 +80,16 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    resetPasswordToken: String,
-    verificationToken: {
+    is_new_user: {
+      type: Boolean,
+      default: true,
+    },
+    reset_password_token: String,
+    verification_token: {
       type: String,
       unique: true,
     },
-    verificationTokenExpiresAt: Date,
+    verification_token_expires_at: Date,
   },
   {
     timestamps: true,

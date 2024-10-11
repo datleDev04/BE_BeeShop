@@ -7,12 +7,14 @@ import { StatusCodes } from 'http-status-codes';
 import Black_Tokens from '../models/Black_Tokens.js';
 import { STATUS } from '../utils/constants.js';
 import { generateVerificationToken } from '../utils/GenerateVerificationToken.js';
+
 import {
   sendPasswordResetEmail,
   sendResetSuccessEmail,
   sendVerificationEmail,
   sendVerifiedEmail,
 } from '../mail/emails.js';
+import { Transformer } from '../utils/transformer.js';
 
 export class AuthService {
   static register = async (req) => {
@@ -21,7 +23,9 @@ export class AuthService {
     const user = await User.findOne({ email });
 
     if (user) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'Email has been taken!');
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'Email has been taken!',
+      });
     }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
@@ -32,13 +36,16 @@ export class AuthService {
       full_name,
       email,
       password: hashedPassword,
-      verificationToken: verificationToken,
-      verificationTokenExpiresAt: Date.now() + 1 * 60 * 60 * 1000,
+      verification_token: verificationToken,
+      verification_token_expires_at: Date.now() + 1 * 60 * 60 * 1000,
     });
 
     await sendVerificationEmail(email, verificationToken);
 
-    return newUser;
+    newUser.verification_token = undefined;
+    newUser.password = undefined;
+
+    return Transformer.transformObjectTypeSnakeToCamel(newUser.toObject());
   };
 
   static sendVerifyEmail = async (req) => {
@@ -47,17 +54,21 @@ export class AuthService {
     const user = await User.findById({ _id });
 
     if (!user) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'User not found');
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'User not found',
+      });
     }
 
     if (user.is_verified) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'This user has been verified!');
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'This user has been verified!',
+      });
     }
 
     const verificationToken = await generateVerificationToken();
 
-    user.verificationToken = verificationToken;
-    user.verificationTokenExpiresAt = Date.now() + 1 * 60 * 60 * 1000;
+    user.verification_token = verificationToken;
+    user.verification_token_expires_at = Date.now() + 1 * 60 * 60 * 1000;
 
     await user.save();
 
@@ -70,20 +81,20 @@ export class AuthService {
     const { code } = req.body;
 
     const user = await User.findOne({
-      verificationToken: code,
-      verificationTokenExpiresAt: { $gt: Date.now() },
+      verification_token: code,
+      verification_token_expires_at: { $gt: Date.now() },
+      is_verified: false,
     });
 
     if (!user) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        'User not found or verification token is invalid'
-      );
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'Verification token is invalid',
+      });
     }
 
     user.is_verified = true;
-    user.verificationToken = undefined;
-    user.verificationTokenExpiresAt = undefined;
+    user.verification_token = undefined;
+    user.verification_token_expires_at = undefined;
     await user.save();
 
     await sendVerifiedEmail(user.email, user.full_name);
@@ -98,27 +109,29 @@ export class AuthService {
     const user = await User.findOne({ email });
 
     if (!user) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'Your profile could not found! Register now!');
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'Your profile could not found! Register now!',
+      });
     }
 
     if (user.status === STATUS.INACTIVE) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        'Your account is inactive, please contact support!'
-      );
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'Your account is inactive, please contact support!',
+      });
     }
 
     if (user.google_id && !user.password) {
-      throw new ApiError(
-        StatusCodes.BAD_REQUEST,
-        'Your account must be signed in with google provider'
-      );
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'Your account must be signed in with google provider',
+      });
     }
 
     // compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw new ApiError(401, 'Invalid credentials!');
+      throw new ApiError(401, {
+        auth: 'Email or Password is incorrect',
+      });
     }
 
     user.password = undefined;
@@ -144,7 +157,9 @@ export class AuthService {
 
   static loginGoogle = async (req) => {
     if (!req.user) {
-      throw new ApiError(401, 'Authentication failed');
+      throw new ApiError(401, {
+        auth: 'Authentication failed',
+      });
     }
 
     const accessToken = jwtUtils.createAccessToken(req.user._id);
@@ -156,7 +171,7 @@ export class AuthService {
       { refresh_token: refreshToken },
       { upsert: true, new: true }
     );
-    return { accessToken, refreshToken };
+    return { user: req.user, accessToken, refreshToken };
   };
 
   static logout = async (req) => {
@@ -178,11 +193,17 @@ export class AuthService {
     try {
       const refreshToken = req.body.refreshToken;
 
-      if (!refreshToken) throw new ApiError(StatusCodes.BAD_REQUEST, 'refresh token is required');
+      if (!refreshToken)
+        throw new ApiError(StatusCodes.BAD_REQUEST, {
+          auth: 'refresh token is required',
+        });
 
       // check valid token
       const decodeToken = jwtUtils.decodeRefreshToken(refreshToken);
-      if (!decodeToken) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid refresh token');
+      if (!decodeToken)
+        throw new ApiError(StatusCodes.UNAUTHORIZED, {
+          auth: 'Invalid refresh token',
+        });
 
       const newRefreshToken = jwtUtils.createRefreshToken();
 
@@ -192,7 +213,10 @@ export class AuthService {
         { new: true }
       );
 
-      if (!tokenInfo) throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid refresh token');
+      if (!tokenInfo)
+        throw new ApiError(StatusCodes.UNAUTHORIZED, {
+          auth: 'Invalid refresh token',
+        });
 
       const access_token = jwtUtils.createAccessToken(tokenInfo.user_id);
 
@@ -208,14 +232,20 @@ export class AuthService {
   static forgotPassword = async (req) => {
     const { email } = req.body;
 
-    if (!email) throw new ApiError(StatusCodes.BAD_REQUEST, 'Email is required');
+    if (!email)
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'Email is required',
+      });
 
     const user = await User.findOne({ email });
-    if (!user) throw new ApiError(StatusCodes.NOT_FOUND, 'No user exists for this email');
+    if (!user)
+      throw new ApiError(StatusCodes.NOT_FOUND, {
+        auth: 'No user exists for this email',
+      });
 
     const token = jwtUtils.createAccessToken(user._id);
 
-    user.resetPasswordToken = token;
+    user.reset_password_token = token;
 
     await user.save();
 
@@ -229,17 +259,19 @@ export class AuthService {
   static resetPassword = async (req) => {
     const { password } = req.body;
 
-    const resetPassword_Token = req.params.token;
+    const resetPasswordToken = req.params.token;
 
-    const decode = jwtUtils.decodeAccessToken(resetPassword_Token);
+    const decode = jwtUtils.decodeAccessToken(resetPasswordToken);
 
     const user = await User.findOne({ _id: decode.user_id });
 
-    if (!user || user.resetPasswordToken !== resetPassword_Token)
-      throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid or Token expired');
+    if (!user || user.reset_password_token !== resetPasswordToken)
+      throw new ApiError(StatusCodes.UNAUTHORIZED, {
+        auth: 'Invalid or Token expired',
+      });
 
     user.password = bcrypt.hashSync(password, 10);
-    user.resetPasswordToken = undefined;
+    user.reset_password_token = undefined;
 
     user.save();
 

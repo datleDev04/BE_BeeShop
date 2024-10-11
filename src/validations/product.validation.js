@@ -6,7 +6,7 @@ import {
   validateBeforeCreateOrUpdate,
 } from '../utils/validators.js';
 import Joi from 'joi';
-import { STATUS } from '../utils/constants.js';
+import { FLAG_PAGE, STATUS } from '../utils/constants.js';
 
 export const createProductValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
@@ -52,7 +52,9 @@ export const createProductValidation = async (req, res, next) => {
       .min(1)
       .required(),
     product_type: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).required(),
-    flag: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+    flag: Joi.string()
+      .valid(FLAG_PAGE.ALLPAGE, FLAG_PAGE.HOMEPAGE, FLAG_PAGE.SHOPPAGE)
+      .default(FLAG_PAGE.ALLPAGE),
     status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE).default(STATUS.ACTIVE),
   });
 
@@ -106,7 +108,9 @@ export const updateProductValidation = async (req, res, next) => {
       .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
       .min(1),
     product_type: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
-    flag: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+    flag: Joi.string()
+      .valid(FLAG_PAGE.ALLPAGE, FLAG_PAGE.HOMEPAGE, FLAG_PAGE.SHOPPAGE)
+      .default(FLAG_PAGE.ALLPAGE),
     status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE).default(STATUS.ACTIVE),
   });
 

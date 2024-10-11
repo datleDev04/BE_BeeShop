@@ -33,6 +33,24 @@ export default class UserService {
 
     await checkRecordByField(User, 'email', email, false);
 
+    let updateAddress = addresses;
+    const defaultAddress = addresses.filter((address) => address.default);
+    if (defaultAddress.length > 1) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        addresses: 'There can only be one default address',
+      });
+    } else if (defaultAddress.length === 0) {
+      updateAddress = addresses.map((a, index) => (index === 0 ? { ...a, default: true } : a));
+    }
+
+    const createdAddresses = await Promise.all(
+      updateAddress.map((address) => {
+        return Address.create(address);
+      })
+    );
+
+    const addressIds = createdAddresses.map((add) => add._id);
+
     const newUser = await User.create({
       full_name,
       email,
@@ -42,7 +60,7 @@ export default class UserService {
       status,
       gender,
       roles,
-      addresses,
+      addresses: addressIds,
       tags,
     });
 
@@ -52,9 +70,6 @@ export default class UserService {
         {
           path: 'roles',
           populate: { path: 'permissions' },
-        },
-        {
-          path: 'gender',
         },
         {
           path: 'addresses',
@@ -83,6 +98,8 @@ export default class UserService {
       roles,
       addresses,
       tags,
+      is_verified,
+      is_new_user,
     } = req.body;
 
     await checkRecordByField(User, 'email', email, false, req.params.id);
@@ -96,9 +113,15 @@ export default class UserService {
         not_have_access: 'You do not have permission to update roles',
       });
     }
-    const currentUser = await User.findById(req.params.id).populate({
-      path: 'roles',
-    });
+
+    const currentUser = await User.findById(req.params.id).populate([
+      {
+        path: 'roles',
+      },
+      {
+        path: 'addresses',
+      },
+    ]);
 
     if (!currentUser) {
       throw new ApiError(StatusCodes.NOT_FOUND, {
@@ -107,6 +130,20 @@ export default class UserService {
     }
 
     const isCustomer = currentUser.roles.some((role) => role.name === 'Customer');
+
+    const oldAddressIds = currentUser.addresses.map((addr) => addr._id);
+    let updateAddress = addresses;
+    const defaultAddress = addresses?.filter((address) => address.default);
+    if (defaultAddress?.length > 1) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        addresses: 'There can only be one default address',
+      });
+    } else if (defaultAddress?.length === 0) {
+      updateAddress = addresses.map((a, index) => (index === 0 ? { ...a, default: true } : a));
+    }
+
+    const createdAddresses = await Address.insertMany(updateAddress);
+    const newAddressIds = createdAddresses.map((addr) => addr._id);
 
     let updateFields = {
       ...(full_name && { full_name }),
@@ -117,8 +154,10 @@ export default class UserService {
       ...(birth_day && { birth_day }),
       ...(gender && { gender }),
       ...((status || status == 0) && { status }),
-      ...(addresses && { addresses }),
+      ...(addresses && { addresses: newAddressIds }),
       ...(tags && { tags }),
+      ...(is_verified !== undefined && { is_verified }),
+      ...(is_new_user !== undefined && { is_new_user }),
     };
 
     const restrictedFields = [
@@ -131,6 +170,8 @@ export default class UserService {
       'gender',
       'addresses',
       'tags',
+      'is_new_user',
+      'is_verified',
     ];
 
     if (isCustomer) {
@@ -158,13 +199,11 @@ export default class UserService {
           path: 'addresses',
         },
         {
-          path: 'gender',
-        },
-        {
           path: 'tags',
         },
       ])
       .exec();
+    await Address.deleteMany({ _id: { $in: oldAddressIds } });
 
     if (!updatedUser) {
       throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, {
@@ -187,9 +226,6 @@ export default class UserService {
         },
         {
           path: 'addresses',
-        },
-        {
-          path: 'gender',
         },
         {
           path: 'vouchers',
@@ -218,9 +254,6 @@ export default class UserService {
       },
       {
         path: 'addresses',
-      },
-      {
-        path: 'gender',
       },
       {
         path: 'vouchers',

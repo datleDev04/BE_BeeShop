@@ -10,12 +10,7 @@ export class AuthController {
     try {
       const newUser = await AuthService.register(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Registration successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newUser.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Registration successfully', newUser);
     } catch (error) {
       next(error);
     }
@@ -79,9 +74,13 @@ export class AuthController {
 
   static loginGoogle = async (req, res, next) => {
     try {
-      const { accessToken, refreshToken } = await AuthService.loginGoogle(req);
-
-      SuccessResponse(res, StatusCodes.OK, 'Logout successfully', { accessToken, refreshToken });
+      const { user, accessToken, refreshToken } = await AuthService.loginGoogle(req);
+      const metaData = {
+        userData: Transformer.transformObjectTypeSnakeToCamel(user.toObject()),
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      };
+      SuccessResponse(res, StatusCodes.OK, 'Logout successfully', metaData);
     } catch (error) {
       next(error);
     }

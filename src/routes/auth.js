@@ -17,6 +17,7 @@ authRouter.post('/logout', authMiddleware, AuthController.logout);
 authRouter.post('/send-verify', authMiddleware, AuthController.sendVerifyEmail);
 
 authRouter.get('/google/redirect', AuthController.getGoogleRedirectURL);
+
 authRouter.get(
   '/google/callback',
   passport.authenticate('google', { session: false }),

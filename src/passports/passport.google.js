@@ -19,6 +19,8 @@ export default new GoogleStrategy(
         email: profile.email,
         avatar_url: profile.picture,
         status: STATUS.ACTIVE,
+        is_verified: true,
+        is_new_user: true,
       });
       return done(null, newUser);
     }

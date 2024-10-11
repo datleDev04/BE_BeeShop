@@ -1,10 +1,9 @@
 import Joi from 'joi';
 import {
   validateBeforeCreateOrUpdate,
-  OBJECT_ID_RULE,
-  OBJECT_ID_RULE_MESSAGE,
 } from '../utils/validators.js';
 import { STATUS } from '../utils/constants.js';
+import { VOUCHER_TYPES } from '../models/Voucher.js';
 
 const createVoucherSchema = Joi.object({
   name: Joi.string().required(),
@@ -14,7 +13,7 @@ const createVoucherSchema = Joi.object({
   discount: Joi.number().required(),
   discount_types: Joi.string().valid('percentage', 'fixed').required(),
   minimum_order_price: Joi.number(),
-  voucher_type: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+  voucher_type: Joi.string().valid(...Object.values(VOUCHER_TYPES)).required(),
   start_date: Joi.date(),
   end_date: Joi.date(),
 });
@@ -28,7 +27,7 @@ const updateVoucherSchema = Joi.object({
   status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE),
   discount_types: Joi.string().valid('percentage', 'fixed'),
   minimum_order_price: Joi.number(),
-  voucher_type: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+  voucher_type: Joi.string().valid(...Object.values(VOUCHER_TYPES)),
   start_date: Joi.date(),
   end_date: Joi.date(),
 }).min(1);

@@ -6,15 +6,22 @@ import Variant from '../models/Variant.js';
 import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
-import CartItemService from './cart_item.service.js';
-import Cart_Item from '../models/Cart_Item.js';
+import CartItem from '../models/Cart_Item.js';
+import { populate } from 'dotenv';
 
 export default class CartService {
   static getAllCarts = async (req) => {
     const carts = await Cart.find().populate([
       {
         path: 'cart_items',
-        populate: { path: 'cart_item' },
+        populate: [
+          {
+            path: 'product',
+          },
+          {
+            path: 'variant',
+          },
+        ],
       },
       {
         path: 'user',
@@ -32,17 +39,28 @@ export default class CartService {
     const userId = req.user._id;
     checkRecordByField(User, '_id', userId, true);
 
+    const user = await User.findById(userId);
+
     const cart = await Cart.findOne({ user: userId }).populate([
+      {
+        path: 'cart_items',
+        populate: [
+          {
+            path: 'product',
+          },
+          {
+            path: 'variant',
+          },
+        ],
+      },
       {
         path: 'user',
       },
-      {
-        path: 'cart_items',
-        populate: {
-          path: 'cart_item',
-        },
-      },
     ]);
+
+    if (!cart) {
+      return [];
+    }
 
     cart.user.password = undefined;
     return Transformer.transformObjectTypeSnakeToCamel(cart.toObject());
@@ -50,53 +68,54 @@ export default class CartService {
 
   static addItemToCart = async (req) => {
     const userId = req.user._id;
-    checkRecordByField(User, '_id', userId, true);
-
     const { product_id, quantity, variant_id } = req.body;
+
+    checkRecordByField(User, '_id', userId, true);
     checkRecordByField(Product, '_id', product_id, true);
     checkRecordByField(Variant, '_id', variant_id, true);
 
-    // check if cart item exist
-    let cartItem = await CartItemService.findOneCartItemByVariant(req);
-    // else  create cart item
-    if (!cartItem) {
-      cartItem = await CartItemService.createCartItem(req);
+    const variant = await Variant.findById(variant_id);
+    if (quantity > variant.stock) {
+      throw new ApiError(409, {
+        quantity: `Only ${variant.stock} products left`,
+      });
     }
 
-    //check if user cart already exist if not create new one
-    let userCart = await Cart.findOne({ user: userId }).populate({
-      path: 'cart_items',
-      populate: { path: 'cart_item' },
-    });
+    let userCart = await Cart.findOne({ user: userId }).populate([{ path: 'cart_items' }]);
+
     if (!userCart) {
       userCart = await Cart.create({ user: userId, cart_items: [] });
-
-      await userCart.save();
     }
 
-    // check if cartItem with same variant already in userCart
-    const existCartItemIndex = userCart.cart_items.findIndex((item) => {
-      return (
-        item.cart_item.product.toString() == cartItem.product &&
-        item.cart_item.variant.toString() == cartItem.variant &&
-        item.cart_item.product_type == cartItem.product_type
-      );
-    });
+    // Find existing cart item within the user's cart
+    const existingCartItemId = userCart.cart_items.find(
+      (item) => item.product.toString() === product_id && item.variant.toString() === variant_id
+    );
 
-    // if exist then change cart item id
-    if (existCartItemIndex !== -1) {
-      userCart.cart_items[existCartItemIndex].quantity = quantity;
+    let cartItem;
+    if (existingCartItemId) {
+      cartItem = await CartItem.findById(existingCartItemId);
+      cartItem.quantity += quantity;
+      await cartItem.save();
     } else {
-      const newCartItem = {
-        cart_item: cartItem._id,
+      cartItem = await CartItem.create({
+        product: product_id,
+        variant: variant_id,
         quantity: quantity,
-      };
-      userCart.cart_items.push(newCartItem);
+      });
+      userCart.cart_items.push(cartItem._id);
     }
+
     await userCart.save();
 
     const response = await Cart.findOne({ user: userId }).populate([
-      { path: 'cart_items', populate: { path: 'cart_item' } },
+      {
+        path: 'cart_items',
+        populate: [
+          { path: 'product' },
+          { path: 'variant', populate: [{ path: 'size' }, { path: 'color' }] },
+        ],
+      },
       { path: 'user' },
     ]);
 
@@ -108,30 +127,44 @@ export default class CartService {
     const { id } = req.params;
     const { quantity } = req.body;
     const userId = req.user._id;
-    checkRecordByField(User, '_id', userId, true);
-    checkRecordByField(Cart_Item, '_id', id, true);
+    await checkRecordByField(User, '_id', userId, true);
+    await checkRecordByField(CartItem, '_id', id, true);
 
     // find user cart
     let userCart = await Cart.findOne({ user: userId }).populate({
       path: 'cart_items',
-      populate: { path: 'cart_item' },
+      populate: {
+        path: 'variant',
+        select: 'stock',
+      },
     });
 
-    // find cart item to update quantity
-    const cartItemIndex = userCart.cart_items.findIndex(
-      (item) => item.cart_item._id.toString() === id
-    );
-    if (cartItemIndex !== -1) {
-      if (quantity == 0) {
-        userCart.cart_items.splice(cartItemIndex, 1);
-      } else {
-        userCart.cart_items[cartItemIndex].quantity = quantity;
-      }
+    if (!userCart) {
+      throw new ApiError(404, 'Cart not found');
     }
+
+    const currentCartItem = userCart.cart_items.find((item) => item._id.toString() === id);
+
+    if (quantity > currentCartItem.variant.stock) {
+      throw new ApiError(409, {
+        quantity: `Only ${currentCartItem.variant.stock} products left`,
+      });
+    }
+
+    // Update the quantity of the cart item
+    currentCartItem.quantity = quantity;
+    await currentCartItem.save();
+
     await userCart.save();
 
     const response = await Cart.findOne({ user: userId }).populate([
-      { path: 'cart_items', populate: { path: 'cart_item' } },
+      {
+        path: 'cart_items',
+        populate: [
+          { path: 'variant', populate: [{ path: 'color' }, { path: 'size' }] },
+          { path: 'product' },
+        ],
+      },
       { path: 'user' },
     ]);
 
@@ -142,24 +175,16 @@ export default class CartService {
   static deleteOneCartItem = async (req) => {
     const { id } = req.params;
     const userId = req.user._id;
-    checkRecordByField(User, '_id', userId, true);
+    await checkRecordByField(User, '_id', userId, true);
+    await checkRecordByField(CartItem, '_id', id, true);
 
-    const userCart = await Cart.findOne({ user: userId }).populate([
-      {
-        path: 'user',
-      },
-      {
-        path: 'cart_items',
-        populate: {
-          path: 'cart_item',
-        },
-      },
-    ]);
+    const userCart = await Cart.findOne({ user: userId }).populate('cart_items');
+
     if (!userCart) throw new ApiError(StatusCodes.NOT_FOUND, 'User Cart is not found');
     // delete item
-    userCart.cart_items = userCart.cart_items.filter((item) => {
-      return !(item.cart_item._id.toString() === id);
-    });
+    userCart.cart_items = userCart.cart_items.filter((item) => item._id.toString() !== id);
+
+    await CartItem.findByIdAndDelete(id);
 
     await userCart.save();
 
@@ -168,8 +193,17 @@ export default class CartService {
 
   static deleteAllCartItem = async (req) => {
     const userId = req.user._id;
-    const userCart = await Cart.findOne({ user: userId }).populate({ path: 'user' });
-    if (!userCart) throw new ApiError(StatusCodes.NOT_FOUND, 'User Cart is not found');
+    let userCart = await Cart.findOne({ user: userId }).populate({ path: 'user' });
+
+    if (!userCart) {
+      userCart = await Cart.create({ user: userId, cart_items: [] });
+    }
+
+    // Get all cart item ids
+    const cartItemIds = userCart.cart_items;
+
+    // Delete all CartItems
+    await CartItem.deleteMany({ _id: { $in: cartItemIds } });
 
     // delete all items
     userCart.cart_items = [];

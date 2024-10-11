@@ -6,30 +6,6 @@ const COLLECTION_NAME = 'Cart_Items';
 
 const cartItemSchema = new mongoose.Schema(
   {
-    product_name: {
-      type: String,
-      required: true,
-    },
-    product_image: {
-      type: String,
-      required: true,
-    },
-    product_type: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    size: {
-      type: String,
-      required: true,
-    },
-    color: {
-      type: String,
-      required: true,
-    },
     product: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -39,6 +15,10 @@ const cartItemSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Variant',
+    },
+    quantity: {
+      type: Number,
+      required: true,
     },
   },
   {
