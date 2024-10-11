@@ -141,9 +141,23 @@ export default class UserService {
     } else if (defaultAddress?.length === 0) {
       updateAddress = addresses.map((a, index) => (index === 0 ? { ...a, default: true } : a));
     }
-
-    const createdAddresses = await Address.insertMany(updateAddress);
-    const newAddressIds = createdAddresses.map((addr) => addr._id);
+    
+    let newAddressIds;
+    if (addresses) {
+      const oldAddressIds = currentUser.addresses.map((addr) => addr._id);
+      let updateAddress = addresses;
+      const defaultAddress = addresses.filter((address) => address.default);
+      if (defaultAddress.length > 1) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, {
+          addresses: 'There can only be one default address',
+        });
+      } else if (defaultAddress.length === 0) {
+        updateAddress = addresses.map((a, index) => (index === 0 ? { ...a, default: true } : a));
+      }
+      const createdAddresses = await Address.insertMany(updateAddress);
+      await Address.deleteMany({ _id: { $in: oldAddressIds } });
+      newAddressIds = createdAddresses.map((addr) => addr._id);
+    }
 
     let updateFields = {
       ...(full_name && { full_name }),
@@ -158,6 +172,7 @@ export default class UserService {
       ...(tags && { tags }),
       ...(is_verified !== undefined && { is_verified }),
       ...(is_new_user !== undefined && { is_new_user }),
+
     };
 
     const restrictedFields = [
@@ -177,12 +192,13 @@ export default class UserService {
     if (isCustomer) {
       if (Object.keys(updateFields).some((field) => restrictedFields.includes(field))) {
         throw new ApiError(StatusCodes.FORBIDDEN, {
-          not_have_access: 'You only have permission to update status!',
+          not_have_access: 'You only have permission to update status and role!',
         });
       }
       updateFields = {
-        ...((status || status == 0) && { status }),
+        ...((status || status == 0) && { status })
       };
+      if(roles) updateFields.roles = roles
     } else {
       if (userPermissions.includes('Read_User')) {
         updateFields = { ...updateFields, ...(roles && { roles }) };
@@ -203,7 +219,6 @@ export default class UserService {
         },
       ])
       .exec();
-    await Address.deleteMany({ _id: { $in: oldAddressIds } });
 
     if (!updatedUser) {
       throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, {
