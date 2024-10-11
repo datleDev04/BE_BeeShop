@@ -98,6 +98,8 @@ export default class UserService {
       roles,
       addresses,
       tags,
+      is_verified,
+      is_new_user,
     } = req.body;
 
     await checkRecordByField(User, 'email', email, false, req.params.id);
@@ -111,6 +113,7 @@ export default class UserService {
         not_have_access: 'You do not have permission to update roles',
       });
     }
+
     const currentUser = await User.findById(req.params.id).populate([
       {
         path: 'roles',
@@ -128,6 +131,17 @@ export default class UserService {
 
     const isCustomer = currentUser.roles.some((role) => role.name === 'Customer');
 
+    const oldAddressIds = currentUser.addresses.map((addr) => addr._id);
+    let updateAddress = addresses;
+    const defaultAddress = addresses?.filter((address) => address.default);
+    if (defaultAddress?.length > 1) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        addresses: 'There can only be one default address',
+      });
+    } else if (defaultAddress?.length === 0) {
+      updateAddress = addresses.map((a, index) => (index === 0 ? { ...a, default: true } : a));
+    }
+    
     let newAddressIds;
     if (addresses) {
       const oldAddressIds = currentUser.addresses.map((addr) => addr._id);
@@ -140,7 +154,6 @@ export default class UserService {
       } else if (defaultAddress.length === 0) {
         updateAddress = addresses.map((a, index) => (index === 0 ? { ...a, default: true } : a));
       }
-
       const createdAddresses = await Address.insertMany(updateAddress);
       await Address.deleteMany({ _id: { $in: oldAddressIds } });
       newAddressIds = createdAddresses.map((addr) => addr._id);
@@ -157,7 +170,9 @@ export default class UserService {
       ...((status || status == 0) && { status }),
       ...(addresses && { addresses: newAddressIds }),
       ...(tags && { tags }),
-      ...(roles && { roles }),
+      ...(is_verified !== undefined && { is_verified }),
+      ...(is_new_user !== undefined && { is_new_user }),
+
     };
 
     const restrictedFields = [
@@ -170,6 +185,8 @@ export default class UserService {
       'gender',
       'addresses',
       'tags',
+      'is_new_user',
+      'is_verified',
     ];
 
     if (isCustomer) {

@@ -7,7 +7,6 @@ class authValidation {
       full_name: Joi.string().min(3).max(20).trim().required(),
       email: Joi.string().email().trim().required(),
       password: Joi.string().min(6).trim().required(),
-      confirm_password: Joi.string().min(6).valid(Joi.ref('password')).trim().required(),
     });
 
     try {

@@ -5,40 +5,120 @@ import jwtUtils from '../utils/jwt.js';
 import User_Token from '../models/User_Token.js';
 import { StatusCodes } from 'http-status-codes';
 import Black_Tokens from '../models/Black_Tokens.js';
-import { checkRecordByField } from '../utils/CheckRecord.js';
+import { STATUS } from '../utils/constants.js';
+import { generateVerificationToken } from '../utils/GenerateVerificationToken.js';
+
+import {
+  sendPasswordResetEmail,
+  sendResetSuccessEmail,
+  sendVerificationEmail,
+  sendVerifiedEmail,
+} from '../mail/emails.js';
+import { Transformer } from '../utils/transformer.js';
 
 export class AuthService {
   static register = async (req) => {
-    const { full_name, email, password, confirm_password } = req.body;
+    const { full_name, email, password } = req.body;
 
-    await checkRecordByField(User, 'email', email, false);
+    const user = await User.findOne({ email });
 
-    // check password and confirm_password
-    if (password !== confirm_password) {
-      throw new ApiError(400, {
-        auth: "Passwords don't match",
+    if (user) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'Email has been taken!',
       });
     }
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    const verificationToken = await generateVerificationToken();
 
     // create a new user
     const newUser = await User.create({
       full_name,
       email,
-      password: bcrypt.hashSync(password, 10),
+      password: hashedPassword,
+      verification_token: verificationToken,
+      verification_token_expires_at: Date.now() + 1 * 60 * 60 * 1000,
     });
 
-    delete newUser.password;
+    await sendVerificationEmail(email, verificationToken);
 
-    return newUser;
+    newUser.verification_token = undefined;
+    newUser.password = undefined;
+
+    return Transformer.transformObjectTypeSnakeToCamel(newUser.toObject());
+  };
+
+  static sendVerifyEmail = async (req) => {
+    const { _id } = req.user;
+
+    const user = await User.findById({ _id });
+
+    if (!user) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'User not found',
+      });
+    }
+
+    if (user.is_verified) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'This user has been verified!',
+      });
+    }
+
+    const verificationToken = await generateVerificationToken();
+
+    user.verification_token = verificationToken;
+    user.verification_token_expires_at = Date.now() + 1 * 60 * 60 * 1000;
+
+    await user.save();
+
+    await sendVerificationEmail(user.email, verificationToken);
+
+    return null;
+  };
+
+  static verifyEmail = async (req) => {
+    const { code } = req.body;
+
+    const user = await User.findOne({
+      verification_token: code,
+      verification_token_expires_at: { $gt: Date.now() },
+      is_verified: false,
+    });
+
+    if (!user) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'Verification token is invalid',
+      });
+    }
+
+    user.is_verified = true;
+    user.verification_token = undefined;
+    user.verification_token_expires_at = undefined;
+    await user.save();
+
+    await sendVerifiedEmail(user.email, user.full_name);
+
+    return null;
   };
 
   static login = async (req) => {
     const { email, password } = req.body;
 
-    await checkRecordByField(User, 'email', email, true);
-
     // find user by email
     const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'Your profile could not found! Register now!',
+      });
+    }
+
+    if (user.status === STATUS.INACTIVE) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'Your account is inactive, please contact support!',
+      });
+    }
 
     if (user.google_id && !user.password) {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
@@ -55,8 +135,6 @@ export class AuthService {
     }
 
     user.password = undefined;
-
-    // check status of the user
 
     // create access token
     const accessToken = jwtUtils.createAccessToken(user._id);
@@ -93,7 +171,7 @@ export class AuthService {
       { refresh_token: refreshToken },
       { upsert: true, new: true }
     );
-    return { accessToken, refreshToken };
+    return { user: req.user, accessToken, refreshToken };
   };
 
   static logout = async (req) => {
@@ -151,46 +229,55 @@ export class AuthService {
     }
   };
 
-  // static forgotPassword = async (reqBody) => {
-  //     const { email } = reqBody
+  static forgotPassword = async (req) => {
+    const { email } = req.body;
 
-  //     if (!email) throw new ApiError(StatusCodes.BAD_REQUEST, "email is required")
+    if (!email)
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        auth: 'Email is required',
+      });
 
-  //     const user = await User.findOne({ email })
-  //     if (!user) throw new ApiError(StatusCodes.NOT_FOUND, "User not found")
+    const user = await User.findOne({ email });
+    if (!user)
+      throw new ApiError(StatusCodes.NOT_FOUND, {
+        auth: 'No user exists for this email',
+      });
 
-  //     user.resetPassword_Token = jwtUtils.createAccessToken(user._id)
+    const token = jwtUtils.createAccessToken(user._id);
 
-  //     user.save()
+    user.reset_password_token = token;
 
-  //     sendEmail(
-  //         user.email,
-  //         "Reset Your Instagram Account Password",
-  //         mailForgotPassword(
-  //             `${process.env.CLIENT_BASE_URL}/auth/reset-password/${user.resetPassword_Token}`
-  //         )
-  //     )
-  // }
+    await user.save();
 
-  // static resetPassword = async ( req ) => {
-  //     const { password, confirm_password } = req.body
+    await sendPasswordResetEmail(
+      user.email,
+      `${process.env.CLIENT_BASE_URL}/auth/reset-password/${token}`
+    );
+    return null;
+  };
 
-  //     const resetPassword_Token = req.params.token
+  static resetPassword = async (req) => {
+    const { password } = req.body;
 
-  //     const decode = jwtUtils.decodeToken(resetPassword_Token)
+    const resetPasswordToken = req.params.token;
 
-  //     const user = await User.findOne({ _id: decode.user_id })
-  //     if (!user) throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid or Token expired")
+    const decode = jwtUtils.decodeAccessToken(resetPasswordToken);
 
-  //     if (password !== confirm_password) {
-  //         throw new ApiError(StatusCodes.BAD_REQUEST, "Passwords don't match")
-  //     }
+    const user = await User.findOne({ _id: decode.user_id });
 
-  //     user.password = bcrypt.hashSync(password, 10)
-  //     user.resetPassword_Token = null
+    if (!user || user.reset_password_token !== resetPasswordToken)
+      throw new ApiError(StatusCodes.UNAUTHORIZED, {
+        auth: 'Invalid or Token expired',
+      });
 
-  //     user.save()
-  // }
+    user.password = bcrypt.hashSync(password, 10);
+    user.reset_password_token = undefined;
+
+    user.save();
+
+    await sendResetSuccessEmail(user.email);
+    return null;
+  };
 
   static getProfileUser = async (req) => {
     const user = await User.findOne(req.user._id)
