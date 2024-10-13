@@ -8,11 +8,11 @@ import { STATUS } from '../utils/constants.js';
 const DOCUMENT_NAME = 'User';
 const COLLECTION_NAME = 'Users';
 
-export const USER_GENDER_ENUM ={
-  MAN: "Nam",
-  WOMAN: "Nữ",
-  OTHER: "Khác"
-}
+export const USER_GENDER_ENUM = {
+  MAN: 'Nam',
+  WOMAN: 'Nữ',
+  OTHER: 'Khác',
+};
 
 const userSchema = new mongoose.Schema(
   {
@@ -76,6 +76,20 @@ const userSchema = new mongoose.Schema(
         ref: 'Tag',
       },
     ],
+    is_verified: {
+      type: Boolean,
+      default: false,
+    },
+    is_new_user: {
+      type: Boolean,
+      default: true,
+    },
+    reset_password_token: String,
+    verification_token: {
+      type: String,
+      unique: true,
+    },
+    verification_token_expires_at: Date,
   },
   {
     timestamps: true,

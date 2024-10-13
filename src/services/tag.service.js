@@ -91,7 +91,7 @@ export class TagService {
         status,
       },
       { new: true }
-    );
+    ).populate('parent_id');
     return Transformer.transformObjectTypeSnakeToCamel(updatedTag.toObject());
   };
 

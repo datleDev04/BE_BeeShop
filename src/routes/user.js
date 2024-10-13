@@ -29,7 +29,7 @@ userRouter.patch(
   '/:id',
   authMiddleware,
   objectIdValidation,
-  CheckPermission(['Update_User']),
+  // CheckPermission(['Update_User']),
   userValidation.updateUserInfo,
   UserController.updateUser
 );

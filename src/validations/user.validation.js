@@ -36,14 +36,15 @@ export class userValidation {
         'date.base': 'Birth day should be a date',
       }),
       status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE),
-      gender:  Joi.string().valid(...Object.values(USER_GENDER_ENUM)),
+      gender: Joi.string().valid(...Object.values(USER_GENDER_ENUM)),
       roles: Joi.alternatives()
         .try(
           Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
           Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
         )
         .optional(),
-        addresses: Joi.array().items(Joi.object({
+      addresses: Joi.array().items(
+        Joi.object({
           commune: Joi.string().trim().allow(''),
           district: Joi.string().trim().required(),
           city: Joi.string().trim().required(),
@@ -53,7 +54,8 @@ export class userValidation {
             Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
           ),
           default: Joi.boolean().default(false),
-        })),
+        })
+      ),
       vouchers: Joi.alternatives()
         .try(
           Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
@@ -66,6 +68,8 @@ export class userValidation {
           Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
         )
         .optional(),
+      is_verified: Joi.boolean().optional(),
+      is_new_user: Joi.boolean().optional(),
     });
 
     try {
@@ -109,14 +113,15 @@ export class userValidation {
         'date.base': 'Birth day should be a date',
       }),
       status: Joi.number().valid(STATUS.ACTIVE, STATUS.INACTIVE),
-      gender:  Joi.string().valid(...Object.values(USER_GENDER_ENUM)),
+      gender: Joi.string().valid(...Object.values(USER_GENDER_ENUM)),
       roles: Joi.alternatives()
         .try(
           Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
           Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
         )
         .optional(),
-        addresses: Joi.array().items(Joi.object({
+      addresses: Joi.array().items(
+        Joi.object({
           commune: Joi.string().trim().allow(''),
           district: Joi.string().trim().required(),
           city: Joi.string().trim().required(),
@@ -126,7 +131,8 @@ export class userValidation {
             Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
           ),
           default: Joi.boolean().default(false),
-        })),
+        })
+      ),
       vouchers: Joi.alternatives()
         .try(
           Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),

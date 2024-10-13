@@ -10,12 +10,47 @@ export class AuthController {
     try {
       const newUser = await AuthService.register(req);
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Registration successfully',
-        Transformer.transformObjectTypeSnakeToCamel(newUser.toObject())
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Registration successfully', newUser);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static sendVerifyEmail = async (req, res, next) => {
+    try {
+      await AuthService.sendVerifyEmail(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Verify email has been send successfully!', {});
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static verifyEmail = async (req, res, next) => {
+    try {
+      await AuthService.verifyEmail(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Email verified successfully!', {});
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static forgotPassword = async (req, res, next) => {
+    try {
+      await AuthService.forgotPassword(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Forgot password link send successfully', {});
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  static resetPassword = async (req, res, next) => {
+    try {
+      await AuthService.resetPassword(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Password reset successfully', {});
     } catch (error) {
       next(error);
     }
@@ -39,9 +74,13 @@ export class AuthController {
 
   static loginGoogle = async (req, res, next) => {
     try {
-      const { accessToken, refreshToken } = await AuthService.loginGoogle(req);
-
-      SuccessResponse(res, StatusCodes.OK, 'Logout successfully', { accessToken, refreshToken });
+      const { user, accessToken, refreshToken } = await AuthService.loginGoogle(req);
+      const metaData = {
+        userData: Transformer.transformObjectTypeSnakeToCamel(user.toObject()),
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      };
+      SuccessResponse(res, StatusCodes.OK, 'Logout successfully', metaData);
     } catch (error) {
       next(error);
     }
@@ -69,25 +108,6 @@ export class AuthController {
       await AuthService.logout(req);
 
       SuccessResponse(res, StatusCodes.OK, 'Logout successfully', []);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  static forgotPassword = async (req, res, next) => {
-    try {
-      await AuthService.forgotPassword(req.body);
-
-      SuccessResponse(res, StatusCodes.OK, 'Send mail forgot password successfully', []);
-    } catch (error) {
-      next(error);
-    }
-  };
-  static resetPassword = async (req, res, next) => {
-    try {
-      await AuthService.resetPassword(req);
-
-      SuccessResponse(res, StatusCodes.OK, 'reset password successfully', []);
     } catch (error) {
       next(error);
     }

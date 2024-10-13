@@ -132,7 +132,7 @@ export default class VoucherService {
       voucher_type,
     };
 
-    if (voucherType === VOUCHER_TYPES.DEADLINE) {
+    if (voucher_type === VOUCHER_TYPES.DEADLINE) {
       if (!start_date || !end_date) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
           voucher_type: 'Start date and end date are required for deadline voucher type',
@@ -144,7 +144,7 @@ export default class VoucherService {
         end_date,
       };
       await Voucher.updateOne({ _id: voucherId }, { $unset: { duration: '' } });
-    } else if (voucherType === VOUCHER_TYPES.PERIOD) {
+    } else if (voucher_type === VOUCHER_TYPES.PERIOD) {
       if (!duration) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
           voucher_type: 'Duration is required for period voucher type',
