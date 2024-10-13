@@ -13,6 +13,7 @@ import passport from 'passport';
 import User from './src/models/User.js';
 import googlePassport from './src/passports/passport.google.js';
 import session from 'express-session';
+import clientRouter from './src/routes/client/index.js';
 
 const PORT = environment.app.port;
 
@@ -50,6 +51,7 @@ passport.use('google', googlePassport);
 
 // Routes
 app.use('/api', router);
+app.use('/api/client', clientRouter)
 
 // Error handler
 app.all('*', (req, res, next) => {
