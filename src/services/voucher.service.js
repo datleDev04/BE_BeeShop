@@ -132,10 +132,10 @@ export default class VoucherService {
       voucher_type,
     };
 
-    if (voucher_type === VOUCHER_TYPES.DEADLINE) {
+    if (voucher_type === VOUCHER_TYPES.DEADLINE || voucher_type === VOUCHER_TYPES.FREE_SHIPPING) {
       if (!start_date || !end_date) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
-          voucher_type: 'Start date and end date are required for deadline voucher type',
+          voucher_type: 'Start date and end date are required for deadline and free ship voucher type',
         });
       }
       updatedVoucherData = {
@@ -155,7 +155,12 @@ export default class VoucherService {
         duration,
       };
       await Voucher.updateOne({ _id: voucherId }, { $unset: { start_date: '', end_date: '' } });
-    } 
+    } else {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        voucher_type: 'Invalid voucher type',
+      });
+    }
+
     const updatedVoucher = await Voucher.findByIdAndUpdate(voucherId, updatedVoucherData, {
       new: true,
       runValidators: true,
