@@ -23,10 +23,10 @@ export default class VoucherService {
     await checkRecordByField(Voucher, 'name', name, false, req.params.id);
     await checkRecordByField(Voucher, 'code', code, false, req.params.id);
 
-    if (voucher_type === VOUCHER_TYPES.DEADLINE) {
+    if (voucher_type === VOUCHER_TYPES.DEADLINE || voucher_type === VOUCHER_TYPES.FREE_SHIPPING) {
       if (!start_date || !end_date) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
-          voucher_type: 'Start date and end date are required for deadline voucher type',
+          voucher_type: 'Start date and end date are required for deadline and free ship voucher type',
         });
       }
       const newVoucher = await Voucher.create({
@@ -43,10 +43,10 @@ export default class VoucherService {
 
       const populatedVoucher = await Voucher.findById(newVoucher._id).exec();
       return Transformer.transformObjectTypeSnakeToCamel(populatedVoucher.toObject());
-    } else if (voucher_type === VOUCHER_TYPES.PERIOD || voucher_type === VOUCHER_TYPES.FREE_SHIPPING) {
+    } else if (voucher_type === VOUCHER_TYPES.PERIOD) {
       if (!duration) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
-          voucher_type: 'Duration is required for period and free ship voucher type',
+          voucher_type: 'Duration is required for period voucher type',
         });
       }
       const newVoucher = await Voucher.create({
