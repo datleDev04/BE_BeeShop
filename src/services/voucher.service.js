@@ -43,10 +43,10 @@ export default class VoucherService {
 
       const populatedVoucher = await Voucher.findById(newVoucher._id).exec();
       return Transformer.transformObjectTypeSnakeToCamel(populatedVoucher.toObject());
-    } else if (voucher_type === VOUCHER_TYPES.PERIOD) {
+    } else if (voucher_type === VOUCHER_TYPES.PERIOD || voucher_type === VOUCHER_TYPES.FREE_SHIPPING) {
       if (!duration) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
-          voucher_type: 'Duration is required for period voucher type',
+          voucher_type: 'Duration is required for period and free ship voucher type',
         });
       }
       const newVoucher = await Voucher.create({
