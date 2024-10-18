@@ -12,8 +12,6 @@ export const createProductValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().required().trim(),
     description: Joi.string().required(),
-    regular_price: Joi.number().required().min(0),
-    discount_price: Joi.number().min(0),
     thumbnail: Joi.string().required(),
     images: Joi.array().items(Joi.string().trim()).min(1).required(),
     tags: Joi.array()
@@ -27,6 +25,7 @@ export const createProductValidation = async (req, res, next) => {
           size: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
           color: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
           price: Joi.number().required(),
+          discount_price: Joi.number().min(0),
           stock: Joi.number().required(),
         })
       )
@@ -71,8 +70,6 @@ export const updateProductValidation = async (req, res, next) => {
   const correctCondition = Joi.object({
     name: Joi.string().trim(),
     description: Joi.string(),
-    regular_price: Joi.number().min(0),
-    discount_price: Joi.number().min(0),
     thumbnail: Joi.string(),
     images: Joi.array().items(Joi.string().trim()).min(1),
     tags: Joi.array()
@@ -86,6 +83,7 @@ export const updateProductValidation = async (req, res, next) => {
           size: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
           color: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
           price: Joi.number().required(),
+          discount_price: Joi.number().min(0),
           stock: Joi.number().required(),
         })
       )

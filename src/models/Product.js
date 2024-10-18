@@ -22,13 +22,6 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    regular_price: {
-      type: Number,
-      required: true,
-    },
-    discount_price: {
-      type: Number,
-    },
     thumbnail: {
       type: String,
       required: true,

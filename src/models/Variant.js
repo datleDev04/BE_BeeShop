@@ -19,6 +19,10 @@ const variantSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    discount_price: {
+      type: Number,
+      default: 0,
+    },
     size: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Size',
