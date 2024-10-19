@@ -7,26 +7,28 @@ import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
 import CartItem from '../models/Cart_Item.js';
-import { populate } from 'dotenv';
+
+const popolateOptions = [
+  {
+    path: 'cart_items',
+    populate: [
+      {
+        path: 'product',
+      },
+      {
+        path: 'variant',
+        populate: [{ path: 'color' }, { path: 'size' }],
+      },
+    ],
+  },
+  {
+    path: 'user',
+  },
+];
 
 export default class CartService {
   static getAllCarts = async (req) => {
-    const carts = await Cart.find().populate([
-      {
-        path: 'cart_items',
-        populate: [
-          {
-            path: 'product',
-          },
-          {
-            path: 'variant',
-          },
-        ],
-      },
-      {
-        path: 'user',
-      },
-    ]);
+    const carts = await Cart.find().populate(popolateOptions);
     const metaData = carts.map((cart) => {
       cart.user.password = undefined;
       const cartObj = cart.toObject();
@@ -41,22 +43,7 @@ export default class CartService {
 
     const user = await User.findById(userId);
 
-    const cart = await Cart.findOne({ user: userId }).populate([
-      {
-        path: 'cart_items',
-        populate: [
-          {
-            path: 'product',
-          },
-          {
-            path: 'variant',
-          },
-        ],
-      },
-      {
-        path: 'user',
-      },
-    ]);
+    const cart = await Cart.findOne({ user: userId }).populate(popolateOptions);
 
     if (!cart) {
       return [];
@@ -70,9 +57,9 @@ export default class CartService {
     const userId = req.user._id;
     const { product_id, quantity, variant_id } = req.body;
 
-    checkRecordByField(User, '_id', userId, true);
-    checkRecordByField(Product, '_id', product_id, true);
-    checkRecordByField(Variant, '_id', variant_id, true);
+    await checkRecordByField(User, '_id', userId, true);
+    await checkRecordByField(Product, '_id', product_id, true);
+    await checkRecordByField(Variant, '_id', variant_id, true);
 
     const variant = await Variant.findById(variant_id);
     if (quantity > variant.stock) {
@@ -81,7 +68,7 @@ export default class CartService {
       });
     }
 
-    let userCart = await Cart.findOne({ user: userId }).populate([{ path: 'cart_items' }]);
+    let userCart = await Cart.findOne({ user: userId }).populate(popolateOptions);
 
     if (!userCart) {
       userCart = await Cart.create({ user: userId, cart_items: [] });
@@ -89,7 +76,8 @@ export default class CartService {
 
     // Find existing cart item within the user's cart
     const existingCartItemId = userCart.cart_items.find(
-      (item) => item.product.toString() === product_id && item.variant.toString() === variant_id
+      (item) =>
+        item.product._id.toString() === product_id && item.variant._id.toString() === variant_id
     );
 
     let cartItem;
@@ -108,16 +96,7 @@ export default class CartService {
 
     await userCart.save();
 
-    const response = await Cart.findOne({ user: userId }).populate([
-      {
-        path: 'cart_items',
-        populate: [
-          { path: 'product' },
-          { path: 'variant', populate: [{ path: 'size' }, { path: 'color' }] },
-        ],
-      },
-      { path: 'user' },
-    ]);
+    const response = await Cart.findOne({ user: userId }).populate(popolateOptions);
 
     response.user.password = undefined;
     return Transformer.transformObjectTypeSnakeToCamel(response.toObject());
@@ -157,16 +136,7 @@ export default class CartService {
 
     await userCart.save();
 
-    const response = await Cart.findOne({ user: userId }).populate([
-      {
-        path: 'cart_items',
-        populate: [
-          { path: 'variant', populate: [{ path: 'color' }, { path: 'size' }] },
-          { path: 'product' },
-        ],
-      },
-      { path: 'user' },
-    ]);
+    const response = await Cart.findOne({ user: userId }).populate(popolateOptions);
 
     response.user.password = undefined;
     return Transformer.transformObjectTypeSnakeToCamel(response.toObject());

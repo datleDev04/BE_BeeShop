@@ -20,6 +20,7 @@ const populateOptions = [
   { path: 'brand' },
   { path: 'product_colors', populate: { path: 'color_id' } },
   { path: 'product_sizes' },
+  { path: 'product_type' },
 ];
 
 export default class ProductService {
