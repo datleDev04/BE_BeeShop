@@ -33,7 +33,13 @@ const getFilterOptions = (req, filterFields = []) => {
     if (req.query[field]) {
       if (field === 'name') {
         filter[field] = { $regex: `.*${req.query[field]}.*`, $options: 'i' };
-      } else if( req.query[field] === 'null' ) {
+      } else if (Array.isArray(req.query[field]) || typeof req.query[field] === 'string' && req.query[field].includes(',')) {
+        // Tách chuỗi thành array nếu là chuỗi phân cách bằng dấu phẩy
+        const values = Array.isArray(req.query[field])
+          ? req.query[field]
+          : req.query[field].split(',');
+        filter[field] = { $all: values };
+      }  else if( req.query[field] === 'null' ) {
         filter[field] = null;
       } else {
         filter[field] = req.query[field];
