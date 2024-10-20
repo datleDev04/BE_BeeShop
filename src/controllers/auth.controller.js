@@ -147,4 +147,19 @@ export class AuthController {
       next(error);
     }
   };
+
+  static updateProfileUser = async (req, res, next) => {
+    try {
+      const userProfile = await AuthService.updateProfile(req);
+
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Update Profile User successfully',
+        Transformer.transformObjectTypeSnakeToCamel(userProfile)
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
 }
