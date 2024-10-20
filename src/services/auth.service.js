@@ -325,6 +325,7 @@ export class AuthService {
       gender,
       addresses,
       tags,
+      is_new_user
     } = req.body;
 
     const userID = req.user._id
@@ -377,6 +378,7 @@ export class AuthService {
       ...(gender && { gender }),
       ...(addresses && { addresses: newAddressIds }),
       ...(tags && { tags }),
+      ...(is_new_user && { is_new_user }),
     };
 
     const updatedUser = await User.findByIdAndUpdate(userID, updateFields, { new: true })
