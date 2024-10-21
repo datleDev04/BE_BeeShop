@@ -1,7 +1,7 @@
 import express from 'express';
-import { authMiddleware } from '../middleware/authMiddleware.js';
-import { OrderController } from '../controllers/order.controller.js';
-import { objectIdValidation } from '../validations/objectId.validation.js';
+import { authMiddleware } from '../../middleware/authMiddleware.js';
+import { OrderController } from '../../controllers/order.controller.js';
+import { objectIdValidation } from '../../validations/objectId.validation.js';
 
 const orderRouter = express.Router();
 
