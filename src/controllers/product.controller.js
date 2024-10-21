@@ -12,6 +12,15 @@ export class ProductController {
       next(error);
     }
   };
+  static clientGetAllProduct = async (req, res, next) => {
+    try {
+      const { metaData, others } = await ProductService.clientGetAllProduct(req);
+
+      SuccessResponse(res, StatusCodes.CREATED, 'Get all product successfully!', metaData, others);
+    } catch (error) {
+      next(error);
+    }
+  };
   static getAllProduct = async (req, res, next) => {
     try {
       const { metaData, others } = await ProductService.getAllProduct(req);

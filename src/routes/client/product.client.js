@@ -7,7 +7,7 @@ const productClientRouter = express.Router();
 
 productClientRouter.get(
   '/',
-  ProductController.getAllProduct
+  ProductController.clientGetAllProduct
 );
 
 productClientRouter.get(

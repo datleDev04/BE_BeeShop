@@ -11,6 +11,7 @@ import Brand from '../models/Brand.js';
 import Gender from '../models/Gender.js';
 import Size from '../models/Size.js';
 import ProductType from '../models/Product_Type.js';
+import { STATUS } from '../utils/constants.js';
 
 const populateOptions = [
   { path: 'variants', populate: ['color', 'size'] },
@@ -81,7 +82,29 @@ export default class ProductService {
 
   static getAllProduct = async (req) => {
     const options = getPaginationOptions(req);
-    const filter = getFilterOptions(req, ['name', 'status']);
+    const filter = getFilterOptions(req, ['name', 'status', 'brand','tags', 'gender', 'labels','slug']);
+
+    const { docs, ...otherFields } = await Product.paginate(filter, {
+      ...options,
+      populate: populateOptions,
+    });
+
+    const transformedProducts = docs.map((product) =>
+      Transformer.transformObjectTypeSnakeToCamel(product.toObject())
+    );
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedProducts),
+      others: otherFields,
+    };
+  };
+
+  static clientGetAllProduct = async (req) => {
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name', 'status', 'brand','tags', 'gender', 'labels','slug']);
+
+    // set default status is active
+    filter.status = STATUS.ACTIVE
 
     const { docs, ...otherFields } = await Product.paginate(filter, {
       ...options,
