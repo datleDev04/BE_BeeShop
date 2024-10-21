@@ -5,7 +5,7 @@ import { TagController } from "../../controllers/tag.controller.js";
 const tagClientRouter = express.Router();
 
 
-tagClientRouter.get('/',TagController.getAllTags);
+tagClientRouter.get('/',TagController.getAllTagsClient);
 tagClientRouter.get(
   '/:id',
   objectIdValidation,

@@ -12,6 +12,15 @@ export class TagController {
       next(error);
     }
   };
+  static getAllTagsClient = async (req, res, next) => {
+    try {
+      const { metaData, others } = await TagService.getAllTagsClient(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Get all tag successfully', metaData, others);
+    } catch (error) {
+      next(error);
+    }
+  };
 
   static getOneTag = async (req, res, next) => {
     try {
