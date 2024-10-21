@@ -6,6 +6,7 @@ import sizeClientRouter from "./size.client.js";
 import productTypeClientRouter from "./product_type.client.js";
 import wishListClientRouter from "./wishlist.client.js";
 import tagClientRouter from "./tag.client.js";
+import cartRouter from "./cart.js";
 
 const clientRouter = express.Router();
 
@@ -16,5 +17,6 @@ clientRouter.use('/size', sizeClientRouter);
 clientRouter.use('/product-type', productTypeClientRouter);
 clientRouter.use('/wishlist', wishListClientRouter);
 clientRouter.use('/tag', tagClientRouter);
+clientRouter.use('/cart', cartRouter);
 
 export default clientRouter
