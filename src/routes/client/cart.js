@@ -2,6 +2,7 @@ import express from 'express';
 
 import { authMiddleware } from '../../middleware/authMiddleware.js';
 import { CartController } from '../../controllers/cart.controller.js';
+import { objectIdValidation } from '../../validations/objectId.validation.js';
 
 const cartRouter = express.Router();
 
