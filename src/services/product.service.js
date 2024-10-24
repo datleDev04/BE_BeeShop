@@ -98,6 +98,28 @@ export default class ProductService {
     };
   };
 
+  static clientGetAllProduct = async (req) => {
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name', 'status', 'brand','tags', 'gender', 'labels','slug']);
+
+    // set default status is active
+    filter.status = STATUS.ACTIVE
+
+    const { docs, ...otherFields } = await Product.paginate(filter, {
+      ...options,
+      populate: populateOptions,
+    });
+
+    const transformedProducts = docs.map((product) =>
+      Transformer.transformObjectTypeSnakeToCamel(product.toObject())
+    );
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedProducts),
+      others: otherFields,
+    };
+  };
+
   static getOneProduct = async (req) => {
     const { id } = req.params;
     await checkRecordByField(Product, '_id', id, true);
