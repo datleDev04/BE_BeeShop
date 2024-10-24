@@ -14,6 +14,7 @@ import User from '../models/User.js';
 import Cart from '../models/Cart.js';
 import CartItem from '../models/Cart_Item.js';
 import CartService from './cart.service.js';
+import { calculateOrderShippingFee } from '../utils/ShippingCaculator.js';
 
 const orderPopulateOptions = [
   {
@@ -57,6 +58,8 @@ export default class OrderService {
       payment_type,
       voucher,
       user_email,
+      user_name,
+      shipping_fee,
     } = req.body;
 
     // Check if there's enough stock for each item
@@ -88,6 +91,8 @@ export default class OrderService {
       payment_type,
       voucher,
       user_email: user_email || email,
+      user_name,
+      shipping_fee,
       shipping_method,
     });
 

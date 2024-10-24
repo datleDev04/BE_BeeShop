@@ -63,6 +63,15 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Voucher',
     },
+    user_name: {
+      type: String,
+      required: true,
+    },
+    shipping_fee: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
     user_email: {
       type: String,
       required: true,
