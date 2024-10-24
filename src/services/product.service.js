@@ -83,6 +83,7 @@ export default class ProductService {
   static getAllProduct = async (req) => {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name', 'status', 'brand','tags', 'gender', 'labels','slug']);
+    
 
     const { docs, ...otherFields } = await Product.paginate(filter, {
       ...options,
