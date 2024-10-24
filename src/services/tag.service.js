@@ -6,6 +6,29 @@ import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 
 export class TagService {
+  static getAllTagsClient = async (req) => {
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name']);
+
+    filter.status = STATUS.ACTIVE
+
+    const paginatedLabels = await Tags.paginate(filter, options);
+
+    const { docs, ...otherFields } = paginatedLabels;
+
+    const transformedTags = docs.map((label) =>
+      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    );
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedTags),
+      others,
+    };
+  };
   static getAllTags = async (req) => {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name', 'parent_id', 'status']);

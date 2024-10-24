@@ -15,6 +15,7 @@ import {
   sendVerifiedEmail,
 } from '../mail/emails.js';
 import { Transformer } from '../utils/transformer.js';
+import Address from '../models/Address.js';
 
 export class AuthService {
   static register = async (req) => {
@@ -312,5 +313,89 @@ export class AuthService {
     };
 
     return userProfile;
+  };
+
+  static updateProfile = async (req) => {
+    const {
+      full_name,
+      password,
+      avatar_url,
+      phone,
+      birth_day,
+      gender,
+      addresses,
+      tags,
+      is_new_user
+    } = req.body;
+
+    const userID = req.user._id
+
+    const currentUser = await User.findById(userID).populate([
+      {
+        path: 'addresses',
+      },
+    ]);
+
+    if (!currentUser) {
+      throw new ApiError(StatusCodes.NOT_FOUND, {
+        not_found: 'User not found',
+      });
+    }
+
+    let updateAddress = addresses;
+    const defaultAddress = addresses?.filter((address) => address.default);
+    if (defaultAddress?.length > 1) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        addresses: 'There can only be one default address',
+      });
+    } else if (defaultAddress?.length === 0) {
+      updateAddress = addresses.map((a, index) => (index === 0 ? { ...a, default: true } : a));
+    }
+    
+    let newAddressIds;
+    if (addresses) {
+      const oldAddressIds = currentUser.addresses.map((addr) => addr._id);
+      let updateAddress = addresses;
+      const defaultAddress = addresses.filter((address) => address.default);
+      if (defaultAddress.length > 1) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, {
+          addresses: 'There can only be one default address',
+        });
+      } else if (defaultAddress.length === 0) {
+        updateAddress = addresses.map((a, index) => (index === 0 ? { ...a, default: true } : a));
+      }
+      const createdAddresses = await Address.insertMany(updateAddress);
+      await Address.deleteMany({ _id: { $in: oldAddressIds } });
+      newAddressIds = createdAddresses.map((addr) => addr._id);
+    }
+
+    let updateFields = {
+      ...(full_name && { full_name }),
+      ...(password && { password: bcrypt.hashSync(password, 10) }),
+      ...(avatar_url && { avatar_url }),
+      ...(phone && { phone }),
+      ...(birth_day && { birth_day }),
+      ...(gender && { gender }),
+      ...(addresses && { addresses: newAddressIds }),
+      ...(tags && { tags }),
+      ...(is_new_user && { is_new_user }),
+    };
+
+    const updatedUser = await User.findByIdAndUpdate(userID, updateFields, { new: true })
+      .exec();
+
+    if (!updatedUser) {
+      throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, {
+        server: 'Server does not respond',
+      });
+    }
+
+    const populatedUser = await User.findById(updatedUser._id)
+    .populate(["addresses", 'tags'])
+    .exec();
+
+    populatedUser.password = undefined;
+
+    return Transformer.transformObjectTypeSnakeToCamel(populatedUser.toObject());
   };
 }

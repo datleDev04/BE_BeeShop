@@ -12,12 +12,10 @@ import colorRouter from './color.js';
 import sizeRouter from './size.js';
 import voucherRouter from './voucher.js';
 import productTypeRouter from './product_type.js';
-import cartRouter from './cart.js';
 import productRouter from './product.js';
 import docsRouter from './docs_swagger.js';
 import bannerRouter from './banner.js';
 import shippingMethodRouter from './shipping_method.js';
-import orderRouter from './order.js';
 
 const router = express.Router();
 
@@ -34,11 +32,9 @@ router.use('/vouchers', voucherRouter);
 router.use('/colors', colorRouter);
 router.use('/sizes', sizeRouter);
 router.use('/product-types', productTypeRouter);
-router.use('/carts', cartRouter);
 router.use('/products', productRouter);
 router.use('/banners', bannerRouter);
 router.use('/shipping-methods', shippingMethodRouter);
-router.use('/orders', orderRouter);
 router.use('/docs-swagger', docsRouter);
 
 export default router;

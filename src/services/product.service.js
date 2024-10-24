@@ -11,7 +11,6 @@ import Brand from '../models/Brand.js';
 import Gender from '../models/Gender.js';
 import Size from '../models/Size.js';
 import ProductType from '../models/Product_Type.js';
-import { STATUS } from '../utils/constants.js';
 
 const populateOptions = [
   { path: 'variants', populate: ['color', 'size'] },

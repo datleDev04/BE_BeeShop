@@ -79,6 +79,58 @@ export class userValidation {
       next(error);
     }
   };
+  static updateProfile = async (req, res, next) => {
+    const correctCondition = Joi.object({
+      full_name: Joi.string().optional().min(3).max(50).messages({
+        'string.base': 'Full name should be a string',
+        'string.empty': 'Full name cannot be an empty field',
+        'string.min': 'Full name must be at least 3 characters long',
+        'string.max': 'Full name should be at most 50 characters long',
+      }),
+      password: Joi.any(),
+      avatar_url: Joi.string().optional().uri().allow('').messages({
+        'string.base': 'Avatar URL should be a string',
+        'string.uri': 'Avatar URL should be a valid URI',
+      }),
+      phone: Joi.string()
+        .optional()
+        .pattern(/^\d{10}$/)
+        .messages({
+          'string.base': 'Phone should be a string',
+          'string.pattern.base': 'Phone number must be exactly 10 digits',
+        }),
+      birth_day: Joi.date().optional().messages({
+        'date.base': 'Birth day should be a date',
+      }),
+      gender: Joi.string().valid(...Object.values(USER_GENDER_ENUM)),
+      addresses: Joi.array().items(
+        Joi.object({
+          commune: Joi.string().trim().allow(''),
+          district: Joi.string().trim().required(),
+          city: Joi.string().trim().required(),
+          detail_address: Joi.string().trim().required(),
+          user_id: Joi.alternatives().try(
+            Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+            Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+          ),
+          default: Joi.boolean().default(false),
+        })
+      ),
+      tags: Joi.alternatives()
+        .try(
+          Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+          Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+        )
+        .optional(),
+    });
+
+    try {
+      await validateBeforeCreateOrUpdate(correctCondition, req.body);
+      next();
+    } catch (error) {
+      next(error);
+    }
+  };
 
   static createUserInfo = async (req, res, next) => {
     const correctCondition = Joi.object({
