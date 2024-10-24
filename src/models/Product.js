@@ -18,6 +18,9 @@ const productSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    sort_description: {
+      type: String,
+    },
     description: {
       type: String,
       required: true,
@@ -87,6 +90,28 @@ const productSchema = new mongoose.Schema(
       type: Number,
       enum: [STATUS.ACTIVE, STATUS.INACTIVE],
       default: STATUS.ACTIVE,
+    },
+    dimensions: {
+      weight: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+      length: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+      width: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+      height: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
     },
   },
   {
