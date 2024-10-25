@@ -1,6 +1,7 @@
 import Tags from '../models/Tags.js';
 import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import { STATUS } from '../utils/constants.js';
 import { generateSlug } from '../utils/GenerateSlug.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
@@ -10,7 +11,7 @@ export class TagService {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name']);
 
-    filter.status = STATUS.ACTIVE
+    filter.status = STATUS.ACTIVE;
 
     const paginatedLabels = await Tags.paginate(filter, options);
 
