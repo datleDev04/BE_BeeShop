@@ -12,7 +12,7 @@ export default class GenderService {
 
     const slug = await generateSlug(Gender, name);
 
-    const newGender = await Gender.create({ name, slug });
+    const newGender = await Gender.create({ name, slug, ...req.body });
     return Transformer.transformObjectTypeSnakeToCamel(newGender.toObject());
   };
 
@@ -63,6 +63,7 @@ export default class GenderService {
       {
         name,
         slug,
+        ...req.body,
       },
       { new: true }
     );

@@ -17,6 +17,14 @@ const genderSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    image_url: {
+      type: String,
+      required: true,
+    },
+    path: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
