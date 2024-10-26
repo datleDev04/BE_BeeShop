@@ -39,7 +39,7 @@ export default class WishListService {
     const data  = Transformer.removeDeletedField(transformedItems)
 
     return {
-      metaData: data.products,
+      metaData: data,
       others
     };
   };
