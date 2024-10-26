@@ -16,9 +16,9 @@ export class WishListController {
 
   static getall = async (req, res, next) => {
     try {
-      const wishList = await WishListService.getallItems(req);
+      const { metaData, others } = await WishListService.getallItems(req);
   
-      SuccessResponse(res, StatusCodes.OK, 'get all items in wishlist successfully', wishList);
+      SuccessResponse(res, StatusCodes.OK, 'get all items in wishlist successfully', metaData, others);
     } catch (error) {
       next(error);
     }

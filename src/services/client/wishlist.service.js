@@ -29,7 +29,7 @@ export default class WishListService {
     );
   
     return {
-      products: Transformer.removeDeletedField(transformedItems),
+      metaData: Transformer.removeDeletedField(transformedItems),
       others: {
         totalDocs: totalProducts,
         limit: _limit,
