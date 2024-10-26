@@ -13,9 +13,19 @@ export default class WishListService {
       _limit = 10,
     } = req.query;
   
-    const wishlist = await Wishlist.findOne({ user: userID }).populate({
+    const wishlist = await Wishlist.findOne({ user: userID }).populate([{
       path: 'products',
-    });
+      populate: [
+        { path: 'variants', populate: ['color', 'size'] },
+        { path: 'tags' },
+        { path: 'gender' },
+        { path: 'labels' },
+        { path: 'brand' },
+        { path: 'product_colors', populate: { path: 'color_id' } },
+        { path: 'product_sizes' },
+        { path: 'product_type' },
+      ]
+    }]);
   
     if (!wishlist || !wishlist.products) {
       return [];
