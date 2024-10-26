@@ -36,9 +36,11 @@ export default class WishListService {
       totalPages: Math.ceil(totalProducts / _limit),
     }
 
+    const data  = Transformer.removeDeletedField(transformedItems)
+
     return {
-      metaData: Transformer.removeDeletedField(transformedItems),
-      ...others
+      metaData: data.products,
+      others
     };
   };
   
