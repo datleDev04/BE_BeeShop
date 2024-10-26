@@ -28,14 +28,17 @@ export default class WishListService {
       Transformer.transformObjectTypeSnakeToCamel(product.toObject())
     );
   
+
+    const others = {
+      totalDocs: totalProducts,
+      limit: _limit,
+      page: _page,
+      totalPages: Math.ceil(totalProducts / _limit),
+    }
+
     return {
       metaData: Transformer.removeDeletedField(transformedItems),
-      others: {
-        totalDocs: totalProducts,
-        limit: _limit,
-        page: _page,
-        totalPages: Math.ceil(totalProducts / _limit),
-      },
+      ...others
     };
   };
   
