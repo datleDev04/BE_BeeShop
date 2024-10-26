@@ -25,9 +25,18 @@ export class WishListController {
   };
 
 
-  static updateItems = async (req, res, next) => {
+  static updateItemsAdd = async (req, res, next) => {
     try {
-      const wishList = await WishListService.updateItems(req);
+      const wishList = await WishListService.updateItemsAdd(req);
+  
+      SuccessResponse(res, StatusCodes.OK, 'Update wish list successfully', wishList);
+    } catch (error) {
+      next(error);
+    }
+  };
+  static updateItemsRemove = async (req, res, next) => {
+    try {
+      const wishList = await WishListService.updateItemsRemove(req);
   
       SuccessResponse(res, StatusCodes.OK, 'Update wish list successfully', wishList);
     } catch (error) {

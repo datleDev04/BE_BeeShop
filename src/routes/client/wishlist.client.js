@@ -16,10 +16,17 @@ wishListClientRouter.patch(
 
 
 wishListClientRouter.patch(
-  '/:id',
+  '/:id/add',
   authMiddleware,
   objectIdValidation,
-  WishListController.updateItems
+  WishListController.updateItemsAdd
+);
+
+wishListClientRouter.patch(
+  '/:id/remove',
+  authMiddleware,
+  objectIdValidation,
+  WishListController.updateItemsRemove
 );
 
 
