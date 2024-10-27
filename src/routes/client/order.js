@@ -12,7 +12,7 @@ orderRouter.get('/', authMiddleware, OrderController.getAllOrders);
 orderRouter.get('/:id', authMiddleware, objectIdValidation, OrderController.getOneOrder);
 
 //get orders of user
-orderRouter.get('/user/:id', authMiddleware, objectIdValidation, OrderController.getOrderByUser);
+orderRouter.get('/user', authMiddleware, objectIdValidation, OrderController.getOrderByUser);
 
 // create new order
 orderRouter.post('/', authMiddleware, OrderController.createOrder);

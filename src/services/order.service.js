@@ -225,7 +225,7 @@ export default class OrderService {
   };
 
   static getOrderByUser = async (req) => {
-    const { id: userId } = req.params;
+    const userId = req.user._id;
 
     await checkRecordByField(User, '_id', userId, true);
 
