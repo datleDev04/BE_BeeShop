@@ -55,7 +55,7 @@ export default class WishListService {
     const userID = req.user._id;
     const productID = req.params.id;
 
-    await Wishlist.findOneAndUpdate(
+    const wishList = await Wishlist.findOneAndUpdate(
       { user: userID },
       { $addToSet: { products: productID } },
       { new: true, upsert: true }
