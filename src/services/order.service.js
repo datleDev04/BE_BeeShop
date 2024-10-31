@@ -8,8 +8,8 @@ import Variant from '../models/Variant.js';
 import ApiError from '../utils/ApiError.js';
 import { StatusCodes } from 'http-status-codes';
 import { ORDER_STATUS, PAYMENT_STATUS, PAYMENT_TYPE } from '../utils/constants.js';
-import { createPayosPayment } from '../utils/PayOs.js';
-import { createVnpayPayment } from '../utils/VnPay.js';
+import { createPayosPayment, createPayosReturnUrl } from '../utils/PayOs.js';
+import { createVnpayPayment, createVnpayReturnUrl } from '../utils/VnPay.js';
 import User from '../models/User.js';
 import Cart from '../models/Cart.js';
 import CartItem from '../models/Cart_Item.js';
@@ -38,9 +38,6 @@ const orderPopulateOptions = [
         ],
       },
     ],
-  },
-  {
-    path: 'shipping_method',
   },
 ];
 
@@ -72,7 +69,6 @@ export default class OrderService {
       regular_total_price,
       phone_number,
       shipping_address,
-      shipping_method,
       payment_type,
       voucher,
       user_email,
@@ -80,7 +76,6 @@ export default class OrderService {
       shipping_fee,
     } = req.body;
 
-    // Check if there's enough stock for each item
     await Promise.all(
       items.map(async (item) => {
         const variant = await Variant.findById(item.variant_id);
@@ -111,7 +106,6 @@ export default class OrderService {
       user_email: user_email || email,
       user_name,
       shipping_fee,
-      shipping_method,
     });
 
     // Populate the order with items and products
@@ -129,21 +123,13 @@ export default class OrderService {
         ? await createVnpayPayment(req, populatedOrder)
         : await createPayosPayment(populatedOrder);
 
-    await CartService.deleteAllCartItem(req);
-
     return { checkoutUrl };
   };
 
   static rePayment = async (req) => {
     await checkRecordByField(Order, '_id', req.params.id, true);
 
-    const populatedOrder = await Order.findById(req.params.id).populate({
-      path: 'items',
-      populate: {
-        path: 'product',
-        select: 'name',
-      },
-    });
+    const populatedOrder = await Order.findById(req.params.id).populate(orderPopulateOptions);
 
     if (populatedOrder.payment_status === PAYMENT_STATUS.COMPLETED) {
       throw new ApiError(StatusCodes.BAD_REQUEST, 'This order payment completed!');
@@ -152,18 +138,18 @@ export default class OrderService {
     await Promise.all(
       populatedOrder.items.map(async (item) => {
         const variant = await Variant.findById(item.variant_id);
-        if (variant.stock < item.quantity) {
+        if (variant?.stock < item?.quantity) {
           throw new ApiError(StatusCodes.BAD_REQUEST, 'Insufficient stock for the variant');
         }
       })
     );
 
-    // Generate checkout URL based on payment type
     let checkoutUrl =
-      populatedOrder.payment_type === PAYMENT_TYPE.VNPAY
+      payment_type === PAYMENT_TYPE.VNPAY
         ? await createVnpayPayment(req, populatedOrder)
-        : await createPayosPayment(populatedOrder);
-
+        : payment_type === PAYMENT_TYPE.PAYOS
+          ? await createPayosPayment(populatedOrder)
+          : await createZaloPayPayment(populatedOrder);
     return { checkoutUrl };
   };
 
@@ -282,24 +268,19 @@ export default class OrderService {
   };
 
   static updateOrderById = async (req) => {
-    const {
-      phone_number,
-      user_email,
-      shipping_address,
-      order_status,
-      payment_status,
-      tracking_number,
-    } = req.body;
+    const { phone_number, user_email, user_name, shipping_address, order_status, tracking_number } =
+      req.body;
     const { id } = req.params;
 
     await checkRecordByField(Order, '_id', req.params.id, true);
 
     const order = await Order.findById(id);
+
     if (phone_number) order.phone_number = phone_number;
+    if (user_name) order.user_name = user_name;
     if (shipping_address) order.shipping_address = shipping_address;
     if (user_email) order.user_email = user_email;
     if (order_status) order.order_status = order_status;
-    if (payment_status) order.payment_status = payment_status;
     if (tracking_number) order.tracking_number = tracking_number;
     if (order_status == ORDER_STATUS.DELIVERED) {
       order.delivered_date = Date.now()
@@ -320,6 +301,16 @@ export default class OrderService {
     await OrderItem.deleteMany({ _id: { $in: order.items } });
 
     return await Order.findByIdAndDelete(req.params.id);
+  };
+
+  static vnpayReturn = async (req, res) => {
+    const redirectUrl = await createVnpayReturnUrl(req, res);
+    return { redirectUrl };
+  };
+
+  static payosReturn = async (req, res) => {
+    const redirectUrl = await createPayosReturnUrl(req);
+    return { redirectUrl };
   };
 
   static getAdvancedFilterOptions(req) {
@@ -360,11 +351,6 @@ export default class OrderService {
       filter.createdAt = {};
       if (req.query.start_date) filter.createdAt.$gte = new Date(req.query.start_date);
       if (req.query.end_date) filter.createdAt.$lte = new Date(req.query.end_date);
-    }
-
-    // Shipping method filter
-    if (req.query.shipping_method) {
-      filter.shipping_method = req.query.shipping_method;
     }
 
     // Phone number filter

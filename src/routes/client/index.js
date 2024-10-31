@@ -10,7 +10,9 @@ import cartRouter from './cart.js';
 import orderRouter from './order.js';
 import genderRouter from './genders.client.js';
 import shippingClientRouter from './shipping.client.js';
-import productRouter from '../../api/client/product/product.route.js'
+import vnpayRouter from './vnpay.js';
+import payosRouter from './payos.js';
+import productRouter from '../../api/client/product/product.route.js';
 
 const clientRouter = express.Router();
 
@@ -25,8 +27,9 @@ clientRouter.use('/cart', cartRouter);
 clientRouter.use('/order', orderRouter);
 clientRouter.use('/genders', genderRouter);
 clientRouter.use('/shipping', shippingClientRouter);
+clientRouter.use('/vnpay', vnpayRouter);
+clientRouter.use('/payos', payosRouter);
 
-
-clientRouter.use('/products', productRouter)
+clientRouter.use('/products', productRouter);
 
 export default clientRouter;
