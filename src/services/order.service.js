@@ -14,7 +14,7 @@ import User from '../models/User.js';
 import Cart from '../models/Cart.js';
 import CartItem from '../models/Cart_Item.js';
 import CartService from './cart.service.js';
-
+import cron from 'node-cron'
 const orderPopulateOptions = [
   {
     path: 'user',
@@ -40,6 +40,25 @@ const orderPopulateOptions = [
     ],
   },
 ];
+
+cron.schedule('0 0 * * *', async () => {
+  const threeDaysAgo = new Date();
+  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
+  try {
+    const ordersToUpdate = await Order.find({
+      order_status: ORDER_STATUS.DELIVERED,
+      delivered_date: { $lte: threeDaysAgo },
+    });
+
+    for (let order of ordersToUpdate) {
+      order.order_status = ORDER_STATUS.SUCCESS;
+      await order.save();
+    }
+  } catch (error) {
+    throw new ApiError(500, "Cron job update order status failed")
+  }
+});
 
 export default class OrderService {
   static createNewOrder = async (req, res) => {
@@ -211,7 +230,7 @@ export default class OrderService {
   };
 
   static getOrderByUser = async (req) => {
-    const { id: userId } = req.params;
+    const userId = req.user._id;
 
     await checkRecordByField(User, '_id', userId, true);
 
@@ -263,6 +282,9 @@ export default class OrderService {
     if (user_email) order.user_email = user_email;
     if (order_status) order.order_status = order_status;
     if (tracking_number) order.tracking_number = tracking_number;
+    if (order_status == ORDER_STATUS.DELIVERED) {
+      order.delivered_date = Date.now()
+    }
 
     await order.save();
 

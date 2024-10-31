@@ -1,0 +1,79 @@
+import mongoose from 'mongoose';
+const { ObjectId } = mongoose.Types
+import { StatusCodes } from 'http-status-codes';
+import ApiError from '../../../utils/ApiError.js';
+import { cleanObject } from '../../helpers/object.js';
+import { removeObjectKeys } from '../../helpers/object.js';
+import { getArrayParams } from '../../helpers/api-handler.js';
+import { STATUS } from '../../../utils/constants.js'
+
+export const getProductSearchParams = (params) => {
+  const allowKeys = [
+    '_page',
+    '_limit',
+    'tag',
+    'label',
+    'minPrice',
+    'maxPrice',
+    'color',
+    'size',
+    'name',
+    'gender',
+    'orderBy',
+    'sort',
+    'brand',
+    'slug',
+  ];
+  for (const key of Object.keys(params)) {
+    if (!allowKeys.includes(key))
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        params: `Allow params: ${JSON.stringify(allowKeys).replaceAll('"', '')}`,
+      });
+  }
+  const cleanParams = cleanObject(removeObjectKeys(params, 'include', allowKeys));
+  return cleanParams;
+};
+
+export const queryBuilder = (params) => {
+  const {
+    tag,
+    brand,
+    color,
+    size,
+    label,
+    gender,
+    minPrice,
+    maxPrice,
+    ...filter
+  } = getArrayParams(getProductSearchParams(params), [
+    'tag',
+    'brand',
+    'color',
+    'size',
+    'label',
+    'gender',
+  ]);
+
+  const queryOptions = { status: STATUS.ACTIVE, ...filter };
+  let priceOptions = {};
+  if (tag) queryOptions.tags = { $in: tag.map(id => ObjectId.createFromHexString(id)) };
+  if (brand) queryOptions.brand = { $in: brand.map(id => ObjectId.createFromHexString(id)) };
+  if (color) queryOptions.product_colors = { $in: color.map(id => ObjectId.createFromHexString(id)) };
+  if (size) queryOptions.product_sizes = { $in: size.map(id => ObjectId.createFromHexString(id)) };
+  if (label) queryOptions.labels = { $in: label.map(id => ObjectId.createFromHexString(id)) };
+  if (gender) queryOptions.gender = { $in: gender.map(id => ObjectId.createFromHexString(id)) };
+  if (minPrice || maxPrice) {
+    if (minPrice) priceOptions.$gte = Number(minPrice);
+    if (maxPrice) priceOptions.$lte = Number(maxPrice);
+  } else priceOptions = null;
+
+  if (priceOptions) {
+    queryOptions.variants = {
+      $elemMatch: {
+        discount_price: priceOptions,
+      },
+    };
+  }
+
+  return queryOptions
+};

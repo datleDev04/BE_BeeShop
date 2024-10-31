@@ -81,6 +81,10 @@ const orderSchema = new mongoose.Schema(
     tracking_number: {
       type: String,
     },
+    delivered_date: {
+      type: Date,
+      required: false
+    }
   },
   {
     timestamps: true,
