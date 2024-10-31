@@ -2,6 +2,7 @@ import express from 'express';
 import { authMiddleware } from '../../middleware/authMiddleware.js';
 import { OrderController } from '../../controllers/order.controller.js';
 import { objectIdValidation } from '../../validations/objectId.validation.js';
+import { orderValidation, updateOrderValidation } from '../../validations/order.validation.js';
 
 const orderRouter = express.Router();
 
@@ -15,7 +16,7 @@ orderRouter.get('/:id', authMiddleware, objectIdValidation, OrderController.getO
 orderRouter.get('/user/:id', authMiddleware, objectIdValidation, OrderController.getOrderByUser);
 
 // create new order
-orderRouter.post('/', authMiddleware, OrderController.createOrder);
+orderRouter.post('/', authMiddleware, orderValidation, OrderController.createOrder);
 
 // re payment order
 orderRouter.post('/re-payment/:id', authMiddleware, OrderController.rePayment);
@@ -24,6 +25,12 @@ orderRouter.post('/re-payment/:id', authMiddleware, OrderController.rePayment);
 orderRouter.post('/re-order/:id', authMiddleware, OrderController.reOrder);
 
 // update order
-orderRouter.patch('/:id', authMiddleware, objectIdValidation, OrderController.updateOrderById);
+orderRouter.patch(
+  '/:id',
+  authMiddleware,
+  updateOrderValidation,
+  objectIdValidation,
+  OrderController.updateOrderById
+);
 
 export default orderRouter;

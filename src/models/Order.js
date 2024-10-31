@@ -28,6 +28,10 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       min: 0,
     },
+    discount_price: {
+      type: Number,
+      min: 0,
+    },
     shipping_address: {
       type: String,
       required: true,
@@ -54,11 +58,6 @@ const orderSchema = new mongoose.Schema(
       default: PAYMENT_TYPE.VNPAY,
       required: true,
     },
-    shipping_method: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Shipping_Method',
-      required: true,
-    },
     voucher: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Voucher',
@@ -75,6 +74,9 @@ const orderSchema = new mongoose.Schema(
     user_email: {
       type: String,
       required: true,
+    },
+    note: {
+      type: String,
     },
     tracking_number: {
       type: String,

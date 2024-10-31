@@ -43,6 +43,27 @@ export class OrderController {
     }
   };
 
+  static vnpayReturn = async (req, res, next) => {
+    try {
+      const { redirectUrl } = await OrderService.vnpayReturn(req, res);
+      return res.redirect(redirectUrl);
+    } catch (error) {
+      console;
+      next(error);
+    }
+  };
+
+  static payosReturn = async (req, res, next) => {
+    try {
+      const { redirectUrl } = await OrderService.payosReturn(req, res);
+      console.log(redirectUrl);
+      return res.redirect(redirectUrl);
+    } catch (error) {
+      console;
+      next(error);
+    }
+  };
+
   static updateOrderById = async (req, res, next) => {
     try {
       const order = await OrderService.updateOrderById(req, res);

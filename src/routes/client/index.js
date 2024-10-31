@@ -9,6 +9,8 @@ import tagClientRouter from './tag.client.js';
 import cartRouter from './cart.js';
 import orderRouter from './order.js';
 import shippingClientRouter from './shipping.client.js';
+import vnpayRouter from './vnpay.js';
+import payosRouter from './payos.js';
 
 const clientRouter = express.Router();
 
@@ -22,5 +24,7 @@ clientRouter.use('/tag', tagClientRouter);
 clientRouter.use('/cart', cartRouter);
 clientRouter.use('/order', orderRouter);
 clientRouter.use('/shipping', shippingClientRouter);
+clientRouter.use('/vnpay', vnpayRouter);
+clientRouter.use('/payos', payosRouter);
 
 export default clientRouter;

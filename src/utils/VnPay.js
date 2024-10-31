@@ -2,6 +2,10 @@ import crypto from 'crypto';
 import moment from 'moment';
 import qs from 'qs';
 import dotenv from 'dotenv';
+import { PAYMENT_STATUS } from './constants.js';
+import CartService from '../services/cart.service.js';
+import Order from '../models/Order.js';
+import OrderItem from '../models/Order_item.js';
 
 dotenv.config();
 
@@ -24,7 +28,7 @@ export async function createVnpayPayment(req, populatedOrder) {
     vnp_OrderInfo: 'Thanh toan cho ma GD:' + populatedOrder._id,
     vnp_OrderType: 'other',
     vnp_Amount: populatedOrder.total_price * 100,
-    vnp_ReturnUrl: `${process.env.CLIENT_BASE_URL}/payment/vnpay`,
+    vnp_ReturnUrl: `${process.env.SERVER_BASE_URL}/api/client/vnpay/vnpay_return`,
     vnp_CreateDate: createDate,
     vnp_IpAddr: ipAddr,
   };
@@ -43,7 +47,53 @@ export async function createVnpayPayment(req, populatedOrder) {
   return vnpUrl;
 }
 
-function sortObject(obj) {
+export async function createVnpayReturnUrl(req) {
+  let vnp_Params = req.query;
+  let redirectUrl = '';
+
+  const secureHash = vnp_Params['vnp_SecureHash'];
+
+  delete vnp_Params['vnp_SecureHash'];
+  delete vnp_Params['vnp_SecureHashType'];
+
+  vnp_Params = sortObject(vnp_Params);
+
+  const secretKey = process.env.VNP_SECRET_KEY;
+
+  const signData = qs.stringify(vnp_Params, { encode: false });
+  const hmac = crypto.createHmac('sha512', secretKey);
+  const signed = hmac.update(new Buffer.from(signData, 'utf-8')).digest('hex');
+
+  if (secureHash === signed) {
+    const orderId = vnp_Params['vnp_TxnRef'];
+    const rspCode = vnp_Params['vnp_ResponseCode'];
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      redirectUrl = `${process.env.CLIENT_BASE_URL}/payment?cancel=1`;
+    }
+
+    if (rspCode === '00') {
+      order.payment_status = PAYMENT_STATUS.COMPLETED;
+      redirectUrl = `${process.env.CLIENT_BASE_URL}/payment?success=1&order_id=${order._id}`;
+      await CartService.deleteAllCartItem({ user: { _id: order.user } });
+      await order.save();
+      return redirectUrl;
+    } else {
+      if (order) {
+        const orderItems = order?.items;
+        await OrderItem.deleteMany({ _id: { $in: orderItems } });
+        await Order.findByIdAndDelete({ _id: order._id });
+      }
+      redirectUrl = `${process.env.CLIENT_BASE_URL}/payment?cancel=1`;
+    }
+  } else {
+    redirectUrl = `${process.env.CLIENT_BASE_URL}/payment?cancel=1`;
+  }
+  return redirectUrl;
+}
+
+export function sortObject(obj) {
   let sorted = {};
   let str = [];
   let key;
