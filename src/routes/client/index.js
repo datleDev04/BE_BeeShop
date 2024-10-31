@@ -8,6 +8,7 @@ import wishListClientRouter from './wishlist.client.js';
 import tagClientRouter from './tag.client.js';
 import cartRouter from './cart.js';
 import orderRouter from './order.js';
+import genderRouter from './genders.client.js';
 import shippingClientRouter from './shipping.client.js';
 import productRouter from '../../api/client/product/product.route.js'
 
@@ -22,6 +23,7 @@ clientRouter.use('/wishlist', wishListClientRouter);
 clientRouter.use('/tag', tagClientRouter);
 clientRouter.use('/cart', cartRouter);
 clientRouter.use('/order', orderRouter);
+clientRouter.use('/genders', genderRouter);
 clientRouter.use('/shipping', shippingClientRouter);
 
 
