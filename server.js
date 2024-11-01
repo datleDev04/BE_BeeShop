@@ -51,7 +51,7 @@ passport.use('google', googlePassport);
 
 // Routes
 app.use('/api', router);
-app.use('/api/client', clientRouter)
+app.use('/api/client', clientRouter);
 
 // Error handler
 app.all('*', (req, res, next) => {
