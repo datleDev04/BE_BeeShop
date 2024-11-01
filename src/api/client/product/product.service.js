@@ -6,8 +6,8 @@ import _ from 'lodash';
 export const productService = {
   getAllProducts: async (req) => {
     const {
-      _page,
-      _limit,
+      _page = 1,
+      _limit = 10,
       orderBy = 'createdAt',
       sort = 'DESC',
       ...filter
