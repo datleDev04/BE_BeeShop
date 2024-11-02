@@ -13,7 +13,6 @@ import { createVnpayPayment, createVnpayReturnUrl } from '../utils/VnPay.js';
 import User from '../models/User.js';
 import Cart from '../models/Cart.js';
 import CartItem from '../models/Cart_Item.js';
-import CartService from './cart.service.js';
 import cron from 'node-cron'
 const orderPopulateOptions = [
   {
@@ -281,12 +280,21 @@ export default class OrderService {
     if (user_name) order.user_name = user_name;
     if (shipping_address) order.shipping_address = shipping_address;
     if (user_email) order.user_email = user_email;
-    if (order_status) order.order_status = order_status;
     if (tracking_number) order.tracking_number = tracking_number;
     if (order_status == ORDER_STATUS.DELIVERED) {
       order.delivered_date = Date.now()
     }
 
+    if (order_status == ORDER_STATUS.CANCELLED) {
+      if (order.order_status != ORDER_STATUS.PENDING || order.order_status != ORDER_STATUS.PROCESSING) {
+        throw new ApiError(409, {
+          order_status: "You cant change order status"
+        })
+      }
+    }
+    
+    if (order_status) order.order_status = order_status;
+    
     await order.save();
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
