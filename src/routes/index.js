@@ -16,6 +16,7 @@ import productRouter from './product.js';
 import docsRouter from './docs_swagger.js';
 import bannerRouter from './banner.js';
 import shippingMethodRouter from './shipping_method.js';
+import orderRouter from './order.js';
 
 const router = express.Router();
 
@@ -34,6 +35,7 @@ router.use('/sizes', sizeRouter);
 router.use('/product-types', productTypeRouter);
 router.use('/products', productRouter);
 router.use('/banners', bannerRouter);
+router.use('/orders', orderRouter);
 router.use('/shipping-methods', shippingMethodRouter);
 router.use('/docs-swagger', docsRouter);
 

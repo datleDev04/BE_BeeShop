@@ -13,7 +13,8 @@ import { createVnpayPayment, createVnpayReturnUrl } from '../utils/VnPay.js';
 import User from '../models/User.js';
 import Cart from '../models/Cart.js';
 import CartItem from '../models/Cart_Item.js';
-import cron from 'node-cron'
+import cron from 'node-cron';
+import { generateOrderUniqueID } from '../utils/generateOrderIds.js';
 const orderPopulateOptions = [
   {
     path: 'user',
@@ -55,7 +56,7 @@ cron.schedule('0 0 * * *', async () => {
       await order.save();
     }
   } catch (error) {
-    throw new ApiError(500, "Cron job update order status failed")
+    throw new ApiError(500, 'Cron job update order status failed');
   }
 });
 
@@ -90,6 +91,7 @@ export default class OrderService {
     );
     const orderItemIds = orderItems.map((item) => item._id);
 
+    const unique_id = generateOrderUniqueID();
     // Create the order
     const newOrder = await Order.create({
       user: userId,
@@ -105,7 +107,7 @@ export default class OrderService {
       user_email: user_email || email,
       user_name,
       shipping_fee,
-      unique_id: generateOrderUniqueID()
+      unique_id,
     });
 
     // Populate the order with items and products
@@ -282,19 +284,22 @@ export default class OrderService {
     if (user_email) order.user_email = user_email;
     if (tracking_number) order.tracking_number = tracking_number;
     if (order_status == ORDER_STATUS.DELIVERED) {
-      order.delivered_date = Date.now()
+      order.delivered_date = Date.now();
     }
 
     if (order_status == ORDER_STATUS.CANCELLED) {
-      if (order.order_status != ORDER_STATUS.PENDING || order.order_status != ORDER_STATUS.PROCESSING) {
+      if (
+        order.order_status != ORDER_STATUS.PENDING ||
+        order.order_status != ORDER_STATUS.PROCESSING
+      ) {
         throw new ApiError(409, {
-          order_status: "You cant change order status"
-        })
+          order_status: 'You cant change order status',
+        });
       }
     }
-    
+
     if (order_status) order.order_status = order_status;
-    
+
     await order.save();
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
@@ -369,4 +374,5 @@ export default class OrderService {
 
     return filter;
   }
+
 }
