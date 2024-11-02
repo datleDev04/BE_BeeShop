@@ -83,8 +83,12 @@ const orderSchema = new mongoose.Schema(
     },
     delivered_date: {
       type: Date,
-      required: false
-    }
+      required: false,
+    },
+    unique_id: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

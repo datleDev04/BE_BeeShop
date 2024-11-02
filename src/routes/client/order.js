@@ -4,29 +4,29 @@ import { OrderController } from '../../controllers/order.controller.js';
 import { objectIdValidation } from '../../validations/objectId.validation.js';
 import { orderValidation, updateOrderValidation } from '../../validations/order.validation.js';
 
-const orderRouter = express.Router();
+const clientOrderRouter = express.Router();
 
 // get all orders
-orderRouter.get('/', authMiddleware, OrderController.getAllOrders);
+clientOrderRouter.get('/', authMiddleware, OrderController.getAllOrders);
 
 //get orders of user
-orderRouter.get('/user', authMiddleware, OrderController.getOrderByUser);
+clientOrderRouter.get('/user', authMiddleware, OrderController.getOrderByUser);
 
 // get order by ID
-orderRouter.get('/:id', authMiddleware, objectIdValidation, OrderController.getOneOrder);
+clientOrderRouter.get('/:id', authMiddleware, objectIdValidation, OrderController.getOneOrder);
 
 
 // create new order
-orderRouter.post('/', authMiddleware, orderValidation, OrderController.createOrder);
+clientOrderRouter.post('/', authMiddleware, orderValidation, OrderController.createOrder);
 
 // re payment order
-orderRouter.post('/re-payment/:id', authMiddleware, OrderController.rePayment);
+clientOrderRouter.post('/re-payment/:id', authMiddleware, OrderController.rePayment);
 
 // re order
-orderRouter.post('/re-order/:id', authMiddleware, OrderController.reOrder);
+clientOrderRouter.post('/re-order/:id', authMiddleware, OrderController.reOrder);
 
 // update order
-orderRouter.patch(
+clientOrderRouter.patch(
   '/:id',
   authMiddleware,
   updateOrderValidation,
@@ -34,4 +34,4 @@ orderRouter.patch(
   OrderController.updateOrderById
 );
 
-export default orderRouter;
+export default clientOrderRouter;
