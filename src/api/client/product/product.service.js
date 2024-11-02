@@ -34,7 +34,7 @@ export const productService = {
     const product = await Product.findOne({ slug, status: STATUS.ACTIVE }).populate([
       'tags',
       'gender',
-      'variants',
+      {path: 'variants', populate: ['color', 'size']},
       'labels',
       'brand',
       'product_colors',
