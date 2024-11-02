@@ -1,11 +1,21 @@
 import mongoose from 'mongoose';
-const { ObjectId } = mongoose.Types
+const { ObjectId } = mongoose.Types;
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../../../utils/ApiError.js';
 import { cleanObject } from '../../helpers/object.js';
 import { removeObjectKeys } from '../../helpers/object.js';
 import { getArrayParams } from '../../helpers/api-handler.js';
-import { STATUS } from '../../../utils/constants.js'
+import { STATUS } from '../../../utils/constants.js';
+import {
+  COLOR_LOOKUP,
+  COLOR_LOOKUP_FIELDS,
+  GENDER_LOOKUP,
+  GENDER_LOOKUP_FIELDS,
+  SIZE_LOOKUP,
+  SIZE_LOOKUP_FIELDS,
+  VARIANT_LOOKUP,
+  VARIANT_LOOKUP_FIELDS,
+} from './lookup.js';
 
 export const getProductSearchParams = (params) => {
   const allowKeys = [
@@ -35,33 +45,21 @@ export const getProductSearchParams = (params) => {
 };
 
 export const queryBuilder = (params) => {
-  const {
-    tag,
-    brand,
-    color,
-    size,
-    label,
-    gender,
-    minPrice,
-    maxPrice,
-    ...filter
-  } = getArrayParams(getProductSearchParams(params), [
-    'tag',
-    'brand',
-    'color',
-    'size',
-    'label',
-    'gender',
-  ]);
+  const { tag, brand, color, size, label, gender, minPrice, maxPrice, ...filter } = getArrayParams(
+    getProductSearchParams(params),
+    ['tag', 'brand', 'color', 'size', 'label', 'gender']
+  );
 
   const queryOptions = { status: STATUS.ACTIVE, ...filter };
   let priceOptions = {};
-  if (tag) queryOptions.tags = { $in: tag.map(id => ObjectId.createFromHexString(id)) };
-  if (brand) queryOptions.brand = { $in: brand.map(id => ObjectId.createFromHexString(id)) };
-  if (color) queryOptions.product_colors = { $in: color.map(id => ObjectId.createFromHexString(id)) };
-  if (size) queryOptions.product_sizes = { $in: size.map(id => ObjectId.createFromHexString(id)) };
-  if (label) queryOptions.labels = { $in: label.map(id => ObjectId.createFromHexString(id)) };
-  if (gender) queryOptions.gender = { $in: gender.map(id => ObjectId.createFromHexString(id)) };
+  if (tag) queryOptions.tags = { $in: tag.map((id) => ObjectId.createFromHexString(id)) };
+  if (brand) queryOptions.brand = { $in: brand.map((id) => ObjectId.createFromHexString(id)) };
+  if (color)
+    queryOptions.product_colors = { $in: color.map((id) => ObjectId.createFromHexString(id)) };
+  if (size)
+    queryOptions.product_sizes = { $in: size.map((id) => ObjectId.createFromHexString(id)) };
+  if (label) queryOptions.labels = { $in: label.map((id) => ObjectId.createFromHexString(id)) };
+  if (gender) queryOptions.gender = { $in: gender.map((id) => ObjectId.createFromHexString(id)) };
   if (minPrice || maxPrice) {
     if (minPrice) priceOptions.$gte = Number(minPrice);
     if (maxPrice) priceOptions.$lte = Number(maxPrice);
@@ -75,5 +73,27 @@ export const queryBuilder = (params) => {
     };
   }
 
-  return queryOptions
+  return queryOptions;
+};
+
+export const populateOptions = {
+  $lookup: {
+    ...VARIANT_LOOKUP,
+    pipeline: [
+      { $project: VARIANT_LOOKUP_FIELDS },
+      { $lookup: { ...COLOR_LOOKUP, pipeline: [{ $project: COLOR_LOOKUP_FIELDS }] } },
+      { $unwind: { path: '$color', preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          ...SIZE_LOOKUP,
+          pipeline: [
+            { $project: SIZE_LOOKUP_FIELDS },
+            { $lookup: { ...GENDER_LOOKUP, pipeline: [{ $project: GENDER_LOOKUP_FIELDS }] } },
+            { $unwind: { path: '$gender', preserveNullAndEmptyArrays: true } },
+          ],
+        },
+      },
+      { $unwind: { path: '$size', preserveNullAndEmptyArrays: true } },
+    ],
+  },
 };

@@ -12,13 +12,12 @@ export const TransformProduct = (products, transform) => {
 export const listTransform = (product) => {
   const data = product._doc || product;
   const excludeKeys = [
-    'updatedAt',
-    'description',
-    'sort_description',
-    'images',
-    'product_colors',
-    'product_sizes',
-    'variants',
+    // 'updatedAt',
+    // 'description',
+    // 'sort_description',
+    // 'images',
+    // 'product_colors',
+    // 'product_sizes',
   ];
 
   const lowestDiscountPriceVariant = lodash.minBy(data.variants, 'discount_price');

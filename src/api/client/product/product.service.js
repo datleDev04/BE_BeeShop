@@ -1,5 +1,5 @@
 import Product from '../../../models/Product.js';
-import { queryBuilder } from './helper.js';
+import { populateOptions, queryBuilder } from './helper.js';
 import { getSortOptions } from '../../helpers/api-handler.js';
 import _ from 'lodash';
 import { STATUS } from '../../../utils/constants.js';
@@ -11,17 +11,8 @@ export const productService = {
     const { _page = 1, _limit = 10, orderBy = 'createdAt', sort = 'DESC', ...filter } = req.query;
 
     const products = await Product.aggregate([
-      {
-        $lookup: {
-          from: 'Variants',
-          localField: 'variants',
-          foreignField: '_id',
-          as: 'variants',
-        },
-      },
-      {
-        $match: queryBuilder(filter),
-      },
+      populateOptions,
+      { $match: queryBuilder(filter) },
       { $limit: Number(_limit) },
       { $skip: (_page - 1) * _limit },
       { $sort: getSortOptions(orderBy, sort) },
@@ -34,7 +25,7 @@ export const productService = {
     const product = await Product.findOne({ slug, status: STATUS.ACTIVE }).populate([
       'tags',
       'gender',
-      {path: 'variants', populate: ['color', 'size']},
+      { path: 'variants', populate: ['color', 'size'] },
       'labels',
       'brand',
       'product_colors',
