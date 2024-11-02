@@ -106,6 +106,7 @@ export default class OrderService {
       user_email: user_email || email,
       user_name,
       shipping_fee,
+      unique_id: generateOrderUniqueID()
     });
 
     // Populate the order with items and products
