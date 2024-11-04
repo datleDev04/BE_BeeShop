@@ -37,6 +37,24 @@ class Transformer {
     }
     return obj;
   }
+  static transformOrderObjectTypeSnakeToCamel(obj) {
+    if (Array.isArray(obj)) {
+      return obj.map((item) => Transformer.transformObjectTypeSnakeToCamel(item));
+    } else if (obj !== null && obj.constructor === Object) {
+      const newObj = {};
+      Object.keys(obj).forEach((key) => {
+        let newKey = Transformer.snakeToCamel(key);
+        // Trường hợp đặc biệt cho _id thành id
+        if (key === '_id') {
+          newKey = 'id';
+        }
+        newObj[newKey] = Transformer.transformObjectTypeSnakeToCamel(obj[key]);
+      });
+      return Transformer.removeDeletedField(newObj); // Gọi removeDeletedField ở đây
+    }
+
+    return obj;
+  }
 }
 
 export { Transformer };

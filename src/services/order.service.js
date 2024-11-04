@@ -209,6 +209,8 @@ export default class OrderService {
   static getAllOrders = async (req) => {
     const options = getPaginationOptions(req);
     const filter = this.getAdvancedFilterOptions(req);
+    console.log(req.query.order_status);
+    console.log(filter);
 
     const paginatedOrders = await Order.paginate(filter, {
       ...options,
@@ -218,7 +220,7 @@ export default class OrderService {
     const { docs, ...otherFields } = paginatedOrders;
 
     const transformedOrders = docs.map((order) =>
-      Transformer.transformObjectTypeSnakeToCamel(order.toObject())
+      Transformer.transformOrderObjectTypeSnakeToCamel(order.toObject())
     );
 
     const others = {
@@ -266,7 +268,7 @@ export default class OrderService {
     await checkRecordByField(Order, '_id', req.params.id, true);
 
     const order = await Order.findById(req.params.id).populate(orderPopulateOptions);
-    return Transformer.transformObjectTypeSnakeToCamel(order.toObject());
+    return Transformer.transformOrderObjectTypeSnakeToCamel(order.toObject());
   };
 
   static updateOrderById = async (req) => {
@@ -357,6 +359,7 @@ export default class OrderService {
 
     // Order status filter
     if (req.query.order_status && Object.values(ORDER_STATUS).includes(req.query.order_status)) {
+      console.log('ok');
       filter.order_status = req.query.order_status;
     }
 
@@ -374,5 +377,4 @@ export default class OrderService {
 
     return filter;
   }
-
 }
