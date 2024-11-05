@@ -11,7 +11,7 @@ export const productService = {
     const { _page = 1, _limit = 10, orderBy = 'createdAt', sort = 'DESC', ...filter } = req.query;
 
     const products = await Product.aggregate([
-      populateOptions,
+      ...populateOptions,
       { $match: queryBuilder(filter) },
       { $limit: Number(_limit) },
       { $skip: (_page - 1) * _limit },
