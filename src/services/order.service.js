@@ -15,6 +15,8 @@ import Cart from '../models/Cart.js';
 import CartItem from '../models/Cart_Item.js';
 import cron from 'node-cron';
 import { generateOrderUniqueID } from '../utils/generateOrderIds.js';
+import { transporter } from '../utils/mails.js';
+import { getChangeOrderStatusTemplate } from '../mail/emailTemplate.js';
 const orderPopulateOptions = [
   {
     path: 'user',
@@ -292,13 +294,16 @@ export default class OrderService {
         [ORDER_STATUS.PENDING]: [ORDER_STATUS.CANCELLED],
         [ORDER_STATUS.PROCESSING]: [ORDER_STATUS.CANCELLED],
         [ORDER_STATUS.DELEVERING]: [ORDER_STATUS.REQUEST_RETURN],
-        [ORDER_STATUS.DELIVERED]: [ORDER_STATUS.REQUEST_RETURN]
+        [ORDER_STATUS.DELIVERED]: [ORDER_STATUS.REQUEST_RETURN],
       };
 
       // Kiểm tra nếu trạng thái hiện tại không cho phép chuyển sang trạng thái mong muốn
-      if (!allowedTransitions[currentStatus] || !allowedTransitions[currentStatus].includes(order_status)) {
+      if (
+        !allowedTransitions[currentStatus] ||
+        !allowedTransitions[currentStatus].includes(order_status)
+      ) {
         throw new ApiError(409, {
-          message: `User cannot change status from ${currentStatus} to ${order_status}`
+          message: `User cannot change status from ${currentStatus} to ${order_status}`,
         });
       }
 
@@ -310,6 +315,14 @@ export default class OrderService {
     }
 
     await order.save();
+    if (order_status) {
+      await transporter.sendMail({
+        from: 'Beemely Store 👻',
+        to: req.user.email,
+        subject: `Order ${order.unique_id} is updated`,
+        html: getChangeOrderStatusTemplate(req.user.full_name, order_status, order.unique_id),
+      });
+    }
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
 
@@ -347,6 +360,13 @@ export default class OrderService {
     // Cập nhật trạng thái của order
     order.status = order_status;
     await order.save();
+
+    await transporter.sendMail({
+      from: 'Beemely Store 👻',
+      to: req.user.email,
+      subject: `Order ${order.unique_id} is updated`,
+      html: getChangeOrderStatusTemplate(req.user.full_name, order_status, order.unique_id),
+    });
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
 
