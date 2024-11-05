@@ -12,10 +12,14 @@ export const FLAG_PAGE = {
 export const ORDER_STATUS = {
   PENDING: 'pending',
   PROCESSING: 'processing',
-  SHIPPED: 'shipped',
+  DELEVERING: 'delivering',
   DELIVERED: 'delivered',
   SUCCESS: 'success',
   CANCELLED: 'cancelled',
+  REQUEST_RETURN: 'request_return',
+  DENIED_RETURN: 'denied_return',
+  RETURNING: 'returning',
+  RETURNED: 'returned'
 };
 
 export const PAYMENT_STATUS = {

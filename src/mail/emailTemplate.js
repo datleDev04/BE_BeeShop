@@ -124,3 +124,122 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = `
 </body>
 </html>
 `;
+
+
+export const getChangeOrderStatusTemplate = ({
+  userName,
+  orderStatus,
+  orderId,
+}) => `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Status Update</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .email-container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      background-color: #4CAF50;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .content {
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .content h2 {
+      color: #4CAF50;
+    }
+    .status {
+      text-align: center;
+      font-size: 18px;
+      margin: 20px 0;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    .status.pending {
+      color: #FFA500;
+    }
+    .status.processing {
+      color: #007BFF;
+    }
+    .status.delivering {
+      color: #17A2B8;
+    }
+    .status.delivered {
+      color: #28A745;
+    }
+    .status.cancelled {
+      color: #DC3545;
+    }
+    .order-details {
+      background-color: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .order-details th,
+    .order-details td {
+      padding: 10px;
+      text-align: left;
+    }
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+      padding: 20px;
+      border-top: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="header">Beemely Store</div>
+    
+    <div class="content">
+      <h2>Order Status Update</h2>
+      <p>Dear ${userName},</p>
+      <p>We wanted to let you know that the status of your order has been updated. Below are the latest details:</p>
+
+      <div class="status">
+        <strong>Current Status: ${orderStatus}</strong>
+      </div>
+
+      <table class="order-details" width="100%">
+        <tr>
+          <th>Order ID:</th>
+          <td>${orderId}</td>
+        </tr>
+      </table>
+      
+      <p>If you have any questions or need further assistance, please feel free to contact us at any time.</p>
+      <p>Thank you for shopping with Beemely Store!</p>
+    </div>
+
+    <div class="footer">
+      Beemely Store, 123 Business Rd, Business City, BC 12345 <br>
+      &copy; 2024 Beemely Store. All rights reserved.
+    </div>
+  </div>
+</body>
+</html>
+`;

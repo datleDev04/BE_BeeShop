@@ -21,7 +21,7 @@ orderRouter.patch(
   authMiddleware,
   updateOrderValidation,
   objectIdValidation,
-  OrderController.updateOrderById
+  OrderController.adminUpdateOrderStatus
 );
 
 export default orderRouter;
