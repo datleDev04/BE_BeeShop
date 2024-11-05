@@ -74,6 +74,16 @@ export class OrderController {
     }
   };
 
+  static adminUpdateOrderStatus = async (req, res, next) => {
+    try {
+      const order = await OrderService.adminUpdateOrderStatus(req, res);
+      SuccessResponse(res, StatusCodes.OK, 'Update order status successfully', order);
+    } catch (error) {
+      console;
+      next(error);
+    }
+  };
+
   static rePayment = async (req, res, next) => {
     try {
       const paymentOptions = await OrderService.rePayment(req);

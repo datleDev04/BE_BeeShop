@@ -285,28 +285,87 @@ export default class OrderService {
     if (shipping_address) order.shipping_address = shipping_address;
     if (user_email) order.user_email = user_email;
     if (tracking_number) order.tracking_number = tracking_number;
-    if (order_status == ORDER_STATUS.DELIVERED) {
-      order.delivered_date = Date.now();
-    }
 
-    if (order_status == ORDER_STATUS.CANCELLED) {
-      if (
-        order.order_status != ORDER_STATUS.PENDING ||
-        order.order_status != ORDER_STATUS.PROCESSING
-      ) {
+    if (order_status) {
+      // Kiểm tra trạng thái hợp lệ cho người dùng
+      const allowedTransitions = {
+        [ORDER_STATUS.PENDING]: [ORDER_STATUS.CANCELLED],
+        [ORDER_STATUS.PROCESSING]: [ORDER_STATUS.CANCELLED],
+        [ORDER_STATUS.DELEVERING]: [ORDER_STATUS.REQUEST_RETURN],
+        [ORDER_STATUS.DELIVERED]: [ORDER_STATUS.REQUEST_RETURN]
+      };
+
+      // Kiểm tra nếu trạng thái hiện tại không cho phép chuyển sang trạng thái mong muốn
+      if (!allowedTransitions[currentStatus] || !allowedTransitions[currentStatus].includes(order_status)) {
         throw new ApiError(409, {
-          order_status: 'You cant change order status',
+          message: `User cannot change status from ${currentStatus} to ${order_status}`
         });
       }
-    }
 
-    if (order_status) order.order_status = order_status;
+      // Cập nhật trạng thái và ngày giao hàng
+      order.order_status = order_status;
+      if (order_status === ORDER_STATUS.DELIVERED) {
+        order.delivered_date = Date.now();
+      }
+    }
 
     await order.save();
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
 
     return Transformer.transformObjectTypeSnakeToCamel(updatedOrder.toObject());
+  };
+
+  static adminUpdateOrderStatus = async (req) => {
+    const { order_status } = req.body;
+
+    if (
+      order_status == ORDER_STATUS.REQUEST_RETURN ||
+      order_status == ORDER_STATUS.DELIVERED ||
+      order_status == ORDER_STATUS.SUCCESS ||
+      order_status == ORDER_STATUS.CANCELLED
+    ) {
+      throw new ApiError(409, {
+        message: 'Only user can change this type of status',
+      });
+    }
+    const { id } = req.params;
+
+    await checkRecordByField(Order, '_id', req.params.id, true);
+
+    const order = await Order.findById(id);
+
+    const currentStatus = order.status;
+
+    // Kiểm tra trạng thái hợp lệ
+    if (!OrderService.validStatusTransitions[currentStatus].includes(order_status)) {
+      throw new ApiError(400, {
+        message: `Cannot change status from ${currentStatus} to ${order_status}`,
+      });
+    }
+
+    // Cập nhật trạng thái của order
+    order.status = order_status;
+    await order.save();
+
+    const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
+
+    return Transformer.transformObjectTypeSnakeToCamel(updatedOrder.toObject());
+  };
+
+  // Quy tắc chuyển trạng thái hợp lệ
+  static validStatusTransitions = {
+    [ORDER_STATUS.PENDING]: [ORDER_STATUS.PROCESSING, ORDER_STATUS.CANCELLED],
+    [ORDER_STATUS.PROCESSING]: [ORDER_STATUS.DELEVERING, ORDER_STATUS.CANCELLED],
+    [ORDER_STATUS.DELEVERING]: [ORDER_STATUS.DELIVERED, ORDER_STATUS.REQUEST_RETURN],
+    [ORDER_STATUS.DELIVERED]: [ORDER_STATUS.SUCCESS, ORDER_STATUS.REQUEST_RETURN],
+    [ORDER_STATUS.REQUEST_RETURN]: [ORDER_STATUS.RETURNING, ORDER_STATUS.DENIED_RETURN],
+    [ORDER_STATUS.RETURNING]: [ORDER_STATUS.RETURNED],
+    // Các trạng thái cuối cùng không thể thay đổi
+    [ORDER_STATUS.SUCCESS]: [],
+    [ORDER_STATUS.CANCELLED]: [],
+    [ORDER_STATUS.DENIED_RETURN]: [],
+    [ORDER_STATUS.RETURNED]: [],
   };
 
   static deleteOrderById = async (req) => {
