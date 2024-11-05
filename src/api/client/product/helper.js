@@ -7,6 +7,8 @@ import { removeObjectKeys } from '../../helpers/object.js';
 import { getArrayParams } from '../../helpers/api-handler.js';
 import { STATUS } from '../../../utils/constants.js';
 import {
+  BRAND_LOOKUP,
+  BRAND_LOOKUP_FIELDS,
   COLOR_LOOKUP,
   COLOR_LOOKUP_FIELDS,
   GENDER_LOOKUP,
@@ -124,5 +126,9 @@ export const populateOptions = [
   { $lookup: { ...PRODUCT_SIZE_LOOKUP, pipeline: [{ $project: PRODUCT_SIZE_LOOKUP_FIELDS }] } },
   { $lookup: { ...TAG_LOOKUP, pipeline: [{ $project: TAG_LOOKUP_FIELDS }] } },
   { $lookup: { ...GENDER_LOOKUP, pipeline: [{ $project: GENDER_LOOKUP_FIELDS }] } },
+  { $unwind: { path: '$gender', preserveNullAndEmptyArrays: true } },
   { $lookup: { ...PRODUCT_TYPE_LOOKUP, pipeline: [{ $project: PRODUCT_TYPE_LOOKUP_FIELDS }] } },
+  { $unwind: { path: '$product_type', preserveNullAndEmptyArrays: true } },
+  { $lookup: { ...BRAND_LOOKUP, pipeline: [{ $project: BRAND_LOOKUP_FIELDS }] } },
+  { $unwind: { path: '$brand', preserveNullAndEmptyArrays: true } },
 ];

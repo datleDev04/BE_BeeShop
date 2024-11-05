@@ -110,3 +110,18 @@ export const PRODUCT_TYPE_LOOKUP_FIELDS = {
   name: 1,
   slug: 1,
 };
+
+export const BRAND_LOOKUP = {
+  from: 'Brands',
+  localField: 'brand',
+  foreignField: '_id',
+  as: 'brand',
+};
+
+export const BRAND_LOOKUP_FIELDS = {
+  id: 1,
+  name: 1,
+  image: 1,
+  description: 1,
+  slug: 1,
+};
