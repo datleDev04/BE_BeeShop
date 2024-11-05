@@ -66,7 +66,10 @@ export const queryBuilder = (params) => {
     queryOptions.tags = {
       $elemMatch: { _id: { $in: tag.map((id) => ObjectId.createFromHexString(id)) } },
     };
-  if (brand) queryOptions.brand = { $in: brand.map((id) => ObjectId.createFromHexString(id)) };
+  if (brand)
+    queryOptions.brand = {
+      $elemMatch: { _id: { $in: brand.map((id) => ObjectId.createFromHexString(id)) } },
+    };
   if (color)
     queryOptions.product_colors = {
       $elemMatch: {
