@@ -11,11 +11,10 @@ export default class OrderItemService {
     await checkRecordByField(Product, '_id', product_id, true);
     await checkRecordByField(Variant, '_id', variant_id, true);
 
-    const product = await Product.findById({ _id: product_id });
 
     const variant = await Variant.findById({ _id: variant_id });
 
-    const price = product.discount_price ? product.discount_price : variant.price;
+    const price = variant.discount_price ? variant.discount_price : variant.price;
 
     const newOrderItem = await OrderItem.create({
       product: product_id,
