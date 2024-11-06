@@ -290,10 +290,7 @@ export default class OrderService {
     }
 
     if (order_status == ORDER_STATUS.CANCELLED) {
-      if (
-        order.order_status != ORDER_STATUS.PENDING ||
-        order.order_status != ORDER_STATUS.PROCESSING
-      ) {
+      if (order.order_status != ORDER_STATUS.PENDING) {
         throw new ApiError(409, {
           order_status: 'You cant change order status',
         });
@@ -306,7 +303,7 @@ export default class OrderService {
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
 
-    return Transformer.transformObjectTypeSnakeToCamel(updatedOrder.toObject());
+    return Transformer.transformOrderObjectTypeSnakeToCamel(updatedOrder.toObject());
   };
 
   static deleteOrderById = async (req) => {
