@@ -326,7 +326,7 @@ export default class OrderService {
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
 
-    return Transformer.transformObjectTypeSnakeToCamel(updatedOrder.toObject());
+    return Transformer.transformOrderObjectTypeSnakeToCamel(updatedOrder.toObject());
   };
 
   static adminUpdateOrderStatus = async (req) => {
