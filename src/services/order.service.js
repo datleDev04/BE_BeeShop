@@ -241,7 +241,7 @@ export default class OrderService {
     await checkRecordByField(User, '_id', userId, true);
 
     const options = getPaginationOptions(req);
-    const filter = getFilterOptions(req, ['user_email']);
+    const filter = this.getAdvancedFilterOptions(req);
 
     const query = { user: userId, ...filter };
 
