@@ -326,7 +326,7 @@ export default class OrderService {
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
 
-    return Transformer.transformObjectTypeSnakeToCamel(updatedOrder.toObject());
+    return Transformer.transformOrderObjectTypeSnakeToCamel(updatedOrder.toObject());
   };
 
   static adminUpdateOrderStatus = async (req) => {
@@ -348,7 +348,7 @@ export default class OrderService {
 
     const order = await Order.findById(id);
 
-    const currentStatus = order.status;
+    const currentStatus = order.order_status;
 
     // Kiểm tra trạng thái hợp lệ
     if (!OrderService.validStatusTransitions[currentStatus].includes(order_status)) {
@@ -358,7 +358,7 @@ export default class OrderService {
     }
 
     // Cập nhật trạng thái của order
-    order.status = order_status;
+    order.order_status = order_status;
     await order.save();
 
     await transporter.sendMail({
@@ -370,7 +370,7 @@ export default class OrderService {
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
 
-    return Transformer.transformObjectTypeSnakeToCamel(updatedOrder.toObject());
+    return Transformer.transformOrderObjectTypeSnakeToCamel(updatedOrder.toObject());
   };
 
   // Quy tắc chuyển trạng thái hợp lệ
