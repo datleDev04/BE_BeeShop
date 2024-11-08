@@ -6,6 +6,7 @@ import Order from '../models/Order.js';
 import CartService from '../services/cart.service.js';
 import dotenv from 'dotenv';
 import { PAYMENT_STATUS } from './constants.js';
+import Voucher from '../models/Voucher.js';
 
 dotenv.config();
 
@@ -58,6 +59,14 @@ export async function createPayosReturnUrl(req) {
   if (success === '1') {
     redirectUrl = `${process.env.CLIENT_BASE_URL}/payment?success=1&order_id=${order._id}`;
     order.payment_status = PAYMENT_STATUS.COMPLETED;
+
+    if (order.voucher) {
+      const voucher = await Voucher.findById(order.voucher);
+      if (voucher) {
+        voucher.max_usage -= 1;
+        await voucher.save();
+      }
+    }
     await CartService.deleteAllCartItem({ user: { _id: order.user } });
     await order.save();
   }

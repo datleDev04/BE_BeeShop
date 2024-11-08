@@ -23,14 +23,14 @@ export const productService = {
   getProductBySlug: async (req) => {
     const { slug } = req.params;
     const product = await Product.findOne({ slug, status: STATUS.ACTIVE }).populate([
-      'tags',
-      'gender',
       { path: 'variants', populate: ['color', 'size'] },
-      'labels',
-      'brand',
-      'product_colors',
-      'product_sizes',
-      'product_type',
+      { path: 'tags' },
+      { path: 'gender' },
+      { path: 'labels' },
+      { path: 'brand' },
+      { path: 'product_colors', populate: { path: 'color_id' } },
+      { path: 'product_sizes' },
+      { path: 'product_type' },
     ]);
     if (!product) {
       throw new ApiError(StatusCodes.NOT_FOUND, { message: 'Product not found' });
