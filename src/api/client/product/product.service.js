@@ -10,9 +10,7 @@ import Review from '../../../models/Review.js';
 // Utils import
 import { STATUS } from '../../../utils/constants.js';
 import ApiError from '../../../utils/ApiError.js';
-import { filterObjectKeys } from '../../helpers/object.js';
 import { getSortOptions } from '../../helpers/api-handler.js';
-import { ORDER_ITEM_LOOKUP, ROLE_LOOKUP, USER_LOOKUP } from '../../lookup/index.js';
 import { GET_ALL_PRODUCT } from './query-builder/getAllProducts.js';
 import { GET_PRODUCT_REVIEW } from './query-builder/getProductReviews.js';
 
