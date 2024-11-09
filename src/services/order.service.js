@@ -7,7 +7,7 @@ import OrderItemService from './order_item.service.js';
 import Variant from '../models/Variant.js';
 import ApiError from '../utils/ApiError.js';
 import { StatusCodes } from 'http-status-codes';
-import { ORDER_STATUS, PAYMENT_STATUS, PAYMENT_TYPE } from '../utils/constants.js';
+import { ORDER_STATUS, PAYMENT_STATUS, PAYMENT_TYPE, STATUS } from '../utils/constants.js';
 import { createPayosPayment, createPayosReturnUrl } from '../utils/PayOs.js';
 import { createVnpayPayment, createVnpayReturnUrl } from '../utils/VnPay.js';
 import User from '../models/User.js';
@@ -17,6 +17,7 @@ import cron from 'node-cron';
 import { generateOrderUniqueID } from '../utils/generateOrderIds.js';
 import { transporter } from '../utils/mails.js';
 import { getChangeOrderStatusTemplate } from '../mail/emailTemplate.js';
+import Voucher from '../models/Voucher.js';
 const orderPopulateOptions = [
   {
     path: 'user',
@@ -67,7 +68,6 @@ export default class OrderService {
     const { _id: userId, email } = req.user;
     const {
       items,
-      total_price,
       regular_total_price,
       phone_number,
       shipping_address,
@@ -77,6 +77,8 @@ export default class OrderService {
       user_name,
       shipping_fee,
     } = req.body;
+
+    const discountPrice = await this.calculateDiscount(voucher, regular_total_price);
 
     await Promise.all(
       items.map(async (item) => {
@@ -94,11 +96,12 @@ export default class OrderService {
     const orderItemIds = orderItems.map((item) => item._id);
 
     const unique_id = generateOrderUniqueID();
+
     // Create the order
     const newOrder = await Order.create({
       user: userId,
       items: orderItemIds,
-      total_price,
+      total_price: regular_total_price - discountPrice + shipping_fee,
       phone_number,
       regular_total_price,
       shipping_address,
@@ -125,9 +128,29 @@ export default class OrderService {
     let checkoutUrl =
       payment_type === PAYMENT_TYPE.VNPAY
         ? await createVnpayPayment(req, populatedOrder)
-        : await createPayosPayment(populatedOrder);
+        : await createPayosPayment(req, populatedOrder);
 
     return { checkoutUrl };
+  };
+
+  static calculateDiscount = async (voucher, price) => {
+    if (!voucher) return 0;
+
+    const currentVoucher = await Voucher.findById(voucher);
+
+    if (!currentVoucher) throw new ApiError(StatusCodes.BAD_REQUEST, 'Voucher not found!');
+    if (currentVoucher.max_usage <= 0)
+      throw new ApiError(StatusCodes.BAD_REQUEST, 'Voucher out of stock!');
+    if (currentVoucher.status === STATUS.INACTIVE)
+      throw new ApiError(StatusCodes.BAD_REQUEST, 'Voucher is inactive!');
+    if (currentVoucher.end_date < new Date())
+      throw new ApiError(StatusCodes.BAD_REQUEST, 'Voucher is expired!');
+    if (currentVoucher.minimum_order_price > price)
+      throw new ApiError(StatusCodes.BAD_REQUEST, 'Voucher do not valid');
+
+    return currentVoucher.discount_types === 'fixed'
+      ? currentVoucher.discount
+      : (price * currentVoucher.discount) / 100;
   };
 
   static rePayment = async (req) => {
@@ -151,9 +174,7 @@ export default class OrderService {
     let checkoutUrl =
       payment_type === PAYMENT_TYPE.VNPAY
         ? await createVnpayPayment(req, populatedOrder)
-        : payment_type === PAYMENT_TYPE.PAYOS
-          ? await createPayosPayment(populatedOrder)
-          : await createZaloPayPayment(populatedOrder);
+        : await createPayosPayment(populatedOrder);
     return { checkoutUrl };
   };
 

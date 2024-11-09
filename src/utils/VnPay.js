@@ -6,6 +6,7 @@ import { PAYMENT_STATUS } from './constants.js';
 import CartService from '../services/cart.service.js';
 import Order from '../models/Order.js';
 import OrderItem from '../models/Order_item.js';
+import Voucher from '../models/Voucher.js';
 
 dotenv.config();
 
@@ -25,7 +26,7 @@ export async function createVnpayPayment(req, populatedOrder) {
     vnp_Locale: 'vn',
     vnp_CurrCode: 'VND',
     vnp_TxnRef: populatedOrder._id,
-    vnp_OrderInfo: 'Thanh toan cho ma GD:' + populatedOrder._id,
+    vnp_OrderInfo: 'Thanh toan cho ma GD:' + populatedOrder.unique_id,
     vnp_OrderType: 'other',
     vnp_Amount: populatedOrder.total_price * 100,
     vnp_ReturnUrl: `${process.env.SERVER_BASE_URL}/api/client/vnpay/vnpay_return`,
@@ -76,15 +77,22 @@ export async function createVnpayReturnUrl(req) {
     if (rspCode === '00') {
       order.payment_status = PAYMENT_STATUS.COMPLETED;
       redirectUrl = `${process.env.CLIENT_BASE_URL}/payment?success=1&order_id=${order._id}`;
+
+      if (order.voucher) {
+        const voucher = await Voucher.findById(order.voucher);
+        if (voucher) {
+          voucher.max_usage -= 1;
+          await voucher.save();
+        }
+      }
+
       await CartService.deleteAllCartItem({ user: { _id: order.user } });
       await order.save();
       return redirectUrl;
     } else {
-      if (order) {
-        const orderItems = order?.items;
-        await OrderItem.deleteMany({ _id: { $in: orderItems } });
-        await Order.findByIdAndDelete({ _id: order._id });
-      }
+      const orderItems = order?.items;
+      await OrderItem.deleteMany({ _id: { $in: orderItems } });
+      await Order.findByIdAndDelete({ _id: order._id });
       redirectUrl = `${process.env.CLIENT_BASE_URL}/payment?cancel=1`;
     }
   } else {

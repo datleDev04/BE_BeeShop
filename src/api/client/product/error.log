@@ -1,0 +1,191 @@
+
+
+[2024-11-05T14:00:34.366Z]
+Error: Arguments must be aggregate pipeline operators
+Stack: Error: Arguments must be aggregate pipeline operators
+    at Aggregate.append (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:149:11)
+    at new Aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:59:17)
+    at Function.aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\model.js:3891:21)
+    at Object.getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.service.js:13:36)
+    at getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.controller.js:14:45)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:284:15
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------
+
+[2024-11-05T14:42:58.620Z]
+Error: Arguments must be aggregate pipeline operators
+Stack: Error: Arguments must be aggregate pipeline operators
+    at Aggregate.append (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:149:11)
+    at new Aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:59:17)
+    at Function.aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\model.js:3891:21)
+    at Object.getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.service.js:13:36)
+    at getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.controller.js:14:45)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:284:15
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------
+
+[2024-11-05T14:43:00.852Z]
+Error: Arguments must be aggregate pipeline operators
+Stack: Error: Arguments must be aggregate pipeline operators
+    at Aggregate.append (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:149:11)
+    at new Aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:59:17)
+    at Function.aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\model.js:3891:21)
+    at Object.getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.service.js:13:36)
+    at getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.controller.js:14:45)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:284:15
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------
+
+[2024-11-05T14:43:02.042Z]
+Error: Arguments must be aggregate pipeline operators
+Stack: Error: Arguments must be aggregate pipeline operators
+    at Aggregate.append (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:149:11)
+    at new Aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:59:17)
+    at Function.aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\model.js:3891:21)
+    at Object.getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.service.js:13:36)
+    at getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.controller.js:14:45)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:284:15
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------
+
+[2024-11-05T14:43:13.315Z]
+Error: Arguments must be aggregate pipeline operators
+Stack: Error: Arguments must be aggregate pipeline operators
+    at Aggregate.append (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:149:11)
+    at new Aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:59:17)
+    at Function.aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\model.js:3891:21)
+    at Object.getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.service.js:13:36)
+    at getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.controller.js:14:45)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:284:15
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------
+
+[2024-11-05T14:43:14.352Z]
+Error: Arguments must be aggregate pipeline operators
+Stack: Error: Arguments must be aggregate pipeline operators
+    at Aggregate.append (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:149:11)
+    at new Aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:59:17)
+    at Function.aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\model.js:3891:21)
+    at Object.getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.service.js:13:36)
+    at getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.controller.js:14:45)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:284:15
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------
+
+[2024-11-05T14:43:49.600Z]
+Error: Arguments must be aggregate pipeline operators
+Stack: Error: Arguments must be aggregate pipeline operators
+    at Aggregate.append (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:149:11)
+    at new Aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:59:17)
+    at Function.aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\model.js:3891:21)
+    at Object.getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.service.js:13:36)
+    at getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.controller.js:14:45)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:284:15
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------
+
+[2024-11-05T14:43:50.786Z]
+Error: Arguments must be aggregate pipeline operators
+Stack: Error: Arguments must be aggregate pipeline operators
+    at Aggregate.append (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:149:11)
+    at new Aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:59:17)
+    at Function.aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\model.js:3891:21)
+    at Object.getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.service.js:13:36)
+    at getAllProducts (file:///E:/dev/projects/beemely/beemely-api/src/api/client/product/product.controller.js:14:45)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:284:15
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------
+
+[2024-11-07T16:08:35.015Z]
+Error: An error occurred
+Stack: ApiError: An error occurred
+    at getProductSearchParams (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/helper.js:49:13)
+    at queryBuilder (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/helper.js:59:5)
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:15:17)
+    at getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:14:45)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\index.js:346:12)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_pagination\":\"false\",\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------
+
+[2024-11-07T16:32:22.282Z]
+Error: utils.populate: invalid path. Expected string. Got typeof `object`
+Stack: TypeError: utils.populate: invalid path. Expected string. Got typeof `object`
+    at Object.populate (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongoose\lib\utils.js:547:11)
+    at D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongoose\lib\utils.js:518:39
+    at Array.map (<anonymous>)
+    at populate (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongoose\lib\utils.js:518:22)
+    at Query.populate (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongoose\lib\query.js:4724:30)
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:25:76)
+    at getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:26:44)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:119:3)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-converse-chuck-89\"}"
+}
+----------------------------------------
