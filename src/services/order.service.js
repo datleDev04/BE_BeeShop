@@ -355,7 +355,6 @@ export default class OrderService {
 
     if (
       order_status == ORDER_STATUS.REQUEST_RETURN ||
-      order_status == ORDER_STATUS.DELIVERED ||
       order_status == ORDER_STATUS.SUCCESS ||
       order_status == ORDER_STATUS.CANCELLED
     ) {
