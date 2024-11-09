@@ -8,7 +8,7 @@ export const cleanObject = (obj) => {
   });
 };
 
-export const removeObjectKeys = (object, type = 'exclude', keys = []) => {
+export const filterObjectKeys = (object, type = 'exclude', keys = []) => {
   const output = {}
 
   for(const [key, value] of Object.entries(object)) {

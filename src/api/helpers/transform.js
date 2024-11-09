@@ -25,3 +25,12 @@ export const toCamelCase = (obj) => {
 
   return output;
 };
+
+export const Transform = (data, transform) => {
+  const transformFn = transform || toCamelCase
+  if (Array.isArray(data)) {
+    return data.map((item) => transformFn(item));
+  }
+
+  return transformFn(data);
+};

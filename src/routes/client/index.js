@@ -13,6 +13,7 @@ import shippingClientRouter from './shipping.client.js';
 import vnpayRouter from './vnpay.js';
 import payosRouter from './payos.js';
 import productRouter from '../../api/client/product/product.route.js';
+import { reviewRouter } from '../../api/client/review/review.route.js'
 
 const clientRouter = express.Router();
 
@@ -31,5 +32,6 @@ clientRouter.use('/vnpay', vnpayRouter);
 clientRouter.use('/payos', payosRouter);
 
 clientRouter.use('/products', productRouter);
+clientRouter.use('/reviews', reviewRouter);
 
 export default clientRouter;
