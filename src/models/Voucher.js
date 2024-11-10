@@ -8,7 +8,6 @@ const DOCUMENT_NAME = 'Voucher';
 const COLLECTION_NAME = 'Vouchers';
 
 export const VOUCHER_TYPES = {
-  PERIOD: 'PERIOD',
   FREE_SHIPPING: 'FREE_SHIPPING',
   DEADLINE: "DEADLINE"
 };
@@ -27,9 +26,6 @@ const voucherSchema = new mongoose.Schema(
     max_usage: {
       type: Number,
       required: true,
-    },
-    duration: {
-      type: Number,
     },
     discount: {
       type: Number,
