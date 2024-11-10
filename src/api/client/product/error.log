@@ -189,3 +189,78 @@ Additional Info: {
   "slug": "Query: {\"slug\":\"giay-converse-chuck-89\"}"
 }
 ----------------------------------------
+[2024-11-09T12:50:36.380Z]
+Error: An error occurred
+Stack: ApiError: An error occurred
+    at Object.getParams (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:76:15)
+    at Object.getQueries (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:85:12)
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:28:33)
+    at getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:45)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\index.js:346:12)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_pagination\":\"false\",\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------
+
+[2024-11-09T12:50:51.569Z]
+Error: An error occurred
+Stack: ApiError: An error occurred
+    at Object.getParams (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:76:15)
+    at Object.getQueries (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:85:12)
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:28:33)
+    at getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:45)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\index.js:346:12)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_pagination\":\"false\",\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------
+
+[2024-11-09T12:53:27.056Z]
+Error: An error occurred
+Stack: ApiError: An error occurred
+    at Object.getParams (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:76:15)
+    at Object.getQueries (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:85:12)
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:28:33)
+    at getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:45)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\index.js:346:12)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_pagination\":\"false\",\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------
+
+[2024-11-09T15:24:55.194Z]
+Error: FieldPath cannot be constructed with empty string
+Stack: MongoServerError: FieldPath cannot be constructed with empty string
+    at Connection.sendCommand (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongodb\lib\cmap\connection.js:297:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.command (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongodb\lib\cmap\connection.js:325:26)
+    at async Server.command (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongodb\lib\sdam\server.js:166:24)
+    at async AggregateOperation.executeCommand (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongodb\lib\operations\command.js:74:16)
+    at async AggregateOperation.execute (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongodb\lib\operations\aggregate.js:85:21)
+    at async executeOperation (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongodb\lib\operations\execute_operation.js:136:16)
+    at async AggregationCursor._initialize (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongodb\lib\cursor\aggregation_cursor.js:46:26)
+    at async [kInit] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongodb\lib\cursor\abstract_cursor.js:463:27)
+    at async next (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\mongodb\lib\cursor\abstract_cursor.js:520:13)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"\",\"_page\":\"1\",\"_limit\":\"10\"}"
+}
+----------------------------------------

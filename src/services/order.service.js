@@ -18,7 +18,8 @@ import { generateOrderUniqueID } from '../utils/generateOrderIds.js';
 import { transporter } from '../utils/mails.js';
 import { getChangeOrderStatusTemplate } from '../mail/emailTemplate.js';
 import Voucher from '../models/Voucher.js';
-const orderPopulateOptions = [
+
+export const orderPopulateOptions = [
   {
     path: 'user',
     select: '-password -resetPasswordToken -verificationTokenExpiresAt -roles',

@@ -7,6 +7,12 @@ import CartService from '../services/cart.service.js';
 import Order from '../models/Order.js';
 import OrderItem from '../models/Order_item.js';
 import Voucher from '../models/Voucher.js';
+import {
+  generateOrderItemsTable,
+  generateOrderSuccessEmailTemplate,
+} from '../mail/emailTemplate.js';
+import { orderPopulateOptions } from '../services/order.service.js';
+import { sendOrderSuccessEmail } from '../mail/emails.js';
 
 dotenv.config();
 
@@ -69,7 +75,7 @@ export async function createVnpayReturnUrl(req) {
     const orderId = vnp_Params['vnp_TxnRef'];
     const rspCode = vnp_Params['vnp_ResponseCode'];
 
-    const order = await Order.findById(orderId);
+    const order = await Order.findById(orderId).populate(orderPopulateOptions);
     if (!order) {
       redirectUrl = `${process.env.CLIENT_BASE_URL}/payment?cancel=1`;
     }
@@ -88,6 +94,8 @@ export async function createVnpayReturnUrl(req) {
 
       await CartService.deleteAllCartItem({ user: { _id: order.user } });
       await order.save();
+      const emailTemplate = generateOrderSuccessEmailTemplate(order);
+      await sendOrderSuccessEmail(order.user_email, emailTemplate);
       return redirectUrl;
     } else {
       const orderItems = order?.items;
