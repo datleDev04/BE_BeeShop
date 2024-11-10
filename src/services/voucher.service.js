@@ -67,8 +67,16 @@ export default class VoucherService {
     const filter = getFilterOptions(req, ['name']);
 
     filter.status = STATUS.ACTIVE;
+    filter.max_usage = { $gt: 0 };
 
-    const paginatedVouchers = await Voucher.paginate(filter, {
+    const currentDate = new Date();
+    filter.start_date = { $lte: currentDate };
+    filter.end_date = { $gte: currentDate };
+  
+
+    const paginatedVouchers = await Voucher.paginate({
+      ...filter,
+    }, {
       ...options,
     });
 
