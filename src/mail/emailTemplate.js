@@ -1,96 +1,94 @@
 export const VERIFICATION_EMAIL_TEMPLATE = `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verify Your Email</title>
+  <title>Xác Minh Email Của Bạn</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
   <div style="background-color: #1e293b; padding: 20px; text-align: center;">
-    <h1 style="color: white; margin: 0;">Verify Your Email</h1>
+    <h1 style="color: white; margin: 0;">Xác Minh Email Của Bạn</h1>
   </div>
   <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-    <p>Hello,</p>
-    <p>Thank you for signing up! Your verification code is:</p>
+    <p>Xin chào,</p>
+    <p>Cảm ơn bạn đã đăng ký! Mã xác minh của bạn là:</p>
     <div style="text-align: center; margin: 30px 0;">
       <span style="font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #1e293b;">{verificationCode}</span>
     </div>
-    <p>Enter this code on the verification page to complete your registration.</p>
-    <p>This code will expire in 15 minutes for security reasons.</p>
-    <p>If you didn't create an account with us, please ignore this email.</p>
-    <p>Best regards,<br>Beemelly Store.</p>
+    <p>Nhập mã này trên trang xác minh để hoàn tất đăng ký của bạn.</p>
+    <p>Mã này sẽ hết hạn sau 15 phút vì lý do bảo mật.</p>
+    <p>Nếu bạn không tạo tài khoản với chúng tôi, vui lòng bỏ qua email này.</p>
+    <p>Trân trọng,<br>Beemelly Store.</p>
   </div>
   <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;">
-    <p>This is an automated message, please do not reply to this email.</p>
+    <p>Đây là tin nhắn tự động, vui lòng không trả lời email này.</p>
   </div>
 </body>
 </html>
 `;
-
 export const VERIFIED_EMAIL_TEMPLATE = `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email Verified Successfully!</title>
+  <title>Xác Minh Email Thành Công!</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
   <div style="background-color: #1e293b; padding: 20px; text-align: center;">
-    <h1 style="color: white; margin: 0;">Email Verified Successfully</h1>
+    <h1 style="color: white; margin: 0;">Xác Minh Email Thành Công</h1>
   </div>
   <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-    <p>Hello {name},</p>
-    <p>We are pleased to inform you that your email address has been successfully verified.</p>
+    <p>Xin chào {name},</p>
+    <p>Chúng tôi rất vui mừng thông báo rằng địa chỉ email của bạn đã được xác minh thành công.</p>
     <div style="text-align: center; margin: 30px 0;">
       <div style="background-color: #1e293b; color: white; width: 50px; height: 50px; line-height: 50px; border-radius: 50%; display: inline-block; font-size: 30px;">
         ✓
       </div>
     </div>
-    <p>You can now fully enjoy all the features of our application.</p>
-    <p>If you have any questions or need further assistance, please feel free to contact our support team.</p>
-    <p>Best regards,<br>Beemelly Store.</p>
+    <p>Bây giờ bạn có thể hoàn toàn tận hưởng tất cả các tính năng của ứng dụng của chúng tôi.</p>
+    <p>Nếu bạn có bất kỳ câu hỏi nào hoặc cần hỗ trợ thêm, vui lòng liên hệ với đội ngũ hỗ trợ của chúng tôi.</p>
+    <p>Trân trọng,<br>Beemelly Store.</p>
   </div>
   <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;">
-    <p>This is an automated message, please do not reply to this email.</p>
+    <p>Đây là tin nhắn tự động, vui lòng không trả lời email này.</p>
   </div>
 </body>
 </html>
 `;
-
 export const PASSWORD_RESET_SUCCESS_TEMPLATE = `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Password Reset Successful</title>
+  <title>Đặt Lại Mật Khẩu Thành Công</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
   <div style="background-color: #1e293b; padding: 20px; text-align: center;">
-    <h1 style="color: white; margin: 0;">Password Reset Successful</h1>
+    <h1 style="color: white; margin: 0;">Đặt Lại Mật Khẩu Thành Công</h1>
   </div>
   <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-    <p>Hello,</p>
-    <p>We're writing to confirm that your password has been successfully reset.</p>
+    <p>Xin chào,</p>
+    <p>Chúng tôi viết thư này để xác nhận rằng mật khẩu của bạn đã được đặt lại thành công.</p>
     <div style="text-align: center; margin: 30px 0;">
       <div style="background-color: #1e293b; color: white; width: 50px; height: 50px; line-height: 50px; border-radius: 50%; display: inline-block; font-size: 30px;">
         ✓
       </div>
     </div>
-    <p>If you did not initiate this password reset, please contact our support team immediately.</p>
-    <p>For security reasons, we recommend that you:</p>
+    <p>Nếu bạn không yêu cầu đặt lại mật khẩu này, vui lòng liên hệ ngay với đội ngũ hỗ trợ của chúng tôi.</p>
+    <p>Vì lý do bảo mật, chúng tôi khuyến nghị bạn:</p>
     <ul>
-      <li>Use a strong, unique password</li>
-      <li>Enable two-factor authentication if available</li>
-      <li>Avoid using the same password across multiple sites</li>
+      <li>Sử dụng mật khẩu mạnh, duy nhất</li>
+      <li>Kích hoạt xác thực hai yếu tố nếu có thể</li>
+      <li>Tránh sử dụng cùng một mật khẩu trên nhiều trang web</li>
     </ul>
-    <p>Thank you for helping us keep your account secure.</p>
-    <p>Best regards,<br>Beemelly Store.</p>
+    <p>Cảm ơn bạn đã giúp chúng tôi giữ an toàn cho tài khoản của bạn.</p>
+    <p>Trân trọng,<br>Beemelly Store.</p>
   </div>
   <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;">
-    <p>This is an automated message, please do not reply to this email.</p>
+    <p>Đây là tin nhắn tự động, vui lòng không trả lời email này.</p>
   </div>
 </body>
 </html>
@@ -98,39 +96,126 @@ export const PASSWORD_RESET_SUCCESS_TEMPLATE = `
 
 export const PASSWORD_RESET_REQUEST_TEMPLATE = `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset Your Password</title>
+  <title>Đặt Lại Mật Khẩu Của Bạn</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
   <div style="background-color: #1e293b; padding: 20px; text-align: center;">
-    <h1 style="color: white; margin: 0;">Password Reset</h1>
+    <h1 style="color: white; margin: 0;">Đặt Lại Mật Khẩu</h1>
   </div>
   <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-    <p>Hello,</p>
-    <p>We received a request to reset your password. If you didn't make this request, please ignore this email.</p>
-    <p>To reset your password, click the button below:</p>
+    <p>Xin chào,</p>
+    <p>Chúng tôi đã nhận được yêu cầu đặt lại mật khẩu của bạn. Nếu bạn không thực hiện yêu cầu này, vui lòng bỏ qua email này.</p>
+    <p>Để đặt lại mật khẩu của bạn, hãy nhấp vào nút dưới đây:</p>
     <div style="text-align: center; margin: 30px 0;">
-      <a href="{resetURL}" style="background-color: #1e293b; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Reset Password</a>
+      <a href="{resetURL}" style="background-color: #1e293b; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Đặt Lại Mật Khẩu</a>
     </div>
-    <p>This link will expire in 1 hour for security reasons.</p>
-    <p>Best regards,<br>Beemelly Store.</p>
+    <p>Liên kết này sẽ hết hạn sau 1 giờ vì lý do bảo mật.</p>
+    <p>Trân trọng,<br>Beemelly Store.</p>
   </div>
   <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;">
-    <p>This is an automated message, please do not reply to this email.</p>
+    <p>Đây là tin nhắn tự động, vui lòng không trả lời email này.</p>
   </div>
 </body>
 </html>
 `;
 
+export const ORDER_SUCCESS_TEMPLATE = `
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đặt Hàng Thành Công</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <div style="background-color: #1e293b; padding: 20px; text-align: center;">
+    <h1 style="color: white; margin: 0;">Đặt Hàng Thành Công</h1>
+  </div>
+  <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <p>Xin chào {name},</p>
+    <p>Cảm ơn bạn đã đặt hàng tại Beemelly Store!</p>
+    <p>Đơn hàng của bạn đã được xác nhận và đang trong quá trình xử lý. Thông tin chi tiết đơn hàng của bạn như sau:</p>
+    <ul>
+      <li><strong>Số đơn hàng:</strong> {orderNumber}</li>
+      <li><strong>Ngày đặt hàng:</strong> {orderDate}</li>
+      <li><strong>Phương thức thanh toán:</strong> {paymentMethod}</li>
+      <li><strong>Địa chỉ giao hàng:</strong> {shippingAddress}</li>
+      <li><strong>Tổng tiền:</strong> {totalPrice}</li>
+    </ul>
+    <p><strong>Chi tiết sản phẩm:</strong></p>
+    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+      <thead>
+        <tr style="background-color: #1e293b; color: white;">
+          <th style="padding: 10px; border: 1px solid #ddd;">Hình ảnh</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Tên sản phẩm</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Số lượng</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Giá</th>
+        </tr>
+      </thead>
+      <tbody>
+        {orderItems}
+      </tbody>
+    </table>
+    <p>Bạn có thể theo dõi trạng thái đơn hàng của mình bằng cách truy cập vào trang tài khoản của bạn trên website của chúng tôi.</p>
+    <p>Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ thêm, vui lòng liên hệ với đội ngũ hỗ trợ của chúng tôi.</p>
+    <p>Trân trọng,<br>Beemelly Store.</p>
+  </div>
+  <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;">
+    <p>Đây là tin nhắn tự động, vui lòng không trả lời email này.</p>
+  </div>
+</body>
+</html>
+`;
 
-export const getChangeOrderStatusTemplate = ({
-  userName,
-  orderStatus,
-  orderId,
-}) => `
+export const generateOrderSuccessEmailTemplate = (order) => {
+  const orderItemsFormatted = order.items.map((item) => ({
+    name: item.product.name,
+    image: item.product.thumbnail,
+    quantity: item.quantity,
+    price: item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }),
+  }));
+
+  const orderDate = new Date().toLocaleDateString('vi-VN');
+  const price = order.total_price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+  const orderItemsHtml = generateOrderItemsTable(orderItemsFormatted);
+
+  const emailHtml = ORDER_SUCCESS_TEMPLATE.replace('{orderItems}', orderItemsHtml)
+    .replace('{name}', order.user_name)
+    .replace('{orderNumber}', order.unique_id)
+    .replace('{orderDate}', orderDate)
+    .replace(
+      '{paymentMethod}',
+      order.payment_type === 'payos' ? 'Thanh toán bằng Payos' : 'Thanh toán bằng VnPay'
+    )
+    .replace('{shippingAddress}', order.shipping_address)
+    .replace('{totalPrice}', price);
+
+  return emailHtml;
+};
+
+export const generateOrderItemsTable = (products) => {
+  return products
+    .map(
+      (product) => `
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ddd;">
+        <img src="${product.image}" alt="${product.name}" style="max-width: 100px;">
+      </td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${product.name}</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${product.quantity}</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${product.price}</td>
+    </tr>
+  `
+    )
+    .join('');
+};
+
+export const getChangeOrderStatusTemplate = ({ userName, orderStatus, orderId }) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>

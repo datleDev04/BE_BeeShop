@@ -7,6 +7,8 @@ import CartService from '../services/cart.service.js';
 import dotenv from 'dotenv';
 import { PAYMENT_STATUS } from './constants.js';
 import Voucher from '../models/Voucher.js';
+import { generateOrderSuccessEmailTemplate } from '../mail/emailTemplate.js';
+import { sendOrderSuccessEmail } from '../mail/emails.js';
 
 dotenv.config();
 
@@ -67,8 +69,11 @@ export async function createPayosReturnUrl(req) {
         await voucher.save();
       }
     }
+
     await CartService.deleteAllCartItem({ user: { _id: order.user } });
     await order.save();
+    const emailTemplate = generateOrderSuccessEmailTemplate(order);
+    await sendOrderSuccessEmail(order.user_email, emailTemplate);
   }
   return redirectUrl;
 }
