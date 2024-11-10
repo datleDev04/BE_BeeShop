@@ -7,7 +7,13 @@ import OrderItemService from './order_item.service.js';
 import Variant from '../models/Variant.js';
 import ApiError from '../utils/ApiError.js';
 import { StatusCodes } from 'http-status-codes';
-import { ORDER_STATUS, PAYMENT_STATUS, PAYMENT_TYPE, STATUS } from '../utils/constants.js';
+import {
+  ORDER_STATUS,
+  ORDER_STATUS_CONVERT,
+  PAYMENT_STATUS,
+  PAYMENT_TYPE,
+  STATUS,
+} from '../utils/constants.js';
 import { createPayosPayment, createPayosReturnUrl } from '../utils/PayOs.js';
 import { createVnpayPayment, createVnpayReturnUrl } from '../utils/VnPay.js';
 import User from '../models/User.js';
@@ -338,11 +344,12 @@ export default class OrderService {
 
     await order.save();
     if (order_status) {
+      const convertOrderStatus = ORDER_STATUS_CONVERT[order_status];
       await transporter.sendMail({
         from: 'Beemely Store 👻',
         to: req.user.email,
-        subject: `Order ${order.unique_id} is updated`,
-        html: getChangeOrderStatusTemplate(req.user.full_name, order_status, order.unique_id),
+        subject: `Đơn hàng #${order.unique_id} đã được cập nhật`,
+        html: getChangeOrderStatusTemplate(req.user.full_name, convertOrderStatus, order.unique_id),
       });
     }
 
@@ -380,13 +387,14 @@ export default class OrderService {
 
     // Cập nhật trạng thái của order
     order.order_status = order_status;
+    const convertOrderStatus = ORDER_STATUS_CONVERT[order_status];
     await order.save();
 
     await transporter.sendMail({
       from: 'Beemely Store 👻',
       to: req.user.email,
-      subject: `Order ${order.unique_id} is updated`,
-      html: getChangeOrderStatusTemplate(req.user.full_name, order_status, order.unique_id),
+      subject: `Đơn hàng #${order.unique_id} đã được cập nhật`,
+      html: getChangeOrderStatusTemplate(req.user.full_name, convertOrderStatus, order.unique_id),
     });
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);

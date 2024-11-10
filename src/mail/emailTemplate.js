@@ -215,13 +215,13 @@ export const generateOrderItemsTable = (products) => {
     .join('');
 };
 
-export const getChangeOrderStatusTemplate = ({ userName, orderStatus, orderId }) => `
+export const getChangeOrderStatusTemplate = (userName, orderStatus, orderId) => `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Status Update</title>
+  <title>Cập Nhật Trạng Thái Đơn Hàng</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -239,7 +239,7 @@ export const getChangeOrderStatusTemplate = ({ userName, orderStatus, orderId })
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     .header {
-      background-color: #4CAF50;
+      background-color: #1e293b;
       color: #fff;
       text-align: center;
       padding: 20px;
@@ -251,7 +251,7 @@ export const getChangeOrderStatusTemplate = ({ userName, orderStatus, orderId })
       line-height: 1.6;
     }
     .content h2 {
-      color: #4CAF50;
+      color: #1e293b;
     }
     .status {
       text-align: center;
@@ -301,28 +301,28 @@ export const getChangeOrderStatusTemplate = ({ userName, orderStatus, orderId })
     <div class="header">Beemely Store</div>
     
     <div class="content">
-      <h2>Order Status Update</h2>
-      <p>Dear ${userName},</p>
-      <p>We wanted to let you know that the status of your order has been updated. Below are the latest details:</p>
+      <h2>Cập Nhật Trạng Thái Đơn Hàng</h2>
+      <p>Xin chào ${userName},</p>
+      <p>Chúng tôi muốn thông báo rằng trạng thái đơn hàng của bạn đã được cập nhật. Dưới đây là chi tiết mới nhất:</p>
 
       <div class="status">
-        <strong>Current Status: ${orderStatus}</strong>
+        <strong>Trạng Thái Hiện Tại: ${orderStatus}</strong>
       </div>
 
       <table class="order-details" width="100%">
         <tr>
-          <th>Order ID:</th>
+          <th>Mã Đơn Hàng:</th>
           <td>${orderId}</td>
         </tr>
       </table>
       
-      <p>If you have any questions or need further assistance, please feel free to contact us at any time.</p>
-      <p>Thank you for shopping with Beemely Store!</p>
+      <p>Nếu bạn có bất kỳ câu hỏi nào hoặc cần hỗ trợ thêm, vui lòng liên hệ với chúng tôi bất cứ lúc nào.</p>
+      <p>Cảm ơn bạn đã mua sắm tại Beemely Store!</p>
     </div>
 
     <div class="footer">
       Beemely Store, 123 Business Rd, Business City, BC 12345 <br>
-      &copy; 2024 Beemely Store. All rights reserved.
+      &copy; 2024 Beemely Store. Tất cả các quyền được bảo lưu.
     </div>
   </div>
 </body>
