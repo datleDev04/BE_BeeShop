@@ -4,6 +4,7 @@ import Voucher, { VOUCHER_TYPES } from '../models/Voucher.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import { STATUS } from '../utils/constants.js';
 
 export default class VoucherService {
   static createVoucher = async (req) => {
@@ -11,7 +12,6 @@ export default class VoucherService {
       name,
       code,
       max_usage,
-      duration,
       discount,
       discount_types,
       minimum_order_price,
@@ -23,56 +23,50 @@ export default class VoucherService {
     await checkRecordByField(Voucher, 'name', name, false, req.params.id);
     await checkRecordByField(Voucher, 'code', code, false, req.params.id);
 
-    if (voucher_type === VOUCHER_TYPES.DEADLINE || voucher_type === VOUCHER_TYPES.FREE_SHIPPING) {
-      if (!start_date || !end_date) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, {
-          voucher_type: 'Start date and end date are required for deadline and free ship voucher type',
-        });
-      }
-      const newVoucher = await Voucher.create({
-        name,
-        code,
-        max_usage,
-        discount,
-        discount_types,
-        minimum_order_price,
-        voucher_type,
-        start_date,
-        end_date,
-      });
+    const newVoucher = await Voucher.create({
+      name,
+      code,
+      max_usage,
+      discount,
+      discount_types,
+      minimum_order_price,
+      voucher_type,
+      start_date,
+      end_date,
+    });
 
-      const populatedVoucher = await Voucher.findById(newVoucher._id).exec();
-      return Transformer.transformObjectTypeSnakeToCamel(populatedVoucher.toObject());
-    } else if (voucher_type === VOUCHER_TYPES.PERIOD) {
-      if (!duration) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, {
-          voucher_type: 'Duration is required for period voucher type',
-        });
-      }
-      const newVoucher = await Voucher.create({
-        name,
-        code,
-        max_usage,
-        duration,
-        discount,
-        discount_types,
-        minimum_order_price,
-        voucher_type,
-      });
-
-      const populatedVoucher = await Voucher.findById(newVoucher._id).exec();
-
-      return Transformer.transformObjectTypeSnakeToCamel(populatedVoucher.toObject());
-    } else {
-      throw new ApiError(StatusCodes.BAD_REQUEST, {
-        voucher_type: 'Invalid voucher type',
-      });
-    }
+    const populatedVoucher = await Voucher.findById(newVoucher._id).exec();
+    return Transformer.transformObjectTypeSnakeToCamel(populatedVoucher.toObject());
   };
 
   static getAllVouchers = async (req) => {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name', 'status']);
+
+    const paginatedVouchers = await Voucher.paginate(filter, {
+      ...options,
+    });
+
+    const { docs, ...otherFields } = paginatedVouchers;
+
+    const transformedVouchers = docs.map((voucher) =>
+      Transformer.transformObjectTypeSnakeToCamel(voucher.toObject())
+    );
+
+    const others = {
+      ...otherFields,
+    };
+
+    return {
+      metaData: Transformer.removeDeletedField(transformedVouchers),
+      others,
+    };
+  };
+  static getAllVouchersClient = async (req) => {
+    const options = getPaginationOptions(req);
+    const filter = getFilterOptions(req, ['name']);
+
+    filter.status = STATUS.ACTIVE;
 
     const paginatedVouchers = await Voucher.paginate(filter, {
       ...options,
@@ -106,7 +100,6 @@ export default class VoucherService {
       name,
       code,
       max_usage,
-      duration,
       discount,
       discount_types,
       minimum_order_price,
@@ -118,8 +111,8 @@ export default class VoucherService {
 
     const voucherId = req.params.id;
 
-    await checkRecordByField(Voucher, 'name', name, false, req.params.id);
-    await checkRecordByField(Voucher, 'code', code, false, req.params.id);
+    await checkRecordByField(Voucher, 'name', name, false, voucherId);
+    await checkRecordByField(Voucher, 'code', code, false, voucherId);
 
     let updatedVoucherData = {
       name,
@@ -130,40 +123,12 @@ export default class VoucherService {
       status,
       minimum_order_price,
       voucher_type,
+      start_date,
+      end_date,
     };
-
-    if (voucher_type === VOUCHER_TYPES.DEADLINE || voucher_type === VOUCHER_TYPES.FREE_SHIPPING) {
-      if (!start_date || !end_date) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, {
-          voucher_type: 'Start date and end date are required for deadline and free ship voucher type',
-        });
-      }
-      updatedVoucherData = {
-        ...updatedVoucherData,
-        start_date,
-        end_date,
-      };
-      await Voucher.updateOne({ _id: voucherId }, { $unset: { duration: '' } });
-    } else if (voucher_type === VOUCHER_TYPES.PERIOD) {
-      if (!duration) {
-        throw new ApiError(StatusCodes.BAD_REQUEST, {
-          voucher_type: 'Duration is required for period voucher type',
-        });
-      }
-      updatedVoucherData = {
-        ...updatedVoucherData,
-        duration,
-      };
-      await Voucher.updateOne({ _id: voucherId }, { $unset: { start_date: '', end_date: '' } });
-    } else {
-      throw new ApiError(StatusCodes.BAD_REQUEST, {
-        voucher_type: 'Invalid voucher type',
-      });
-    }
 
     const updatedVoucher = await Voucher.findByIdAndUpdate(voucherId, updatedVoucherData, {
       new: true,
-      runValidators: true,
     }).exec();
 
     if (!updatedVoucher) {

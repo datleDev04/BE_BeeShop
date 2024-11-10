@@ -13,6 +13,16 @@ export class VoucherController {
     }
   };
 
+  static getAllVouchersClient = async (req, res, next) => {
+    try {
+      const { metaData, others } = await VoucherService.getAllVouchersClient(req);
+
+      SuccessResponse(res, StatusCodes.OK, 'Get all vouchers successfully', metaData, others);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   static getOneVoucher = async (req, res, next) => {
     try {
       const voucher = await VoucherService.getOneVoucher(req);
