@@ -65,3 +65,18 @@ export const sendResetSuccessEmail = async (email) => {
     throw new Error(`Error sending password reset success email: ${error}`);
   }
 };
+
+export const sendOrderSuccessEmail = async (email, template) => {
+  try {
+    await transporter.sendMail({
+      from: 'Beemely Store 👻',
+      to: email,
+      subject: 'Đặt hàng thành công!',
+      html: template,
+    });
+  } catch (error) {
+    console.error(`Error sending password reset email`, error);
+
+    throw new Error(`Error sending password reset email: ${error}`);
+  }
+};

@@ -48,8 +48,12 @@ export const authMiddleware = async (req, res, next) => {
     const userRoles = Array.from(user.roles.map((role) => role.name));
 
     // return user, accessToken, permissions, roles into request
+
+    const isCustomer = userRoles.length == 1 && userRoles.includes('Customer')
+
     req.user = {
       ...user.toObject(),
+      isSystemAccount: !isCustomer,
       accessToken,
       list_name_permission: userPermissions,
       list_name_role: userRoles,

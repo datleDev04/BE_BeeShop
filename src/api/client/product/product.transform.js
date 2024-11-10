@@ -1,14 +1,6 @@
 import lodash from 'lodash';
 import { toCamelCase } from '../../helpers/transform.js';
 
-export const TransformProduct = (products, transform) => {
-  if (Array.isArray(products)) {
-    return products.map((product) => transform(product));
-  }
-
-  return transform(products);
-};
-
 export const listTransform = (product) => {
   const data = product._doc || product;
   const excludeKeys = [

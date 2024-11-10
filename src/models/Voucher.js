@@ -9,7 +9,7 @@ const COLLECTION_NAME = 'Vouchers';
 
 export const VOUCHER_TYPES = {
   FREE_SHIPPING: 'FREE_SHIPPING',
-  DEADLINE: "DEADLINE"
+  DEADLINE: 'DEADLINE',
 };
 
 const voucherSchema = new mongoose.Schema(
