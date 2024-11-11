@@ -21,4 +21,17 @@ export const reviewController = {
       next(error);
     }
   },
+  deleteReview: async (req, res, next) => {
+    try {
+      const deleteResult = await reviewService.deleteReview(req)
+      console.log("🦎 ~ deleteReview: ~ deleteResult:", deleteResult)
+      SuccessResponse(res, StatusCodes.OK, 'Success', Transform(req.params))
+    }catch (error) {
+      errorLogger.logError(error, {
+        function: 'deleteReview',
+        params: `Params: ${JSON.stringify(req.params)}`
+      });
+      next(error)
+    }
+  }
 };

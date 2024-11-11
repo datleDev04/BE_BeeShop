@@ -5,5 +5,6 @@ import { addReviewValidation } from './review.validation.js'
 const reviewRouter = express.Router();
 
 reviewRouter.post('/', authMiddleware, addReviewValidation, reviewController.addReview);
+reviewRouter.delete('/:id', authMiddleware, reviewController.deleteReview);
 
 export { reviewRouter };

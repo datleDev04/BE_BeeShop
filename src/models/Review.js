@@ -34,7 +34,8 @@ const reviewSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
     },
     status: {
-      type: Object.values(STATUS),
+      type: Number,
+      enum: Object.values(STATUS),
       default: STATUS.ACTIVE,
       required: true,
     },

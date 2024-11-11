@@ -43,6 +43,5 @@ export const GET_PRODUCT_REVIEW = {
     },
     { $unwind: { path: '$user', preserveNullAndEmptyArrays: true } },
     { $unwind: { path: '$order_item', preserveNullAndEmptyArrays: true } },
-    { $unwind: { path: '$status', preserveNullAndEmptyArrays: true } },
   ],
 };
