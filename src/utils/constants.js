@@ -19,7 +19,20 @@ export const ORDER_STATUS = {
   REQUEST_RETURN: 'request_return',
   DENIED_RETURN: 'denied_return',
   RETURNING: 'returning',
-  RETURNED: 'returned'
+  RETURNED: 'returned',
+};
+
+export const ORDER_STATUS_CONVERT = {
+  pending: 'Đang chờ xác nhận',
+  processing: 'Đang chuẩn bị hàng',
+  delivering: 'Đang giao hàng',
+  delivered: 'Đã giao hàng tới người nhận',
+  success: 'Người nhận xác nhận đơn hàng',
+  cancelled: 'Bị Hủy',
+  request_return: 'Yêu cầu trả hàng',
+  denied_return: 'Từ chối trả hàng',
+  returning: 'Đang trả hàng',
+  returned: 'Trả hàng thành công',
 };
 
 export const PAYMENT_STATUS = {
