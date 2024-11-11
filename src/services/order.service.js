@@ -319,6 +319,8 @@ export default class OrderService {
         [ORDER_STATUS.DELIVERED]: [ORDER_STATUS.REQUEST_RETURN],
       };
 
+      const currentStatus = order.order_status;
+
       // Kiểm tra nếu trạng thái hiện tại không cho phép chuyển sang trạng thái mong muốn
       if (
         !allowedTransitions[currentStatus] ||
