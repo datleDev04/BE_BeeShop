@@ -27,6 +27,10 @@ const voucherSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    max_reduce: {
+      type: Number,
+      required: false,
+    },
     discount: {
       type: Number,
       required: true,

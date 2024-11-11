@@ -16,12 +16,17 @@ export default class VoucherService {
       discount_types,
       minimum_order_price,
       start_date,
+      max_reduce,
       end_date,
       voucher_type,
     } = req.body;
 
     await checkRecordByField(Voucher, 'name', name, false, req.params.id);
     await checkRecordByField(Voucher, 'code', code, false, req.params.id);
+
+    if (discount_types != "percentage") {
+      max_reduce = null
+    }
 
     const newVoucher = await Voucher.create({
       name,
@@ -32,6 +37,7 @@ export default class VoucherService {
       minimum_order_price,
       voucher_type,
       start_date,
+      max_reduce,
       end_date,
     });
 
@@ -72,13 +78,15 @@ export default class VoucherService {
     const currentDate = new Date();
     filter.start_date = { $lte: currentDate };
     filter.end_date = { $gte: currentDate };
-  
 
-    const paginatedVouchers = await Voucher.paginate({
-      ...filter,
-    }, {
-      ...options,
-    });
+    const paginatedVouchers = await Voucher.paginate(
+      {
+        ...filter,
+      },
+      {
+        ...options,
+      }
+    );
 
     const { docs, ...otherFields } = paginatedVouchers;
 
@@ -113,6 +121,7 @@ export default class VoucherService {
       minimum_order_price,
       voucher_type,
       status,
+      max_reduce,
       start_date,
       end_date,
     } = req.body;
@@ -129,11 +138,16 @@ export default class VoucherService {
       discount,
       discount_types,
       status,
+      max_reduce,
       minimum_order_price,
       voucher_type,
       start_date,
       end_date,
     };
+
+    if (discount_types != "percentage") {
+      updatedVoucherData.max_reduce = null
+    }
 
     const updatedVoucher = await Voucher.findByIdAndUpdate(voucherId, updatedVoucherData, {
       new: true,
