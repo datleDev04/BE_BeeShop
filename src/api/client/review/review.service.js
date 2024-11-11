@@ -23,16 +23,16 @@ export const reviewService = {
         });
       }
 
-      if(replyReview.reply) {
+      if (replyReview.reply) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
           reply: `${reply}: This review cannot be replied to`,
         });
       }
 
-      if(replyReview.status === STATUS.INACTIVE) {
+      if (replyReview.status === STATUS.INACTIVE) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
           reply: `${reply}: This review has been disabled`,
-        })
+        });
       }
     }
 
@@ -67,6 +67,25 @@ export const reviewService = {
     orderItem.has_feedback = true;
     await orderItem.save();
 
+    return review;
+  },
+  deleteReview: async (req) => {
+    const { id } = req.params;
+
+    const review = await Review.findOneAndUpdate(
+      {
+        _id: id,
+        user: req.user._id,
+        status: STATUS.ACTIVE
+      },
+      { status: STATUS.INACTIVE }
+    );
+
+    if (!review) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        message: 'Review not found or unauthorized to delete',
+      });
+    }
     return review;
   },
 };
