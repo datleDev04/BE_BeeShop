@@ -135,7 +135,7 @@ export default class OrderService {
     let checkoutUrl =
       payment_type === PAYMENT_TYPE.VNPAY
         ? await createVnpayPayment(req, populatedOrder)
-        : await createPayosPayment(req, populatedOrder);
+        : await createPayosPayment(populatedOrder);
 
     return { checkoutUrl };
   };
