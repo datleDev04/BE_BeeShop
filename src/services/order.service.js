@@ -49,6 +49,9 @@ export const orderPopulateOptions = [
       },
     ],
   },
+  {
+    path: 'voucher',
+  },
 ];
 
 cron.schedule('0 0 * * *', async () => {
