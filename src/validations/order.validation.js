@@ -30,7 +30,11 @@ export const orderValidation = async (req, res, next) => {
     phone_number: Joi.string().required().messages({
       'string.empty': 'Phone number is required',
     }),
-    voucher: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).optional(),
+    voucher: Joi.string()
+      .pattern(OBJECT_ID_RULE)
+      .message(OBJECT_ID_RULE_MESSAGE)
+      .allow(null)
+      .optional(),
     user_name: Joi.string().required().messages({
       'string.empty': 'User name is required',
     }),
