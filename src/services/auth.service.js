@@ -16,6 +16,7 @@ import {
 } from '../mail/emails.js';
 import { Transformer } from '../utils/transformer.js';
 import Address from '../models/Address.js';
+import Wishlist from '../models/Wishlist.js'
 
 export class AuthService {
   static register = async (req) => {
@@ -296,6 +297,8 @@ export class AuthService {
       ])
       .exec();
 
+    const wishlist = await Wishlist.findOne({ user: req.user._id })
+
     const userPermissions = req.user.roles.flatMap((role) =>
       role.permissions.map((permission) => permission.name)
     );
@@ -308,6 +311,7 @@ export class AuthService {
 
     const userProfile = {
       ...user.toObject(),
+      wishlist: wishlist?.products || [],
       list_name_permission: req.user.list_name_permission,
       list_name_role: req.user.list_name_role,
     };
@@ -325,10 +329,10 @@ export class AuthService {
       gender,
       addresses,
       tags,
-      is_new_user
+      is_new_user,
     } = req.body;
 
-    const userID = req.user._id
+    const userID = req.user._id;
 
     const currentUser = await User.findById(userID).populate([
       {
@@ -351,7 +355,7 @@ export class AuthService {
     } else if (defaultAddress?.length === 0) {
       updateAddress = addresses.map((a, index) => (index === 0 ? { ...a, default: true } : a));
     }
-    
+
     let newAddressIds;
     if (addresses) {
       const oldAddressIds = currentUser.addresses.map((addr) => addr._id);
@@ -381,8 +385,7 @@ export class AuthService {
       ...(is_new_user && { is_new_user }),
     };
 
-    const updatedUser = await User.findByIdAndUpdate(userID, updateFields, { new: true })
-      .exec();
+    const updatedUser = await User.findByIdAndUpdate(userID, updateFields, { new: true }).exec();
 
     if (!updatedUser) {
       throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, {
@@ -391,8 +394,8 @@ export class AuthService {
     }
 
     const populatedUser = await User.findById(updatedUser._id)
-    .populate(["addresses", 'tags'])
-    .exec();
+      .populate(['addresses', 'tags'])
+      .exec();
 
     populatedUser.password = undefined;
 
