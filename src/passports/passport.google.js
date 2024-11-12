@@ -1,6 +1,8 @@
 import User from '../models/User.js';
 import PassportGoogleOAuth2 from 'passport-google-oauth2';
 import { STATUS } from '../utils/constants.js';
+import ApiError from '../utils/ApiError.js';
+import { StatusCodes } from 'http-status-codes';
 
 const GoogleStrategy = PassportGoogleOAuth2.Strategy;
 
@@ -24,6 +26,11 @@ export default new GoogleStrategy(
       });
       return done(null, newUser);
     }
+
+    if (user.status === STATUS.INACTIVE) {
+      throw new ApiError(StatusCodes.FORBIDDEN, { access: 'Tài khoản đã bị vô hiệu hóa' });
+    }
+
     return done(null, user);
   }
 );
