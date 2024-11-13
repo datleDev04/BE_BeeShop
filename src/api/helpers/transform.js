@@ -29,7 +29,10 @@ export const toCamelCase = (obj) => {
 export const Transform = (data, transform) => {
   const transformFn = transform || toCamelCase
   if (Array.isArray(data)) {
-    return data.map((item) => transformFn(item));
+    return data.map((item) => {
+      const dt = item._doc || item
+      return transformFn(dt)
+    });
   }
 
   return transformFn(data);
