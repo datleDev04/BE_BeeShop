@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { SuccessResponse } from '../../../utils/response.js';
 import { statsService } from './stats.service.js';
 import { Transform } from '../../helpers/transform.js';
-import { mostPurchasedColorTransform, mostPurchasedSizeTransform } from './stats.transform.js';
+import { mostOrdersTransform, mostPurchasedColorTransform, mostPurchasedSizeTransform } from './stats.transform.js';
 import { ErrorLogger } from '../../../utils/ErrorLogger.js'
 
 const errorLogger = new ErrorLogger({
@@ -40,6 +40,40 @@ export const statsController = {
     } catch (error) {
       errorLogger.logError(error, {
         function: 'getMostPurchasedColor',
+      });
+      next(error);
+    }
+  },
+  getAlmostOutOfStock: async (req, res, next) => {
+    try {
+      const result = await statsService.getAlmostOutOfStock();
+
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Success',
+        Transform(result)
+      );
+    } catch (error) {
+      errorLogger.logError(error, {
+        function: 'getAlmostOutOfStock',
+      });
+      next(error);
+    }
+  },
+  getMostOrders: async (req, res, next) => {
+    try {
+      const result = await statsService.getMostOrders();
+
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Success',
+        Transform(result, mostOrdersTransform)
+      );
+    } catch (error) {
+      errorLogger.logError(error, {
+        function: 'getMostOrders',
       });
       next(error);
     }

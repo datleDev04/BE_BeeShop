@@ -15,3 +15,11 @@ export const mostPurchasedColorTransform = (originData) => {
     ...toCamelCase({ id: _id.at(0), name: color.at(0), total: quantity * count }),
   };
 };
+
+export const mostOrdersTransform = (originData) => {
+  const { user, count = 0 } = originData._doc || originData;
+
+  return {
+    ...toCamelCase({ ...user, totalOrder: count }),
+  };
+};
