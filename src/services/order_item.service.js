@@ -24,9 +24,6 @@ export default class OrderItemService {
       price,
     });
 
-    variant.stock -= quantity;
-    await variant.save();
-
     return newOrderItem;
   };
 }
