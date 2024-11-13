@@ -13,6 +13,7 @@ import {
 } from '../mail/emailTemplate.js';
 import { orderPopulateOptions } from '../services/order.service.js';
 import { sendOrderSuccessEmail } from '../mail/emails.js';
+import Variant from '../models/Variant.js';
 
 dotenv.config();
 
@@ -91,6 +92,16 @@ export async function createVnpayReturnUrl(req) {
           await voucher.save();
         }
       }
+
+      await Promise.all(
+        order.items.map(async (item) => {
+          const variant = await Variant.findById(item.variant._id);
+          if (variant) {
+            variant.stock -= item.quantity;
+          }
+          await variant.save();
+        })
+      );
 
       await CartService.deleteAllCartItem({ user: { _id: order.user } });
       await order.save();
