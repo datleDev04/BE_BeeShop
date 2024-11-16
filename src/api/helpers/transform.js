@@ -1,6 +1,16 @@
 import lodash from 'lodash';
 import { TypeCheck } from './typeCheck.js';
 
+export const reSort = (obj) => {
+  const sortedObj = {};
+  const sortedKeys = Object.keys(obj).sort();
+  sortedKeys.forEach((key) => {
+    sortedObj[key] = obj[key];
+  });
+
+  return sortedObj;
+};
+
 export const toCamelCase = (obj) => {
   const output = {};
   for (const [key, value] of Object.entries(obj)) {
@@ -27,13 +37,13 @@ export const toCamelCase = (obj) => {
 };
 
 export const Transform = (data, transform) => {
-  const transformFn = transform || toCamelCase
+  const transformFn = transform || toCamelCase;
   if (Array.isArray(data)) {
     return data.map((item) => {
-      const dt = item._doc || item
-      return transformFn(dt)
+      const dt = item._doc || item;
+      return reSort(transformFn(dt));
     });
   }
 
-  return transformFn(data);
+  return reSort(transformFn(data));
 };

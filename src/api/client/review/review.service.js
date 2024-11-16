@@ -76,7 +76,7 @@ export const reviewService = {
       {
         _id: id,
         user: req.user._id,
-        status: STATUS.ACTIVE
+        status: STATUS.ACTIVE,
       },
       { status: STATUS.INACTIVE }
     );
@@ -87,5 +87,11 @@ export const reviewService = {
       });
     }
     return review;
+  },
+  getUserReviews: async (req) => {
+    const reviews = await Review.find({ user: req.user._id }).populate([
+      { path: 'order_item', populate: { path: 'product' } },
+    ]);
+    return reviews;
   },
 };
