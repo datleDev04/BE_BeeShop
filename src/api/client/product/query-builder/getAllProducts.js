@@ -72,6 +72,7 @@ export const GET_ALL_PRODUCT = {
       'sort',
       'brand',
       'slug',
+      'productType',
     ];
     for (const key of Object.keys(params)) {
       if (!allowKeys.includes(key))
@@ -83,9 +84,9 @@ export const GET_ALL_PRODUCT = {
     return cleanParams;
   },
   getQueries(params) {
-    const { tag, brand, color, size, label, gender, minPrice, maxPrice, ...filter } = getArrayParams(
+    const { tag, brand, color, size, label, gender, productType, minPrice, maxPrice, ...filter } = getArrayParams(
       this.getParams(params),
-      ['tag', 'brand', 'color', 'size', 'label', 'gender']
+      ['tag', 'brand', 'color', 'size', 'label', 'gender', 'productType']
     );
   
     const queryOptions = { status: STATUS.ACTIVE, ...filter };
@@ -96,6 +97,8 @@ export const GET_ALL_PRODUCT = {
       };
     if (brand)
       queryOptions['brand._id'] = { $in: brand.map((id) => ObjectId.createFromHexString(id)) }
+    if (productType)
+      queryOptions['product_type._id'] = { $in: productType.map((id) => ObjectId.createFromHexString(id)) }
     if (color)
       queryOptions.variants = {
         $elemMatch: {
