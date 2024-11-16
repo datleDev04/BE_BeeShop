@@ -97,9 +97,9 @@ export const GET_ALL_PRODUCT = {
         $elemMatch: { _id: { $in: brand.map((id) => ObjectId.createFromHexString(id)) } },
       };
     if (color)
-      queryOptions.product_colors = {
+      queryOptions.variants = {
         $elemMatch: {
-          _id: { $in: color.map((id) => ObjectId.createFromHexString(id)) },
+          'color._id': { $in: color.map((id) => ObjectId.createFromHexString(id)) },
         },
       };
     if (size)
@@ -121,6 +121,7 @@ export const GET_ALL_PRODUCT = {
     if (priceOptions) {
       queryOptions.variants = {
         $elemMatch: {
+          ...queryOptions.variants?.$elemMatch ,
           discount_price: priceOptions,
         },
       };
