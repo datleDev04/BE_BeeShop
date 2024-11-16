@@ -19,6 +19,7 @@ import {
   SIZE_LOOKUP,
   TAG_LOOKUP,
   VARIANT_LOOKUP,
+  LABEL_LOOKUP,
 } from '../../../lookup/index.js';
 
 export const GET_ALL_PRODUCT = {
@@ -46,6 +47,7 @@ export const GET_ALL_PRODUCT = {
     },
     { $lookup: { ...PRODUCT_COLOR_LOOKUP.CONFIG, pipeline: [{ $project: PRODUCT_COLOR_LOOKUP.FIELDS }] } },
     { $lookup: { ...PRODUCT_SIZE_LOOKUP.CONFIG, pipeline: [{ $project: PRODUCT_SIZE_LOOKUP.FIELDS }] } },
+    { $lookup: { ...LABEL_LOOKUP.CONFIG} },
     { $lookup: { ...TAG_LOOKUP.CONFIG, pipeline: [{ $project: TAG_LOOKUP.FIELDS }] } },
     { $lookup: { ...GENDER_LOOKUP.CONFIG, pipeline: [{ $project: GENDER_LOOKUP.FIELDS }] } },
     { $unwind: { path: '$gender', preserveNullAndEmptyArrays: true } },
@@ -93,9 +95,7 @@ export const GET_ALL_PRODUCT = {
         $elemMatch: { _id: { $in: tag.map((id) => ObjectId.createFromHexString(id)) } },
       };
     if (brand)
-      queryOptions.brand = {
-        $elemMatch: { _id: { $in: brand.map((id) => ObjectId.createFromHexString(id)) } },
-      };
+      queryOptions['brand._id'] = { $in: brand.map((id) => ObjectId.createFromHexString(id)) }
     if (color)
       queryOptions.variants = {
         $elemMatch: {
@@ -108,11 +108,13 @@ export const GET_ALL_PRODUCT = {
           _id: { $in: size.map((id) => ObjectId.createFromHexString(id)) },
         },
       };
-    if (label) queryOptions.labels = { $in: label.map((id) => ObjectId.createFromHexString(id)) };
+    if (label) queryOptions.labels = {
+      $elemMatch: {
+        _id: { $in: label.map((id) => ObjectId.createFromHexString(id)) }
+      }
+    };
     if (gender)
-      queryOptions.gender = {
-        $elemMatch: { _id: { $in: gender.map((id) => ObjectId.createFromHexString(id)) } },
-      };
+      queryOptions['gender._id'] = { $in: gender.map((id) => ObjectId.createFromHexString(id)) }
     if (minPrice || maxPrice) {
       if (minPrice) priceOptions.$gte = Number(minPrice);
       if (maxPrice) priceOptions.$lte = Number(maxPrice);
