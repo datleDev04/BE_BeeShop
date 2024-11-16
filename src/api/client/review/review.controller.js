@@ -3,6 +3,7 @@ import { ErrorLogger } from '../../../utils/ErrorLogger.js';
 import { SuccessResponse } from '../../../utils/response.js'
 import { reviewService } from './review.service.js'
 import { Transform } from '../../helpers/transform.js'
+import { reviewTransform } from './review.transform.js'
 
 const errorLogger = new ErrorLogger({
   logDir: 'src/api/client/review',
@@ -29,6 +30,17 @@ export const reviewController = {
       errorLogger.logError(error, {
         function: 'deleteReview',
         params: `Params: ${JSON.stringify(req.params)}`
+      });
+      next(error)
+    }
+  },
+  getUserReviews: async (req, res, next) => {
+    try {
+      const reviews = await reviewService.getUserReviews(req)
+      SuccessResponse(res, StatusCodes.OK, 'Success', Transform(reviews, reviewTransform))
+    }catch (error) {
+      errorLogger.logError(error, {
+        function: 'getUserReviews',
       });
       next(error)
     }
