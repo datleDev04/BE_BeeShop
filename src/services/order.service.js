@@ -184,6 +184,11 @@ export default class OrderService {
       })
     );
 
+    populatedOrder.payment_status = PAYMENT_STATUS.PENDING;
+    populatedOrder.order_status = ORDER_STATUS.PENDING;
+
+    await populatedOrder.save();
+
     let checkoutUrl =
       populatedOrder.payment_type === PAYMENT_TYPE.VNPAY
         ? await createVnpayPayment(req, populatedOrder)
@@ -238,7 +243,7 @@ export default class OrderService {
     await cart.save();
 
     return {
-      checkoutUrl: process.env.CLIENT_BASE_URL,
+      checkoutUrl: `${process.env.CLIENT_BASE_URL}/cart`,
     };
   };
 
