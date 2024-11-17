@@ -15,6 +15,8 @@ import payosRouter from './payos.js';
 import productRouter from '../../api/client/product/product.route.js';
 import clientVoucherRouter from './voucher.js';
 import { reviewRouter } from '../../api/client/review/review.route.js'
+import { brandRouter } from '../../api/client/brand/brand.route.js'
+import { labelRouter } from '../../api/client/label/label.route.js'
 
 const clientRouter = express.Router();
 
@@ -35,5 +37,7 @@ clientRouter.use('/voucher', clientVoucherRouter);
 
 clientRouter.use('/products', productRouter);
 clientRouter.use('/reviews', reviewRouter);
+clientRouter.use('/brands', brandRouter);
+clientRouter.use('/labels', labelRouter);
 
 export default clientRouter;
