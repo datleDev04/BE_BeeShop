@@ -18,6 +18,7 @@ import bannerRouter from './banner.js';
 import shippingMethodRouter from './shipping_method.js';
 import orderRouter from './order.js';
 import { statsRouter } from '../api/client/stats/stats.route.js'
+import orderLogRouter from './order_log.js';
 
 const router = express.Router();
 
@@ -37,6 +38,7 @@ router.use('/product-types', productTypeRouter);
 router.use('/products', productRouter);
 router.use('/banners', bannerRouter);
 router.use('/orders', orderRouter);
+router.use('/order-logs', orderLogRouter);
 router.use('/shipping-methods', shippingMethodRouter);
 router.use('/docs-swagger', docsRouter);
 
