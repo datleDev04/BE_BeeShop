@@ -23,7 +23,8 @@ export default class PermissionService {
 
   static getAllPermissions = async (req) => {
     const options = getPaginationOptions(req);
-    const filter = getFilterOptions(req, ['module', 'label']);
+    const { label } = req.query
+    const filter = label ? { label: { $regex: `.*${label}.*`, $options: 'i' } } : {}
 
     const permissions = await Permission.paginate(filter, options);
 
