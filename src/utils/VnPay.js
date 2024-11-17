@@ -14,6 +14,9 @@ import {
 import { orderPopulateOptions } from '../services/order.service.js';
 import { sendOrderSuccessEmail } from '../mail/emails.js';
 import Variant from '../models/Variant.js';
+import { createOrderLog } from './CreateOrderLog.js';
+import { ORDER_LOG_TYPE, WRITE_LOG_BY } from '../models/Order_Log.js';
+import Product from '../models/Product.js';
 
 dotenv.config();
 
@@ -96,9 +99,14 @@ export async function createVnpayReturnUrl(req) {
       await Promise.all(
         order.items.map(async (item) => {
           const variant = await Variant.findById(item.variant._id);
+          const product = await Product.findById(item.product._id);
           if (variant) {
             variant.stock -= item.quantity;
           }
+          if (product) {
+            product.sold += item.quantity;
+          }
+          await product.save();
           await variant.save();
         })
       );
@@ -107,6 +115,12 @@ export async function createVnpayReturnUrl(req) {
       await order.save();
       const emailTemplate = generateOrderSuccessEmailTemplate(order);
       await sendOrderSuccessEmail(order.user_email, emailTemplate);
+      await createOrderLog({
+        order_id: order._id,
+        type: ORDER_LOG_TYPE.CREATED,
+        user_id: order.user._id,
+        write_by: WRITE_LOG_BY.CUSTOMER,
+      });
       return redirectUrl;
     } else {
       const orderItems = order?.items;

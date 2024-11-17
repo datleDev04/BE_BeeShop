@@ -24,6 +24,8 @@ import { generateOrderUniqueID } from '../utils/generateOrderIds.js';
 import { transporter } from '../utils/mails.js';
 import { getChangeOrderStatusTemplate } from '../mail/emailTemplate.js';
 import Voucher from '../models/Voucher.js';
+import { createOrderLog } from '../utils/CreateOrderLog.js';
+import { ORDER_LOG_TYPE, WRITE_LOG_BY } from '../models/Order_Log.js';
 
 export const orderPopulateOptions = [
   {
@@ -112,6 +114,7 @@ export default class OrderService {
       user: userId,
       items: orderItemIds,
       total_price: regular_total_price - discountPrice + shipping_fee,
+      discount_price: discountPrice,
       phone_number,
       regular_total_price,
       shipping_address,
@@ -242,8 +245,6 @@ export default class OrderService {
   static getAllOrders = async (req) => {
     const options = getPaginationOptions(req);
     const filter = this.getAdvancedFilterOptions(req);
-    console.log(req.query.order_status);
-    console.log(filter);
 
     const paginatedOrders = await Order.paginate(filter, {
       ...options,
@@ -308,6 +309,7 @@ export default class OrderService {
     const { phone_number, user_email, user_name, shipping_address, order_status, tracking_number } =
       req.body;
     const { id } = req.params;
+    const { _id: userId } = req.user;
 
     await checkRecordByField(Order, '_id', req.params.id, true);
 
@@ -356,6 +358,14 @@ export default class OrderService {
         subject: `Đơn hàng #${order.unique_id} đã được cập nhật`,
         html: getChangeOrderStatusTemplate(req.user.full_name, convertOrderStatus, order.unique_id),
       });
+
+      await createOrderLog({
+        order_id: order._id,
+        type: ORDER_LOG_TYPE.UPDATE,
+        user_id: userId,
+        status: order_status,
+        write_by: WRITE_LOG_BY.CUSTOMER,
+      });
     }
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
@@ -365,6 +375,7 @@ export default class OrderService {
 
   static adminUpdateOrderStatus = async (req) => {
     const { order_status } = req.body;
+    const { _id: userId } = req.user;
 
     if (
       order_status == ORDER_STATUS.REQUEST_RETURN ||
@@ -400,6 +411,14 @@ export default class OrderService {
       to: req.user.email,
       subject: `Đơn hàng #${order.unique_id} đã được cập nhật`,
       html: getChangeOrderStatusTemplate(req.user.full_name, convertOrderStatus, order.unique_id),
+    });
+
+    await createOrderLog({
+      order_id: order._id,
+      type: ORDER_LOG_TYPE.UPDATE,
+      user_id: userId,
+      status: order_status,
+      write_by: WRITE_LOG_BY.ADMIN,
     });
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
@@ -472,7 +491,6 @@ export default class OrderService {
 
     // Order status filter
     if (req.query.order_status && Object.values(ORDER_STATUS).includes(req.query.order_status)) {
-      console.log('ok');
       filter.order_status = req.query.order_status;
     }
 
