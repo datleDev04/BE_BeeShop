@@ -129,7 +129,7 @@ export default class UserService {
       });
     }
 
-    const isCustomer = currentUser.roles.some((role) => role.name === 'Customer');
+    const isCustomer = req.user.list_name_role.includes('Customer') && req.user.list_name_role.length === 1;
 
     const oldAddressIds = currentUser.addresses.map((addr) => addr._id);
     let updateAddress = addresses;
