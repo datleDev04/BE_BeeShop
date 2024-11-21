@@ -87,6 +87,7 @@ export class userValidation {
         'string.min': 'Full name must be at least 3 characters long',
         'string.max': 'Full name should be at most 50 characters long',
       }),
+      is_new_user: Joi.boolean().optional(),
       password: Joi.any(),
       avatar_url: Joi.string().optional().uri().allow('').messages({
         'string.base': 'Avatar URL should be a string',
