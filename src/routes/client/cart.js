@@ -8,39 +8,14 @@ const cartRouter = express.Router();
 
 cartRouter.get('/', authMiddleware, CartController.getAllCarts);
 
-cartRouter.get(
-  '/user',
-  authMiddleware,
-  // CheckPermission(['Read_Cart']),
-  CartController.getOneCartByUserId
-);
+cartRouter.get('/user', authMiddleware, CartController.getOneCartByUserId);
 
-cartRouter.post(
-  '/',
-  authMiddleware,
-  // CheckPermission(['Update_Cart']),
-  CartController.addItemToCart
-);
+cartRouter.post('/', authMiddleware, CartController.addItemToCart);
 
-cartRouter.patch(
-  '/:id',
-  authMiddleware,
-  // CheckPermission(['Update_Cart']),
-  CartController.updateQuantityOneCart
-);
+cartRouter.patch('/:id', authMiddleware, CartController.updateQuantityOneCart);
 
-cartRouter.delete(
-  '/:id',
-  objectIdValidation,
-  authMiddleware,
-  // CheckPermission(['Delete_Cart']),
-  CartController.deleteOneCartItem
-);
+cartRouter.delete('/:id', objectIdValidation, authMiddleware, CartController.deleteOneCartItem);
 
-cartRouter.delete(
-  '/',
-  authMiddleware,
-  // CheckPermission(['Delete_Cart']),
-  CartController.deleteAllCartItems
-);
+cartRouter.delete('/', authMiddleware, CartController.deleteAllCartItems);
+
 export default cartRouter;
