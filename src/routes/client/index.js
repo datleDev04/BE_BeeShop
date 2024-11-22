@@ -15,10 +15,10 @@ import payosRouter from './payos.js';
 import productRouter from '../../api/client/product/product.route.js';
 import clientVoucherRouter from './voucher.js';
 import orderLogRouter from '../order_log.js';
-import { reviewRouter } from '../../api/client/review/review.route.js'
-import { brandRouter } from '../../api/client/brand/brand.route.js'
-import { labelRouter } from '../../api/client/label/label.route.js'
-
+import { reviewRouter } from '../../api/client/review/review.route.js';
+import { brandRouter } from '../../api/client/brand/brand.route.js';
+import { labelRouter } from '../../api/client/label/label.route.js';
+import complaintClientRouter from './complaint.js';
 
 const clientRouter = express.Router();
 
@@ -42,5 +42,6 @@ clientRouter.use('/reviews', reviewRouter);
 clientRouter.use('/order-logs', orderLogRouter);
 clientRouter.use('/brands', brandRouter);
 clientRouter.use('/labels', labelRouter);
+clientRouter.use('/complaints', complaintClientRouter);
 
 export default clientRouter;

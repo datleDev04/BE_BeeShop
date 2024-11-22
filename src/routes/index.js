@@ -17,8 +17,9 @@ import docsRouter from './docs_swagger.js';
 import bannerRouter from './banner.js';
 import shippingMethodRouter from './shipping_method.js';
 import orderRouter from './order.js';
-import { statsRouter } from '../api/client/stats/stats.route.js'
+import { statsRouter } from '../api/client/stats/stats.route.js';
 import orderLogRouter from './order_log.js';
+import complaintAdminRouter from './complaint.js';
 
 const router = express.Router();
 
@@ -43,5 +44,6 @@ router.use('/shipping-methods', shippingMethodRouter);
 router.use('/docs-swagger', docsRouter);
 
 router.use('/stats', statsRouter);
+router.use('/complaints', complaintAdminRouter);
 
 export default router;

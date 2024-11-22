@@ -15,7 +15,6 @@ clientOrderRouter.get('/user', authMiddleware, OrderController.getOrderByUser);
 // get order by ID
 clientOrderRouter.get('/:id', authMiddleware, objectIdValidation, OrderController.getOneOrder);
 
-
 // create new order
 clientOrderRouter.post('/', authMiddleware, orderValidation, OrderController.createOrder);
 

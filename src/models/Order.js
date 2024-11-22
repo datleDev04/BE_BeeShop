@@ -89,6 +89,11 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    complaint: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Complaint',
+      default: null,
+    },
   },
   {
     timestamps: true,
