@@ -21,15 +21,21 @@ export const productService = {
   getAllProducts: async (req) => {
     const { _page = 1, _limit = 10, orderBy = 'createdAt', sort = 'DESC', ...filter } = req.query;
 
-    const products = await Product.aggregate([
+    const result = await Product.aggregate([
       ...GET_ALL_PRODUCT.getPopulateOptions(),
       { $match: GET_ALL_PRODUCT.getQueries(filter) },
-      { $limit: Number(_limit) },
-      { $skip: (_page - 1) * _limit },
       { $sort: getSortOptions(orderBy, sort) },
+      {
+        $facet: {
+          products: [{ $skip: (_page - 1) * _limit }, { $limit: Number(_limit) }],
+          count: [{ $count: 'id' }],
+        },
+      },
     ]);
 
-    return products;
+    const { products, count} = result.at(0)
+
+    return { products, totalDocs: count[0].id};
   },
   getProductBySlug: async (req) => {
     const { slug } = req.params;
