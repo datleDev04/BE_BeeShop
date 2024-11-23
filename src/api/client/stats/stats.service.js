@@ -1,8 +1,9 @@
 import Order from '../../../models/Order.js';
 import Order_item from '../../../models/Order_item.js';
 import Product from '../../../models/Product.js';
+import Review from '../../../models/Review.js';
 import Variant from '../../../models/Variant.js';
-import { GET_MOST_ORDERS } from './query-builder/getMostOrders.js'
+import { GET_MOST_ORDERS } from './query-builder/getMostOrders.js';
 import { GET_MOST_PURCHASED_COLOR } from './query-builder/getMostPurchasedColor.js';
 import { GET_MOST_PURCHASED_SIZE } from './query-builder/getMostPurchasedSize.js';
 
@@ -36,5 +37,20 @@ export const statsService = {
     const orders = await Order.aggregate([...GET_MOST_ORDERS.getPopulateOptions()]);
 
     return orders;
+  },
+
+  getLatestReviewProduct: async () => {
+    const latestReview = await Review.find()
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .populate('user')
+      .populate({
+        path: 'order_item',
+        populate: {
+          path: 'product',
+          model: 'Product',
+        },
+      });
+    return latestReview;
   },
 };

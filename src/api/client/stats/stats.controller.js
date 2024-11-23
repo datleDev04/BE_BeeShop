@@ -2,8 +2,12 @@ import { StatusCodes } from 'http-status-codes';
 import { SuccessResponse } from '../../../utils/response.js';
 import { statsService } from './stats.service.js';
 import { Transform } from '../../helpers/transform.js';
-import { mostOrdersTransform, mostPurchasedColorTransform, mostPurchasedSizeTransform } from './stats.transform.js';
-import { ErrorLogger } from '../../../utils/ErrorLogger.js'
+import {
+  mostOrdersTransform,
+  mostPurchasedColorTransform,
+  mostPurchasedSizeTransform,
+} from './stats.transform.js';
+import { ErrorLogger } from '../../../utils/ErrorLogger.js';
 
 const errorLogger = new ErrorLogger({
   logDir: 'src/api/client/stats',
@@ -48,12 +52,7 @@ export const statsController = {
     try {
       const result = await statsService.getAlmostOutOfStock();
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Success',
-        Transform(result)
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Success', Transform(result));
     } catch (error) {
       errorLogger.logError(error, {
         function: 'getAlmostOutOfStock',
@@ -65,16 +64,19 @@ export const statsController = {
     try {
       const result = await statsService.getMostOrders();
 
-      SuccessResponse(
-        res,
-        StatusCodes.OK,
-        'Success',
-        Transform(result, mostOrdersTransform)
-      );
+      SuccessResponse(res, StatusCodes.OK, 'Success', Transform(result, mostOrdersTransform));
     } catch (error) {
       errorLogger.logError(error, {
         function: 'getMostOrders',
       });
+      next(error);
+    }
+  },
+  getLatestReviews: async (req, res, next) => {
+    try {
+      const result = await statsService.getLatestReviewProduct();
+      SuccessResponse(res, StatusCodes.OK, 'Success', result);
+    } catch (error) {
       next(error);
     }
   },
