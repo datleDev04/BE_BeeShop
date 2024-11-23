@@ -63,7 +63,7 @@ class ComplaintService {
     const complaint = await Complaint.findOne({
       _id: id,
       user: userId,
-      status: COMPLAINT_STATUS.PENDING,
+      status: { $in: [COMPLAINT_STATUS.PENDING, COMPLAINT_STATUS.CANCELLED] },
     }).populate('order');
 
     if (!complaint) {
