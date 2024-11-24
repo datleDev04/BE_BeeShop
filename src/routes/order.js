@@ -7,7 +7,7 @@ import { updateOrderValidation } from '../validations/order.validation.js';
 const orderRouter = express.Router();
 
 // get all orders
-orderRouter.get('/', authMiddleware, OrderController.getAllOrders);
+orderRouter.get('/', OrderController.getAllOrders);
 
 //get orders of user
 orderRouter.get('/user', authMiddleware, OrderController.getOrderByUser);

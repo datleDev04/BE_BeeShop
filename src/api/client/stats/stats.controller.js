@@ -80,4 +80,13 @@ export const statsController = {
       next(error);
     }
   },
+
+  getRevenue: async (req, res, next) => {
+    try {
+      const result = await statsService.getRevenue(req);
+      SuccessResponse(res, StatusCodes.OK, 'Success', result);
+    } catch (error) {
+      next(error);
+    }
+  }
 };

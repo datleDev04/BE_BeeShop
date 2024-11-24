@@ -35,4 +35,12 @@ statsRouter.get(
   CheckPermission(['Read_Stats']),
   statsController.getLatestReviews
 );
+
+statsRouter.get(
+  '/revenue',
+  // authMiddleware,
+  // CheckPermission(['Read_Stats']),
+  statsController.getRevenue
+);
+
 export { statsRouter };
