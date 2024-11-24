@@ -44,4 +44,11 @@ statsRouter.get(
   statsController.getOrderCountWithStatus
 );
 
+statsRouter.get(
+  '/total-revenue',
+  authMiddleware,
+  CheckPermission(['Read_Stats']),
+  statsController.getRevenueByPeriod
+);
+
 export { statsRouter };

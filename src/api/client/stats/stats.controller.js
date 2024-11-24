@@ -8,6 +8,7 @@ import {
   mostPurchasedSizeTransform,
 } from './stats.transform.js';
 import { ErrorLogger } from '../../../utils/ErrorLogger.js';
+import { Transformer } from '../../../utils/transformer.js';
 
 const errorLogger = new ErrorLogger({
   logDir: 'src/api/client/stats',
@@ -80,10 +81,25 @@ export const statsController = {
       next(error);
     }
   },
+
   getOrderCountWithStatus: async (req, res, next) => {
     try {
       const result = await statsService.getOrderCountWithStatus();
       SuccessResponse(res, StatusCodes.OK, 'Success', result);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  getRevenueByPeriod: async (req, res, next) => {
+    try {
+      const result = await statsService.getStatistics(req);
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Success',
+        Transformer.transformObjectTypeSnakeToCamel(result)
+      );
     } catch (error) {
       next(error);
     }
