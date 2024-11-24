@@ -4,12 +4,11 @@ import Order_item from '../../../models/Order_item.js';
 import Product from '../../../models/Product.js';
 import Review from '../../../models/Review.js';
 import Variant from '../../../models/Variant.js';
+import ApiError from '../../../utils/ApiError.js';
+import { ORDER_STATUS } from '../../../utils/constants.js';
 import { GET_MOST_ORDERS } from './query-builder/getMostOrders.js';
 import { GET_MOST_PURCHASED_COLOR } from './query-builder/getMostPurchasedColor.js';
 import { GET_MOST_PURCHASED_SIZE } from './query-builder/getMostPurchasedSize.js';
-import ApiError from '../../../utils/ApiError.js';
-import moment from 'moment';
-import { ORDER_STATUS } from '../../../utils/constants.js';
 import { GET_TOTAL_REVENUE } from './query-builder/getRevenue.js';
 
 export const statsService = {
@@ -57,6 +56,36 @@ export const statsService = {
         },
       });
     return latestReview;
+  },
+
+  getOrderCountWithStatus: async () => {
+    try {
+      const orderCounts = await Order.aggregate([
+        {
+          $group: {
+            _id: '$order_status',
+            count: { $sum: 1 },
+          },
+        },
+      ]);
+
+      const result = Object.values(ORDER_STATUS).reduce((acc, status) => {
+        acc[status] = 0;
+        return acc;
+      }, {});
+
+      orderCounts.forEach(({ _id, count }) => {
+        if (_id in result) {
+          result[_id] = count;
+        }
+      });
+
+      return result;
+    } catch (error) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        message: 'Somethings went wrong!',
+      });
+    }
   },
 
   getStatistics: async (req) => {

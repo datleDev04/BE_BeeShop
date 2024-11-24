@@ -22,6 +22,7 @@ statsRouter.get(
   CheckPermission(['Read_Stats']),
   statsController.getAlmostOutOfStock
 );
+
 statsRouter.get(
   '/most-orders',
   authMiddleware,
@@ -35,10 +36,19 @@ statsRouter.get(
   CheckPermission(['Read_Stats']),
   statsController.getLatestReviews
 );
+
+statsRouter.get(
+  '/order-counts',
+  authMiddleware,
+  CheckPermission(['Read_Stats']),
+  statsController.getOrderCountWithStatus
+);
+
 statsRouter.get(
   '/total-revenue',
-  // authMiddleware,
-  // CheckPermission(['Read_Stats']),
+  authMiddleware,
+  CheckPermission(['Read_Stats']),
   statsController.getRevenueByPeriod
 );
+
 export { statsRouter };
