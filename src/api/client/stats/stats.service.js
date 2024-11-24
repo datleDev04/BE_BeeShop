@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import Order from '../../../models/Order.js';
 import Order_item from '../../../models/Order_item.js';
 import Product from '../../../models/Product.js';
@@ -6,6 +7,10 @@ import Variant from '../../../models/Variant.js';
 import { GET_MOST_ORDERS } from './query-builder/getMostOrders.js';
 import { GET_MOST_PURCHASED_COLOR } from './query-builder/getMostPurchasedColor.js';
 import { GET_MOST_PURCHASED_SIZE } from './query-builder/getMostPurchasedSize.js';
+import ApiError from '../../../utils/ApiError.js';
+import moment from 'moment';
+import { ORDER_STATUS } from '../../../utils/constants.js';
+import { GET_TOTAL_REVENUE } from './query-builder/getRevenue.js';
 
 export const statsService = {
   getMostPurchasedSize: async () => {
@@ -52,5 +57,11 @@ export const statsService = {
         },
       });
     return latestReview;
+  },
+
+  getStatistics: async (req) => {
+    const { type } = req.query;
+    const results = await GET_TOTAL_REVENUE.getTotalRevenueOptions(type);
+    return results;
   },
 };
