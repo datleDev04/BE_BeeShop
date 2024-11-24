@@ -1,4 +1,5 @@
 import { toCamelCase } from '../../helpers/transform.js';
+import { filterObjectKeys } from '../../helpers/object.js'
 
 export const mostPurchasedSizeTransform = (originData) => {
   const { _id, quantity = 1, size, count = 1 } = originData._doc || originData;
@@ -18,8 +19,9 @@ export const mostPurchasedColorTransform = (originData) => {
 
 export const mostOrdersTransform = (originData) => {
   const { user, count = 0 } = originData._doc || originData;
+  const excludeKeys = ['password', 'resetPasswordToken', 'verificationTokenExpiresAt', 'deleted']
 
   return {
-    ...toCamelCase({ ...user, totalOrder: count }),
+    ...toCamelCase({ ...filterObjectKeys(user, 'exclude', excludeKeys), totalOrder: count }),
   };
 };
