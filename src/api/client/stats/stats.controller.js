@@ -80,4 +80,12 @@ export const statsController = {
       next(error);
     }
   },
+  getOrderCountWithStatus: async (req, res, next) => {
+    try {
+      const result = await statsService.getOrderCountWithStatus();
+      SuccessResponse(res, StatusCodes.OK, 'Success', result);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
