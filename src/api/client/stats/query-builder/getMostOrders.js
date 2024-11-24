@@ -1,4 +1,5 @@
-import { ORDER_STATUS } from '../../../../utils/constants.js'
+import { ORDER_STATUS } from '../../../../utils/constants.js';
+import { TAG_LOOKUP } from '../../../lookup/tag.lookup.js';
 
 export const GET_MOST_ORDERS = {
   getPopulateOptions: () => [
@@ -13,6 +14,9 @@ export const GET_MOST_ORDERS = {
         localField: 'user',
         foreignField: '_id',
         as: 'user',
+        pipeline: [
+          { $lookup: { ...TAG_LOOKUP.CONFIG, pipeline: [{ $project: TAG_LOOKUP.FIELDS }] } },
+        ],
       },
     },
     { $unwind: '$user' },
