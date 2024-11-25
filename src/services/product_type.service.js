@@ -6,13 +6,13 @@ import { checkRecordByField } from '../utils/CheckRecord.js';
 
 export default class ProductTypeService {
   static createProductType = async (req) => {
-    const { name } = req.body;
+    const { name, image_url } = req.body;
 
     await checkRecordByField(ProductType, 'name', name, false);
 
     const slug = await generateSlug(ProductType, name);
 
-    const newProductTypes = await ProductType.create({ name, slug });
+    const newProductTypes = await ProductType.create({ name, slug, image_url });
 
     return Transformer.transformObjectTypeSnakeToCamel(newProductTypes.toObject());
   };
@@ -46,7 +46,7 @@ export default class ProductTypeService {
   };
 
   static updateProductType = async (req) => {
-    const { name } = req.body;
+    const { name, image_url } = req.body;
 
     await checkRecordByField(ProductType, '_id', req.params.id, true);
 
@@ -61,7 +61,7 @@ export default class ProductTypeService {
 
     const updatedProductType = await ProductType.findByIdAndUpdate(
       req.params.id,
-      { name, slug },
+      { name, slug, image_url: image_url || currentType.image_url },
       { new: true, runValidators: true }
     );
 
