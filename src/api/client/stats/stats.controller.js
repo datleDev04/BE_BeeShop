@@ -75,7 +75,7 @@ export const statsController = {
   },
   getLatestReviews: async (req, res, next) => {
     try {
-      const result = await statsService.getLatestReviewProduct();
+      const result = await statsService.getLatestReviewProduct(req);
       SuccessResponse(res, StatusCodes.OK, 'Success', result);
     } catch (error) {
       next(error);

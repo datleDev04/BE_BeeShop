@@ -94,4 +94,22 @@ export const reviewService = {
     ]);
     return reviews;
   },
+  deleteReviewByAdmin: async (req) => {
+    const { id } = req.params;
+
+    const review = await Review.findOneAndUpdate(
+      {
+        _id: id,
+        status: STATUS.ACTIVE,
+      },
+      { status: STATUS.INACTIVE }
+    );
+
+    if (!review) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        message: 'Review not found or unauthorized to delete',
+      });
+    }
+    return review;
+  },
 };
