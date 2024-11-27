@@ -11,6 +11,10 @@ const productTypeSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    image_url: {
+      type: String,
+      required: true,
+    },
     slug: {
       type: String,
       required: true,
