@@ -9,7 +9,6 @@ import { ORDER_STATUS, STATUS } from '../../../utils/constants.js';
 import { GET_MOST_ORDERS } from './query-builder/getMostOrders.js';
 import { GET_MOST_PURCHASED_COLOR } from './query-builder/getMostPurchasedColor.js';
 import { GET_MOST_PURCHASED_SIZE } from './query-builder/getMostPurchasedSize.js';
-import { ORDER_STATUS } from '../../../utils/constants.js';
 import { getDateRangeWithDateFns } from '../../helpers/date.js';
 import { GET_TOTAL_REVENUE } from './query-builder/getRevenue.js';
 
