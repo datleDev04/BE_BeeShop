@@ -85,6 +85,10 @@ const orderSchema = new mongoose.Schema(
       type: Date,
       required: false,
     },
+    finished_date: {
+      type: Date,
+      required: false,
+    },
     unique_id: {
       type: String,
       required: true,

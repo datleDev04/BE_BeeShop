@@ -6,15 +6,45 @@ import Variant from '../../../models/Variant.js';
 import { GET_MOST_ORDERS } from './query-builder/getMostOrders.js';
 import { GET_MOST_PURCHASED_COLOR } from './query-builder/getMostPurchasedColor.js';
 import { GET_MOST_PURCHASED_SIZE } from './query-builder/getMostPurchasedSize.js';
+import { ORDER_STATUS } from '../../../utils/constants.js';
+import { getDateRangeWithDateFns } from '../../helpers/date.js';
 
 export const statsService = {
-  getMostPurchasedSize: async () => {
-    const orders = await Order_item.aggregate([...GET_MOST_PURCHASED_SIZE.getPopulateOptions()]);
-    return orders;
+  getMostPurchasedSize: async (req) => {
+    const { start, end } = getDateRangeWithDateFns(req.query.period || 'all_time');
+
+    const successOrderItemIds = await Order.distinct('items', {
+      order_status: ORDER_STATUS.SUCCESS,
+      finished_date: { $gte: start, $lte: end },
+    }).populate([{ path: 'items' }]);
+
+    const orderItems = Order_item.aggregate([
+      {
+        $match: {
+          _id: { $in: successOrderItemIds },
+        },
+      },
+      ...GET_MOST_PURCHASED_SIZE.getPopulateOptions(),
+    ]);
+    return orderItems;
   },
-  getMostPurchasedColor: async () => {
-    const orders = await Order_item.aggregate([...GET_MOST_PURCHASED_COLOR.getPopulateOptions()]);
-    return orders;
+  getMostPurchasedColor: async (req) => {
+    const { start, end } = getDateRangeWithDateFns(req.query.period || 'all_time');
+
+    const successOrderItemIds = await Order.distinct('items', {
+      order_status: ORDER_STATUS.SUCCESS,
+      finished_date: { $gte: start, $lte: end },
+    }).populate([{ path: 'items' }]);
+
+    const orderItems = Order_item.aggregate([
+      {
+        $match: {
+          _id: { $in: successOrderItemIds },
+        },
+      },
+      ...GET_MOST_PURCHASED_COLOR.getPopulateOptions(),
+    ]);
+    return orderItems;
   },
   getAlmostOutOfStock: async () => {
     const populateOptions = [
@@ -34,7 +64,7 @@ export const statsService = {
     return products;
   },
   getMostOrders: async () => {
-    const orders = await Order.aggregate([...GET_MOST_ORDERS.getPopulateOptions()]);
+    const orders = await Order.aggregate([...GET_MOST_ORDERS.getPopulateOptions(), { $limit: 10 }]);
 
     return orders;
   },

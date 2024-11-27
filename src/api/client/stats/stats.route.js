@@ -6,8 +6,6 @@ const statsRouter = express.Router();
 
 statsRouter.get(
   '/most-purchased-size',
-  authMiddleware,
-  CheckPermission(['Read_Stats']),
   statsController.getMostPurchasedSize
 );
 statsRouter.get(

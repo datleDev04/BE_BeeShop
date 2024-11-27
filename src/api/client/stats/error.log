@@ -1,0 +1,424 @@
+
+[2024-11-24T03:23:05.346Z]
+Error: subDays is not defined
+Stack: ReferenceError: subDays is not defined
+    at getDateRangeWithDateFns (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/date.js:25:25)
+    at Object.getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:15:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:19:22)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-24T03:23:57.112Z]
+Error: startOfDay is not defined
+Stack: ReferenceError: startOfDay is not defined
+    at getDateRangeWithDateFns (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/date.js:28:16)
+    at Object.getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:15:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:19:22)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-24T03:25:54.725Z]
+Error: Cannot read properties of undefined (reading 'at')
+Stack: TypeError: Cannot read properties of undefined (reading 'at')
+    at mostPurchasedSizeTransform (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.transform.js:7:30)
+    at Transform (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/transform.js:48:17)
+    at getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:25:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-24T03:45:47.910Z]
+Error: Format string contains an unescaped latin alphabet character `n`
+Stack: RangeError: Format string contains an unescaped latin alphabet character `n`
+    at file:///E:/dev/projects/beemely/beemely-api/node_modules/date-fns/format.js:381:15
+    at Array.map (<anonymous>)
+    at format (file:///E:/dev/projects/beemely/beemely-api/node_modules/date-fns/format.js:365:6)
+    at format (file:///E:/dev/projects/beemely/beemely-api/node_modules/date-fns-tz/dist/esm/format/index.js:337:12)
+    at formatInTimeZone (file:///E:/dev/projects/beemely/beemely-api/node_modules/date-fns-tz/dist/esm/formatInTimeZone/index.js:30:12)
+    at getDateRangeWithDateFns (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/date.js:20:15)
+    at Object.getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:17:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:19:22)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-24T03:45:49.473Z]
+Error: Format string contains an unescaped latin alphabet character `n`
+Stack: RangeError: Format string contains an unescaped latin alphabet character `n`
+    at file:///E:/dev/projects/beemely/beemely-api/node_modules/date-fns/format.js:381:15
+    at Array.map (<anonymous>)
+    at format (file:///E:/dev/projects/beemely/beemely-api/node_modules/date-fns/format.js:365:6)
+    at format (file:///E:/dev/projects/beemely/beemely-api/node_modules/date-fns-tz/dist/esm/format/index.js:337:12)
+    at formatInTimeZone (file:///E:/dev/projects/beemely/beemely-api/node_modules/date-fns-tz/dist/esm/formatInTimeZone/index.js:30:12)
+    at getDateRangeWithDateFns (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/date.js:20:15)
+    at Object.getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:17:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:19:22)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-24T03:59:11.750Z]
+Error: start is not defined
+Stack: ReferenceError: start is not defined
+    at getDateRangeWithDateFns (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/date.js:24:14)
+    at Object.getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:17:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:19:22)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-24T04:04:10.214Z]
+Error: _id.at is not a function
+Stack: TypeError: _id.at is not a function
+    at mostPurchasedSizeTransform (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.transform.js:7:30)
+    at file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/transform.js:44:21
+    at Array.map (<anonymous>)
+    at Transform (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/transform.js:42:17)
+    at getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:25:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-24T09:46:28.833Z]
+Error: BSON field 'distinctCommandRequest.key' is missing but a required field
+Stack: MongoServerError: BSON field 'distinctCommandRequest.key' is missing but a required field
+    at Connection.sendCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:297:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:325:26)
+    at async Server.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\sdam\server.js:166:24)
+    at async DistinctOperation.executeCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\command.js:74:16)
+    at async DistinctOperation.execute (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\distinct.js:54:24)
+    at async executeOperation (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\execute_operation.js:136:16)
+    at async Collection.distinct (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\collection.js:462:16)
+    at async model.Query.exec (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\query.js:4401:63)
+    at async Object.getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:18:17)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:27:51.250Z]
+Error: path option to $unwind stage should be prefixed with a '$': variant
+Stack: MongoServerError: path option to $unwind stage should be prefixed with a '$': variant
+    at Connection.sendCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:297:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:325:26)
+    at async Server.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\sdam\server.js:166:24)
+    at async AggregateOperation.executeCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\command.js:74:16)
+    at async AggregateOperation.execute (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\aggregate.js:85:21)
+    at async executeOperation (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\execute_operation.js:136:16)
+    at async AggregationCursor._initialize (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\aggregation_cursor.js:46:26)
+    at async [kInit] (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:463:27)
+    at async next (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:520:13)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:27:52.688Z]
+Error: path option to $unwind stage should be prefixed with a '$': variant
+Stack: MongoServerError: path option to $unwind stage should be prefixed with a '$': variant
+    at Connection.sendCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:297:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:325:26)
+    at async Server.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\sdam\server.js:166:24)
+    at async AggregateOperation.executeCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\command.js:74:16)
+    at async AggregateOperation.execute (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\aggregate.js:85:21)
+    at async executeOperation (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\execute_operation.js:136:16)
+    at async AggregationCursor._initialize (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\aggregation_cursor.js:46:26)
+    at async [kInit] (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:463:27)
+    at async next (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:520:13)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:29:14.280Z]
+Error: The field 'variant' must be an accumulator object
+Stack: MongoServerError: The field 'variant' must be an accumulator object
+    at Connection.sendCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:297:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:325:26)
+    at async Server.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\sdam\server.js:166:24)
+    at async AggregateOperation.executeCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\command.js:74:16)
+    at async AggregateOperation.execute (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\aggregate.js:85:21)
+    at async executeOperation (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\execute_operation.js:136:16)
+    at async AggregationCursor._initialize (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\aggregation_cursor.js:46:26)
+    at async [kInit] (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:463:27)
+    at async next (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:520:13)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:29:35.364Z]
+Error: The field 'variant' must be an accumulator object
+Stack: MongoServerError: The field 'variant' must be an accumulator object
+    at Connection.sendCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:297:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:325:26)
+    at async Server.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\sdam\server.js:166:24)
+    at async AggregateOperation.executeCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\command.js:74:16)
+    at async AggregateOperation.execute (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\aggregate.js:85:21)
+    at async executeOperation (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\execute_operation.js:136:16)
+    at async AggregationCursor._initialize (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\aggregation_cursor.js:46:26)
+    at async [kInit] (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:463:27)
+    at async next (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:520:13)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:29:36.613Z]
+Error: The field 'variant' must be an accumulator object
+Stack: MongoServerError: The field 'variant' must be an accumulator object
+    at Connection.sendCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:297:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:325:26)
+    at async Server.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\sdam\server.js:166:24)
+    at async AggregateOperation.executeCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\command.js:74:16)
+    at async AggregateOperation.execute (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\aggregate.js:85:21)
+    at async executeOperation (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\execute_operation.js:136:16)
+    at async AggregationCursor._initialize (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\aggregation_cursor.js:46:26)
+    at async [kInit] (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:463:27)
+    at async next (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:520:13)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:34:19.335Z]
+Error: $accumulator not allowed in this atlas tier
+Stack: MongoServerError: $accumulator not allowed in this atlas tier
+    at Connection.sendCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:297:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:325:26)
+    at async Server.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\sdam\server.js:166:24)
+    at async AggregateOperation.executeCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\command.js:74:16)
+    at async AggregateOperation.execute (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\aggregate.js:85:21)
+    at async executeOperation (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\execute_operation.js:136:16)
+    at async AggregationCursor._initialize (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\aggregation_cursor.js:46:26)
+    at async [kInit] (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:463:27)
+    at async next (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:520:13)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:39:14.720Z]
+Error: $count takes no arguments, i.e. $count:{}
+Stack: MongoServerError: $count takes no arguments, i.e. $count:{}
+    at Connection.sendCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:297:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:325:26)
+    at async Server.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\sdam\server.js:166:24)
+    at async AggregateOperation.executeCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\command.js:74:16)
+    at async AggregateOperation.execute (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\aggregate.js:85:21)
+    at async executeOperation (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\execute_operation.js:136:16)
+    at async AggregationCursor._initialize (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\aggregation_cursor.js:46:26)
+    at async [kInit] (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:463:27)
+    at async next (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:520:13)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:39:15.887Z]
+Error: $count takes no arguments, i.e. $count:{}
+Stack: MongoServerError: $count takes no arguments, i.e. $count:{}
+    at Connection.sendCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:297:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:325:26)
+    at async Server.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\sdam\server.js:166:24)
+    at async AggregateOperation.executeCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\command.js:74:16)
+    at async AggregateOperation.execute (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\aggregate.js:85:21)
+    at async executeOperation (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\execute_operation.js:136:16)
+    at async AggregationCursor._initialize (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\aggregation_cursor.js:46:26)
+    at async [kInit] (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:463:27)
+    at async next (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:520:13)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:39:32.211Z]
+Error: $count takes no arguments, i.e. $count:{}
+Stack: MongoServerError: $count takes no arguments, i.e. $count:{}
+    at Connection.sendCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:297:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:325:26)
+    at async Server.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\sdam\server.js:166:24)
+    at async AggregateOperation.executeCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\command.js:74:16)
+    at async AggregateOperation.execute (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\aggregate.js:85:21)
+    at async executeOperation (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\execute_operation.js:136:16)
+    at async AggregationCursor._initialize (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\aggregation_cursor.js:46:26)
+    at async [kInit] (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:463:27)
+    at async next (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:520:13)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:41:52.990Z]
+Error: $count takes no arguments, i.e. $count:{}
+Stack: MongoServerError: $count takes no arguments, i.e. $count:{}
+    at Connection.sendCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:297:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cmap\connection.js:325:26)
+    at async Server.command (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\sdam\server.js:166:24)
+    at async AggregateOperation.executeCommand (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\command.js:74:16)
+    at async AggregateOperation.execute (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\aggregate.js:85:21)
+    at async executeOperation (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\operations\execute_operation.js:136:16)
+    at async AggregationCursor._initialize (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\aggregation_cursor.js:46:26)
+    at async [kInit] (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:463:27)
+    at async next (E:\dev\projects\beemely\beemely-api\node_modules\mongodb\lib\cursor\abstract_cursor.js:520:13)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:53:43.905Z]
+Error: VARIANT_LOOKUP is not defined
+Stack: ReferenceError: VARIANT_LOOKUP is not defined
+    at Object.getPopulateOptions (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/query-builder/getMostPurchasedSize.js:7:12)
+    at Object.getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:35:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:19:22)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:55:21.651Z]
+Error: Arguments must be aggregate pipeline operators
+Stack: Error: Arguments must be aggregate pipeline operators
+    at Aggregate.append (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:149:11)
+    at new Aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\aggregate.js:59:17)
+    at Function.aggregate (E:\dev\projects\beemely\beemely-api\node_modules\mongoose\lib\model.js:3891:21)
+    at Object.getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:24:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:19:22)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T15:58:09.166Z]
+Error: _id.at is not a function
+Stack: TypeError: _id.at is not a function
+    at mostPurchasedColorTransform (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.transform.js:17:30)
+    at file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/transform.js:44:21
+    at Array.map (<anonymous>)
+    at Transform (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/transform.js:42:17)
+    at getMostPurchasedColor (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:43:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Additional Info: {
+  "function": "getMostPurchasedColor"
+}
+----------------------------------------
+
+[2024-11-27T16:33:01.276Z]
+Error: An error occurred
+Stack: ApiError: An error occurred
+    at getDateRangeWithDateFns (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/date.js:86:13)
+    at Object.getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:22:28)
+    at getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:19:41)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:346:12)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:280:10)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T16:33:28.857Z]
+Error: An error occurred
+Stack: ApiError: An error occurred
+    at getDateRangeWithDateFns (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/date.js:86:13)
+    at Object.getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:22:28)
+    at getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:19:41)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:346:12)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:280:10)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T16:34:02.285Z]
+Error: An error occurred
+Stack: ApiError: An error occurred
+    at getDateRangeWithDateFns (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/date.js:86:13)
+    at Object.getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:22:28)
+    at getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:19:41)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:346:12)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:280:10)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T16:34:20.516Z]
+Error: An error occurred
+Stack: ApiError: An error occurred
+    at getDateRangeWithDateFns (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/date.js:86:13)
+    at Object.getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:22:28)
+    at getMostPurchasedSize (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:19:41)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:346:12)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\index.js:280:10)
+Additional Info: {
+  "function": "getMostPurchasedSize"
+}
+----------------------------------------
+
+[2024-11-27T16:35:58.544Z]
+Error: An error occurred
+Stack: ApiError: An error occurred
+    at getDateRangeWithDateFns (file:///E:/dev/projects/beemely/beemely-api/src/api/helpers/date.js:86:13)
+    at Object.getMostPurchasedColor (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.service.js:41:28)
+    at getMostPurchasedColor (file:///E:/dev/projects/beemely/beemely-api/src/api/client/stats/stats.controller.js:36:41)
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at file:///E:/dev/projects/beemely/beemely-api/src/utils/CheckPermission.js:17:14
+    at Layer.handle [as handle_request] (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\dev\projects\beemely\beemely-api\node_modules\express\lib\router\route.js:149:13)
+    at authMiddleware (file:///E:/dev/projects/beemely/beemely-api/src/middleware/authMiddleware.js:62:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Additional Info: {
+  "function": "getMostPurchasedColor"
+}
+----------------------------------------

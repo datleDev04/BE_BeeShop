@@ -1,31 +1,43 @@
-import { COLOR_LOOKUP } from '../../../lookup/color.lookup.js';
+import { TIME_FILTER } from '../../../helpers/constants.js';
+import { getDateRangeWithDateFns } from '../../../helpers/date.js';
+import { VARIANT_LOOKUP } from '../../../lookup/variant.lookup.js';
 import { SIZE_LOOKUP } from '../../../lookup/size.lookup.js';
+import { GENDER_LOOKUP } from '../../../lookup/gender.lookup.js';
 
 export const GET_MOST_PURCHASED_SIZE = {
   getPopulateOptions: () => [
-    { $unwind: '$variant' },
     {
       $lookup: {
-        from: 'Variants',
+        ...VARIANT_LOOKUP.CONFIG,
         localField: 'variant',
-        foreignField: '_id',
         as: 'variant',
         pipeline: [
-          { $lookup: { ...SIZE_LOOKUP.CONFIG } },
+          {
+            $lookup: {
+              ...SIZE_LOOKUP.CONFIG,
+              pipeline: [
+                {
+                  $lookup: {
+                    ...GENDER_LOOKUP.CONFIG,
+                    pipeline: [{ $project: GENDER_LOOKUP.FIELDS }],
+                  },
+                },
+                { $unwind: '$gender' },
+              ],
+            },
+          },
           { $unwind: '$size' },
-          { $lookup: { ...COLOR_LOOKUP.CONFIG } },
-          { $unwind: '$color' },
         ],
       },
     },
+    { $unwind: '$variant' },
     {
       $group: {
         _id: '$variant.size._id',
-        quantity: { $first: '$quantity' },
-        size: { $first: '$variant.size.name' },
-        count: { $sum: 1 },
+        name: { $first: '$variant.size.name' },
+        gender: { $first: '$variant.size.gender' },
+        total: { $sum: 1 },
       },
     },
-    { $sort: { count: -1 } },
   ],
 };

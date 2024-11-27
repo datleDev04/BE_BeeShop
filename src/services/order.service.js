@@ -352,8 +352,16 @@ export default class OrderService {
 
       // Cập nhật trạng thái và ngày giao hàng
       order.order_status = order_status;
-      if (order_status === ORDER_STATUS.DELIVERED) {
-        order.delivered_date = Date.now();
+
+      switch(order_status) {
+        case ORDER_STATUS.DELIVERED: {
+          order.delivered_date = Date.now()
+          break
+        }
+        case ORDER_STATUS.SUCCESS: {
+          order.finished_date = Date.now()
+          break
+        }
       }
     }
 
