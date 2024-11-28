@@ -100,9 +100,14 @@ class ComplaintService {
           order_status: ORDER_STATUS.RETURNING,
         });
       },
-      [COMPLAINT_STATUS.CANCELLED]: async () => {
+      [COMPLAINT_STATUS.REJECTED]: async () => {
         await Order.findByIdAndUpdate(complaint.order._id, {
           order_status: ORDER_STATUS.DENIED_RETURN,
+        });
+      },
+      [COMPLAINT_STATUS.COMPENSATE]: async () => {
+        await Order.findByIdAndUpdate(complaint.order._id, {
+          order_status: ORDER_STATUS.COMPENSATING,
         });
       },
     };

@@ -1,3 +1,4 @@
+import { PROCESSING } from 'http-status-codes';
 import mongoose from 'mongoose';
 
 const DOCUMENT_NAME = 'Complaint';
@@ -13,8 +14,10 @@ const COMPLAINT_REASONS = {
 
 export const COMPLAINT_STATUS = {
   PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPENSATE: 'COMPENSATE',
   RESOLVED: 'RESOLVED',
-  CANCELLED: 'CANCELLED',
+  REJECTED: 'REJECTED',
   WITHDRAWN: 'WITHDRAWN',
 };
 

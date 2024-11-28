@@ -14,6 +14,8 @@ export const ORDER_STATUS = {
   PROCESSING: 'processing',
   DELEVERING: 'delivering',
   DELIVERED: 'delivered',
+  COMPENSATING: 'compensating',
+  COMPENSATED: 'compensated',
   SUCCESS: 'success',
   CANCELLED: 'cancelled',
   REQUEST_RETURN: 'request_return',
