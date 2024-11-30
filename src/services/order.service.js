@@ -382,25 +382,23 @@ export default class OrderService {
       // Cập nhật trạng thái và ngày giao hàng
       order.order_status = order_status;
 
-      switch(order_status) {
+      switch (order_status) {
         case ORDER_STATUS.DELIVERED: {
-          order.delivered_date = Date.now()
-          break
+          order.delivered_date = Date.now();
+          break;
         }
-         case ORDER_STATUS.COMPENSATED: {
-          order.delivered_date = Date.now()
-          break
+        case ORDER_STATUS.COMPENSATED: {
+          order.delivered_date = Date.now();
+          break;
         }
         case ORDER_STATUS.SUCCESS: {
-          order.finished_date = Date.now()
-          break
+          order.finished_date = Date.now();
+          break;
         }
       }
-    }
 
-    await order.save();
-    if (order_status) {
       const convertOrderStatus = ORDER_STATUS_CONVERT[order_status];
+
       await transporter.sendMail({
         from: 'Beemely Store 👻',
         to: req.user.email,
@@ -416,6 +414,8 @@ export default class OrderService {
         write_by: WRITE_LOG_BY.CUSTOMER,
       });
     }
+
+    await order.save();
 
     const updatedOrder = await Order.findById(id).populate(orderPopulateOptions);
 
