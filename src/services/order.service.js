@@ -64,16 +64,19 @@ cron.schedule('0 0 * * *', async () => {
   threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
 
   try {
-    const ordersToUpdate = await Order.find({
-      order_status: ORDER_STATUS.DELIVERED,
-      delivered_date: { $lte: threeDaysAgo },
-    });
+    const result = await Order.updateMany(
+      {
+        order_status: {
+          $in: [ORDER_STATUS.DELIVERED, ORDER_STATUS.COMPENSATED, ORDER_STATUS.DENIED_RETURN],
+        },
+        delivered_date: { $lte: threeDaysAgo },
+      },
+      { $set: { order_status: ORDER_STATUS.SUCCESS } }
+    );
 
-    for (let order of ordersToUpdate) {
-      order.order_status = ORDER_STATUS.SUCCESS;
-      await order.save();
-    }
+    console.log(`Updated ${result.modifiedCount} orders to SUCCESS status`);
   } catch (error) {
+    console.error('Cron job update order status failed:', error);
     throw new ApiError(500, 'Cron job update order status failed');
   }
 });
@@ -314,8 +317,7 @@ export default class OrderService {
   };
 
   static updateOrderById = async (req) => {
-    const { phone_number, user_email, user_name, shipping_address, order_status, tracking_number } =
-      req.body;
+    const { phone_number, user_email, user_name, shipping_address, order_status } = req.body;
     const { id } = req.params;
     const { _id: userId } = req.user;
 
@@ -327,7 +329,6 @@ export default class OrderService {
     if (user_name) order.user_name = user_name;
     if (shipping_address) order.shipping_address = shipping_address;
     if (user_email) order.user_email = user_email;
-    if (tracking_number) order.tracking_number = tracking_number;
 
     if (order_status) {
       // Kiểm tra trạng thái hợp lệ cho người dùng
@@ -336,6 +337,7 @@ export default class OrderService {
         [ORDER_STATUS.PROCESSING]: [ORDER_STATUS.CANCELLED],
         [ORDER_STATUS.DELEVERING]: [ORDER_STATUS.REQUEST_RETURN],
         [ORDER_STATUS.DELIVERED]: [ORDER_STATUS.REQUEST_RETURN, ORDER_STATUS.SUCCESS],
+        [ORDER_STATUS.COMPENSATED]: [ORDER_STATUS.SUCCESS],
       };
 
       const currentStatus = order.order_status;
@@ -352,7 +354,7 @@ export default class OrderService {
 
       // Cập nhật trạng thái và ngày giao hàng
       order.order_status = order_status;
-      if (order_status === ORDER_STATUS.DELIVERED) {
+      if (order_status === ORDER_STATUS.DELIVERED || order_status === ORDER_STATUS.COMPENSATED) {
         order.delivered_date = Date.now();
       }
     }
@@ -441,6 +443,7 @@ export default class OrderService {
     [ORDER_STATUS.DELEVERING]: [ORDER_STATUS.DELIVERED, ORDER_STATUS.REQUEST_RETURN],
     [ORDER_STATUS.DELIVERED]: [ORDER_STATUS.SUCCESS, ORDER_STATUS.REQUEST_RETURN],
     [ORDER_STATUS.REQUEST_RETURN]: [ORDER_STATUS.RETURNING, ORDER_STATUS.DENIED_RETURN],
+    [ORDER_STATUS.COMPENSATING]: [ORDER_STATUS.COMPENSATED],
     [ORDER_STATUS.RETURNING]: [ORDER_STATUS.RETURNED],
     // Các trạng thái cuối cùng không thể thay đổi
     [ORDER_STATUS.SUCCESS]: [],

@@ -63,7 +63,9 @@ class ComplaintService {
     const complaint = await Complaint.findOne({
       _id: id,
       user: userId,
-      status: { $in: [COMPLAINT_STATUS.PENDING, COMPLAINT_STATUS.CANCELLED] },
+      status: {
+        $in: [COMPLAINT_STATUS.PENDING, COMPLAINT_STATUS.PROCESSING, COMPLAINT_STATUS.REJECTED],
+      },
     }).populate('order');
 
     if (!complaint) {
@@ -84,7 +86,7 @@ class ComplaintService {
 
   static async updateComplaintStatusForAdmin(req, res) {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, reject_reason } = req.body;
 
     const complaint = await Complaint.findById(id).populate('order');
 
@@ -117,6 +119,7 @@ class ComplaintService {
     }
 
     complaint.status = status;
+    complaint.reject_reason = reject_reason;
     await complaint.save();
 
     return Transformer.transformObjectTypeSnakeToCamel(complaint);

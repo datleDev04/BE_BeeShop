@@ -52,6 +52,9 @@ const complaintSchema = mongoose.Schema(
       enum: Object.values(COMPLAINT_STATUS),
       default: COMPLAINT_STATUS.PENDING,
     },
+    reject_reason: {
+      type: String,
+    },
   },
   {
     timestamps: true,

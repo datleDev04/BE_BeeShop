@@ -30,6 +30,8 @@ export const ORDER_STATUS_CONVERT = {
   delivering: 'Đang giao hàng',
   delivered: 'Đã giao hàng tới người nhận',
   success: 'Người nhận xác nhận đơn hàng',
+  compensating: 'Người bán đang gửi bù hàng',
+  compensated: 'Người bán đã gửi bù hàng',
   cancelled: 'Bị Hủy',
   request_return: 'Đang khiếu nại',
   denied_return: 'Từ chối trả hàng',
