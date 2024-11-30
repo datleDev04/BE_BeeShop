@@ -17,7 +17,7 @@ const errorLogger = new ErrorLogger({
 export const statsController = {
   getMostPurchasedSize: async (req, res, next) => {
     try {
-      const result = await statsService.getMostPurchasedSize();
+      const result = await statsService.getMostPurchasedSize(req);
 
       SuccessResponse(
         res,
@@ -34,7 +34,7 @@ export const statsController = {
   },
   getMostPurchasedColor: async (req, res, next) => {
     try {
-      const result = await statsService.getMostPurchasedColor();
+      const result = await statsService.getMostPurchasedColor(req);
 
       SuccessResponse(
         res,
@@ -75,7 +75,7 @@ export const statsController = {
   },
   getLatestReviews: async (req, res, next) => {
     try {
-      const result = await statsService.getLatestReviewProduct();
+      const result = await statsService.getLatestReviewProduct(req);
       SuccessResponse(res, StatusCodes.OK, 'Success', result);
     } catch (error) {
       next(error);

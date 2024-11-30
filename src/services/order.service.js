@@ -81,6 +81,33 @@ cron.schedule('0 0 * * *', async () => {
   }
 });
 
+// chạy hàm này sau mỗi 30 phút, tìm tất cả các đơn hàng tạo lớn hơn 1 ngày mà có trạng thái đơn hàng là pending hoặc failed
+cron.schedule('*/30 * * * *', async () => {
+  try {
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+    await Order.updateMany(
+      {
+        createdAt: { $lt: oneDayAgo },
+        payment_status: {
+          $in: [PAYMENT_STATUS.PENDING, PAYMENT_STATUS.FAILED],
+        },
+        order_status: {
+          $ne: ORDER_STATUS.CANCELLED,
+        },
+      },
+      {
+        $set: { order_status: ORDER_STATUS.CANCELLED },
+      }
+    );
+    console.log('update pending ok');
+  } catch (error) {
+    throw new ApiError(500, {
+      message: 'Error in cancel pending payment orders cron job',
+    });
+  }
+});
+
 export default class OrderService {
   static createNewOrder = async (req, res) => {
     const { _id: userId, email } = req.user;
@@ -354,8 +381,20 @@ export default class OrderService {
 
       // Cập nhật trạng thái và ngày giao hàng
       order.order_status = order_status;
-      if (order_status === ORDER_STATUS.DELIVERED || order_status === ORDER_STATUS.COMPENSATED) {
-        order.delivered_date = Date.now();
+
+      switch(order_status) {
+        case ORDER_STATUS.DELIVERED: {
+          order.delivered_date = Date.now()
+          break
+        }
+         case ORDER_STATUS.COMPENSATED: {
+          order.delivered_date = Date.now()
+          break
+        }
+        case ORDER_STATUS.SUCCESS: {
+          order.finished_date = Date.now()
+          break
+        }
       }
     }
 

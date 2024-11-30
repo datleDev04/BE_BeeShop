@@ -5,20 +5,49 @@ import Product from '../../../models/Product.js';
 import Review from '../../../models/Review.js';
 import Variant from '../../../models/Variant.js';
 import ApiError from '../../../utils/ApiError.js';
-import { ORDER_STATUS } from '../../../utils/constants.js';
+import { ORDER_STATUS, STATUS } from '../../../utils/constants.js';
 import { GET_MOST_ORDERS } from './query-builder/getMostOrders.js';
 import { GET_MOST_PURCHASED_COLOR } from './query-builder/getMostPurchasedColor.js';
 import { GET_MOST_PURCHASED_SIZE } from './query-builder/getMostPurchasedSize.js';
+import { getDateRangeWithDateFns } from '../../helpers/date.js';
 import { GET_TOTAL_REVENUE } from './query-builder/getRevenue.js';
 
 export const statsService = {
-  getMostPurchasedSize: async () => {
-    const orders = await Order_item.aggregate([...GET_MOST_PURCHASED_SIZE.getPopulateOptions()]);
-    return orders;
+  getMostPurchasedSize: async (req) => {
+    const { start, end } = getDateRangeWithDateFns(req.query.period || 'all_time');
+
+    const successOrderItemIds = await Order.distinct('items', {
+      order_status: ORDER_STATUS.SUCCESS,
+      finished_date: { $gte: start, $lte: end },
+    }).populate([{ path: 'items' }]);
+
+    const orderItems = Order_item.aggregate([
+      {
+        $match: {
+          _id: { $in: successOrderItemIds },
+        },
+      },
+      ...GET_MOST_PURCHASED_SIZE.getPopulateOptions(),
+    ]);
+    return orderItems;
   },
-  getMostPurchasedColor: async () => {
-    const orders = await Order_item.aggregate([...GET_MOST_PURCHASED_COLOR.getPopulateOptions()]);
-    return orders;
+  getMostPurchasedColor: async (req) => {
+    const { start, end } = getDateRangeWithDateFns(req.query.period || 'all_time');
+
+    const successOrderItemIds = await Order.distinct('items', {
+      order_status: ORDER_STATUS.SUCCESS,
+      finished_date: { $gte: start, $lte: end },
+    }).populate([{ path: 'items' }]);
+
+    const orderItems = Order_item.aggregate([
+      {
+        $match: {
+          _id: { $in: successOrderItemIds },
+        },
+      },
+      ...GET_MOST_PURCHASED_COLOR.getPopulateOptions(),
+    ]);
+    return orderItems;
   },
   getAlmostOutOfStock: async () => {
     const populateOptions = [
@@ -38,24 +67,113 @@ export const statsService = {
     return products;
   },
   getMostOrders: async () => {
-    const orders = await Order.aggregate([...GET_MOST_ORDERS.getPopulateOptions()]);
+    const orders = await Order.aggregate([...GET_MOST_ORDERS.getPopulateOptions(), { $limit: 10 }]);
 
     return orders;
   },
 
-  getLatestReviewProduct: async () => {
-    const latestReview = await Review.find()
-      .sort({ createdAt: -1 })
-      .limit(10)
-      .populate('user')
-      .populate({
-        path: 'order_item',
-        populate: {
-          path: 'product',
-          model: 'Product',
-        },
-      });
-    return latestReview;
+  getLatestReviewProduct: async (req) => {
+    const { name } = req.query;
+    try {
+      if (name) {
+        const latestReview = await Review.aggregate([
+          {
+            $lookup: {
+              from: 'Order_Items',
+              localField: 'order_item',
+              foreignField: '_id',
+              as: 'orderItem',
+            },
+          },
+          {
+            $unwind: '$orderItem',
+          },
+          {
+            $lookup: {
+              from: 'Products',
+              localField: 'orderItem.product',
+              foreignField: '_id',
+              as: 'product',
+            },
+          },
+          {
+            $unwind: '$product',
+          },
+          {
+            $match: {
+              'product.name': new RegExp(name, 'i'),
+              status: STATUS.ACTIVE,
+            },
+          },
+          {
+            $sort: {
+              createdAt: -1,
+            },
+          },
+          {
+            $limit: 10,
+          },
+          {
+            $lookup: {
+              from: 'Users',
+              localField: 'user',
+              foreignField: '_id',
+              as: 'user',
+            },
+          },
+          {
+            $unwind: '$user',
+          },
+          {
+            $project: {
+              content: 1,
+              images: 1,
+              rates: 1,
+              user: {
+                _id: 1,
+                full_name: 1,
+                email: 1,
+                avatar_url: 1,
+                status: 1,
+                createdAt: 1,
+                updatedAt: 1,
+                gender: 1,
+                phone: 1,
+              },
+              order_item: {
+                _id: '$orderItem._id',
+                product: {
+                  name: '$product.name',
+                  thumbnail: '$product.thumbnail',
+                },
+                quantity: '$orderItem.quantity',
+                price: '$orderItem.price',
+              },
+              reply: 1,
+              status: 1,
+              createdAt: 1,
+              updatedAt: 1,
+              product: '$product.name',
+            },
+          },
+        ]);
+        return latestReview;
+      }
+      const latestReview = await Review.find({ status: STATUS.ACTIVE })
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .populate('user')
+        .populate({
+          path: 'order_item',
+          populate: {
+            path: 'product',
+            model: 'Product',
+          },
+        });
+      return latestReview;
+    } catch (error) {
+      console.log('err', error);
+    }
   },
 
   getOrderCountWithStatus: async () => {

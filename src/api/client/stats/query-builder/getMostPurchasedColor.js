@@ -1,28 +1,31 @@
-import { COLOR_LOOKUP } from '../../../lookup/color.lookup.js';
+import { VARIANT_LOOKUP } from '../../../lookup/variant.lookup.js';
+import { COLOR_LOOKUP } from '../../../lookup/color.lookup.js'
 
 export const GET_MOST_PURCHASED_COLOR = {
   getPopulateOptions: () => [
-    { $unwind: '$variant' },
     {
       $lookup: {
-        from: 'Variants',
+        ...VARIANT_LOOKUP.CONFIG,
         localField: 'variant',
-        foreignField: '_id',
         as: 'variant',
         pipeline: [
-          { $lookup: { ...COLOR_LOOKUP.CONFIG } },
+          {
+            $lookup: {
+              ...COLOR_LOOKUP.CONFIG,
+            },
+          },
           { $unwind: '$color' },
         ],
       },
     },
+    { $unwind: '$variant' },
     {
       $group: {
         _id: '$variant.color._id',
-        quantity: { $first: '$quantity' },
-        color: { $first: '$variant.color.name' },
-        count: { $sum: 1 },
+        name: { $first: '$variant.color.name' },
+        value: { $first: '$variant.color.value' },
+        total: { $sum: 1 },
       },
     },
-    { $sort: { count: -1 } },
   ],
 };
