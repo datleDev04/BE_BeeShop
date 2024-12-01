@@ -65,7 +65,7 @@ const productSchema = new mongoose.Schema(
     sold: {
       type: Number,
       default: 0,
-      min: 0
+      min: 0,
     },
     product_colors: [
       {
@@ -117,6 +117,17 @@ const productSchema = new mongoose.Schema(
         required: true,
         min: 0,
       },
+    },
+    total_reviews: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    average_rating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
     },
   },
   {

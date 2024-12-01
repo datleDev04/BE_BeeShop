@@ -4,6 +4,9 @@ import ApiError from '../../../utils/ApiError.js';
 import { ORDER_STATUS, STATUS } from '../../../utils/constants.js';
 import Order_item from '../../../models/Order_item.js';
 import Review from '../../../models/Review.js';
+import { Transformer } from '../../../utils/transformer.js';
+import Product from '../../../models/Product.js';
+import { GET_PRODUCT_REVIEW } from '../product/query-builder/getProductReviews.js';
 
 export const reviewService = {
   addReview: async (req) => {
@@ -47,7 +50,9 @@ export const reviewService = {
         message: 'Order does not exist or has not been completed',
       });
 
-    const orderItem = await Order_item.findOne({ _id: orderItemId, has_feedback: false });
+    const orderItem = await Order_item.findOne({ _id: orderItemId, has_feedback: false }).populate(
+      'product'
+    );
 
     if (!orderItem)
       throw new ApiError(StatusCodes.BAD_REQUEST, {
@@ -67,8 +72,34 @@ export const reviewService = {
     orderItem.has_feedback = true;
     await orderItem.save();
 
-    return review;
+    const currentProduct = await Product.findById(orderItem.product);
+
+    const existingReviews = await Review.aggregate([
+      ...GET_PRODUCT_REVIEW.getPopulateOptions(),
+      {
+        $match: {
+          status: STATUS.ACTIVE,
+          'order_item.product': orderItem.product._id,
+        },
+      },
+    ]);
+
+    // Calculate new total reviews and average rating
+    const totalReviews = existingReviews.length;
+    const averageRating =
+      existingReviews.reduce((sum, r) => sum + r.rates, 0) / existingReviews.length;
+
+    currentProduct.total_reviews = totalReviews;
+    currentProduct.average_rating = averageRating.toFixed(1);
+    await currentProduct.save();
+
+    const newReview = await Review.findById(review._id).populate([
+      { path: 'order_item', populate: { path: 'product' } },
+    ]);
+
+    return newReview;
   },
+
   deleteReview: async (req) => {
     const { id } = req.params;
 
@@ -88,11 +119,25 @@ export const reviewService = {
     }
     return review;
   },
+
   getUserReviews: async (req) => {
-    const reviews = await Review.find({ user: req.user._id }).populate([
-      { path: 'order_item', populate: { path: 'product' } },
-    ]);
-    return reviews;
+    const reviews = await Review.find({ user: req.user._id })
+      .populate([
+        {
+          path: 'order_item',
+          populate: { path: 'product' },
+        },
+        {
+          path: 'user',
+          select: '-password -resetPasswordToken -verificationTokenExpiresAt -roles',
+        },
+      ])
+      .sort({ createdAt: -1 });
+
+    const transformedReviews = reviews.map((review) =>
+      Transformer.transformOrderObjectTypeSnakeToCamel(review.toObject())
+    );
+    return transformedReviews;
   },
   deleteReviewByAdmin: async (req) => {
     const { id } = req.params;

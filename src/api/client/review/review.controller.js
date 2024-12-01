@@ -4,6 +4,7 @@ import { SuccessResponse } from '../../../utils/response.js';
 import { reviewService } from './review.service.js';
 import { Transform } from '../../helpers/transform.js';
 import { reviewTransform } from './review.transform.js';
+import { Transformer } from '../../../utils/transformer.js';
 
 const errorLogger = new ErrorLogger({
   logDir: 'src/api/client/review',
@@ -13,7 +14,12 @@ export const reviewController = {
   addReview: async (req, res, next) => {
     try {
       const review = await reviewService.addReview(req);
-      SuccessResponse(res, StatusCodes.OK, 'Success', Transform(review));
+      SuccessResponse(
+        res,
+        StatusCodes.OK,
+        'Success',
+        Transformer.transformOrderObjectTypeSnakeToCamel(review)
+      );
     } catch (error) {
       errorLogger.logError(error, {
         function: 'addReview',
@@ -50,7 +56,7 @@ export const reviewController = {
   getUserReviews: async (req, res, next) => {
     try {
       const reviews = await reviewService.getUserReviews(req);
-      SuccessResponse(res, StatusCodes.OK, 'Success', Transform(reviews, reviewTransform));
+      SuccessResponse(res, StatusCodes.OK, 'Success', reviews);
     } catch (error) {
       errorLogger.logError(error, {
         function: 'getUserReviews',
