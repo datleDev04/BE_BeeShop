@@ -33,9 +33,9 @@ export const productService = {
       },
     ]);
 
-    const { products, count} = result.at(0)
+    const { products, count } = result.at(0);
 
-    return { products, totalDocs: count[0].id};
+    return { products, totalDocs: count[0].id };
   },
   getProductBySlug: async (req) => {
     const { slug } = req.params;
@@ -72,6 +72,24 @@ export const productService = {
     if (!reviews) {
       throw new ApiError(StatusCodes.NOT_FOUND, { message: 'Product not found' });
     }
-    return reviews;
+
+    const reviewIds = reviews.map((review) => review._id);
+
+    const populateReview = await Review.find({
+      _id: { $in: reviewIds },
+    })
+      .populate([
+        {
+          path: 'order_item',
+          populate: { path: 'product' },
+        },
+        {
+          path: 'user',
+          select: '-password -resetPasswordToken -verificationTokenExpiresAt -roles',
+        },
+      ])
+      .sort({ createdAt: -1 });
+
+    return populateReview;
   },
 };
