@@ -24,9 +24,15 @@ export default class VoucherService {
     await checkRecordByField(Voucher, 'name', name, false, req.params.id);
     await checkRecordByField(Voucher, 'code', code, false, req.params.id);
 
-    if (discount_types != "percentage") {
-      max_reduce = null
+    if (discount_types != 'percentage') {
+      max_reduce = null;
     }
+
+    if (discount_types == 'percentage' && max_reduce == null ) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        max_reduce: 'Max reduce is reuiqred with percentage discount type',
+      });
+  }
 
     const newVoucher = await Voucher.create({
       name,
@@ -145,8 +151,8 @@ export default class VoucherService {
       end_date,
     };
 
-    if (discount_types != "percentage") {
-      updatedVoucherData.max_reduce = null
+    if (discount_types != 'percentage') {
+      updatedVoucherData.max_reduce = null;
     }
 
     const updatedVoucher = await Voucher.findByIdAndUpdate(voucherId, updatedVoucherData, {
