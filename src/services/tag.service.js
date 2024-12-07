@@ -1,3 +1,4 @@
+import Product from '../models/Product.js';
 import Tags from '../models/Tags.js';
 import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
@@ -17,8 +18,8 @@ export class TagService {
 
     const { docs, ...otherFields } = paginatedLabels;
 
-    const transformedTags = docs.map((label) =>
-      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    const transformedTags = docs.map((tag) =>
+      Transformer.transformObjectTypeSnakeToCamel(tag.toObject())
     );
 
     const others = {
@@ -40,17 +41,26 @@ export class TagService {
 
     const { docs, ...otherFields } = paginatedLabels;
 
-    const transformedTags = docs.map((label) =>
-      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    const tagsWithProductCount = await Promise.all(
+      docs.map(async (tag) => {
+        const productCount = await Product.countDocuments({
+          tags: tag._id,
+        });
+
+        const tagObject = tag.toObject();
+        tagObject.product_count = productCount;
+
+        return tagObject;
+      })
     );
 
-    const others = {
-      ...otherFields,
-    };
+    const transformedTags = tagsWithProductCount.map((tag) =>
+      Transformer.transformObjectTypeSnakeToCamel(tag)
+    );
 
     return {
       metaData: Transformer.removeDeletedField(transformedTags),
-      others,
+      others: otherFields,
     };
   };
 
@@ -116,10 +126,26 @@ export class TagService {
       },
       { new: true }
     ).populate('parent_id');
-    return Transformer.transformObjectTypeSnakeToCamel(updatedTag.toObject());
+
+    const productCount = await Product.countDocuments({
+      tags: updatedTag._id,
+    });
+
+    const tagObject = updatedTag.toObject();
+    tagObject.product_count = productCount;
+
+    return Transformer.transformObjectTypeSnakeToCamel(tagObject);
   };
 
   static deleteTagById = async (req) => {
+    const productCount = await Product.countDocuments({
+      tags: req.params.id,
+    });
+    if (productCount > 0) {
+      throw new ApiError(StatusCodes.CONFLICT, {
+        message: 'Không thể xóa thẻ  này',
+      });
+    }
     await Tags.updateMany({ parent_id: req.params.id }, { $unset: { parent_id: '' } });
     await Tags.findByIdAndDelete(req.params.id);
   };

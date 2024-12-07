@@ -25,14 +25,14 @@ export const ORDER_STATUS = {
 };
 
 export const ORDER_STATUS_CONVERT = {
-  pending: 'Đang chờ xác nhận',
-  processing: 'Đang chuẩn bị hàng',
+  pending: 'Chờ xác nhận',
+  processing: 'Chuẩn bị hàng',
   delivering: 'Đang giao hàng',
   delivered: 'Đã giao hàng tới người nhận',
   success: 'Người nhận xác nhận đơn hàng',
   compensating: 'Người bán đang gửi bù hàng',
   compensated: 'Người bán đã gửi bù hàng',
-  cancelled: 'Bị Hủy',
+  cancelled: 'Hủy',
   request_return: 'Đang khiếu nại',
   denied_return: 'Từ chối trả hàng',
   returning: 'Đang trả hàng',
@@ -61,7 +61,7 @@ export const SHIPPING_RULES = {
     LEVEL_7: { MAX: 40000, PRICE: 300000 },
   },
   VOLUME_TO_WEIGHT_RATIO: 6000,
-  EXTRA_CHARGE_PER_KG: 5000,
+  EXTRA_CHARGE_PER_KG: 10000,
 };
 
 export const MAX_LEVEL = SHIPPING_RULES.WEIGHT.LEVEL_7;

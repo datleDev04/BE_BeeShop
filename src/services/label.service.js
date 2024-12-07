@@ -3,6 +3,9 @@ import { Transformer } from '../utils/transformer.js';
 import Label from '../models/Label.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { generateSlug } from '../utils/GenerateSlug.js';
+import Product from '../models/Product.js';
+import { StatusCodes } from 'http-status-codes';
+import ApiError from '../utils/ApiError.js';
 
 export class LabelService {
   static getAllLabel = async (req) => {
@@ -13,17 +16,26 @@ export class LabelService {
 
     const { docs, ...otherFields } = paginatedLabels;
 
-    const transformedLabels = docs.map((label) =>
-      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    const labelsWithProductCount = await Promise.all(
+      docs.map(async (label) => {
+        const productCount = await Product.countDocuments({
+          labels: label._id,
+        });
+
+        const labelObject = label.toObject();
+        labelObject.product_count = productCount;
+
+        return labelObject;
+      })
     );
 
-    const others = {
-      ...otherFields,
-    };
+    const transformedLabels = labelsWithProductCount.map((label) =>
+      Transformer.transformObjectTypeSnakeToCamel(label)
+    );
 
     return {
       metaData: Transformer.removeDeletedField(transformedLabels),
-      others,
+      others: otherFields,
     };
   };
 
@@ -74,11 +86,26 @@ export class LabelService {
         new: true,
       }
     );
-    return Transformer.transformObjectTypeSnakeToCamel(updatedLabel.toObject());
+    const productCount = await Product.countDocuments({
+      labels: req.params.id,
+    });
+    const labelObject = updatedLabel.toObject();
+    labelObject.product_count = productCount;
+
+    return Transformer.transformObjectTypeSnakeToCamel(labelObject);
   };
 
   static deleteLabelBydId = async (req) => {
     await checkRecordByField(Label, '_id', req.params.id, true);
+    const productCount = await Product.countDocuments({
+      labels: req.params.id,
+    });
+
+    if (productCount > 0) {
+      throw new ApiError(StatusCodes.CONFLICT, {
+        message: 'Không thể xóa label này',
+      });
+    }
     await Label.findByIdAndDelete(req.params.id);
   };
 }

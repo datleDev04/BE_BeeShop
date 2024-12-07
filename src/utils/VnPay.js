@@ -106,6 +106,7 @@ export async function createVnpayReturnUrl(req) {
           if (product) {
             product.sold += item.quantity;
           }
+          
           await product.save();
           await variant.save();
         })

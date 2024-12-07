@@ -190,3 +190,41 @@ Additional Info: {
   "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"color\":\"6740a93de6a4e6f7a08c984d\",\"minPrice\":\"2200000\",\"maxPrice\":\"8900000\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
 }
 ----------------------------------------
+
+[2024-12-05T14:13:47.311Z]
+Error: hex string must be 24 characters
+Stack: BSONError: hex string must be 24 characters
+    at ObjectId.createFromHexString (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\bson\lib\bson.cjs:2480:19)
+    at file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:96:60
+    at Array.map (<anonymous>)
+    at Object.getQueries (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:96:39)
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:26:33)
+    at getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:60)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"[object Object],[object Object]\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-05T14:13:58.308Z]
+Error: hex string must be 24 characters
+Stack: BSONError: hex string must be 24 characters
+    at ObjectId.createFromHexString (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\bson\lib\bson.cjs:2480:19)
+    at file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:96:60
+    at Array.map (<anonymous>)
+    at Object.getQueries (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:96:39)
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:26:33)
+    at getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:60)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"[object Object],[object Object]\",\"_limit\":\"4\"}"
+}
+----------------------------------------

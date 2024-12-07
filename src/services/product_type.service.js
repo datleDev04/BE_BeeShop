@@ -3,6 +3,9 @@ import { generateSlug } from '../utils/GenerateSlug.js';
 import { Transformer } from '../utils/transformer.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
+import Product from '../models/Product.js';
+import ApiError from '../utils/ApiError.js';
+import { StatusCodes } from 'http-status-codes';
 
 export default class ProductTypeService {
   static createProductType = async (req) => {
@@ -21,21 +24,29 @@ export default class ProductTypeService {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name']);
 
-    const paginatedTypes = await ProductType.paginate(filter, options);
+    const paginatedProductTypes = await ProductType.paginate(filter, options);
+    const { docs, ...otherFields } = paginatedProductTypes;
 
-    const { docs, ...otherFields } = paginatedTypes;
+    const productTypesWithProductCount = await Promise.all(
+      docs.map(async (productType) => {
+        const productCount = await Product.countDocuments({
+          product_type: productType._id,
+        });
 
-    const transformedTypes = docs.map((type) =>
-      Transformer.transformObjectTypeSnakeToCamel(type.toObject())
+        const productTypeObject = productType.toObject();
+        productTypeObject.product_count = productCount;
+
+        return productTypeObject;
+      })
     );
 
-    const others = {
-      ...otherFields,
-    };
+    const transformedProductTypes = productTypesWithProductCount.map((productType) =>
+      Transformer.transformObjectTypeSnakeToCamel(productType)
+    );
 
     return {
-      metaData: Transformer.removeDeletedField(transformedTypes),
-      others,
+      metaData: Transformer.removeDeletedField(transformedProductTypes),
+      others: otherFields,
     };
   };
 
@@ -70,6 +81,15 @@ export default class ProductTypeService {
 
   static deleteProductType = async (req) => {
     await checkRecordByField(ProductType, '_id', req.params.id, true);
+    const productCount = await Product.countDocuments({
+      product_type: req.params.id,
+    });
+
+    if (productCount > 0) {
+      throw new ApiError(StatusCodes.CONFLICT, {
+        message: 'Không thể xóa loại sản phẩm này',
+      });
+    }
     return await ProductType.findByIdAndDelete(req.params.id);
   };
 }
