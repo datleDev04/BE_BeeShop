@@ -192,19 +192,24 @@ export default class ProductService {
   }
 
   static async updateVariants(existingVariantIds, newVariants) {
+    const existingVariantIdsStrings = existingVariantIds.map((id) => id.toString());
+
     const updatePromises = newVariants.map((variant) =>
-      variant._id
-        ? Variant.findByIdAndUpdate(variant._id, variant, { new: true })
+      variant.id
+        ? Variant.findByIdAndUpdate(variant.id, variant, { new: true, runValidators: true })
         : Variant.create(variant)
     );
 
     const updatedVariants = await Promise.all(updatePromises);
-    const updatedVariantIds = updatedVariants.map((variant) => variant._id);
+    const updatedVariantIds = updatedVariants.map((variant) => variant._id.toString());
 
-    const variantsToRemove = existingVariantIds.filter(
-      (id) => !updatedVariantIds.includes(id.toString())
+    const variantsToRemove = existingVariantIdsStrings.filter(
+      (id) => !updatedVariantIds.includes(id)
     );
-    await Variant.deleteMany({ _id: { $in: variantsToRemove } });
+
+    if (variantsToRemove.length > 0) {
+      await Variant.deleteMany({ _id: { $in: variantsToRemove } });
+    }
 
     return updatedVariantIds;
   }
