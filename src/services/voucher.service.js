@@ -5,6 +5,7 @@ import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { STATUS } from '../utils/constants.js';
+import Order from '../models/Order.js';
 
 export default class VoucherService {
   static createVoucher = async (req) => {
@@ -16,10 +17,11 @@ export default class VoucherService {
       discount_types,
       minimum_order_price,
       start_date,
-      max_reduce,
       end_date,
       voucher_type,
     } = req.body;
+
+    let { max_reduce } = req.body;
 
     await checkRecordByField(Voucher, 'name', name, false, req.params.id);
     await checkRecordByField(Voucher, 'code', code, false, req.params.id);
@@ -28,11 +30,11 @@ export default class VoucherService {
       max_reduce = null;
     }
 
-    if (discount_types == 'percentage' && max_reduce == null ) {
+    if (discount_types == 'percentage' && max_reduce == null) {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
         max_reduce: 'Max reduce is reuiqred with percentage discount type',
       });
-  }
+    }
 
     const newVoucher = await Voucher.create({
       name,
@@ -61,19 +63,27 @@ export default class VoucherService {
 
     const { docs, ...otherFields } = paginatedVouchers;
 
-    const transformedVouchers = docs.map((voucher) =>
-      Transformer.transformObjectTypeSnakeToCamel(voucher.toObject())
+    const voucherWithOrderCount = await Promise.all(
+      docs.map(async (voucher) => {
+        const orderCount = await Order.countDocuments({ voucher: voucher._id });
+
+        const voucherObject = voucher.toObject();
+        voucherObject.order_count = orderCount;
+
+        return voucherObject;
+      })
     );
 
-    const others = {
-      ...otherFields,
-    };
+    const transformedVoucher = voucherWithOrderCount.map((voucher) =>
+      Transformer.transformObjectTypeSnakeToCamel(voucher)
+    );
 
     return {
-      metaData: Transformer.removeDeletedField(transformedVouchers),
-      others,
+      metaData: Transformer.removeDeletedField(transformedVoucher),
+      others: otherFields,
     };
   };
+
   static getAllVouchersClient = async (req) => {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name']);
@@ -165,11 +175,22 @@ export default class VoucherService {
       });
     }
 
-    return Transformer.transformObjectTypeSnakeToCamel(updatedVoucher.toObject());
+    const orderCount = await Order.countDocuments({ voucher: updatedVoucher._id });
+
+    const voucherObject = updatedVoucher.toObject();
+    voucherObject.order_count = orderCount;
+
+    return Transformer.transformObjectTypeSnakeToCamel(voucherObject);
   };
 
   static deleteVoucher = async (req) => {
     await checkRecordByField(Voucher, '_id', req.params.id, true);
+    const orderCount = await Order.countDocuments({ voucher: req.params.id });
+    if (orderCount > 0) {
+      throw new ApiError(StatusCodes.CONFLICT, {
+        message: 'Không thể xóa voucher này',
+      });
+    }
     await Voucher.findByIdAndDelete(req.params.id);
   };
 }

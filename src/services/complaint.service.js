@@ -4,6 +4,8 @@ import ApiError from '../utils/ApiError.js';
 import { StatusCodes } from 'http-status-codes';
 import { ORDER_STATUS } from '../utils/constants.js';
 import Complaint, { COMPLAINT_STATUS } from '../models/Complaint.js';
+import { createOrderLog } from '../utils/CreateOrderLog.js';
+import { ORDER_LOG_TYPE, WRITE_LOG_BY } from '../models/Order_Log.js';
 
 class ComplaintService {
   static async createComplaint(req) {
@@ -52,6 +54,13 @@ class ComplaintService {
       order_status: ORDER_STATUS.REQUEST_RETURN,
       complaint: complaint._id,
     });
+    await createOrderLog({
+      order_id: order._id,
+      type: ORDER_LOG_TYPE.UPDATE,
+      user_id: userId,
+      status: ORDER_STATUS.REQUEST_RETURN,
+      write_by: WRITE_LOG_BY.CUSTOMER,
+    });
 
     return Transformer.transformObjectTypeSnakeToCamel(complaint.toObject());
   }
@@ -70,15 +79,23 @@ class ComplaintService {
 
     if (!complaint) {
       throw new ApiError(StatusCodes.NOT_FOUND, {
-        message: 'Complaint not found!',
+        message: 'Không thể thu hồi khiếu nại lúc này!',
       });
     }
 
     complaint.status = COMPLAINT_STATUS.WITHDRAWN;
     await complaint.save();
 
-    await Order.findByIdAndUpdate(complaint.order._id, {
+    const order = await Order.findByIdAndUpdate(complaint.order._id, {
       order_status: ORDER_STATUS.SUCCESS,
+    });
+
+    await createOrderLog({
+      order_id: order._id,
+      type: ORDER_LOG_TYPE.UPDATE,
+      user_id: userId,
+      status: ORDER_STATUS.SUCCESS,
+      write_by: WRITE_LOG_BY.CUSTOMER,
     });
 
     return Transformer.transformObjectTypeSnakeToCamel(complaint);
@@ -86,7 +103,8 @@ class ComplaintService {
 
   static async updateComplaintStatusForAdmin(req, res) {
     const { id } = req.params;
-    const { status, reject_reason } = req.body;
+    const { _id: userId } = req.user;
+    const { status, reject_reason, admin_note } = req.body;
 
     const complaint = await Complaint.findById(id).populate('order');
 
@@ -98,18 +116,39 @@ class ComplaintService {
 
     const processComplaint = {
       [COMPLAINT_STATUS.RESOLVED]: async () => {
-        await Order.findByIdAndUpdate(complaint.order._id, {
+        const order = await Order.findByIdAndUpdate(complaint.order._id, {
           order_status: ORDER_STATUS.RETURNING,
+        });
+        await createOrderLog({
+          order_id: order._id,
+          type: ORDER_LOG_TYPE.UPDATE,
+          user_id: userId,
+          status: ORDER_STATUS.RETURNING,
+          write_by: WRITE_LOG_BY.ADMIN,
         });
       },
       [COMPLAINT_STATUS.REJECTED]: async () => {
-        await Order.findByIdAndUpdate(complaint.order._id, {
+        const order = await Order.findByIdAndUpdate(complaint.order._id, {
           order_status: ORDER_STATUS.DENIED_RETURN,
+        });
+        await createOrderLog({
+          order_id: order._id,
+          type: ORDER_LOG_TYPE.UPDATE,
+          user_id: userId,
+          status: ORDER_STATUS.DENIED_RETURN,
+          write_by: WRITE_LOG_BY.ADMIN,
         });
       },
       [COMPLAINT_STATUS.COMPENSATE]: async () => {
-        await Order.findByIdAndUpdate(complaint.order._id, {
+        const order = await Order.findByIdAndUpdate(complaint.order._id, {
           order_status: ORDER_STATUS.COMPENSATING,
+        });
+        await createOrderLog({
+          order_id: order._id,
+          type: ORDER_LOG_TYPE.UPDATE,
+          user_id: userId,
+          status: ORDER_STATUS.COMPENSATING,
+          write_by: WRITE_LOG_BY.ADMIN,
         });
       },
     };
@@ -120,6 +159,7 @@ class ComplaintService {
 
     complaint.status = status;
     complaint.reject_reason = reject_reason;
+    complaint.admin_note = admin_note;
     await complaint.save();
 
     return Transformer.transformObjectTypeSnakeToCamel(complaint);

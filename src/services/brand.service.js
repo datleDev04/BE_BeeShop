@@ -5,25 +5,37 @@ import { Transformer } from '../utils/transformer.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { generateSlug } from '../utils/GenerateSlug.js';
+import Product from '../models/Product.js';
 
 export default class BrandService {
   static handleGetAllBrand = async (req) => {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name']);
 
+    // Fetch brands with pagination
     const paginatedBrands = await Brand.paginate(filter, options);
-
     const { docs, ...otherFields } = paginatedBrands;
 
-    const transformedBrands = docs.map((brand) => {
-      return Transformer.transformObjectTypeSnakeToCamel(brand.toObject());
-    });
-    const others = {
-      ...otherFields,
-    };
+    const brandsWithProductCount = await Promise.all(
+      docs.map(async (brand) => {
+        const productCount = await Product.countDocuments({
+          brand: brand._id,
+        });
+
+        const brandObject = brand.toObject();
+        brandObject.product_count = productCount;
+
+        return brandObject;
+      })
+    );
+
+    const transformedBrands = brandsWithProductCount.map((brand) =>
+      Transformer.transformObjectTypeSnakeToCamel(brand)
+    );
+
     return {
       metaData: Transformer.removeDeletedField(transformedBrands),
-      others,
+      others: otherFields,
     };
   };
 
@@ -82,6 +94,16 @@ export default class BrandService {
   static handleDeleteBrand = async (req) => {
     const { id } = req.params;
     await checkRecordByField(Brand, '_id', id, true);
+
+    const productCount = await Product.countDocuments({
+      brand: id,
+    });
+
+    if (productCount > 0) {
+      throw new ApiError(StatusCodes.CONFLICT, {
+        message: 'Không thể xóa thương hiệu này',
+      });
+    }
 
     await Brand.findByIdAndDelete(id);
   };

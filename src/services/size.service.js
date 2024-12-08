@@ -5,6 +5,7 @@ import Gender from '../models/Gender.js';
 import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
+import Product from '../models/Product.js';
 
 export default class SizeService {
   static createNewSize = async (req) => {
@@ -29,21 +30,31 @@ export default class SizeService {
     const options = getPaginationOptions(req);
     const filter = getFilterOptions(req, ['name']);
     options.populate = [{ path: 'gender' }];
-    const paginatedSizes = await Size.paginate(filter, options);
 
+    const paginatedSizes = await Size.paginate(filter, options);
     const { docs, ...otherFields } = paginatedSizes;
 
-    const transformedSizes = docs.map((label) =>
-      Transformer.transformObjectTypeSnakeToCamel(label.toObject())
+    const sizesWithProductCount = await Promise.all(
+      docs.map(async (size) => {
+        const productCount = await Product.countDocuments({
+          product_sizes: size._id,
+        });
+
+        const sizeObject = size.toObject();
+        sizeObject.product_count = productCount;
+
+        return sizeObject;
+      })
     );
 
-    const others = {
-      ...otherFields,
-    };
+    // Transform sizes
+    const transformedSizes = sizesWithProductCount.map((size) =>
+      Transformer.transformObjectTypeSnakeToCamel(size)
+    );
 
     return {
       metaData: Transformer.removeDeletedField(transformedSizes),
-      others,
+      others: otherFields,
     };
   };
 
@@ -80,6 +91,14 @@ export default class SizeService {
 
   static deleteSizeById = async (req) => {
     await checkRecordByField(Size, '_id', req.params.id, true);
+    const productCount = await Product.countDocuments({
+      product_sizes: req.params.id,
+    });
+    if (productCount > 0) {
+      throw new ApiError(StatusCodes.CONFLICT, {
+        message: 'Không thể xóa kích cỡ này',
+      });
+    }
     return await Size.findByIdAndDelete(req.params.id);
   };
 }

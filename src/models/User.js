@@ -52,12 +52,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: Object.values(USER_GENDER_ENUM),
     },
-    vouchers: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Voucher',
-      },
-    ],
     roles: [
       {
         type: mongoose.Schema.Types.ObjectId,
