@@ -12,6 +12,8 @@ import Gender from '../models/Gender.js';
 import Size from '../models/Size.js';
 import ProductType from '../models/Product_Type.js';
 import { STATUS } from '../utils/constants.js';
+import ApiError from '../utils/ApiError.js';
+import { StatusCodes } from 'http-status-codes';
 
 const populateOptions = [
   { path: 'variants', populate: ['color', 'size'] },
@@ -138,6 +140,15 @@ export default class ProductService {
 
   static deleteProduct = async (req) => {
     await checkRecordByField(Product, '_id', req.params.id, true);
+
+    const currentProduct = await Product.findById(req.params.id);
+
+    if (!currentProduct.enable_delete) {
+      throw new ApiError(StatusCodes.CONFLICT, {
+        message: 'Không thể xóa sản phẩm này',
+      });
+    }
+
     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
 
     await Promise.all([
