@@ -1,4 +1,3 @@
-import { PROCESSING } from 'http-status-codes';
 import mongoose from 'mongoose';
 
 const DOCUMENT_NAME = 'Complaint';
@@ -53,6 +52,9 @@ const complaintSchema = mongoose.Schema(
       default: COMPLAINT_STATUS.PENDING,
     },
     reject_reason: {
+      type: String,
+    },
+    admin_note: {
       type: String,
     },
   },

@@ -18,11 +18,6 @@ const addressSchema = new mongoose.Schema(
     city: {
       type: String,
     },
-    user_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      require: true,
-    },
     detail_address: {
       type: String,
     },

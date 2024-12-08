@@ -129,10 +129,9 @@ export default class UserService {
       });
     }
 
-    const isCustomer = req.user.list_name_role.includes('Customer') && req.user.list_name_role.length === 1;
+    const isCustomer =
+      req.user.list_name_role.includes('Customer') && req.user.list_name_role.length === 1;
 
-    const oldAddressIds = currentUser.addresses.map((addr) => addr._id);
-    let updateAddress = addresses;
     const defaultAddress = addresses?.filter((address) => address.default);
     if (defaultAddress?.length > 1) {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
@@ -141,7 +140,7 @@ export default class UserService {
     } else if (defaultAddress?.length === 0) {
       updateAddress = addresses.map((a, index) => (index === 0 ? { ...a, default: true } : a));
     }
-    
+
     let newAddressIds;
     if (addresses) {
       const oldAddressIds = currentUser.addresses.map((addr) => addr._id);
@@ -172,7 +171,6 @@ export default class UserService {
       ...(tags && { tags }),
       ...(is_verified !== undefined && { is_verified }),
       ...(is_new_user !== undefined && { is_new_user }),
-
     };
 
     const restrictedFields = [
@@ -196,9 +194,9 @@ export default class UserService {
         });
       }
       updateFields = {
-        ...((status || status == 0) && { status })
+        ...((status || status == 0) && { status }),
       };
-      if(roles) updateFields.roles = roles
+      if (roles) updateFields.roles = roles;
     } else {
       if (userPermissions.includes('Read_User')) {
         updateFields = { ...updateFields, ...(roles && { roles }) };

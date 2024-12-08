@@ -129,7 +129,7 @@ export default class OrderService {
       items.map(async (item) => {
         const variant = await Variant.findById(item.variant_id);
         if (variant.stock < item.quantity) {
-          throw new ApiError(StatusCodes.BAD_REQUEST, 'Insufficient stock for the variant');
+          throw new ApiError(StatusCodes.BAD_REQUEST, { message: 'Sản phẩm tạm thời hết hàng!' });
         }
       })
     );
@@ -184,19 +184,27 @@ export default class OrderService {
 
     const currentVoucher = await Voucher.findById(voucher);
 
-    if (!currentVoucher) throw new ApiError(StatusCodes.BAD_REQUEST, 'Voucher not found!');
+    if (!currentVoucher)
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        message: 'Voucher không tồn tại hoặc hết hạn',
+      });
     if (currentVoucher.max_usage <= 0)
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'Voucher out of stock!');
+      throw new ApiError(StatusCodes.BAD_REQUEST, { message: 'Voucher đã không còn hạn sử dụng!' });
     if (currentVoucher.status === STATUS.INACTIVE)
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'Voucher is inactive!');
+      throw new ApiError(StatusCodes.BAD_REQUEST, { message: 'Voucher đã không khả dụng!' });
     if (currentVoucher.end_date < new Date())
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'Voucher is expired!');
+      throw new ApiError(StatusCodes.BAD_REQUEST, { message: 'Voucher hết hạn sử dụng!' });
     if (currentVoucher.minimum_order_price > price)
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'Voucher do not valid');
+      throw new ApiError(StatusCodes.BAD_REQUEST, { message: 'Voucher không hợp lệ' });
 
-    return currentVoucher.discount_types === 'fixed'
-      ? currentVoucher.discount
-      : (price * currentVoucher.discount) / 100;
+    if (currentVoucher.discount_types === 'percentage') {
+      const percentageDiscount = (price * currentVoucher.discount) / 100;
+      return currentVoucher.max_reduce
+        ? Math.min(percentageDiscount, currentVoucher.max_reduce)
+        : percentageDiscount;
+    }
+
+    return currentVoucher.discount;
   };
 
   static rePayment = async (req) => {
@@ -205,14 +213,16 @@ export default class OrderService {
     const populatedOrder = await Order.findById(req.params.id).populate(orderPopulateOptions);
 
     if (populatedOrder.payment_status === PAYMENT_STATUS.COMPLETED) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, 'This order payment completed!');
+      throw new ApiError(StatusCodes.BAD_REQUEST, { message: 'This order payment completed!' });
     }
 
     await Promise.all(
       populatedOrder.items.map(async (item) => {
         const variant = await Variant.findById(item.variant_id);
         if (variant?.stock < item?.quantity) {
-          throw new ApiError(StatusCodes.BAD_REQUEST, 'Insufficient stock for the variant');
+          throw new ApiError(StatusCodes.BAD_REQUEST, {
+            message: 'Sản phẩm hết hàng, không thể tạo đơn hàng!',
+          });
         }
       })
     );
@@ -360,9 +370,9 @@ export default class OrderService {
     if (order_status) {
       // Kiểm tra trạng thái hợp lệ cho người dùng
       const allowedTransitions = {
-        [ORDER_STATUS.PENDING]: [ORDER_STATUS.CANCELLED],
-        [ORDER_STATUS.PROCESSING]: [ORDER_STATUS.CANCELLED],
-        [ORDER_STATUS.DELEVERING]: [ORDER_STATUS.REQUEST_RETURN],
+        [ORDER_STATUS.PENDING]: [ORDER_STATUS.CANCELLED, ORDER_STATUS.PROCESSING],
+        [ORDER_STATUS.PROCESSING]: [], // Không cho phép thay đổi trạng thái khi đang xử lý
+        [ORDER_STATUS.DELEVERING]: [],
         [ORDER_STATUS.DELIVERED]: [ORDER_STATUS.REQUEST_RETURN, ORDER_STATUS.SUCCESS],
         [ORDER_STATUS.COMPENSATED]: [ORDER_STATUS.SUCCESS],
       };
@@ -375,7 +385,7 @@ export default class OrderService {
         !allowedTransitions[currentStatus].includes(order_status)
       ) {
         throw new ApiError(409, {
-          message: `User cannot change status from ${currentStatus} to ${order_status}`,
+          message: `Không thể chuyển trạng thái từ ${ORDER_STATUS_CONVERT[currentStatus]} sang ${ORDER_STATUS_CONVERT[order_status]}`,
         });
       }
 
@@ -444,7 +454,7 @@ export default class OrderService {
     const currentStatus = order.order_status;
 
     // Kiểm tra trạng thái hợp lệ
-    if (!OrderService.validStatusTransitions[currentStatus].includes(order_status)) {
+    if (!this.validStatusTransitions[currentStatus].includes(order_status)) {
       throw new ApiError(400, {
         message: `Cannot change status from ${currentStatus} to ${order_status}`,
       });

@@ -13,7 +13,7 @@ const voucherRouter = express.Router();
 voucherRouter.get(
   '/',
   authMiddleware,
-  // CheckPermission(['Read_Voucher']),
+  CheckPermission(['Read_Voucher']),
   VoucherController.getAllVouchers
 );
 
