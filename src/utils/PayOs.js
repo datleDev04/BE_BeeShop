@@ -79,10 +79,13 @@ export async function createPayosReturnUrl(req) {
         const product = await Product.findById(item.product._id);
         if (variant) {
           variant.stock -= item.quantity;
+          variant.enable_delete = false;
         }
         if (product) {
           product.sold += item.quantity;
+          product.enable_delete = false;
         }
+
         await product.save();
         await variant.save();
       })

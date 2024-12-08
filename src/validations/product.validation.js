@@ -84,6 +84,7 @@ export const updateProductValidation = async (req, res, next) => {
       .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
       .min(1),
     gender: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+    enable_delete: Joi.boolean(),
     variants: Joi.array()
       .items(
         Joi.object({
@@ -93,6 +94,7 @@ export const updateProductValidation = async (req, res, next) => {
           price: Joi.number().required(),
           discount_price: Joi.number().min(0),
           stock: Joi.number().required(),
+          enable_delete: Joi.boolean(),
         })
       )
       .min(1)

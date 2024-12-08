@@ -28,6 +28,10 @@ const variantSchema = new mongoose.Schema(
       ref: 'Size',
       required: true,
     },
+    enable_delete: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

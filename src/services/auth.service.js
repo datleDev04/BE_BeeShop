@@ -16,7 +16,7 @@ import {
 } from '../mail/emails.js';
 import { Transformer } from '../utils/transformer.js';
 import Address from '../models/Address.js';
-import Wishlist from '../models/Wishlist.js'
+import Wishlist from '../models/Wishlist.js';
 
 export class AuthService {
   static register = async (req) => {
@@ -26,7 +26,7 @@ export class AuthService {
 
     if (user) {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
-        auth: 'Email has been taken!',
+        auth: 'Email này đã được đăng ký!',
       });
     }
 
@@ -57,13 +57,13 @@ export class AuthService {
 
     if (!user) {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
-        auth: 'User not found',
+        auth: 'Không tìm thấy người dùng',
       });
     }
 
     if (user.is_verified) {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
-        auth: 'This user has been verified!',
+        auth: ' Người dùng này đã được xác minh!',
       });
     }
 
@@ -90,7 +90,7 @@ export class AuthService {
 
     if (!user) {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
-        auth: 'Verification token is invalid',
+        auth: ' Mã xác minh không hợp lệ',
       });
     }
 
@@ -112,27 +112,27 @@ export class AuthService {
 
     if (!user) {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
-        auth: 'Your profile could not found! Register now!',
+        auth: 'Hồ sơ của bạn không được tìm thấy! Đăng ký ngay!',
       });
     }
 
     if (user.status === STATUS.INACTIVE) {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
-        auth: 'Your account is inactive, please contact support!',
+        auth: 'Tài khoản của bạn đang không hoạt động, vui lòng liên hệ hỗ trợ!',
       });
     }
 
     if (user.google_id && !user.password) {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
-        auth: 'Your account must be signed in with google provider',
+        auth: 'Tài khoản của bạn phải được đăng nhập bằng nhà cung cấp Google',
       });
     }
 
-    // compare password
+    // so sánh mật khẩu
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new ApiError(401, {
-        auth: 'Email or Password is incorrect',
+        auth: 'Email hoặc mật khẩu không chính xác',
       });
     }
 
@@ -160,7 +160,7 @@ export class AuthService {
   static loginGoogle = async (req) => {
     if (!req.user) {
       throw new ApiError(401, {
-        auth: 'Authentication failed',
+        auth: 'Xác minh thất bại',
       });
     }
 
@@ -197,14 +197,14 @@ export class AuthService {
 
       if (!refreshToken)
         throw new ApiError(StatusCodes.BAD_REQUEST, {
-          auth: 'refresh token is required',
+          auth: 'Yêu cầu refresh token',
         });
 
-      // check valid token
+      // kiểm tra token hợp lệ
       const decodeToken = jwtUtils.decodeRefreshToken(refreshToken);
       if (!decodeToken)
         throw new ApiError(StatusCodes.UNAUTHORIZED, {
-          auth: 'Invalid refresh token',
+          auth: 'Refresh token không hợp lệ',
         });
 
       const newRefreshToken = jwtUtils.createRefreshToken();
@@ -217,7 +217,7 @@ export class AuthService {
 
       if (!tokenInfo)
         throw new ApiError(StatusCodes.UNAUTHORIZED, {
-          auth: 'Invalid refresh token',
+          auth: 'Refresh token không hợp lệ',
         });
 
       const access_token = jwtUtils.createAccessToken(tokenInfo.user_id);
@@ -236,13 +236,13 @@ export class AuthService {
 
     if (!email)
       throw new ApiError(StatusCodes.BAD_REQUEST, {
-        auth: 'Email is required',
+        auth: 'Yêu cầu email',
       });
 
     const user = await User.findOne({ email });
     if (!user)
       throw new ApiError(StatusCodes.NOT_FOUND, {
-        auth: 'No user exists for this email',
+        auth: ' Không tìm thấy email nào với user này',
       });
 
     const token = jwtUtils.createAccessToken(user._id);
@@ -269,7 +269,7 @@ export class AuthService {
 
     if (!user || user.reset_password_token !== resetPasswordToken)
       throw new ApiError(StatusCodes.UNAUTHORIZED, {
-        auth: 'Invalid or Token expired',
+        auth: 'Token không hợp lệ hoặc hết hạn',
       });
 
     user.password = bcrypt.hashSync(password, 10);
@@ -297,7 +297,7 @@ export class AuthService {
       ])
       .exec();
 
-    const wishlist = await Wishlist.findOne({ user: req.user._id })
+    const wishlist = await Wishlist.findOne({ user: req.user._id });
 
     const userPermissions = req.user.roles.flatMap((role) =>
       role.permissions.map((permission) => permission.name)
@@ -350,8 +350,9 @@ export class AuthService {
     const defaultAddress = addresses?.filter((address) => address.default);
     if (defaultAddress?.length > 1) {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
-        addresses: 'There can only be one default address',
+        addresses: ' Chỉ có một địa chỉ mặc định',
       });
+      1;
     } else if (defaultAddress?.length === 0) {
       updateAddress = addresses.map((a, index) => (index === 0 ? { ...a, default: true } : a));
     }
@@ -363,7 +364,7 @@ export class AuthService {
       const defaultAddress = addresses.filter((address) => address.default);
       if (defaultAddress.length > 1) {
         throw new ApiError(StatusCodes.BAD_REQUEST, {
-          addresses: 'There can only be one default address',
+          addresses: ' Chỉ có một địa chỉ mặc định',
         });
       } else if (defaultAddress.length === 0) {
         updateAddress = addresses.map((a, index) => (index === 0 ? { ...a, default: true } : a));
@@ -389,7 +390,7 @@ export class AuthService {
 
     if (!updatedUser) {
       throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, {
-        server: 'Server does not respond',
+        server: ' Lỗi server',
       });
     }
 

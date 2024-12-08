@@ -123,6 +123,10 @@ const productSchema = new mongoose.Schema(
       default: 0,
       min: 0,
     },
+    enable_delete: {
+      type: Boolean,
+      default: true,
+    },
     average_rating: {
       type: Number,
       default: 0,
