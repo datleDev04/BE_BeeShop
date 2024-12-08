@@ -208,7 +208,7 @@ export default class ProductService {
     );
 
     if (variantsToRemove.length > 0) {
-      await Variant.deleteMany({ _id: { $in: variantsToRemove } });
+      await Variant.deleteMany({ _id: { $in: variantsToRemove }, enable_delete: true });
     }
 
     return updatedVariantIds;
