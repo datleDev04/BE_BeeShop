@@ -23,7 +23,7 @@ import cron from 'node-cron';
 import { generateOrderUniqueID } from '../utils/generateOrderIds.js';
 import { transporter } from '../utils/mails.js';
 import { getChangeOrderStatusTemplate } from '../mail/emailTemplate.js';
-import Voucher from '../models/Voucher.js';
+import Voucher, { VOUCHER_TYPES } from '../models/Voucher.js';
 import { createOrderLog } from '../utils/CreateOrderLog.js';
 import { ORDER_LOG_TYPE, WRITE_LOG_BY } from '../models/Order_Log.js';
 
@@ -123,7 +123,7 @@ export default class OrderService {
       shipping_fee,
     } = req.body;
 
-    const discountPrice = await this.calculateDiscount(voucher, regular_total_price);
+    const discountPrice = await this.calculateDiscount(voucher, regular_total_price, shipping_fee);
 
     await Promise.all(
       items.map(async (item) => {
@@ -179,7 +179,7 @@ export default class OrderService {
     return { checkoutUrl };
   };
 
-  static calculateDiscount = async (voucher, price) => {
+  static calculateDiscount = async (voucher, price, shipping_fee) => {
     if (!voucher) return 0;
 
     const currentVoucher = await Voucher.findById(voucher);
@@ -197,6 +197,10 @@ export default class OrderService {
     if (currentVoucher.minimum_order_price > price)
       throw new ApiError(StatusCodes.BAD_REQUEST, { message: 'Voucher không hợp lệ' });
 
+    if (currentVoucher.voucher_type === VOUCHER_TYPES.FREE_SHIPPING) {
+      return Math.min(currentVoucher.discount, shipping_fee);
+    }
+
     if (currentVoucher.discount_types === 'percentage') {
       const percentageDiscount = (price * currentVoucher.discount) / 100;
       return currentVoucher.max_reduce
@@ -204,7 +208,7 @@ export default class OrderService {
         : percentageDiscount;
     }
 
-    return currentVoucher.discount;
+    return Math.min(currentVoucher.discount, price);
   };
 
   static rePayment = async (req) => {
@@ -371,7 +375,7 @@ export default class OrderService {
       // Kiểm tra trạng thái hợp lệ cho người dùng
       const allowedTransitions = {
         [ORDER_STATUS.PENDING]: [ORDER_STATUS.CANCELLED, ORDER_STATUS.PROCESSING],
-        [ORDER_STATUS.PROCESSING]: [], // Không cho phép thay đổi trạng thái khi đang xử lý
+        [ORDER_STATUS.PROCESSING]: [],
         [ORDER_STATUS.DELEVERING]: [],
         [ORDER_STATUS.DELIVERED]: [ORDER_STATUS.REQUEST_RETURN, ORDER_STATUS.SUCCESS],
         [ORDER_STATUS.COMPENSATED]: [ORDER_STATUS.SUCCESS],
@@ -456,7 +460,7 @@ export default class OrderService {
     // Kiểm tra trạng thái hợp lệ
     if (!this.validStatusTransitions[currentStatus].includes(order_status)) {
       throw new ApiError(400, {
-        message: `Cannot change status from ${currentStatus} to ${order_status}`,
+        message: `Không thể chuyển trạng thái từ ${ORDER_STATUS_CONVERT[currentStatus]} sang ${ORDER_STATUS_CONVERT[order_status]}`,
       });
     }
 
