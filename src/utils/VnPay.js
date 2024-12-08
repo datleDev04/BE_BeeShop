@@ -102,8 +102,10 @@ export async function createVnpayReturnUrl(req) {
           const product = await Product.findById(item.product._id);
           if (variant) {
             variant.stock -= item.quantity;
+            variant.enable_delete = false;
           }
           if (product) {
+            product.enable_delete = false;
             product.sold += item.quantity;
           }
           await product.save();
