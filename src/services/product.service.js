@@ -143,7 +143,11 @@ export default class ProductService {
 
     const currentProduct = await Product.findById(req.params.id);
 
-    if (!currentProduct.enable_delete) {
+    if (
+      currentProduct.enable_delete !== undefined &&
+      currentProduct.enable_delete !== null &&
+      currentProduct.enable_delete === false
+    ) {
       throw new ApiError(StatusCodes.CONFLICT, {
         message: 'Không thể xóa sản phẩm này',
       });
