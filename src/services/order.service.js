@@ -213,7 +213,7 @@ export default class OrderService {
     const populatedOrder = await Order.findById(req.params.id).populate(orderPopulateOptions);
 
     if (populatedOrder.payment_status === PAYMENT_STATUS.COMPLETED) {
-      throw new ApiError(StatusCodes.BAD_REQUEST, { message: 'This order payment completed!' });
+      throw new ApiError(StatusCodes.BAD_REQUEST, { message: 'Đơn hàng đã được thanh toán!' });
     }
 
     await Promise.all(
@@ -262,12 +262,14 @@ export default class OrderService {
     const cartItems = await Promise.all(
       populatedOrder.items.map(async (item) => {
         if (item.quantity > item.variant.stock) {
-          throw new ApiError(StatusCodes.BAD_REQUEST, 'Insufficient stock for the variant');
+          throw new ApiError(StatusCodes.BAD_REQUEST, {
+            message: 'Sản phẩm tạm thời hết hàng, mua lại sau!',
+          });
         }
         return {
           product: item.product._id.toString(),
           variant: item.variant._id.toString(),
-          quantity: item.quantity,
+          quantity: 1,
         };
       })
     );

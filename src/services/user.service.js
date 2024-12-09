@@ -6,6 +6,7 @@ import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
 import { Transformer } from '../utils/transformer.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import Address from '../models/Address.js';
+import Order from '../models/Order.js';
 
 export default class UserService {
   static createUser = async (req) => {
@@ -224,9 +225,16 @@ export default class UserService {
       });
     }
 
-    updatedUser.password = undefined;
+    const orderCount = await Order.countDocuments({
+      user: updatedUser._id,
+    });
 
-    return Transformer.transformObjectTypeSnakeToCamel(updatedUser.toObject());
+    const userObj = updatedUser.toObject();
+    userObj.order_count = orderCount;
+
+    console.log(userObj);
+
+    return Transformer.transformObjectTypeSnakeToCamel(userObj);
   };
 
   static getOneUser = async (req) => {
@@ -276,22 +284,43 @@ export default class UserService {
       },
     ]);
 
-    const metaData = users.docs.map((user) => {
-      const userObj = user.toObject();
-      delete userObj.password;
-      return Transformer.transformObjectTypeSnakeToCamel(userObj);
-    });
-
     const { docs, ...otherFields } = users;
 
+    const userOrderCount = await Promise.all(
+      docs.map(async (user) => {
+        const orderCount = await Order.countDocuments({
+          user: user._id,
+        });
+
+        const userObject = user.toObject();
+        userObject.orderCount = orderCount;
+        delete userObject.password;
+
+        return userObject;
+      })
+    );
+    const transformedUsers = userOrderCount.map((user) =>
+      Transformer.transformObjectTypeSnakeToCamel(user)
+    );
+
     return {
-      metaData,
+      metaData: Transformer.removeDeletedField(transformedUsers),
       ...otherFields,
     };
   };
 
   static deleteUser = async (req) => {
     await checkRecordByField(User, '_id', req.params.id, true);
+
+    const orderCount = await Order.countDocuments({
+      user: req.params.id,
+    });
+
+    if (orderCount > 0) {
+      throw new ApiError(StatusCodes.CONFLICT, {
+        message: 'Không thể xóa người dùng này',
+      });
+    }
 
     const res = await User.findByIdAndDelete(req.params.id);
 
