@@ -36,7 +36,12 @@ export const GET_ALL_PRODUCT = {
               ...SIZE_LOOKUP.CONFIG,
               pipeline: [
                 { $project: SIZE_LOOKUP.FIELDS },
-                { $lookup: { ...GENDER_LOOKUP.CONFIG, pipeline: [{ $project: GENDER_LOOKUP.FIELDS }] } },
+                {
+                  $lookup: {
+                    ...GENDER_LOOKUP.CONFIG,
+                    pipeline: [{ $project: GENDER_LOOKUP.FIELDS }],
+                  },
+                },
                 { $unwind: { path: '$gender', preserveNullAndEmptyArrays: true } },
               ],
             },
@@ -45,13 +50,28 @@ export const GET_ALL_PRODUCT = {
         ],
       },
     },
-    { $lookup: { ...PRODUCT_COLOR_LOOKUP.CONFIG, pipeline: [{ $project: PRODUCT_COLOR_LOOKUP.FIELDS }] } },
-    { $lookup: { ...PRODUCT_SIZE_LOOKUP.CONFIG, pipeline: [{ $project: PRODUCT_SIZE_LOOKUP.FIELDS }] } },
-    { $lookup: { ...LABEL_LOOKUP.CONFIG} },
+    {
+      $lookup: {
+        ...PRODUCT_COLOR_LOOKUP.CONFIG,
+        pipeline: [{ $project: PRODUCT_COLOR_LOOKUP.FIELDS }],
+      },
+    },
+    {
+      $lookup: {
+        ...PRODUCT_SIZE_LOOKUP.CONFIG,
+        pipeline: [{ $project: PRODUCT_SIZE_LOOKUP.FIELDS }],
+      },
+    },
+    { $lookup: { ...LABEL_LOOKUP.CONFIG } },
     { $lookup: { ...TAG_LOOKUP.CONFIG, pipeline: [{ $project: TAG_LOOKUP.FIELDS }] } },
     { $lookup: { ...GENDER_LOOKUP.CONFIG, pipeline: [{ $project: GENDER_LOOKUP.FIELDS }] } },
     { $unwind: { path: '$gender', preserveNullAndEmptyArrays: true } },
-    { $lookup: { ...PRODUCT_TYPE_LOOKUP.CONFIG, pipeline: [{ $project: PRODUCT_TYPE_LOOKUP.FIELDS }] } },
+    {
+      $lookup: {
+        ...PRODUCT_TYPE_LOOKUP.CONFIG,
+        pipeline: [{ $project: PRODUCT_TYPE_LOOKUP.FIELDS }],
+      },
+    },
     { $unwind: { path: '$product_type', preserveNullAndEmptyArrays: true } },
     { $lookup: { ...BRAND_LOOKUP.CONFIG, pipeline: [{ $project: BRAND_LOOKUP.FIELDS }] } },
     { $unwind: { path: '$brand', preserveNullAndEmptyArrays: true } },
@@ -73,6 +93,7 @@ export const GET_ALL_PRODUCT = {
       'brand',
       'slug',
       'productType',
+      'q',
     ];
     for (const key of Object.keys(params)) {
       if (!allowKeys.includes(key))
@@ -84,21 +105,44 @@ export const GET_ALL_PRODUCT = {
     return cleanParams;
   },
   getQueries(params) {
-    const { tag, brand, color, size, label, gender, productType, minPrice, maxPrice, ...filter } = getArrayParams(
-      this.getParams(params),
-      ['tag', 'brand', 'color', 'size', 'label', 'gender', 'productType']
-    );
-  
+    const {
+      tag,
+      brand,
+      color,
+      size,
+      label,
+      gender,
+      productType,
+      minPrice,
+      maxPrice,
+      q = '',
+      ...filter
+    } = getArrayParams(this.getParams(params), [
+      'tag',
+      'brand',
+      'color',
+      'size',
+      'label',
+      'gender',
+      'productType',
+    ]);
+
     const queryOptions = { status: STATUS.ACTIVE, ...filter };
     let priceOptions = {};
+    if (q) {
+      queryOptions.name = { $regex: String(q).trim(), $options: 'i' };
+    }
+
     if (tag)
       queryOptions.tags = {
         $elemMatch: { _id: { $in: tag.map((id) => ObjectId.createFromHexString(id)) } },
       };
     if (brand)
-      queryOptions['brand._id'] = { $in: brand.map((id) => ObjectId.createFromHexString(id)) }
+      queryOptions['brand._id'] = { $in: brand.map((id) => ObjectId.createFromHexString(id)) };
     if (productType)
-      queryOptions['product_type._id'] = { $in: productType.map((id) => ObjectId.createFromHexString(id)) }
+      queryOptions['product_type._id'] = {
+        $in: productType.map((id) => ObjectId.createFromHexString(id)),
+      };
     if (color)
       queryOptions.variants = {
         $elemMatch: {
@@ -111,27 +155,28 @@ export const GET_ALL_PRODUCT = {
           _id: { $in: size.map((id) => ObjectId.createFromHexString(id)) },
         },
       };
-    if (label) queryOptions.labels = {
-      $elemMatch: {
-        _id: { $in: label.map((id) => ObjectId.createFromHexString(id)) }
-      }
-    };
+    if (label)
+      queryOptions.labels = {
+        $elemMatch: {
+          _id: { $in: label.map((id) => ObjectId.createFromHexString(id)) },
+        },
+      };
     if (gender)
-      queryOptions['gender._id'] = { $in: gender.map((id) => ObjectId.createFromHexString(id)) }
+      queryOptions['gender._id'] = { $in: gender.map((id) => ObjectId.createFromHexString(id)) };
     if (minPrice || maxPrice) {
       if (minPrice) priceOptions.$gte = Number(minPrice);
       if (maxPrice) priceOptions.$lte = Number(maxPrice);
     } else priceOptions = null;
-  
+
     if (priceOptions) {
       queryOptions.variants = {
         $elemMatch: {
-          ...queryOptions.variants?.$elemMatch ,
+          ...queryOptions.variants?.$elemMatch,
           discount_price: priceOptions,
         },
       };
     }
-  
+
     return queryOptions;
   },
-}
+};
