@@ -131,7 +131,7 @@ export class AuthService {
     // so sánh mật khẩu
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw new ApiError(401, {
+      throw new ApiError(400, {
         auth: 'Email hoặc mật khẩu không chính xác',
       });
     }
