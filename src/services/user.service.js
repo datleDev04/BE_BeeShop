@@ -249,9 +249,6 @@ export default class UserService {
           path: 'addresses',
         },
         {
-          path: 'vouchers',
-        },
-        {
           path: 'tags',
         },
       ])
