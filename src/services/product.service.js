@@ -14,6 +14,8 @@ import ProductType from '../models/Product_Type.js';
 import { STATUS } from '../utils/constants.js';
 import ApiError from '../utils/ApiError.js';
 import { StatusCodes } from 'http-status-codes';
+import Cart_Item from '../models/Cart_Item.js';
+import Cart from '../models/Cart.js';
 
 const populateOptions = [
   { path: 'variants', populate: ['color', 'size'] },
@@ -154,6 +156,20 @@ export default class ProductService {
     }
 
     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+
+    await Cart_Item.deleteMany({ product: req.params.id });
+
+    await Cart.updateMany(
+      { cart_items: { $exists: true, $not: { $size: 0 } } },
+      {
+        $pull: {
+          cart_items: { $in: await Cart_Item.find({ product: req.params.id }).distinct('_id') },
+        },
+      }
+    );
+
+    // Remove empty carts
+    await Cart.deleteMany({ cart_items: { $size: 0 } });
 
     await Promise.all([
       Variant.deleteMany({ _id: { $in: deletedProduct.variants } }),

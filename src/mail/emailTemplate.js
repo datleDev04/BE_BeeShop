@@ -140,10 +140,11 @@ export const ORDER_SUCCESS_TEMPLATE = `
     <p>Cảm ơn bạn đã đặt hàng tại Beemelly Store!</p>
     <p>Đơn hàng của bạn đã được xác nhận và đang trong quá trình xử lý. Thông tin chi tiết đơn hàng của bạn như sau:</p>
     <ul>
-      <li><strong>Số đơn hàng:</strong> {orderNumber}</li>
+      <li><strong>Số đơn hàng:</strong> <a href="${process.env.CLIENT_BASE_URL}/profile/orders">{orderNumber}</a></li>
       <li><strong>Ngày đặt hàng:</strong> {orderDate}</li>
       <li><strong>Phương thức thanh toán:</strong> {paymentMethod}</li>
       <li><strong>Địa chỉ giao hàng:</strong> {shippingAddress}</li>
+      <li><strong>Áp dụng phiếu giảm giá:</strong> {discountPrice}</li>
       <li><strong>Tổng tiền:</strong> {totalPrice}</li>
     </ul>
     <p><strong>Chi tiết sản phẩm:</strong></p>
@@ -181,6 +182,10 @@ export const generateOrderSuccessEmailTemplate = (order) => {
 
   const orderDate = new Date().toLocaleDateString('vi-VN');
   const price = order.total_price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+  const discount = order.discount_price.toLocaleString('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
 
   const orderItemsHtml = generateOrderItemsTable(orderItemsFormatted);
 
@@ -193,7 +198,8 @@ export const generateOrderSuccessEmailTemplate = (order) => {
       order.payment_type === 'payos' ? 'Thanh toán bằng Payos' : 'Thanh toán bằng VnPay'
     )
     .replace('{shippingAddress}', order.shipping_address)
-    .replace('{totalPrice}', price);
+    .replace('{totalPrice}', price)
+    .replace('{discountPrice}', discount);
 
   return emailHtml;
 };

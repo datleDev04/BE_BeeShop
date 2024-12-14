@@ -81,7 +81,7 @@ cron.schedule('0 0 * * *', async () => {
   }
 });
 
-// chạy hàm này sau mỗi 30 phút, tìm tất cả các đơn hàng tạo lớn hơn 1 ngày mà có trạng thái đơn hàng là pending hoặc failed
+// chạy hàm này sau mỗi 30 phút, tìm tất cả các đơn hàng tạo lớn hơn 1 ngày mà có trạng thái thanh toán là pending hoặc failed
 cron.schedule('*/30 * * * *', async () => {
   try {
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
