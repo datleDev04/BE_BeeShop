@@ -7,6 +7,7 @@ import ApiError from '../utils/ApiError.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
 import CartItem from '../models/Cart_Item.js';
+import { STATUS } from '../utils/constants.js';
 
 const popolateOptions = [
   {
@@ -61,10 +62,18 @@ export default class CartService {
     await checkRecordByField(Product, '_id', product_id, true);
     await checkRecordByField(Variant, '_id', variant_id, true);
 
+    const product = await Product.findById(product_id);
+
+    if (product.status === STATUS.INACTIVE) {
+      throw new ApiError(409, {
+        message: `Sản phẩm tạm thời đã bị vô hiệu hóa, không thể thêm`,
+      });
+    }
+
     const variant = await Variant.findById(variant_id);
     if (quantity > variant.stock) {
       throw new ApiError(409, {
-        quantity: `Only ${variant.stock} products left`,
+        message: `Chỉ còn lại ${variant.stock} sản phẩm trong kho`,
       });
     }
 
@@ -112,10 +121,16 @@ export default class CartService {
     // find user cart
     let userCart = await Cart.findOne({ user: userId }).populate({
       path: 'cart_items',
-      populate: {
-        path: 'variant',
-        select: 'stock',
-      },
+      populate: [
+        {
+          path: 'variant',
+          select: 'stock',
+        },
+        {
+          path: 'product',
+          select: 'status',
+        },
+      ],
     });
 
     if (!userCart) {
@@ -123,6 +138,12 @@ export default class CartService {
     }
 
     const currentCartItem = userCart.cart_items.find((item) => item._id.toString() === id);
+
+    if (currentCartItem.product.status === STATUS.INACTIVE) {
+      throw new ApiError(409, {
+        message: 'Sản phẩm đã bị vô hiệu hóa, xóa sản phẩm này khỏi giỏ hàng!',
+      });
+    }
 
     if (quantity > currentCartItem.variant.stock) {
       throw new ApiError(409, {

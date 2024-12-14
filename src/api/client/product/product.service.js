@@ -19,13 +19,7 @@ const { ObjectId } = mongoose.Types;
 
 export const productService = {
   getAllProducts: async (req) => {
-    const {
-      _page = 1,
-      _limit = 10,
-      orderBy = 'createdAt',
-      sort = 'DESC',
-      ...filter
-    } = req.query;
+    const { _page = 1, _limit = 10, orderBy = 'createdAt', sort = 'DESC', ...filter } = req.query;
 
     const result = await Product.aggregate([
       ...GET_ALL_PRODUCT.getPopulateOptions(),
@@ -58,6 +52,7 @@ export const productService = {
     if (!product) {
       throw new ApiError(StatusCodes.NOT_FOUND, { message: 'Product not found' });
     }
+
     return product;
   },
   getProductReviews: async (req) => {

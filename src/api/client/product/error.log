@@ -1,0 +1,1713 @@
+
+[2024-12-13T14:53:40.202Z]
+Error: hex string must be 24 characters
+Stack: BSONError: hex string must be 24 characters
+    at ObjectId.createFromHexString (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\bson\lib\bson.cjs:2480:19)
+    at file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:138:60
+    at Array.map (<anonymous>)
+    at Object.getQueries (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:138:39)
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:32:33)
+    at getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:60)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"[object Object],[object Object]\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T14:53:54.571Z]
+Error: hex string must be 24 characters
+Stack: BSONError: hex string must be 24 characters
+    at ObjectId.createFromHexString (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\bson\lib\bson.cjs:2480:19)
+    at file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:138:60
+    at Array.map (<anonymous>)
+    at Object.getQueries (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:138:39)
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:32:33)
+    at getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:60)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"[object Object],[object Object]\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:50:33.567Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-puma-sneakers-unisex-co-thap-caven-20\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:50:34.427Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:50:34.430Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"670ffeb70a9054a83674a5da,670ffe710a9054a83674a5c5\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:18.466Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:19.005Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:19.085Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:20.978Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b27cb1b995cd15d2e09f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:21.057Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b27cb1b995cd15d2e09f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:21.137Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b27cb1b995cd15d2e09f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:22.029Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:22.105Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:22.181Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:22.529Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b265b1b995cd15d2e083\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:22.605Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b265b1b995cd15d2e083\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:22.681Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b265b1b995cd15d2e083\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:23.189Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:23.265Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:23.340Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:23.641Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d46de6741cf88d736d377a\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:23.717Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d46de6741cf88d736d377a\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:23.793Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d46de6741cf88d736d377a\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:24.449Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:24.525Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:24.601Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:24.921Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d46c2a741cf88d736d372f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:24.997Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d46c2a741cf88d736d372f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:25.073Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d46c2a741cf88d736d372f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:25.805Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:25.881Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:25.957Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:26.173Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d3caea741cf88d736d1ee2\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:26.248Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d3caea741cf88d736d1ee2\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:26.324Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d3caea741cf88d736d1ee2\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:27.280Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:27.356Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:27.432Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:28.741Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:28.817Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:28.892Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:29.540Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:30.081Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T15:51:30.156Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T16:45:01.033Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T16:45:01.035Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-13T16:48:44.198Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"670ffe710a9054a83674a5c5,670ffeb70a9054a83674a5da\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T16:48:44.199Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:05:15.880Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:05:15.883Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"670ffe710a9054a83674a5c5,670ffeb70a9054a83674a5da\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:12:34.164Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:12:42.516Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:12:43.859Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"670ffe710a9054a83674a5c5,670ffeb70a9054a83674a5da\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:12:43.865Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:17:30.964Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:17:31.120Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:17:31.294Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:17:31.780Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:17:31.788Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"670ffe710a9054a83674a5c5,670ffeb70a9054a83674a5da\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:18:25.253Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:18:25.259Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"670ffe710a9054a83674a5c5,670ffeb70a9054a83674a5da\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:30:00.195Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:30:00.202Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"670ffe710a9054a83674a5c5,670ffeb70a9054a83674a5da\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:31:49.478Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:31:58.110Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:32:07.237Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:32:32.158Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:32:34.158Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:32:39.777Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:32:46.157Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:33:15.737Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:33:26.160Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:33:36.152Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:33:49.152Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:33:53.148Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:34:03.693Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:34:15.897Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:34:23.877Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:34:28.145Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:34:33.157Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:34:38.153Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:34:38.485Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:34:41.200Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:34:41.201Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"670ffe710a9054a83674a5c5,670ffeb70a9054a83674a5da\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:35:05.820Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:35:08.940Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:35:08.946Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"670ffe710a9054a83674a5c5,670ffeb70a9054a83674a5da\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:38:19.716Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:38:19.720Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:44:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"670ffe710a9054a83674a5c5,670ffeb70a9054a83674a5da\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:43:43.740Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:45:05.026Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:45:18.710Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:59:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:45:57.007Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:53:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-vans-old-skool-logo-check-black\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:45:58.069Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"670ffe710a9054a83674a5c5,670ffeb70a9054a83674a5da\",\"_limit\":\"4\"}"
+}
+----------------------------------------
+
+[2024-12-13T17:45:58.071Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-14T01:44:38.494Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"orderBy\":\"sold\",\"_limit\":\"8\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:05.799Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b27cb1b995cd15d2e09f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:05.911Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b27cb1b995cd15d2e09f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:06.024Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b27cb1b995cd15d2e09f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:10.591Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b27cb1b995cd15d2e09f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:10.716Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b27cb1b995cd15d2e09f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:18.884Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b27cb1b995cd15d2e09f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:18.991Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b27cb1b995cd15d2e09f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:19.101Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"6712b27cb1b995cd15d2e09f\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:22.651Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d46de6741cf88d736d377a\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:22.760Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d46de6741cf88d736d377a\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:22.868Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d46de6741cf88d736d377a\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:26.415Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d3caea741cf88d736d1ee2\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:26.523Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d3caea741cf88d736d1ee2\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:26.629Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"productType\":\"66d3caea741cf88d736d1ee2\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:30.759Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"gender\":\"671208565ce9910c4f862008\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:30.866Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"gender\":\"671208565ce9910c4f862008\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:30.971Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"gender\":\"671208565ce9910c4f862008\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:40.372Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:40.481Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:40.592Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:44.925Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:45.032Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:45.140Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:45.572Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b,671000e30a9054a83674a68d\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:45.680Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b,671000e30a9054a83674a68d\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:45.788Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b,671000e30a9054a83674a68d\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:46.005Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b,671000e30a9054a83674a68d,670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:46.113Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b,671000e30a9054a83674a68d,670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:46.222Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b,671000e30a9054a83674a68d,670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:46.608Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b,671000e30a9054a83674a68d,670fffac0a9054a83674a664,671001120a9054a83674a6a9\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:46.717Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b,671000e30a9054a83674a68d,670fffac0a9054a83674a664,671001120a9054a83674a6a9\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:46.825Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b,671000e30a9054a83674a68d,670fffac0a9054a83674a664,671001120a9054a83674a6a9\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:47.900Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b,671000e30a9054a83674a68d,670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:48.009Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b,671000e30a9054a83674a68d,670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:48.122Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000f70a9054a83674a69b,671000e30a9054a83674a68d,670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:48.349Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000e30a9054a83674a68d,670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:48.457Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000e30a9054a83674a68d,670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:48.568Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000e30a9054a83674a68d,670fffac0a9054a83674a664\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:49.117Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000e30a9054a83674a68d\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:49.229Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000e30a9054a83674a68d\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:14:49.337Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"6\",\"brand\":\"671000e30a9054a83674a68d\",\"orderBy\":\"createdAt\",\"sort\":\"desc\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:37:48.366Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"9\",\"orderBy\":\"createdAt\",\"sort\":\"desc\",\"productType\":\"6712b27cb1b995cd15d2e09f\"}"
+}
+----------------------------------------
+
+[2024-12-14T02:38:03.343Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"9\",\"brand\":\"671000e30a9054a83674a68d\",\"orderBy\":\"createdAt\",\"sort\":\"desc\",\"productType\":\"6712b265b1b995cd15d2e083\"}"
+}
+----------------------------------------
+
+[2024-12-14T05:00:18.370Z]
+Error: Cannot read properties of undefined (reading 'id')
+Stack: TypeError: Cannot read properties of undefined (reading 'id')
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:38:44)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:39)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"_page\":\"1\",\"_limit\":\"9\",\"gender\":\"671208565ce9910c4f862008\",\"orderBy\":\"createdAt\",\"sort\":\"desc\",\"productType\":\"6712b27cb1b995cd15d2e09f\"}"
+}
+----------------------------------------
+
+[2024-12-14T05:08:03.157Z]
+Error: hex string must be 24 characters
+Stack: BSONError: hex string must be 24 characters
+    at ObjectId.createFromHexString (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\bson\lib\bson.cjs:2480:19)
+    at file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:138:60
+    at Array.map (<anonymous>)
+    at Object.getQueries (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/query-builder/getAllProducts.js:138:39)
+    at Object.getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:26:33)
+    at getAllProducts (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:15:60)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\KEU\FPT\DATN\Source\BE_BeeMely\node_modules\express\lib\router\layer.js:95:5)
+Additional Info: {
+  "function": "getAllProducts",
+  "query": "Query: {\"tag\":\"[object Object],[object Object]\",\"_limit\":\"4\"}"
+}
+----------------------------------------

@@ -2,6 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import Wishlist from '../../models/Wishlist.js';
 import ApiError from '../../utils/ApiError.js';
 import { Transformer } from '../../utils/transformer.js';
+import Product from '../../models/Product.js';
+import { STATUS } from '../../utils/constants.js';
 
 export default class WishListService {
   static getallItems = async (req) => {
@@ -54,6 +56,20 @@ export default class WishListService {
   static updateItemsAdd = async (req) => {
     const userID = req.user._id;
     const productID = req.params.id;
+
+    const product = await Product.findById(productID);
+
+    if (!product) {
+      throw new ApiError(StatusCodes.NOT_FOUND, {
+        message: 'Không tìm thấy sản phẩm',
+      });
+    }
+
+    if (product.status === STATUS.INACTIVE) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, {
+        message: 'Không thể thêm sản phẩm bị vô hiệu hóa vào wishlist',
+      });
+    }
 
     const wishList = await Wishlist.findOneAndUpdate(
       { user: userID },
