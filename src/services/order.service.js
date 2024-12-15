@@ -26,6 +26,7 @@ import { getChangeOrderStatusTemplate } from '../mail/emailTemplate.js';
 import Voucher from '../models/Voucher.js';
 import { createOrderLog } from '../utils/CreateOrderLog.js';
 import { ORDER_LOG_TYPE, WRITE_LOG_BY } from '../models/Order_Log.js';
+import Product from '../models/Product.js';
 
 export const orderPopulateOptions = [
   {
@@ -128,6 +129,13 @@ export default class OrderService {
     await Promise.all(
       items.map(async (item) => {
         const variant = await Variant.findById(item.variant_id);
+        const product = await Product.findById(item.product_id);
+
+        if (product.status === STATUS.INACTIVE) {
+          throw new ApiError(409, {
+            message: 'Sản phẩm đã bị vô hiệu hóa, xóa sản phẩm này khỏi giỏ hàng!',
+          });
+        }
         if (variant.stock < item.quantity) {
           throw new ApiError(StatusCodes.BAD_REQUEST, { message: 'Sản phẩm tạm thời hết hàng!' });
         }
