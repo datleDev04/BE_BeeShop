@@ -12,6 +12,8 @@ import { sendOrderSuccessEmail } from '../mail/emails.js';
 import Variant from '../models/Variant.js';
 import { createOrderLog } from './CreateOrderLog.js';
 import Product from '../models/Product.js';
+import { orderPopulateOptions } from '../services/order.service.js';
+import { ORDER_LOG_TYPE, WRITE_LOG_BY } from '../models/Order_Log.js';
 
 dotenv.config();
 
@@ -26,7 +28,7 @@ export async function createPayosPayment(populatedOrder) {
 
   const payOsOptions = {
     orderCode: Number(String(new Date().getTime()).slice(-6)),
-    amount: totalPrice,
+    amount: 10000,
     description: 'Thanh toan don hang',
     items: populatedOrder.items.map((item) => ({
       name: item.product.name,
@@ -49,7 +51,7 @@ export async function createPayosPayment(populatedOrder) {
 export async function createPayosReturnUrl(req) {
   const { cancel, success, order_id } = req.query;
   let redirectUrl = '';
-  const order = await Order.findById(order_id);
+  const order = await Order.findById(order_id).populate(orderPopulateOptions);
   if (!order) {
     redirectUrl = `${process.env.CLIENT_BASE_URL}/payment?cancel=1`;
   }

@@ -48,6 +48,7 @@ export const PAYMENT_STATUS = {
 export const PAYMENT_TYPE = {
   VNPAY: 'vnpay',
   PAYOS: 'payos',
+  COD: 'cod',
 };
 
 export const SHIPPING_RULES = {
