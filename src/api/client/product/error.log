@@ -1711,3 +1711,27 @@ Additional Info: {
   "query": "Query: {\"tag\":\"[object Object],[object Object]\",\"_limit\":\"4\"}"
 }
 ----------------------------------------
+
+[2024-12-18T12:02:57.669Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:53:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-tonkin-captoe-oxford\"}"
+}
+----------------------------------------
+
+[2024-12-18T12:03:01.817Z]
+Error: Product not found
+Stack: ApiError: Product not found
+    at Object.getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.service.js:53:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async getProductBySlug (file:///D:/KEU/FPT/DATN/Source/BE_BeeMely/src/api/client/product/product.controller.js:33:23)
+Additional Info: {
+  "function": "getProductBySlug",
+  "slug": "Query: {\"slug\":\"giay-tonkin-captoe-oxford\"}"
+}
+----------------------------------------

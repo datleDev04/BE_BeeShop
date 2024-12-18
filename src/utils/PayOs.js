@@ -28,7 +28,7 @@ export async function createPayosPayment(populatedOrder) {
 
   const payOsOptions = {
     orderCode: Number(String(new Date().getTime()).slice(-6)),
-    amount: totalPrice,
+    amount: 10000,
     description: 'Thanh toan don hang',
     items: populatedOrder.items.map((item) => ({
       name: item.product.name,

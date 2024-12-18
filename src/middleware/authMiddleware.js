@@ -3,6 +3,7 @@ import ApiError from '../utils/ApiError.js';
 import jwtUtils from '../utils/jwt.js';
 import User from '../models/User.js';
 import Black_Tokens from '../models/Black_Tokens.js';
+import { STATUS } from '../utils/constants.js';
 
 export const authMiddleware = async (req, res, next) => {
   const accessToken = req.get('Authorization')?.split(' ').at(1);
@@ -29,7 +30,7 @@ export const authMiddleware = async (req, res, next) => {
       path: 'roles',
       populate: { path: 'permissions' },
     });
-    if (!user)
+    if (!user || user.status === STATUS.INACTIVE)
       throw new ApiError(StatusCodes.UNAUTHORIZED, {
         auth: 'You are not authorized to access',
       });
@@ -49,7 +50,7 @@ export const authMiddleware = async (req, res, next) => {
 
     // return user, accessToken, permissions, roles into request
 
-    const isCustomer = userRoles.length == 1 && userRoles.includes('Customer')
+    const isCustomer = userRoles.length == 1 && userRoles.includes('Customer');
 
     req.user = {
       ...user.toObject(),

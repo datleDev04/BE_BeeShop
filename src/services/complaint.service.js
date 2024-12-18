@@ -110,7 +110,13 @@ class ComplaintService {
 
     if (!complaint) {
       throw new ApiError(StatusCodes.NOT_FOUND, {
-        message: 'Complaint not found!',
+        message: 'Khiếu nại không tồn tại',
+      });
+    }
+
+    if (complaint.status === COMPLAINT_STATUS.WITHDRAWN) {
+      throw new ApiError(StatusCodes.NOT_FOUND, {
+        message: 'Người dùng đã thu hồi khiếu nại, không thể cập nhật!',
       });
     }
 

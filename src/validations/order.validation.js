@@ -45,7 +45,7 @@ export const orderValidation = async (req, res, next) => {
       'string.empty': 'User email is required',
       'string.email': 'User email must be a valid email address',
     }),
-    payment_type: Joi.string().valid(PAYMENT_TYPE.PAYOS, PAYMENT_TYPE.VNPAY).required(),
+    payment_type: Joi.string().valid(PAYMENT_TYPE.PAYOS, PAYMENT_TYPE.VNPAY, PAYMENT_TYPE.COD).required(),
     note: Joi.string().empty('').optional(),
     tracking_number: Joi.string().optional(),
   });

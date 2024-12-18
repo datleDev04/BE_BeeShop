@@ -1,7 +1,7 @@
 import Order from '../models/Order.js';
 import { checkRecordByField } from '../utils/CheckRecord.js';
 import { Transformer } from '../utils/transformer.js';
-import { getFilterOptions, getPaginationOptions } from '../utils/pagination.js';
+import { getPaginationOptions } from '../utils/pagination.js';
 import OrderItem from '../models/Order_item.js';
 import OrderItemService from './order_item.service.js';
 import Variant from '../models/Variant.js';
@@ -27,6 +27,7 @@ import Voucher from '../models/Voucher.js';
 import { createOrderLog } from '../utils/CreateOrderLog.js';
 import { ORDER_LOG_TYPE, WRITE_LOG_BY } from '../models/Order_Log.js';
 import Product from '../models/Product.js';
+import { createCodPayment } from '../utils/Cod.js';
 
 export const orderPopulateOptions = [
   {
@@ -60,7 +61,7 @@ export const orderPopulateOptions = [
   },
 ];
 
-cron.schedule('0 0 * * *', async () => {
+cron.schedule('*/30 * * * *', async () => {
   const threeDaysAgo = new Date();
   threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
 
@@ -68,7 +69,7 @@ cron.schedule('0 0 * * *', async () => {
     const result = await Order.updateMany(
       {
         order_status: {
-          $in: [ORDER_STATUS.DELIVERED, ORDER_STATUS.COMPENSATED, ORDER_STATUS.DENIED_RETURN],
+          $in: [ORDER_STATUS.DELIVERED, ORDER_STATUS.COMPENSATED],
         },
         delivered_date: { $lte: threeDaysAgo },
       },
@@ -95,6 +96,9 @@ cron.schedule('*/30 * * * *', async () => {
         },
         order_status: {
           $ne: ORDER_STATUS.CANCELLED,
+        },
+        payment_type: {
+          $ne: PAYMENT_TYPE.COD, 
         },
       },
       {
@@ -130,6 +134,12 @@ export default class OrderService {
       items.map(async (item) => {
         const variant = await Variant.findById(item.variant_id);
         const product = await Product.findById(item.product_id);
+
+        if (!product || !variant) {
+          throw new ApiError(409, {
+            message: 'Sản phẩm đã không còn khả dụng! vui lòng xóa sản phẩm khỏi giỏ hàng',
+          });
+        }
 
         if (product.status === STATUS.INACTIVE) {
           throw new ApiError(409, {
@@ -178,8 +188,13 @@ export default class OrderService {
       },
     });
 
+    if (payment_type === PAYMENT_TYPE.COD) {
+      const checkoutUrl = await createCodPayment(newOrder);
+      return { checkoutUrl };
+    }
+
     // Generate checkout URL based on payment type
-    let checkoutUrl =
+    const checkoutUrl =
       payment_type === PAYMENT_TYPE.VNPAY
         ? await createVnpayPayment(req, populatedOrder)
         : await createPayosPayment(populatedOrder);
@@ -258,7 +273,7 @@ export default class OrderService {
       populate: [
         {
           path: 'product',
-          select: 'name',
+          select: 'name ',
         },
         {
           path: 'variant',
@@ -269,6 +284,21 @@ export default class OrderService {
 
     const cartItems = await Promise.all(
       populatedOrder.items.map(async (item) => {
+        const variant = await Variant.findById(item.variant._id);
+        const product = await Product.findById(item.product._id);
+
+        if (!product || !variant) {
+          throw new ApiError(409, {
+            message: 'Có sản phẩm đã không còn khả dụng! Không thể đặt lại đơn hàng này',
+          });
+        }
+
+        if (product.status === STATUS.INACTIVE) {
+          throw new ApiError(409, {
+            message: 'Có sản phẩm đã không còn khả dụng! Không thể đặt lại đơn hàng này',
+          });
+        }
+
         if (item.quantity > item.variant.stock) {
           throw new ApiError(StatusCodes.BAD_REQUEST, {
             message: 'Sản phẩm tạm thời hết hàng, mua lại sau!',
@@ -473,6 +503,11 @@ export default class OrderService {
     // Cập nhật trạng thái của order
     order.order_status = order_status;
     const convertOrderStatus = ORDER_STATUS_CONVERT[order_status];
+
+    if (order_status === ORDER_STATUS.DELIVERED && order.payment_type === PAYMENT_TYPE.COD) {
+      order.payment_status = PAYMENT_STATUS.COMPLETED;
+    }
+
     await order.save();
 
     await transporter.sendMail({

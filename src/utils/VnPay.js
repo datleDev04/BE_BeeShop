@@ -7,10 +7,7 @@ import CartService from '../services/cart.service.js';
 import Order from '../models/Order.js';
 import OrderItem from '../models/Order_item.js';
 import Voucher from '../models/Voucher.js';
-import {
-  generateOrderItemsTable,
-  generateOrderSuccessEmailTemplate,
-} from '../mail/emailTemplate.js';
+import { generateOrderSuccessEmailTemplate } from '../mail/emailTemplate.js';
 import { orderPopulateOptions } from '../services/order.service.js';
 import { sendOrderSuccessEmail } from '../mail/emails.js';
 import Variant from '../models/Variant.js';
@@ -108,7 +105,7 @@ export async function createVnpayReturnUrl(req) {
             product.enable_delete = false;
             product.sold += item.quantity;
           }
-          
+
           await product.save();
           await variant.save();
         })

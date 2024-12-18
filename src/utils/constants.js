@@ -30,13 +30,13 @@ export const ORDER_STATUS_CONVERT = {
   delivering: 'Đang giao hàng',
   delivered: 'Đã giao hàng tới người nhận',
   success: 'Người nhận xác nhận đơn hàng',
-  compensating: 'Người bán đang gửi bù hàng',
-  compensated: 'Người bán đã gửi bù hàng',
+  compensating: 'Đang gửi hàng mới',
+  compensated: 'Đã gửi hàng mới',
   cancelled: 'Hủy',
   request_return: 'Đang khiếu nại',
   denied_return: 'Từ chối trả hàng',
   returning: 'Đang trả hàng',
-  returned: 'Trả hàng thành công',
+  returned: 'Đã nhận hàng hoàn và hoàn tiền',
 };
 
 export const PAYMENT_STATUS = {
@@ -48,6 +48,7 @@ export const PAYMENT_STATUS = {
 export const PAYMENT_TYPE = {
   VNPAY: 'vnpay',
   PAYOS: 'payos',
+  COD: 'cod',
 };
 
 export const SHIPPING_RULES = {
