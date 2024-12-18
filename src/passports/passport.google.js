@@ -27,10 +27,6 @@ export default new GoogleStrategy(
       return done(null, newUser);
     }
 
-    if (user.status === STATUS.INACTIVE) {
-      throw new ApiError(StatusCodes.FORBIDDEN, { access: 'Tài khoản đã bị vô hiệu hóa' });
-    }
-
     return done(null, user);
   }
 );

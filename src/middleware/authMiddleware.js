@@ -30,10 +30,20 @@ export const authMiddleware = async (req, res, next) => {
       path: 'roles',
       populate: { path: 'permissions' },
     });
-    if (!user || user.status === STATUS.INACTIVE)
+    if (!user) {
+      console.log('401');
       throw new ApiError(StatusCodes.UNAUTHORIZED, {
         auth: 'You are not authorized to access',
       });
+    }
+
+    if (user.status === STATUS.INACTIVE) {
+      console.log('403');
+
+      return res.status(403).json({
+        auth: 'You are not authorized to access',
+      });
+    }
 
     user.password = undefined;
 
