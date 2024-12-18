@@ -69,7 +69,7 @@ cron.schedule('*/30 * * * *', async () => {
     const result = await Order.updateMany(
       {
         order_status: {
-          $in: [ORDER_STATUS.DELIVERED, ORDER_STATUS.COMPENSATED, ORDER_STATUS.DENIED_RETURN],
+          $in: [ORDER_STATUS.DELIVERED, ORDER_STATUS.COMPENSATED],
         },
         delivered_date: { $lte: threeDaysAgo },
       },
@@ -96,6 +96,9 @@ cron.schedule('*/30 * * * *', async () => {
         },
         order_status: {
           $ne: ORDER_STATUS.CANCELLED,
+        },
+        payment_type: {
+          $ne: PAYMENT_TYPE.COD, 
         },
       },
       {

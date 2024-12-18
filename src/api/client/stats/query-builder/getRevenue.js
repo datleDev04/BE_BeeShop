@@ -60,7 +60,7 @@ export const GET_TOTAL_REVENUE = {
         groupFormat = '%m';
         break;
       case 'year':
-        startDate = moment().subtract(2, 'year').startOf('year');
+        startDate = moment().subtract(3, 'year').startOf('year');
         endDate = moment().endOf('year');
         groupFormat = '%Y';
         break;
@@ -75,7 +75,7 @@ export const GET_TOTAL_REVENUE = {
             $gte: startDate.toDate(),
             $lte: endDate.toDate(),
           },
-          order_status: ORDER_STATUS.SUCCESS,
+          order_status: { $in: [ORDER_STATUS.SUCCESS, ORDER_STATUS.DENIED_RETURN] },
         },
       },
       {
@@ -100,6 +100,8 @@ export const GET_TOTAL_REVENUE = {
       },
     ];
     const results = await Order.aggregate(pipeline);
+
+    console.log(results);
 
     const filledData = fillMissingDates(results, type, startDate, endDate);
     return filledData;
