@@ -23,7 +23,7 @@ import cron from 'node-cron';
 import { generateOrderUniqueID } from '../utils/generateOrderIds.js';
 import { transporter } from '../utils/mails.js';
 import { getChangeOrderStatusTemplate } from '../mail/emailTemplate.js';
-import Voucher from '../models/Voucher.js';
+import Voucher, { VOUCHER_TYPES } from '../models/Voucher.js';
 import { createOrderLog } from '../utils/CreateOrderLog.js';
 import { ORDER_LOG_TYPE, WRITE_LOG_BY } from '../models/Order_Log.js';
 import Product from '../models/Product.js';
@@ -98,7 +98,7 @@ cron.schedule('*/30 * * * *', async () => {
           $ne: ORDER_STATUS.CANCELLED,
         },
         payment_type: {
-          $ne: PAYMENT_TYPE.COD, 
+          $ne: PAYMENT_TYPE.COD,
         },
       },
       {
@@ -128,7 +128,7 @@ export default class OrderService {
       shipping_fee,
     } = req.body;
 
-    const discountPrice = await this.calculateDiscount(voucher, regular_total_price);
+    const discountPrice = await this.calculateDiscount(voucher, regular_total_price, shipping_fee);
 
     await Promise.all(
       items.map(async (item) => {
@@ -151,6 +151,8 @@ export default class OrderService {
         }
       })
     );
+
+    console.log(discountPrice);
 
     // Create order items
     const orderItems = await Promise.all(
@@ -202,7 +204,7 @@ export default class OrderService {
     return { checkoutUrl };
   };
 
-  static calculateDiscount = async (voucher, price) => {
+  static calculateDiscount = async (voucher, price, shipping_fee) => {
     if (!voucher) return 0;
 
     const currentVoucher = await Voucher.findById(voucher);
@@ -211,6 +213,12 @@ export default class OrderService {
       throw new ApiError(StatusCodes.BAD_REQUEST, {
         message: 'Voucher không tồn tại hoặc hết hạn',
       });
+
+    console.log(currentVoucher);
+
+    if (currentVoucher.voucher_type === VOUCHER_TYPES.FREE_SHIPPING && shipping_fee) {
+      return Math.min(currentVoucher.discount, shipping_fee);
+    }
     if (currentVoucher.max_usage <= 0)
       throw new ApiError(StatusCodes.BAD_REQUEST, { message: 'Voucher đã không còn hạn sử dụng!' });
     if (currentVoucher.status === STATUS.INACTIVE)
